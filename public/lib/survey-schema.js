@@ -31,6 +31,14 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    {
+      version: '1.1.0', date: '2026-10-17',
+      changes: [
+        'totalBudget is replaced by two questions: trailSpending (on and during the trail, without travel to and from it and without gear) and gearCost (all gear the hiker carried, including gear they already owned). Add them up for the old total.',
+        'The three records collected under 1.0.0 were moved to the new columns with the split their hikers gave.',
+        'Consent version 2: the privacy page lists the gear cost.'
+      ]
+    },
     { version: '1.0.0', date: '2026-10-17', changes: ['First public version.'] }
   ];
   const SCHEMA_VERSION = CHANGELOG[0].version;
@@ -140,7 +148,7 @@
   const POPULAR_TRAILS = ['PCT', 'AT', 'CDT', 'CT', 'AZT', 'JMT', 'Long Trail', 'CDS', 'TMB', 'WHW', 'GR20', 'TA'];
 
   // Version of the consent text shown before the survey; stored with each record.
-  const CONSENT_VERSION = '1';
+  const CONSENT_VERSION = '2';
 
   /**
    * Field definitions, in storage / CSV column order.
@@ -305,12 +313,19 @@
       requiredMessage: 'Please select where your prior injury was', when: d => d.priorInjuryHistory === true, role: 'Multi-label predictor'
     },
     {
-      name: 'totalBudget', question: 'Total cost of the hike', allowUnknown: true, label: 'Total cost of the hike', type: 'integer', step: 2, input: 'field-totalBudget',
-      min: 0, max: 100000, role: 'Continuous predictor', description: 'In budgetCurrency, as entered; no exchange rate is applied.'
+      name: 'trailSpending', question: 'How much did you spend on and during the trail?', allowUnknown: true, label: 'Spent on and during the trail', type: 'integer', step: 2, input: 'field-trailSpending',
+      min: 0, max: 100000, role: 'Continuous predictor',
+      description: 'Permits, food and resupply, town stays and other costs along the way; not travel to and from the trail, not gear. In budgetCurrency, as entered; no exchange rate is applied.'
     },
     {
-      name: 'budgetCurrency', question: 'Total cost of the hike (currency: USD or EUR)', label: 'Budget currency', type: 'enum', step: 2, input: 'field-budgetCurrency', values: ['USD', 'EUR'],
-      when: d => typeof d.totalBudget === 'number', requiredMessage: 'Please pick the currency of your budget', role: 'Categorical feature'
+      name: 'gearCost', question: 'How much did your gear cost?', allowUnknown: true, label: 'Gear cost', type: 'integer', step: 2, input: 'field-gearCost',
+      min: 0, max: 100000, role: 'Continuous predictor',
+      description: 'Rough cost of all the gear the hiker carried, including gear they already owned. In budgetCurrency, as entered.'
+    },
+    {
+      name: 'budgetCurrency', question: 'Currency of both amounts', label: 'Currency', type: 'enum', step: 2, input: 'field-budgetCurrency', values: ['USD', 'EUR'],
+      when: d => typeof d.trailSpending === 'number' || typeof d.gearCost === 'number', requiredMessage: 'Please pick the currency of your costs', role: 'Categorical feature',
+      description: 'Currency of trailSpending and gearCost.'
     },
 
     // --- Pillar 3: Gear & physical load ---

@@ -296,11 +296,15 @@ test('flip-flops that hiked every mile count as finished, skipped parts do not',
   assert.equal(validate({ completionStatus: 'flip_flop', quitReason: 'weather_wildfire_closure' }).data.quitReason, 'weather_wildfire_closure');
 });
 
-test('the budget is stored with its currency, without conversion', () => {
-  const ok = validate({ totalBudget: 6000, budgetCurrency: 'EUR' }).data;
-  assert.deepEqual([ok.totalBudget, ok.budgetCurrency], [6000, 'EUR']);
-  assert.match(validate({ budgetCurrency: null }).errors[0], /currency of your budget/);
-  const unknown = validate({ totalBudget: null, budgetCurrency: null, unknownAnswers: ['totalBudget'] });
+test('trail spending and gear cost are stored with their currency, without conversion', () => {
+  const ok = validate({ trailSpending: 6000, gearCost: 2400, budgetCurrency: 'EUR' }).data;
+  assert.deepEqual([ok.trailSpending, ok.gearCost, ok.budgetCurrency], [6000, 2400, 'EUR']);
+  assert.equal(ok.totalBudget, undefined, 'no stored total: add the two up');
+  assert.match(validate({ budgetCurrency: null }).errors[0], /currency of your costs/);
+  const oneKnown = validate({ gearCost: null, budgetCurrency: 'USD', unknownAnswers: ['gearCost'] });
+  assert.equal(oneKnown.isValid, true);
+  assert.deepEqual([oneKnown.data.trailSpending, oneKnown.data.gearCost, oneKnown.data.budgetCurrency], [5200, null, 'USD']);
+  const unknown = validate({ trailSpending: null, gearCost: null, budgetCurrency: null, unknownAnswers: ['trailSpending', 'gearCost'] });
   assert.equal(unknown.isValid, true);
   assert.equal(unknown.data.budgetCurrency, null);
 });
