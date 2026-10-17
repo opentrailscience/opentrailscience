@@ -1,0 +1,65 @@
+<!doctype html>
+<!--
+  Source of public/og-image.png, the link preview for WhatsApp, Reddit, Slack etc.
+  Regenerate (1200x630) after editing:
+    firefox --headless --window-size=1200,630 --screenshot public/og-image.png "file://$PWD/src/og-image.html"
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Open Trail Science preview</title>
+<style>
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 400; src: url('../public/fonts/ibm-plex-sans-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 600; src: url('../public/fonts/ibm-plex-sans-latin-600-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Mono'; font-weight: 500; src: url('../public/fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2'); }
+</style>
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #15181c;
+    background-color: #f3f4f6;
+    border-top: 10px solid #1f4f8f;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .ridge { position: absolute; left: 0; right: 0; bottom: 0; }
+  .content { position: absolute; left: 80px; top: 62px; right: 80px; }
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .logo { width: 64px; height: 64px; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #1f4f8f; }
+  .wordmark { font-size: 30px; font-weight: 600; }
+  .wordmark span { color: #1f4f8f; }
+  .tagline { font-size: 18px; color: #5b626b; margin-top: 0; }
+  h1 { font-size: 66px; line-height: 1.08; font-weight: 600; letter-spacing: -1.5px; margin: 56px 0 0; max-width: 900px; }
+  h1 em { font-style: normal; color: #1f4f8f; }
+  p { font-size: 26px; color: #3f454c; margin: 26px 0 0; max-width: 820px; line-height: 1.4; }
+  .trails { display: flex; gap: 12px; margin-top: 34px; }
+  .trails span {
+    font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 18px; color: #1f4f8f;
+    background: #ffffff; border: 1.5px solid #d3d7dc; border-radius: 4px; padding: 6px 14px;
+  }
+  .url { position: absolute; right: 80px; top: 82px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 20px; color: #1f4f8f; }
+</style>
+</head>
+<body>
+  <svg class="ridge" width="1200" height="230" viewBox="0 0 1200 230" aria-hidden="true">
+    <path d="M0 230 L0 150 L140 70 L240 130 L380 30 L520 140 L640 80 L760 150 L900 50 L1040 130 L1200 70 L1200 230 Z" fill="#e3e8ef"/>
+    <path d="M0 230 L0 190 L180 120 L300 175 L460 95 L600 180 L760 115 L920 185 L1080 110 L1200 160 L1200 230 Z" fill="#d2dbe7"/>
+  </svg>
+  <div class="content">
+    <div class="brand">
+      <div class="logo">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+      </div>
+      <div>
+        <div class="wordmark">OPEN TRAIL <span>SCIENCE</span></div>
+        <div class="tagline">Thru-Hiker Survey</div>
+      </div>
+    </div>
+    <h1>How does your thru-hike <em>compare?</em></h1>
+    <p>About 10 minutes, no names or accounts. Every answer goes into a free, open dataset on long-distance hiking.</p>
+    <div class="trails"><span>PCT</span><span>AT</span><span>CDT</span><span>CT</span><span>AZT</span><span>+13 more</span></div>
+  </div>
+  <div class="url">opentrailscience.org</div>
+</body>
+</html>

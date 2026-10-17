@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Trail Science | Thru-Hiker Survey & Open Trail Dataset</title>
+  <meta name="description" content="Crowdsourced long-distance thru-hiker survey (PCT, AT, CDT, CT, AZT) collecting structured data for machine learning models predicting trail completion, injury, and hiker enjoyment.">
+  <link rel="canonical" href="https://opentrailscience.org/">
+
+  <!-- Link previews (WhatsApp, Reddit, Slack, iMessage, X...). URLs must be absolute.
+       The image is rendered from src/og-image.html. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Open Trail Science">
+  <meta property="og:url" content="https://opentrailscience.org/">
+  <meta property="og:title" content="How does your thru-hike compare? | Open Trail Science">
+  <meta property="og:description" content="Share your gear, pacing and outcome from the PCT, AT, TMB and more in about 10 minutes. No names or accounts, and every answer goes into a free open dataset.">
+  <meta property="og:image" content="https://opentrailscience.org/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Open Trail Science: How does your thru-hike compare?">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How does your thru-hike compare? | Open Trail Science">
+  <meta name="twitter:description" content="Share your gear, pacing and outcome in about 10 minutes. No names or accounts; open data for trail science.">
+  <meta name="twitter:image" content="https://opentrailscience.org/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f4f8f'/%3E%3Cpath d='m8 3 4 8 5-5 5 15H2L8 3z' transform='translate(5 5.5) scale(.92)' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E">
+  
+  <meta name="theme-color" content="#121417">
+  <meta name="color-scheme" content="dark light">
+  <!-- Sets data-theme before anything is drawn (light/dark switch, see theme.js). -->
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Built from src/tailwind.css by `npm run build:css`. Loaded after styles.css,
+       as the old Tailwind CDN script injected its styles last. -->
+  <link rel="stylesheet" href="css/tailwind.css">
+</head>
+<body class="min-h-full flex flex-col topo-pattern text-slate-100 selection:bg-pine-600 selection:text-white">
+
+  <!-- Navigation -->
+  <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 max-[399px]:px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#home" class="flex items-center space-x-2 sm:space-x-3 group cursor-pointer text-left">
+        <div class="w-10 h-10 max-[399px]:w-8 max-[399px]:h-8 max-[359px]:hidden rounded-xl bg-linear-to-br/srgb from-pine-600 to-pine-900 border border-pine-500/30 flex items-center justify-center shadow-lg shadow-pine-950/50 group-hover:scale-105 transition-transform">
+          <svg class="w-6 h-6 text-pine-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="font-extrabold tracking-tight text-white flex items-center gap-1.5 text-base max-[399px]:text-sm sm:text-lg whitespace-nowrap">
+            OPEN TRAIL <span class="text-pine-400">SCIENCE</span>
+          </span>
+          <span class="block text-xs font-mono tracking-wider uppercase text-slate-400 whitespace-nowrap">Thru-Hiker Survey</span>
+        </div>
+      </a>
+
+      <!-- Navigation links -->
+      <nav class="flex items-center space-x-1 sm:space-x-3">
+        <a href="#home" id="nav-link-home" class="nav-btn hidden md:block px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition">Home</a>
+        <a href="#survey" id="nav-link-survey" class="nav-btn px-3.5 max-[399px]:px-2.5 py-1.5 rounded-lg text-sm font-semibold bg-brand hover:bg-brand-hover text-white shadow-xs shadow-pine-950/60 transition flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span class="hidden sm:inline">Contribute</span> Hike
+        </a>
+        <a href="#insights" id="nav-link-insights" class="nav-btn hidden md:block px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition">Insights</a>
+        <a href="#download" id="nav-link-download" aria-label="Dataset" class="nav-btn px-3 max-[399px]:px-2 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1">
+          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span class="hidden sm:inline">Dataset</span>
+        </a>
+        <button type="button" id="theme-toggle" aria-label="Switch to light mode" title="Switch to light mode" class="nav-btn p-2 max-[399px]:p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition">
+          <!-- Shows the theme you switch to: a sun in dark mode, a moon in light mode. -->
+          <svg class="w-4 h-4 light:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="w-4 h-4 hidden light:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Toast messages -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+  <!-- Views (shown one at a time, see the router in app.js) -->
+  <main class="grow">
+
+    <!-- Home -->
+    <section id="view-home" class="app-view active">
+      <!-- Hero Section -->
+      <div class="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          
+          <!-- Live count -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pine-950/70 border border-pine-500/30 text-pine-300 text-xs sm:text-sm font-medium mb-6 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-pine-400"></span>
+            <span id="hero-live-badge-text">Loading the dataset…</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight sm:leading-none">
+            Crowdsourcing the Future of <br>
+            <span class="hero-accent text-pine-400">
+              Long-Distance Trail Science
+            </span>
+          </h1>
+
+          <p class="mt-6 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed sm:leading-7">
+            Why do some hikers finish and others go home early? What's really behind injuries? There is surprisingly little data to be found! Open Trail Science aims to change this by providing survey data from long-distance hikers for everyone.
+          </p>
+
+          <!-- Primary CTAs -->
+          <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="#survey" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-base bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-900/50 hover:shadow-pine-800/60 transform hover:-translate-y-0.5 transition flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              <span>Contribute Your Hike</span>
+            </a>
+            <a href="#download" class="w-full sm:w-auto px-7 py-3.5 rounded-xl font-semibold text-base bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 transition flex items-center justify-center gap-2">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>Explore Public Dataset</span>
+            </a>
+          </div>
+
+          <!-- Effort estimate -->
+          <div class="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm text-slate-400">
+            <span class="inline-flex items-center gap-1.5"><svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>About 10 minutes</span>
+            <span class="text-slate-600 max-sm:hidden" aria-hidden="true">•</span>
+            <span>No account needed</span>
+            <span class="text-slate-600 max-sm:hidden" aria-hidden="true">•</span>
+            <span>Saved on your device as you go</span>
+          </div>
+
+          <!-- Privacy Guarantee Callout -->
+          <div class="mt-8 inline-flex items-center gap-2 text-xs text-slate-400 bg-slate-900/60 border border-slate-800 px-4 py-2 rounded-full">
+            <svg class="w-4 h-4 text-pine-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <span>No names, emails or accounts. Dates, age and country are blurred before anything is saved. <a href="#privacy" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">How I protect your privacy</a></span>
+          </div>
+
+          <div class="mt-4">
+            <a href="#about" class="text-xs text-slate-500 hover:text-slate-300 transition underline-offset-2 hover:underline">Who's behind this? About the creator &rarr;</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-10 mb-16">
+        <!-- Shown until 50 hikers have taken part (see app.js FIRST_HIKERS_GOAL) -->
+        <div id="stats-first50" class="hidden card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/20 text-center">
+          <span class="px-3 py-1 rounded-full bg-amber-950/70 border border-amber-700/50 text-amber-300 font-mono text-xs font-semibold uppercase tracking-wider">Early days</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-3">Be part of the first 50!</h2>
+          <p class="text-sm text-slate-300 mt-2 max-w-xl mx-auto">Once 50 hikers have shared their hike, this space shows the numbers on completion rates, base weights and pace. Until then, every single survey visibly moves the needle.</p>
+          <div class="mt-5 max-w-md mx-auto">
+            <div class="h-2.5 rounded-full bg-slate-800 overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" aria-label="Hikers so far" id="first50-progress">
+              <div id="first50-bar" class="h-full rounded-full bg-linear-to-r/srgb from-pine-500 to-amber-400 transition-all duration-700 w-0"></div>
+            </div>
+            <div id="first50-count" class="text-xs font-mono text-slate-400 mt-2">Be the very first</div>
+          </div>
+          <a href="#survey" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white transition">Add your hike</a>
+        </div>
+
+        <div id="stats-tiles" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
+          
+          <div class="card-glow rounded-2xl p-5 max-sm:px-3 md:max-lg:px-4 text-center">
+            <div class="text-xs uppercase font-mono tracking-wider text-slate-400">Journeys Recorded</div>
+            <div id="stat-total-count" class="text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap font-extrabold text-pine-400 mt-1 stat-counter">--</div>
+            <div class="text-xs text-slate-400 mt-1 flex items-center justify-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-pine-400"></span> Updated after new answers
+            </div>
+          </div>
+
+          <div class="card-glow rounded-2xl p-5 max-sm:px-3 md:max-lg:px-4 text-center">
+            <div class="text-xs uppercase font-mono tracking-wider text-slate-400">Completion Rate</div>
+            <div id="stat-completion-rate" class="text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap font-extrabold text-amber-400 mt-1 stat-counter">--%</div>
+            <div class="text-xs text-slate-400 mt-1">Continuous and flip-flop finishes</div>
+          </div>
+
+          <div class="card-glow rounded-2xl p-5 max-sm:px-3 md:max-lg:px-4 text-center">
+            <div class="text-xs uppercase font-mono tracking-wider text-slate-400">Median Base Weight</div>
+            <div id="stat-median-baseweight" class="text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap font-extrabold text-emerald-400 mt-1 stat-counter">-- lbs</div>
+            <div class="text-xs text-slate-400 mt-1">Dry pack loadout</div>
+          </div>
+
+          <div class="card-glow rounded-2xl p-5 max-sm:px-3 md:max-lg:px-4 text-center">
+            <div class="text-xs uppercase font-mono tracking-wider text-slate-400">Avg Daily Miles</div>
+            <div id="stat-avg-miles" class="text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap font-extrabold text-sky-400 mt-1 stat-counter">-- mi</div>
+            <div class="text-xs text-slate-400 mt-1">Sustained trail pace</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+          <div class="lg:col-span-3">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">Ten minutes for you, years of answers for everyone</h2>
+            <ol class="mt-6 space-y-5">
+              <li class="flex gap-4">
+                <span class="w-8 h-8 shrink-0 rounded-lg bg-pine-900/80 text-pine-300 flex items-center justify-center font-bold text-sm">1</span>
+                <div>
+                  <h3 class="font-bold text-white">Tell us about your hike</h3>
+                  <p class="text-sm text-slate-400 mt-0.5">Gear, pacing, training, rest days and how it ended. Don't remember a specific detail? Your experience is still highly appreciated!</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="w-8 h-8 shrink-0 rounded-lg bg-amber-900/80 text-amber-300 flex items-center justify-center font-bold text-sm">2</span>
+                <div>
+                  <h3 class="font-bold text-white">See how you compare</h3>
+                  <p class="text-sm text-slate-400 mt-0.5">As responses come in, we'll show you how your pack weight, pace and zero days stack up against other hikers on your trail, with a card you can share.</p>
+                </div>
+              </li>
+              <li class="flex gap-4">
+                <span class="w-8 h-8 shrink-0 rounded-lg bg-emerald-900/80 text-emerald-300 flex items-center justify-center font-bold text-sm">3</span>
+                <div>
+                  <h3 class="font-bold text-white">Help future hikers</h3>
+                  <p class="text-sm text-slate-400 mt-0.5">Your answers, with identifying details blurred, join a free, open dataset that anyone can download, from hikers planning their first trail to researchers studying injuries.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <figure class="lg:col-span-2 text-center">
+            <img id="example-share-card" src="img/example-share-card.webp" alt="Example share card: 86% of PCT hikers carried a heavier pack" width="560" height="700" loading="lazy" decoding="async" class="w-full max-w-[280px] h-auto mx-auto rounded-2xl border border-slate-800 shadow-2xl shadow-pine-950/60 rotate-1">
+            <figcaption class="text-xs text-slate-500 mt-3">Example card. Yours shows your own results.</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- People who did not finish -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div class="card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/25 flex flex-col md:flex-row md:items-center gap-5">
+          <div class="flex-1">
+            <p class="text-sm font-semibold text-amber-300">Didn't finish?</p>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white mt-1">Your hike matters just as much. Arguably more!</h2>
+            <p class="text-sm text-slate-300 mt-2 leading-relaxed">The hikes that stopped early are the ones that explain <em>why</em> hikes end. Section hikers and people who skipped large sections are welcome too. Keep your story ready.</p>
+          </div>
+          <a href="#survey" class="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-sm bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-700/50 transition">Share your hike &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Trails -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-white">Trails in the Survey</h2>
+            <p class="text-sm text-slate-400 mt-0.5">Click any trail to start your survey with it pre-selected</p>
+          </div>
+          <span class="text-xs font-mono text-pine-400 hidden sm:inline-block">75 to 3,000 miles, any continent</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- PCT Card -->
+          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="PCT">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-pine-900/80 text-pine-300 border border-pine-700/50">PCT</span>
+              <span class="text-xs font-medium text-slate-400">2,650 mi • 420,880 ft elev</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-2">Pacific Crest Trail</h3>
+            <p class="text-xs text-slate-300 mt-1">Campo, CA to Manning Park, BC through desert, High Sierra granite passes, and Cascade volcanoes.</p>
+            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold group">
+              <span>Log PCT Hike &rarr;</span>
+              <span class="text-slate-400 text-xs" id="trail-count-pct">-- entries</span>
+            </div>
+          </div>
+
+          <!-- AT Card -->
+          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="AT">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-emerald-950 text-emerald-300 border border-emerald-700/50">AT</span>
+              <span class="text-xs font-medium text-slate-400">2,198 mi • 464,500 ft elev</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-2">Appalachian Trail</h3>
+            <p class="text-xs text-slate-300 mt-1">Springer Mtn, GA to Mt Katahdin, ME across the ancient Appalachian range, green tunnels, and rocks.</p>
+            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
+              <span>Log AT Hike &rarr;</span>
+              <span class="text-slate-400 text-xs" id="trail-count-at">-- entries</span>
+            </div>
+          </div>
+
+          <!-- CDT Card -->
+          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="CDT">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-amber-950 text-amber-300 border border-amber-700/50">CDT</span>
+              <span class="text-xs font-medium text-slate-400">~3,000 mi • High Divide</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-2">Continental Divide Trail</h3>
+            <p class="text-xs text-slate-300 mt-1">Crazy Cook, NM to Waterton Lakes, MT. The crown of the continent, rugged navigation and altitude.</p>
+            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
+              <span>Log CDT Hike &rarr;</span>
+              <span class="text-slate-400 text-xs" id="trail-count-cdt">-- entries</span>
+            </div>
+          </div>
+
+          <!-- Colorado Trail Card -->
+          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="CT">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-sky-950 text-sky-300 border border-sky-700/50">CT</span>
+              <span class="text-xs font-medium text-slate-400">486 mi • Avg 10,300 ft elev</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-2">Colorado Trail</h3>
+            <p class="text-xs text-slate-300 mt-1">Denver to Durango across the Rocky Mountains, Collegiate Peaks, and San Juan wilderness.</p>
+            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
+              <span>Log CT Hike &rarr;</span>
+              <span class="text-slate-400 text-xs" id="trail-count-ct">-- entries</span>
+            </div>
+          </div>
+
+          <!-- Arizona Trail Card -->
+          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="AZT">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-orange-950 text-orange-300 border border-orange-700/50">AZT</span>
+              <span class="text-xs font-medium text-slate-400">800 mi • Sky Islands</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-2">Arizona Trail</h3>
+            <p class="text-xs text-slate-300 mt-1">Coronado National Memorial to Utah border across the Sonoran desert and Grand Canyon.</p>
+            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
+              <span>Log AZT Hike &rarr;</span>
+              <span class="text-slate-400 text-xs" id="trail-count-azt">-- entries</span>
+            </div>
+          </div>
+
+          <!-- Tour du Mont Blanc Card -->
+          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="TMB">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-rose-950 text-rose-300 border border-rose-700/50">TMB</span>
+              <span class="text-xs font-medium text-slate-400">106 mi • 32,800 ft elev</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-2">Tour du Mont Blanc</h3>
+            <p class="text-xs text-slate-300 mt-1">A loop around the Mont Blanc massif through France, Italy and Switzerland, over high alpine passes from hut to hut.</p>
+            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
+              <span>Log TMB Hike &rarr;</span>
+              <span class="text-slate-400 text-xs" id="trail-count-tmb">-- entries</span>
+            </div>
+          </div>
+
+          <!-- Te Araroa Card -->
+          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="TA">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-teal-950 text-teal-300 border border-teal-700/50">TA</span>
+              <span class="text-xs font-medium text-slate-400">1,864 mi • Beaches to Alps</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-2">Te Araroa</h3>
+            <p class="text-xs text-slate-300 mt-1">The length of New Zealand, Cape Reinga to Bluff: beaches, forests, river crossings and the Southern Alps.</p>
+            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
+              <span>Log TA Hike &rarr;</span>
+              <span class="text-slate-400 text-xs" id="trail-count-ta">-- entries</span>
+            </div>
+          </div>
+
+          <!-- Other / More Trails Card -->
+          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="Other">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-purple-950 text-purple-300 border border-purple-700/50">MORE</span>
+              <span class="text-xs font-medium text-slate-400">JMT, PNT, Camino, etc.</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-2">Other Long Trails</h3>
+            <p class="text-xs text-slate-300 mt-1">John Muir Trail, Pacific Northwest Trail, Long Trail, Hayduke, Camino de Santiago, West Highland Way, GR20, or one we haven't listed.</p>
+            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
+              <span>Log Other Trail &rarr;</span>
+              <span class="text-slate-400 text-xs">All welcome</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Lots of opinions, not much data -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div class="card-glow rounded-2xl p-6 sm:p-10 border border-pine-500/20 bg-linear-to-b/srgb from-slate-900/90 to-slate-950/90">
+          <div class="max-w-3xl">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">Lots of opinions, not much data.</h2>
+            <p class="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed sm:leading-6">
+              Do low-cut shoes lead to more injuries? What's the optimized pack weight for maximal happiness? Everyone on trail has an answer, but hardly anyone has exact numbers. That's what this survey is for, and every hike gets us one step closer to some real answers!
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-slate-800">
+            <div>
+              <h3 class="font-bold text-white text-base">Settle a few trail debates</h3>
+              <p class="text-xs text-slate-400 mt-1">Trail runners or boots? Stove or cold soak? Tent or tarp? With enough hikes we can see what actually goes along with finishing and what's just preference.</p>
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">Room for machine learning</h3>
+              <p class="text-xs text-slate-400 mt-1">A big, clean dataset is what you need to train models, for example one that flags a high injury risk or one that optimizes your number of zero days for a minimal budget. That takes a lot of hikes tho!
+              </p>
+            </div>
+            <div>
+              <h3 class="font-bold text-white text-base">Open to everyone</h3>
+              <p class="text-xs text-slate-400 mt-1">Every answer ends up in a free CSV and JSON download, with identifying details blurred, which anybody can use to continue their own ideas.</p>
+            </div>
+          </div>
+
+          <div class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <a href="#insights" class="font-semibold text-pine-400 hover:text-pine-300">See what the data says so far &rarr;</a>
+            <a href="#about" class="text-slate-400 hover:text-slate-200">Built by a hiker who likes statistics &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="view-about" class="app-view">
+      <div class="max-w-2xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
+        <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8">
+          <div class="flex-1">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Hi, nice to meet you.</h2>
+
+            <div class="flex flex-wrap gap-2 mt-5 text-xs font-mono">
+              <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300">20 years old</span>
+              <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300">EMT</span>
+              <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300">&lt;3 Computers</span>
+              <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300">TMB: done</span>
+              <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-pine-700/60 text-pine-300">PCT: 2027</span>
+            </div>
+          </div>
+
+          <figure class="sm:w-72 shrink-0">
+            <img src="img/about-photo-1100.webp" srcset="img/about-photo-640.webp 640w, img/about-photo-1100.webp 1100w" sizes="(min-width: 640px) 288px, calc(100vw - 32px)" width="1100" height="1100" loading="lazy" decoding="async"
+              alt="Me sitting on the rocks beside a mountain trail, smiling, with my backpack, trekking poles and sun hat"
+              class="w-full h-auto rounded-2xl border border-slate-800 shadow-2xl shadow-pine-950/60 sm:rotate-2">
+            <figcaption class="text-xs text-slate-500 mt-3 text-center">A quick break on the trail</figcaption>
+          </figure>
+        </div>
+
+        <div class="mt-6 space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed sm:leading-6">
+          <p>I'm 20, and currently working part time as an EMT. I recently hiked the Tour du Mont Blanc, which was a really cool experience. If all goes well, I'll be attempting a thru-hike of the PCT in 2027.</p>
+          <p>While planning for the PCT I of course watched all the mandatory indie-folk-infused journey videos, but I also really enjoyed looking at different statistics and surveys. These are great for answering how popular a specific trend is. I, however, also wanted to check for interesting correlations or try to model some predictions, and I could not find any large datasets to use.</p>
+          <p>So I built opentrailscience.org, which aims to provide datasets for any long-distance trail. I never ask for your name or an annoying sign-up, and I blur the data a bit to prevent pinpointing a specific hiker, then publish every answer as an open dataset that anyone can download and play around with.</p>
+          <p>This is a one-person project, not a company. If you have any suggestions or questions, don't hesitate! <a href="mailto:hello@opentrailscience.org" class="font-mono text-pine-400 hover:text-pine-300">hello@opentrailscience.org</a></p>
+        </div>
+
+        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+          <a href="#survey" class="px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white text-center transition">Share your hike</a>
+          <a href="#home" class="px-5 py-3 rounded-xl font-medium text-sm text-slate-400 hover:text-white text-center transition">Back to home</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section id="view-privacy" class="app-view">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-14 sm:py-20 space-y-10 text-sm sm:text-base text-slate-300 leading-relaxed sm:leading-6">
+        <div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">How I handle your data</h2>
+          <p class="mt-3">Open Trail Science publishes every survey answer as an open dataset. That only works if nobody can pick out the people who answered, so this page explains what I ask, what I store and why.</p>
+          <p class="text-xs text-slate-500 mt-2 font-mono">Last updated 16 October 2026 • consent version <span id="privacy-consent-version">1</span></p>
+        </div>
+
+        <!-- Short version -->
+        <div class="card-glow rounded-2xl p-6 sm:p-8">
+          <h3 class="text-lg font-bold text-white">The short version</h3>
+          <ul class="mt-4 space-y-2.5">
+            <li class="flex gap-3"><span class="text-pine-400">✓</span><span>No names, emails, accounts, cookies or tracking.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400">✓</span><span>Before anything is saved, I blur the details that could point to you: dates become weeks, your age becomes a range and you only submit a world region.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400">✓</span><span>What I store about your hike is exactly what I publish. There is no hidden, more detailed copy, so there is nothing that could be leaked.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400">✓</span><span>The optional feedback box at the end isn't connected to your survey entry and isn't part of the released dataset.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400">✓</span><span>Some answers are health information, so I ask for your consent before the survey, and only adults (18+) can take part.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400">✓</span><span>You get a personal code, so you can see how your hike compares later on, you can also choose to delete your answer in case you change your mind later.</span></li>
+            <li class="flex gap-3"><span class="text-amber-400">!</span><span>The website and database are hosted in the USA, and the open dataset can be downloaded by anyone, anywhere.</span></li>
+          </ul>
+        </div>
+
+        <!-- What you tell me vs. what I store -->
+        <div>
+          <h3 class="text-xl font-bold text-white">What you tell me and what I store</h3>
+          <p class="mt-2">Some questions need a precise answer for calculations (your pace, for example). The server works those out, then throws the precise answers away and only keeps the blurred version.</p>
+          <div class="mt-4 overflow-x-auto rounded-xl border border-slate-800">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-950 text-slate-400 text-xs uppercase font-mono border-b border-slate-800">
+                <tr><th class="py-2.5 px-3">You answer</th><th class="py-2.5 px-3">I store and publish</th><th class="py-2.5 px-3">Why</th></tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 align-top">
+                <tr><td class="py-2.5 px-3">Start and end date<br><span class="text-slate-500">18 Apr – 22 Sep 2025</span></td><td class="py-2.5 px-3">Calendar weeks and months, number of days<br><span class="text-slate-500">2025-W16 to 2025-W39, 158 days</span></td><td class="py-2.5 px-3">Exact dates are the easiest way to recognise someone. Weeks still show the season.</td></tr>
+                <tr><td class="py-2.5 px-3">Dates and distance on a small trail</td><td class="py-2.5 px-3">Months only, distance to the nearest 10 mi, days rounded to whole weeks</td><td class="py-2.5 px-3">Few people hike these trails, so even a week could point to you.</td></tr>
+                <tr><td class="py-2.5 px-3">Age at the start of the hike<br><span class="text-slate-500">29</span></td><td class="py-2.5 px-3">5-year range (everyone 20 or younger shares one)<br><span class="text-slate-500">25–29</span></td><td class="py-2.5 px-3">An exact age plus dates narrows things down a lot.</td></tr>
+                <tr><td class="py-2.5 px-3">Where you live</td><td class="py-2.5 px-3">A world region<br><span class="text-slate-500">Western Europe</span></td><td class="py-2.5 px-3">I never ask for your country, only a region.</td></tr>
+                <tr><td class="py-2.5 px-3">Injuries, illness, prior injuries, deadline</td><td class="py-2.5 px-3">The categories you picked from a list</td><td class="py-2.5 px-3">Free text can accidentally contain names, places or other people's details, so there is none.</td></tr>
+                <tr><td class="py-2.5 px-3">Height, weight, budget (in USD or EUR), visa, gear, food, painkillers, mileage, zero days, ratings</td><td class="py-2.5 px-3">As you entered them</td><td class="py-2.5 px-3">These are what the research is about, and on their own they don't reveal who you are.</td></tr>
+                <tr><td class="py-2.5 px-3">"Don't know"</td><td class="py-2.5 px-3">An empty value and a note that you didn't know</td><td class="py-2.5 px-3">So researchers can tell "didn't know" from "didn't apply".</td></tr>
+                <tr><td class="py-2.5 px-3">How long the survey took you</td><td class="py-2.5 px-3">A rough range<br><span class="text-slate-500">10–20 minutes</span></td><td class="py-2.5 px-3">Helps researchers spot rushed answers. It's a duration, not a date or time.</td></tr>
+                <tr><td class="py-2.5 px-3">When you submitted</td><td class="py-2.5 px-3">Not stored</td><td class="py-2.5 px-3">Nobody needs it, and a timestamp is just another clue.</td></tr>
+                <tr><td class="py-2.5 px-3">Feedback (optional, after submitting)</td><td class="py-2.5 px-3">Your message only, <strong class="text-white">not part of the dataset</strong></td><td class="py-2.5 px-3">It only helps me improve the survey, so it isn't connected to your survey entry. Deleted after at most 12 months. See below.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Why blurring matters -->
+        <div>
+          <h3 class="text-xl font-bold text-white">Why blurring matters</h3>
+          <p class="mt-2">Imagine a trail bad actor knows that you started a specific trail in the first days of July 2025, that you're 24 and that you're from the Netherlands. If the dataset listed exact dates, ages and countries, they might find your row and see your injuries, weight and budget. That's exactly what I want to avoid. With weeks, age ranges and regions, your row looks just like the rows of many other hikers, so it's hard to tell which one is yours.</p>
+          <p class="mt-3">How much blurring is enough depends on how many people hike a trail:</p>
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div class="font-semibold text-white">Popular trails: weeks</div>
+              <p class="text-xs text-slate-400 mt-1">The busiest trails in the survey, where most hikers start in the same few weeks of the season, so a start week is usually shared with many others.</p>
+              <p id="privacy-popular-trails" class="text-xs font-mono text-pine-300 mt-2"></p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div class="font-semibold text-white">Small trails: months</div>
+              <p class="text-xs text-slate-400 mt-1">Fewer hikers, so I use months and round the distance to 10 mi and the days to whole weeks.</p>
+              <p id="privacy-small-trails" class="text-xs font-mono text-amber-300 mt-2"></p>
+            </div>
+          </div>
+          <p class="mt-3 text-xs text-slate-400">No method is perfect: someone who already knows a lot about your hike might still guess which row is yours. Blurring makes that guess unreliable, and that's also why I ask for your consent before you start.</p>
+        </div>
+
+        <!-- What I never collect -->
+        <div>
+          <h3 class="text-xl font-bold text-white">What I never collect</h3>
+          <ul class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 list-disc list-inside">
+            <li>Names, email addresses or phone numbers</li>
+            <li>Your exact age or date of birth</li>
+            <li>Your country or city</li>
+            <li>Free-text answers</li>
+            <li>Accounts or passwords</li>
+            <li>Cookies, analytics or advertising trackers</li>
+            <li>IP addresses in survey records</li>
+            <li>Exact dates or submission times</li>
+          </ul>
+        </div>
+
+        <!-- Technical data -->
+        <div>
+          <h3 class="text-xl font-bold text-white">Technical data while you visit</h3>
+          <dl class="mt-3 space-y-4">
+            <div>
+              <dt class="font-semibold text-white">Web hosting</dt>
+              <dd class="mt-1">Like every website, my host (Netlify) needs your IP address to deliver the pages to your browser and keeps it in its server logs. According to <a href="https://www.netlify.com/pdf/netlify-dpa.pdf" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">Netlify's data processing agreement</a>, it keeps its logs online for 90 days and offline for one year. I don't use these logs for anything.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Spam protection</dt>
+              <dd class="mt-1">To keep out bots and spam, I keep a scrambled version of your IP address (hashed) for one hour when you submit. That allows at most 10 submissions per hour. It is deleted automatically after the hour and never linked to your answers. The same applies to deletion attempts, code lookups and feedback messages. On top of that, you answer a small trail question before the survey starts, and when you submit, your browser solves a short calculation (about a second). Both only prove that you're not a bot, run without any third party and aren't stored.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Your browser</dt>
+              <dd class="mt-1">While you fill in the survey, your answers are saved in your own browser (only local storage), so a reload doesn't lose them. They stay on your device and are only sent when you submit. The draft is deleted when you submit, when you press "Start over" or after 14 days. If you switch between light and dark mode, your browser also remembers that choice. You can of course clear all of this in your browser's site data settings. None of it is a cookie, and none of it is sent anywhere or used for tracking.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Fonts</dt>
+              <dd class="mt-1">The fonts come straight from this website, not from a third party like Google Fonts.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Feedback -->
+        <div>
+          <h3 class="text-xl font-bold text-white">Feedback about the survey</h3>
+          <p class="mt-2">At the very end you can tell me how to improve the survey. Your feedback isn't connected to your survey entry and isn't part of the released dataset, it's saved on its own and only I read it. All feedback messages are deleted once a year, on 1 January.</p>
+        </div>
+
+        <!-- Retention -->
+        <div>
+          <h3 class="text-xl font-bold text-white">How long I keep your data</h3>
+          <ul class="mt-3 space-y-1.5 list-disc list-inside">
+            <li><strong class="text-white">Survey answers:</strong> I keep your answers for as long as the project and the open dataset exist, or until you delete them with your personal code.</li>
+            <li><strong class="text-white">Feedback:</strong> Feedback messages are deleted after at most 12 months.</li>
+            <li><strong class="text-white">Server logs:</strong> Netlify keeps its logs online for 90 days and offline for one year (<a href="https://www.netlify.com/pdf/netlify-dpa.pdf" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">Netlify's data processing agreement</a>).</li>
+            <li><strong class="text-white">Spam protection:</strong> the scrambled IP address is deleted after one hour.</li>
+            <li><strong class="text-white">Your draft:</strong> stays in your own browser and is deleted when you submit, press "Start over" or after 14 days.</li>
+          </ul>
+        </div>
+
+        <!-- Where data is stored -->
+        <div>
+          <h3 class="text-xl font-bold text-white">Where your data is stored</h3>
+          <ul class="mt-3 space-y-2">
+            <li><strong class="text-white">Netlify, Inc. (USA):</strong> hosts the website and runs the code that checks and saves your answers.</li>
+            <li><strong class="text-white">MongoDB, Inc. (MongoDB Atlas, USA):</strong> stores the blurred answers and, separately, the feedback messages.</li>
+            <li><strong class="text-white">The open dataset:</strong> the same blurred answers, downloadable by anyone worldwide under the CC0 public domain dedication.</li>
+          </ul>
+          <p class="mt-3">Both providers are US companies, and I have data processing agreements with both of them. The stored survey answers, including health information, are blurred but not anonymous, and they are stored in the USA.</p>
+        </div>
+
+        <!-- Legal basis, in plain words -->
+        <div>
+          <h3 class="text-xl font-bold text-white">My reasons for using your data</h3>
+          <p class="mt-2">Data protection rules say I need a good reason for everything I do with your data. These are mine:</p>
+          <ul class="mt-3 space-y-1.5 list-disc list-inside">
+            <li><strong class="text-white">Survey answers, including health information:</strong> only because you agree to it before the survey starts. Without your agreement nothing is stored.</li>
+            <li><strong class="text-white">Feedback:</strong> only if you decide to send a message.</li>
+            <li><strong class="text-white">Server logs and the spam check:</strong> the website can't run safely or keep bots out without them.</li>
+            <li><strong class="text-white">The draft and the light/dark setting in your browser:</strong> they only exist so these features work for you.</li>
+          </ul>
+        </div>
+
+        <!-- Deletion -->
+        <div id="privacy-delete" class="card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/25">
+          <h3 class="text-xl font-bold text-white">Deleting your answers</h3>
+          <p class="mt-2">After submitting, you got a personal code like <span class="font-mono text-slate-200">7K3Q-M9XD-2WPA-HV4T</span>. Enter it here to delete your hike:</p>
+          <form id="deletion-form" class="mt-4 flex flex-col sm:flex-row gap-3" novalidate autocomplete="off">
+            <label for="deletion-code-input" class="sr-only">Personal code</label>
+            <input type="text" id="deletion-code-input" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-mono uppercase tracking-wider focus:outline-hidden focus:border-pine-500 text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+            <button type="button" id="btn-delete-answers" class="px-5 py-3 rounded-xl font-bold text-sm bg-rose-700 hover:bg-rose-600 text-white transition">Delete my answers</button>
+          </form>
+          <p id="deletion-result" role="status" class="mt-3 text-sm"></p>
+          <ul class="mt-4 space-y-1.5 text-xs text-slate-400 list-disc list-inside">
+            <li>Your answers are deleted from the database immediately and disappear from the website and the download files with the next dataset update (usually within a day).</li>
+            <li>Copies that someone already downloaded can't be recalled. That's simply the nature of open data, and exactly why I blur everything before it's saved.</li>
+            <li>Lost your code? Then I can't find your answers, because I don't know who you are. That's by design.</li>
+            <li>The same code also shows your hike and how it compares today (on the Insights page). Keep it to yourself: anyone with the code can delete your answers.</li>
+          </ul>
+        </div>
+
+        <!-- Rights -->
+        <div>
+          <h3 class="text-xl font-bold text-white">Your rights</h3>
+          <p class="mt-2">You can see your answers, correct them and delete them, and you can withdraw your consent at any time (withdrawing doesn't affect copies that were downloaded before). Seeing and deleting work with your personal code, to correct an answer, delete your hike and fill in the survey again, or write to me. Because the stored answers contain nothing like your name, I can't tell which record is yours, your personal code is how you can prove it.</p>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h3 class="text-xl font-bold text-white">Who is responsible</h3>
+          <p class="mt-2">Open Trail Science is a one-person, non-commercial project (that's me, see <a href="#about" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">About the creator</a>). For any privacy question or request, just write to:</p>
+          <p class="mt-2"><a href="mailto:privacy@opentrailscience.org" class="font-mono text-pine-400 hover:text-pine-300">privacy@opentrailscience.org</a></p>
+          <p class="mt-4">The whole site is open source, so you don't have to take my word for any of this: the code that checks, blurs, stores and publishes your answers is on <a href="https://github.com/opentrailscience/opentrailscience" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+          <p class="mt-4 text-xs text-slate-500">If this page ever changes in a way that affects how answers are stored, the consent version above changes too, and every record keeps the version its author agreed to.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="#survey" class="px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white text-center transition">Share your hike</a>
+          <a href="#home" class="px-5 py-3 rounded-xl font-medium text-sm text-slate-400 hover:text-white text-center transition">Back to home</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Insights (charts from the public dataset, see insights.js) -->
+    <section id="view-insights" class="app-view">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        <div class="text-center max-w-3xl mx-auto">
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">What the data says so far</h2>
+          <p class="text-sm sm:text-base text-slate-300 mt-2">A first look at the open dataset. These are self-reported answers, not a controlled study.</p>
+          <p id="insights-meta" class="text-xs font-mono text-slate-500 mt-2"></p>
+        </div>
+
+        <!-- Shown below 50 hikers -->
+        <div id="insights-locked" class="hidden card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/20 text-center max-w-2xl mx-auto mt-10">
+          <h3 class="text-xl sm:text-2xl font-extrabold text-white">Charts unlock at 50 hikers</h3>
+          <p class="text-sm text-slate-300 mt-2">With fewer hikes, any chart would mostly show noise. Help us get there.</p>
+          <div class="mt-5 max-w-md mx-auto">
+            <div class="h-2.5 rounded-full bg-slate-800 overflow-hidden">
+              <div id="insights-locked-bar" class="h-full rounded-full bg-linear-to-r/srgb from-pine-500 to-amber-400 transition-all duration-700 w-0"></div>
+            </div>
+            <div id="insights-locked-count" class="text-xs font-mono text-slate-400 mt-2"></div>
+          </div>
+          <a href="#survey" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white transition">Add your hike</a>
+        </div>
+
+        <div id="insights-charts" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10"></div>
+        <p id="insights-footnote" class="hidden text-xs text-slate-500 mt-4 text-center">Groups with fewer than 5 hikers are left out. Every chart has a table view for exact numbers.</p>
+
+        <!-- Correlations computed from the dataset (insights.json, see utils/insights.js) -->
+        <div id="insights-together" class="hidden mt-16">
+          <div class="text-center max-w-2xl mx-auto">
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">Some correlations we found</h3>
+            <p id="insights-together-note" class="text-sm text-slate-400 mt-2"></p>
+          </div>
+          <div id="insights-together-cards" class="flex flex-wrap justify-center gap-6 mt-8"></div>
+        </div>
+
+        <!-- Look up your own hike with the deletion code (/api/my-hike) -->
+        <div class="mt-10 max-w-xl mx-auto card-glow rounded-2xl p-6 max-[399px]:p-4">
+          <h3 class="font-bold text-white">Shared your hike already?</h3>
+          <p class="text-sm text-slate-400 mt-1">Enter your personal code from the thank-you page to see how your hike compares today, with everyone who has answered since.</p>
+          <form id="my-hike-form" class="mt-4 flex flex-col sm:flex-row gap-3" novalidate autocomplete="off">
+            <label for="my-hike-code" class="sr-only">Your code</label>
+            <input type="text" id="my-hike-code" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-mono uppercase tracking-wider focus:outline-hidden focus:border-pine-500 text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+            <button type="button" id="btn-my-hike" class="px-5 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white transition disabled:opacity-40">Show my comparison</button>
+          </form>
+          <p id="my-hike-result" role="status" class="mt-3 text-sm"></p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Survey -->
+    <section id="view-survey" class="app-view">
+      
+      <!-- Sticky Progress Bar Header (hidden until consent) -->
+      <div id="survey-progress" class="hidden sticky-progress py-3 px-4 sm:px-8 shadow-md">
+        <div class="max-w-4xl mx-auto">
+          <div class="flex items-center justify-between text-xs sm:text-sm font-semibold mb-2">
+            <div class="flex items-center gap-2">
+              <span id="wizard-step-badge" class="px-2 py-0.5 rounded-sm bg-pine-800 text-pine-200 text-xs font-mono">Step 1 of 5</span>
+              <span id="wizard-step-title" class="text-white hidden sm:inline">Your hike</span>
+            </div>
+            <div class="text-slate-300 font-mono text-xs flex items-center gap-1.5">
+              <span id="wizard-progress-percent">20%</span> Complete
+            </div>
+          </div>
+          <!-- Bar -->
+          <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+            <div id="wizard-progress-bar" class="bg-linear-to-r/srgb from-pine-500 to-emerald-400 h-2 rounded-full progress-fill w-1/5"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consent: shown before the survey starts (see app.js initConsent) -->
+      <div id="consent-gate" class="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">What happens with your answers</h2>
+          <ul class="mt-5 space-y-3 text-sm text-slate-300">
+            <li class="flex gap-3"><span class="text-pine-400 font-bold">1</span><span>The survey takes <strong class="text-white">about 10 minutes</strong>. I never ask for your name, email or an account.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400 font-bold">2</span><span>Your answers are <strong class="text-white">published as an open dataset</strong> that anyone can download. That's the whole point of the project: free data for hikers and researchers.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400 font-bold">3</span><span>Before anything is saved, I <strong class="text-white">blur the details that could point to you</strong>: dates become calendar weeks (months on small trails), your age becomes a 5-year range (everyone 20 or younger shares one) and you only enter a world region. There are no free-text answers. That makes your row hard to pick out, but it's blurred, not anonymous.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400 font-bold">4</span><span>Some answers are <strong class="text-white">health information</strong> (injuries, illness, painkiller use, body weight). Please only take part if you're comfortable with them being published this way.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400 font-bold">5</span><span>After submitting you get a <strong class="text-white">personal code</strong>: come back with it to see how your hike compares as more hikers join, or to remove your answers from the dataset in case you change your mind later. Copies that others already downloaded can't be recalled, though.</span></li>
+          </ul>
+          <p class="mt-4 text-xs text-slate-400">The full details: <a href="#privacy" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">How I handle your data</a>.</p>
+
+          <label class="mt-6 flex items-start gap-3 p-4 rounded-xl bg-slate-900/70 border border-slate-700 cursor-pointer">
+            <input type="checkbox" id="consent-checkbox" class="mt-0.5 w-4 h-4 accent-emerald-500 shrink-0">
+            <span class="text-sm text-slate-200">I am <strong>18 or older</strong> and I agree that my answers, including health information, are stored and published as an open dataset as described above and on the privacy page.</span>
+          </label>
+          <!-- Human check (public/lib/human-check.js): options are filled in by app.js -->
+          <div id="trail-check" class="mt-4 p-4 rounded-xl bg-slate-900/50 border border-amber-500/30 space-y-3">
+            <div>
+              <span class="text-sm font-semibold text-slate-200">Quick trail check 🥾&nbsp;<span class="text-rose-400">*</span></span>
+              <p class="text-xs text-slate-400 mt-0.5">So we know you're a hiker and not a bot: which of these would a thru-hiker leave at home?</p>
+            </div>
+            <div id="trail-check-options" class="grid grid-cols-2 sm:grid-cols-4 gap-2" role="group" aria-label="Trail check options"></div>
+            <p id="trail-check-feedback" role="status" class="text-xs text-slate-400"></p>
+          </div>
+          <button type="button" id="btn-start-survey" disabled class="mt-5 w-full sm:w-auto px-7 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white transition disabled:opacity-40 disabled:cursor-not-allowed">Start the survey</button>
+        </div>
+      </div>
+
+      <div id="survey-body" class="hidden">
+      <!-- Milestone banner (changes with the step) -->
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-6">
+        <div id="wizard-milestone-banner" class="milestone-badge p-4 rounded-xl flex items-start gap-3 text-slate-200 shadow-xs">
+          <svg class="w-5 h-5 text-pine-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <div>
+            <div id="wizard-milestone-title" class="text-xs font-mono font-bold uppercase tracking-wider text-pine-300">Mood: Unreasonably optimistic</div>
+            <div id="wizard-milestone-desc" class="text-xs sm:text-sm text-slate-300 mt-0.5">Fresh legs, clean socks, and a survey that surely can't be that long. Let's start with where and when you hiked.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Survey Form Body -->
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <div id="draft-notice" class="hidden mb-4 px-4 py-3 rounded-xl bg-slate-900/70 border border-slate-700 text-xs sm:text-sm text-slate-300 flex flex-wrap items-center justify-between gap-2">
+          <span>Welcome back! We restored the answers you started earlier.</span>
+          <button type="button" id="btn-start-over" class="text-xs font-semibold text-slate-400 hover:text-white underline underline-offset-2">Start over</button>
+        </div>
+        <form id="survey-form" novalidate autocomplete="off">
+          
+          <!-- Honeypot fields: hidden from people, bots fill them in -->
+          <div class="anti-spam-trap" aria-hidden="true">
+            <label for="website_url">Leave this empty</label>
+            <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+            <label for="hiker_anti_spam">Do not fill</label>
+            <input type="text" id="hiker_anti_spam" name="hiker_anti_spam" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+          </div>
+
+          <!-- Step 1: your hike -->
+          <div id="step-1" class="wizard-step active">
+            <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
+              
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                    <span>1. Your hike</span>
+                  </h3>
+                  <p class="text-xs sm:text-sm text-slate-400 mt-1">Which trail, which way, and when.</p>
+                </div>
+                <!-- Unit Switcher -->
+                <div class="inline-flex rounded-lg p-1 bg-slate-900 border border-slate-700 self-start sm:self-auto">
+                  <button type="button" id="btn-unit-imperial" class="px-3 py-1 rounded-md text-xs font-bold bg-brand text-white transition">Imperial (mi/ft)</button>
+                  <button type="button" id="btn-unit-metric" class="px-3 py-1 rounded-md text-xs font-bold text-slate-400 hover:text-white transition">Metric (km/m)</button>
+                </div>
+              </div>
+
+              <!-- Trail Selection -->
+              <div>
+                <label for="field-trail" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                  Which long-distance trail did you hike?&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <select id="field-trail" name="trail" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <option value="" disabled selected>Select your trail…</option>
+                  <optgroup label="North America">
+                    <option value="PCT" data-hint="2,650 mi / 4,265 km">Pacific Crest Trail (PCT)</option>
+                    <option value="AT" data-hint="2,198 mi / 3,537 km">Appalachian Trail (AT)</option>
+                    <option value="CDT" data-hint="about 3,000 mi / 4,900 km">Continental Divide Trail</option>
+                    <option value="CT" data-hint="486 mi / 782 km">Colorado Trail (CT)</option>
+                    <option value="AZT" data-hint="about 800 mi / 1,300 km">Arizona Trail (AZT)</option>
+                    <option value="JMT" data-hint="211 mi / 340 km">John Muir Trail (JMT)</option>
+                    <option value="TRT" data-hint="165 mi / 265 km">Tahoe Rim Trail (TRT)</option>
+                    <option value="PNT" data-hint="about 1,200 mi / 1,930 km">Pacific Northwest Trail</option>
+                    <option value="Long Trail" data-hint="272 mi / 438 km">Vermont Long Trail (LT)</option>
+                    <option value="Hayduke" data-hint="about 800 mi / 1,300 km">Hayduke Trail</option>
+                    <option value="FT" data-hint="about 1,300 mi / 2,100 km">Florida Trail (FT)</option>
+                    <option value="IAT" data-hint="about 1,200 mi / 1,930 km">Ice Age Trail (IAT)</option>
+                    <option value="BMT" data-hint="288 mi / 463 km">Benton MacKaye Trail</option>
+                    <option value="SHT" data-hint="310 mi / 500 km">Superior Hiking Trail (SHT)</option>
+                    <option value="Other North America">Other, North America</option>
+                  </optgroup>
+                  <optgroup label="Europe">
+                    <option value="CDS" data-hint="Camino de Santiago, about 485 mi / 780 km">Camino Francés (CDS)</option>
+                    <option value="TMB" data-hint="106 mi / 170 km">Tour du Mont Blanc (TMB)</option>
+                    <option value="WHW" data-hint="96 mi / 154 km">West Highland Way (WHW)</option>
+                    <option value="GR20" data-hint="112 mi / 180 km">GR20 (Corsica)</option>
+                    <option value="GR10" data-hint="about 540 mi / 870 km">GR10 (Pyrenees)</option>
+                    <option value="HEX" data-hint="1,885 mi / 3,034 km">Hexatrek (France)</option>
+                    <option value="VIA" data-hint="about 1,500 mi / 2,400 km">Via Alpina (Red Trail)</option>
+                    <option value="AV1" data-hint="about 75 mi / 120 km">Alta Via 1 (Dolomites)</option>
+                    <option value="KUN" data-hint="about 285 mi / 460 km">Kungsleden (KUN)</option>
+                    <option value="C2C" data-hint="190 mi / 306 km">Coast to Coast Walk (C2C)</option>
+                    <option value="Other Europe">Other, Europe</option>
+                  </optgroup>
+                  <optgroup label="Elsewhere">
+                    <option value="TA" data-hint="about 1,860 mi / 3,000 km">Te Araroa Trail (TA)</option>
+                    <option value="Other">Other, elsewhere</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <!-- Conditional Custom Trail Name -->
+              <!-- Hike Year & Direction Grid -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="field-hikeYear" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Year of the hike&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <select id="field-hikeYear" name="hikeYear" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <!-- Filled by app.js -->
+                  </select>
+                </div>
+
+                <div>
+                  <div class="flex items-center gap-1.5 mb-1.5">
+                    <span class="text-sm font-semibold text-slate-200">Direction&nbsp;<span class="text-rose-400">*</span></span>
+                    <button type="button" id="direction-help-btn" aria-label="How to choose NOBO or SOBO" aria-describedby="direction-help" aria-expanded="false" class="w-5 h-5 rounded-full border border-slate-600 text-slate-400 hover:text-white hover:border-slate-400 text-xs font-bold leading-none flex items-center justify-center transition">i</button>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2" id="direction-radios">
+                    <!-- These two follow the trail (Schema.directionsFor): NOBO/SOBO, EABO/WEBO, loops, Camino. -->
+                    <div id="direction-card-0" class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="NOBO">
+                      <div class="text-xs font-bold text-white">NOBO</div>
+                      <div class="text-[11px] text-slate-400">Northbound</div>
+                    </div>
+                    <div id="direction-card-1" class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="SOBO">
+                      <div class="text-xs font-bold text-white">SOBO</div>
+                      <div class="text-[11px] text-slate-400">Southbound</div>
+                    </div>
+                    <div class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="Flip-flop">
+                      <div class="text-xs font-bold text-white">Flip-flop</div>
+                      <div class="text-[11px] text-slate-400">Hiked it out of order</div>
+                    </div>
+                    <div class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="Section">
+                      <div class="text-xs font-bold text-white">Section</div>
+                      <div class="text-[11px] text-slate-400">Part of the trail</div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="field-direction" name="direction" value="">
+                  <div id="direction-help" role="tooltip" class="hidden mt-2 p-3 rounded-lg bg-slate-950 border border-slate-700 text-xs text-slate-300 leading-relaxed">
+                    <strong class="text-white">NOBO or SOBO?</strong> On some trails this can be confusing. Just pick whichever best matches the direction you hiked on your first day.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Start and End Dates -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="field-startDate" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Start date&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="date" id="field-startDate" name="startDate" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                </div>
+
+                <div>
+                  <label for="field-endDate" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    End date (finish, or the day you left)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="date" id="field-endDate" name="endDate" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                </div>
+              </div>
+
+              <!-- Total Distance Hiked & Total Elevation Gain -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="field-totalDistance" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    <span id="label-totalDistance">Total distance hiked (miles)</span>&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="number" step="0.1" id="field-totalDistance" name="totalDistance" min="0" placeholder="e.g. 2650" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <span id="totalDistance-helper" class="text-xs text-slate-400 mt-1 block">Total miles actually hiked on trail</span>
+                </div>
+
+                <div>
+                  <label for="field-totalElevationGain" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    <span id="label-totalElevationGain">Total elevation gain (feet)</span>&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="number" step="100" id="field-totalElevationGain" name="totalElevationGain" min="0" placeholder="e.g. 420880" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <span id="totalElevationGain-helper" class="text-xs text-slate-400 mt-1 block">Total climbing over the whole hike (your watch or app may show it)</span>
+                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="totalElevationGainFt"> Don't know</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Step 2: about you -->
+          <div id="step-2" class="wizard-step">
+            <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
+              
+              <div class="border-b border-slate-800 pb-4">
+                <h3 class="text-xl sm:text-2xl font-bold text-white">2. About you</h3>
+                <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Where you started from, before day one on the trail.</p>
+              </div>
+
+              <!-- Age & Biological Sex -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="field-age" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    How old were you when you started this hike?&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="number" id="field-age" name="age" min="5" max="99" placeholder="e.g. 28" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <span class="text-xs text-slate-400 mt-1 block">Your age on day one of this hike, not today. Only an age range is stored (everyone 20 or younger shares one).</span>
+                </div>
+
+                <div>
+                  <label for="field-biologicalSex" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Biological sex&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <select id="field-biologicalSex" name="biologicalSex" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <option value="" disabled selected>Select…</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="prefer_not_to_say">Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Height & Pre-Trail Weight -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="field-height" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    <span id="label-height">Height (feet and inches)</span>&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <!-- Imperial: feet + inches, kept in sync with field-height (inches), see app.js initHeightFeetInches. -->
+                  <div id="height-feet-inches" class="grid grid-cols-2 gap-2">
+                    <div class="relative">
+                      <label for="height-feet" class="sr-only">Height, feet</label>
+                      <input type="number" id="height-feet" min="3" max="7" step="1" placeholder="5" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-4 pr-10 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                      <span class="absolute right-4 top-3 text-slate-400 text-sm" aria-hidden="true">ft</span>
+                    </div>
+                    <div class="relative">
+                      <label for="height-inches" class="sr-only">Height, inches</label>
+                      <input type="number" id="height-inches" min="0" max="11.5" step="0.5" placeholder="10" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-4 pr-10 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                      <span class="absolute right-4 top-3 text-slate-400 text-sm" aria-hidden="true">in</span>
+                    </div>
+                  </div>
+                  <input type="number" step="0.5" id="field-height" name="height" placeholder="e.g. 178" class="hidden w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <span id="height-helper" class="text-xs text-slate-400 mt-1 block">e.g. 5 ft 10 in (~178 cm)</span>
+                </div>
+
+                <div>
+                  <label for="field-weight" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    <span id="label-weight">Body weight before the hike (lbs)</span>&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="number" step="0.5" id="field-weight" name="weight" placeholder="e.g. 165 lbs" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <span id="weight-helper" class="text-xs text-slate-400 mt-1 block">e.g. 165 lbs (~75 kg)</span>
+                </div>
+              </div>
+
+              <!-- International vs US Resident -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Did you need a visa for this hike?&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <div class="grid grid-cols-2 gap-2" id="visa-radios">
+                    <div class="choice-card rounded-xl p-3 text-center" data-name="neededVisa" data-value="false">
+                      <div class="text-xs font-bold text-white">No visa needed</div>
+                      <div class="text-[11px] text-slate-400">Citizen, resident or visa-free</div>
+                    </div>
+                    <div class="choice-card rounded-xl p-3 text-center" data-name="neededVisa" data-value="true">
+                      <div class="text-xs font-bold text-white">Needed a visa</div>
+                      <div class="text-[11px] text-slate-400">e.g. US B-2 for the PCT</div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="field-neededVisa" name="neededVisa" value="">
+                </div>
+
+                <div id="region-container">
+                  <label for="field-homeRegion" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Home region&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <select id="field-homeRegion" name="homeRegion" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <option value="" disabled selected>Select your region…</option>
+                    <option value="western_europe">Western Europe</option>
+                    <option value="eastern_europe">Eastern Europe</option>
+                    <option value="north_america">North America</option>
+                    <option value="latin_america">Central & South America</option>
+                    <option value="oceania">Oceania</option>
+                    <option value="asia">Asia</option>
+                    <option value="middle_east">Middle East</option>
+                    <option value="africa">Africa</option>
+                  </select>
+                  <span class="text-xs text-slate-400 mt-1 block">I only ask for a region. Your country is never stored.</span>
+                </div>
+              </div>
+
+              <!-- Pre-Trail Fitness Rating (1-10) -->
+              <div class="pt-2 border-t border-slate-800">
+                <div class="flex items-center justify-between mb-2 max-sm:flex-col max-sm:items-start max-sm:gap-1.5">
+                  <label for="field-preTrailFitnessRating" class="text-sm font-semibold text-slate-200">
+                    Fitness before the hike (1 to 10)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <span id="fitness-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
+                    Move the slider
+                  </span>
+                </div>
+                <input type="range" id="field-preTrailFitnessRating" name="preTrailFitnessRating" min="1" max="10" value="6" class="slider-untouched w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <div class="grid grid-cols-3 gap-2 sm:flex sm:justify-between text-xs text-slate-400 mt-1">
+                  <span>1 (Couch to trail)</span>
+                  <span class="max-sm:text-center">5 (Gym or 5K runner)</span>
+                  <span class="max-sm:text-right">10 (Elite mountain athlete)</span>
+                </div>
+              </div>
+
+              <!-- Prior Experience -->
+              <div>
+                <label class="block text-sm font-semibold text-slate-200 mb-2">
+                  Backpacking experience before this hike&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="experience-radios">
+                  <div class="choice-card rounded-xl p-3" data-name="priorExperience" data-value="none">
+                    <div class="text-xs font-bold text-white">None (complete beginner)</div>
+                    <div class="text-xs text-slate-400 mt-0.5">0–1 nights of backpacking before this hike</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="priorExperience" data-value="weekend_trips">
+                    <div class="text-xs font-bold text-white">Weekend trips (casual)</div>
+                    <div class="text-xs text-slate-400 mt-0.5">Several trips of 2–4 days</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="priorExperience" data-value="multi_week_trips">
+                    <div class="text-xs font-bold text-white">Multi-week treks (experienced)</div>
+                    <div class="text-xs text-slate-400 mt-0.5">Trips of 1 to 3 weeks</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="priorExperience" data-value="previous_thru_hike">
+                    <div class="text-xs font-bold text-white">Veteran thru-hiker</div>
+                    <div class="text-xs text-slate-400 mt-0.5">Already finished a thru-hike of 500+ miles</div>
+                  </div>
+                </div>
+                <input type="hidden" id="field-priorExperience" name="priorExperience" value="">
+              </div>
+
+              <!-- Prior Injury History -->
+              <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between max-sm:flex-col max-sm:items-start max-sm:gap-3">
+                  <div>
+                    <span class="text-sm font-semibold text-slate-200">Injuries before the hike?&nbsp;<span class="text-rose-400">*</span></span>
+                    <p class="text-xs text-slate-400">Did you have ongoing joint, back or tendon problems before the hike?</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button type="button" id="btn-injury-history-no" class="px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition">No</button>
+                    <button type="button" id="btn-injury-history-yes" class="px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition">Yes</button>
+                  </div>
+                </div>
+                <input type="hidden" id="field-priorInjuryHistory" name="priorInjuryHistory" value="">
+
+                <div id="injury-history-details-container" class="hidden pt-2">
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">
+                    Where was it? (select all that apply)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <div class="flex flex-wrap gap-2 pill-group" data-field="priorInjuryAreas">
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="knee">Knee</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="ankle">Ankle</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="foot">Foot</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="hip">Hip</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="back">Back</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="shoulder">Shoulder</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="other">Other</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Total Budget -->
+              <div>
+                <label for="field-totalBudget" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                  Total cost of the hike&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <div class="flex gap-2">
+                  <label for="field-budgetCurrency" class="sr-only">Currency</label>
+                  <select id="field-budgetCurrency" name="budgetCurrency" class="w-28 shrink-0 bg-slate-900 border border-slate-700 rounded-xl px-3 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <option value="" disabled selected>Currency</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                  </select>
+                  <input type="number" id="field-totalBudget" name="totalBudget" min="0" max="100000" step="100" placeholder="e.g. 7500" class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                </div>
+                <span class="text-xs text-slate-400 mt-1 block">Including gear, permits, travel, town stays, restaurants and resupply. Paid in another currency? Please convert it roughly.</span>
+                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="totalBudget"> Don't know</label>
+              </div>
+
+              <!-- Start Alone or With Others -->
+              <div class="pt-2 border-t border-slate-800">
+                <label class="block text-sm font-semibold text-slate-200 mb-2">
+                  Did you start the hike alone or with others?&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5" id="startGroup-radios">
+                  <div class="choice-card rounded-xl p-3" data-name="startGroup" data-value="solo">
+                    <div class="text-xs font-bold text-white">Solo</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Started alone</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="startGroup" data-value="partner">
+                    <div class="text-xs font-bold text-white">With a partner</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">1 hiking partner</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="startGroup" data-value="group">
+                    <div class="text-xs font-bold text-white">With a group</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">2+ hiking partners</div>
+                  </div>
+                </div>
+                <input type="hidden" id="field-startGroup" name="startGroup" value="">
+              </div>
+
+              <!-- Training Focus Slider -->
+              <div class="pt-2 border-t border-slate-800">
+                <div class="flex items-center justify-between mb-2 max-sm:flex-col max-sm:items-start max-sm:gap-1.5">
+                  <label for="field-trainingFocus" class="text-sm font-semibold text-slate-200">
+                    How did you train before the hike?&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <span id="training-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
+                    Move the slider
+                  </span>
+                </div>
+                <input type="range" id="field-trainingFocus" name="trainingFocus" min="0" max="1" step="0.01" value="0.5" class="slider-untouched w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <div class="grid grid-cols-3 gap-2 sm:flex sm:justify-between text-xs text-slate-400 mt-1">
+                  <span>0.0 (Only cardio)</span>
+                  <span class="max-sm:text-center">0.5 (Hiking with a loaded pack)</span>
+                  <span class="max-sm:text-right">1.0 (Only strength training)</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1.5 italic">In between is fine: move it to match your mix.</p>
+                <input type="hidden" id="field-trainedBeforeHike" name="trainedBeforeHike" value="">
+                <label class="mt-3 inline-flex items-start gap-2 text-xs text-slate-300 cursor-pointer select-none">
+                  <input type="checkbox" id="no-training-toggle" class="mt-0.5 accent-emerald-500">
+                  <span><strong class="text-white">I didn't train at all for this hike.</strong> Only tick this if you did no training; a little training counts, so please use the slider.</span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- Step 3: gear -->
+          <div id="step-3" class="wizard-step">
+            <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
+              
+              <div>
+                <h3 class="text-xl sm:text-2xl font-bold text-white">3. Your gear</h3>
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">Pack weight and the classic ultralight debates, settled with data.</p>
+              </div>
+
+              <!-- Base Weight & Max Heavy Load -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="field-baseWeight" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    <span id="label-baseweight">Base weight (lbs)</span>&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="number" step="0.1" id="field-baseWeight" name="baseWeight" placeholder="e.g. 13.5 lbs" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <span class="text-xs text-slate-400 mt-1 block">Dry weight: pack + gear, excluding consumables (food, water, fuel).</span>
+                </div>
+
+                <div>
+                  <label for="field-maxHeavyLoad" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    <span id="label-heavyweight">Heaviest pack weight (lbs)</span>&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="number" step="0.5" id="field-maxHeavyLoad" name="maxHeavyLoad" placeholder="e.g. 32.0 lbs" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <span class="text-xs text-slate-400 mt-1 block">Your heaviest full pack, e.g. on a long food carry or a dry desert stretch.</span>
+                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="maxHeavyLoadLbs"> Don't know</label>
+                </div>
+              </div>
+
+              <!-- Framed vs Frameless Backpacks -->
+              <div class="pt-2">
+                <label class="block text-sm font-semibold text-slate-200 mb-2">
+                  Backpack: framed or frameless&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="pack-radios">
+                  <div class="choice-card rounded-xl p-4" data-name="backpackType" data-value="framed">
+                    <div class="flex items-center justify-between">
+                      <div class="text-sm font-bold text-white">Framed backpack</div>
+                      <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-pine-300 rounded-sm">Load transfer</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-1">A frame or stays move the weight onto the hip belt (e.g. Osprey Exos, ULA Circuit, Hyperlite Southwest, Granite Gear).</p>
+                  </div>
+                  <div class="choice-card rounded-xl p-4" data-name="backpackType" data-value="frameless">
+                    <div class="flex items-center justify-between">
+                      <div class="text-sm font-bold text-white">Frameless backpack</div>
+                      <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-amber-300 rounded-sm">Ultralight</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-1">No frame; the weight sits on your shoulders and back (e.g. Mountain Laurel Designs Burn, Palante V2, Zpacks Nero).</p>
+                  </div>
+                </div>
+                <input type="hidden" id="field-backpackType" name="backpackType" value="">
+              </div>
+
+              <!-- Cold Soaking vs Stove -->
+              <div class="pt-2">
+                <label class="block text-sm font-semibold text-slate-200 mb-2">
+                  Cooking: stove or cold soaking&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="cook-radios">
+                  <div class="choice-card rounded-xl p-3.5" data-name="cookSystem" data-value="stove_cooked">
+                    <div class="text-sm font-bold text-white">Stove, hot food</div>
+                    <p class="text-xs text-slate-300 mt-1">Canister stove, alcohol burner or Jetboil for hot meals and morning coffee.</p>
+                  </div>
+                  <div class="choice-card rounded-xl p-3.5" data-name="cookSystem" data-value="cold_soaking">
+                    <div class="text-sm font-bold text-white">Cold soaking</div>
+                    <p class="text-xs text-slate-300 mt-1">Soaked your food in cold water (Talenti jar or similar). No stove or fuel.</p>
+                  </div>
+                  <div class="choice-card rounded-xl p-3.5" data-name="cookSystem" data-value="no_cook_packaged">
+                    <div class="text-sm font-bold text-white">No cooking, dry food only</div>
+                    <p class="text-xs text-slate-300 mt-1">Bars, tortillas, cheese, chips, tuna packets. No soaking or heating.</p>
+                  </div>
+                  <div class="choice-card rounded-xl p-3.5" data-name="cookSystem" data-value="hybrid">
+                    <div class="text-sm font-bold text-white">Mixed / switched</div>
+                    <p class="text-xs text-slate-300 mt-1">Switched between a stove and cold soaking during the hike.</p>
+                  </div>
+                </div>
+                <input type="hidden" id="field-cookSystem" name="cookSystem" value="">
+              </div>
+
+              <!-- Inflatable vs Foam Sleeping Pads -->
+              <div class="pt-2">
+                <label class="block text-sm font-semibold text-slate-200 mb-2">
+                  Sleeping pad: inflatable or foam&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="sleep-radios">
+                  <div class="choice-card rounded-xl p-3.5" data-name="sleepPadType" data-value="inflatable">
+                    <div class="text-sm font-bold text-white">Inflatable air pad</div>
+                    <p class="text-xs text-slate-300 mt-1">Comfortable and packs small (e.g. Therm-a-Rest NeoAir, Nemo Tensor, Big Agnes).</p>
+                  </div>
+                  <div class="choice-card rounded-xl p-3.5" data-name="sleepPadType" data-value="foam_closed_cell">
+                    <div class="text-sm font-bold text-white">Closed-cell foam pad (CCF)</div>
+                    <p class="text-xs text-slate-300 mt-1">Can't puncture and is ready in seconds (e.g. Therm-a-Rest Z Lite, NEMO Switchback).</p>
+                  </div>
+                  <div class="choice-card rounded-xl p-3.5" data-name="sleepPadType" data-value="both_hybrid">
+                    <div class="text-sm font-bold text-white">Both</div>
+                    <p class="text-xs text-slate-300 mt-1">A thin foam pad under an inflatable one, for protection and warmth.</p>
+                  </div>
+                  <div class="choice-card rounded-xl p-3.5" data-name="sleepPadType" data-value="hammock_underquilt">
+                    <div class="text-sm font-bold text-white">Hammock underquilt / other</div>
+                    <p class="text-xs text-slate-300 mt-1">A hammock setup without a ground pad.</p>
+                  </div>
+                </div>
+                <input type="hidden" id="field-sleepPadType" name="sleepPadType" value="">
+              </div>
+
+              <!-- Water Filter vs Chemical Drops -->
+              <div class="pt-2">
+                <label class="block text-sm font-semibold text-slate-200 mb-2">
+                  Water treatment: filter or chemicals&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="water-radios">
+                  <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="water_filter">
+                    <div class="text-xs font-bold text-white">Squeeze or gravity filter</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Sawyer Squeeze, BeFree, Platypus QuickDraw</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="chemical_drops">
+                    <div class="text-xs font-bold text-white">Chemical drops or tablets</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Aquamira, chlorine dioxide tablets, iodine</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="combination">
+                    <div class="text-xs font-bold text-white">Combination</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Mostly a filter, with chemicals, UV or boiling as backup</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="none">
+                    <div class="text-xs font-bold text-white">Didn't treat</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Drank straight from springs, streams and taps</div>
+                  </div>
+                </div>
+                <input type="hidden" id="field-waterFiltration" name="waterFiltration" value="">
+              </div>
+
+              <!-- Footwear & Trekking Poles -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div>
+                  <label for="field-footwearCategory" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Main footwear&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <select id="field-footwearCategory" name="footwearCategory" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <option value="" disabled selected>Select…</option>
+                    <option value="trail_runners" data-hint="e.g. Altra Lone Peak, Hoka Speedgoat, Brooks Cascadia">Trail runners</option>
+                    <option value="hiking_shoes">Low-cut hiking shoes</option>
+                    <option value="boots">Mid or high boots</option>
+                    <option value="sandals_minimalist" data-hint="Also barefoot shoes, e.g. Bedrock, Luna, Xero">Sandals or minimalist</option>
+                    <option value="other">Other footwear</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="field-trekkingPoleUsage" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Trekking poles&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <select id="field-trekkingPoleUsage" name="trekkingPoleUsage" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <option value="" disabled selected>Select…</option>
+                    <option value="two_poles">Two trekking poles</option>
+                    <option value="one_pole">One pole or a staff</option>
+                    <option value="no_poles">No trekking poles</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Shoe pairs -->
+              <div class="pt-2">
+                <label for="field-shoePairsUsed" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                  How many pairs of shoes did you go through?&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <input type="number" id="field-shoePairsUsed" name="shoePairsUsed" min="1" max="20" step="1" placeholder="e.g. 4" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <span class="text-xs text-slate-400 mt-1 block">Including the pair you started in.</span>
+                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="shoePairsUsed"> Don't know</label>
+              </div>
+
+              <!-- Average Calories Consumed -->
+              <div class="pt-2">
+                <label for="field-averageCalories" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                  Calories eaten per day (average)&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <input type="number" id="field-averageCalories" name="averageCalories" min="0" max="10000" step="100" placeholder="e.g. 3500" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <span class="text-xs text-slate-400 mt-1 block">Food and snacks together. A rough estimate is fine.</span>
+                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="averageCalories"> Don't know</label>
+              </div>
+
+              <!-- Resupply & diet -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div>
+                  <label for="field-resupplyStrategy" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    How did you resupply?&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <select id="field-resupplyStrategy" name="resupplyStrategy" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <option value="" disabled selected>Select…</option>
+                    <option value="bought_along_the_way">Bought food along the way</option>
+                    <option value="mostly_mail_drops">Mostly mail drops</option>
+                    <option value="mix">A mix of both</option>
+                  </select>
+                  <span class="text-xs text-slate-400 mt-1 block">Along the way means towns, trail stores or huts.</span>
+                </div>
+                <div>
+                  <label for="field-trailDiet" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Did you eat vegetarian or vegan on trail?&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <select id="field-trailDiet" name="trailDiet" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <option value="" disabled selected>Select…</option>
+                    <option value="omnivore">No</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Sleep Location -->
+              <div class="pt-2 border-t border-slate-800">
+                <label class="block text-sm font-semibold text-slate-200 mb-2">
+                  Where did you sleep most nights?&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="sleepLocation-radios">
+                  <div class="choice-card rounded-xl p-3.5" data-name="sleepLocation" data-value="own_system">
+                    <div class="text-sm font-bold text-white">My own shelter</div>
+                    <p class="text-xs text-slate-300 mt-1">A tent, tarp, bivy or hammock that you carried</p>
+                  </div>
+                  <div class="choice-card rounded-xl p-3.5" data-name="sleepLocation" data-value="huts_refuges">
+                    <div class="text-sm font-bold text-white">Huts, refuges or shelters</div>
+                    <p class="text-xs text-slate-300 mt-1">Alpine huts, mountain refuges, trail shelters or dorms</p>
+                  </div>
+                </div>
+                <input type="hidden" id="field-sleepLocation" name="sleepLocation" value="">
+              </div>
+
+              <!-- Shown when the hiker carried their own shelter -->
+              <div id="own-shelter-container" class="hidden space-y-6">
+                <!-- Tent vs Tarp -->
+                <div class="pt-2">
+                  <label class="block text-sm font-semibold text-slate-200 mb-2">
+                    Shelter: tent or tarp&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="shelter-radios">
+                    <div class="choice-card rounded-xl p-4" data-name="shelterType" data-value="tent">
+                      <div class="flex items-center justify-between">
+                        <div class="text-sm font-bold text-white">Tent</div>
+                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-pine-300 rounded-sm">Enclosed</span>
+                      </div>
+                      <p class="text-xs text-slate-300 mt-1">Freestanding or trekking-pole tent with a floor and bug netting. (e.g., Durston X-Mid, Zpacks Duplex, Big Agnes Copper Spur).</p>
+                    </div>
+                    <div class="choice-card rounded-xl p-4" data-name="shelterType" data-value="tarp">
+                      <div class="flex items-center justify-between">
+                        <div class="text-sm font-bold text-white">Tarp or bivy</div>
+                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-amber-300 rounded-sm">Ultralight</span>
+                      </div>
+                      <p class="text-xs text-slate-300 mt-1">Flat or shaped tarp, with or without a bivy or bug net, or a bivy on its own. (e.g., MLD Grace Tarp, Borah bivy).</p>
+                    </div>
+                    <div class="choice-card rounded-xl p-4" data-name="shelterType" data-value="hammock">
+                      <div class="flex items-center justify-between">
+                        <div class="text-sm font-bold text-white">Hammock</div>
+                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-sky-300 rounded-sm">Suspended</span>
+                      </div>
+                      <p class="text-xs text-slate-300 mt-1">Hammock with a rain fly, slept off the ground between trees. (e.g., Warbonnet Blackbird, Hennessy).</p>
+                    </div>
+                  </div>
+                  <input type="hidden" id="field-shelterType" name="shelterType" value="">
+                </div>
+
+                <!-- Quilt vs Sleeping Bag -->
+                <div class="pt-2">
+                  <label class="block text-sm font-semibold text-slate-200 mb-2">
+                    Quilt or sleeping bag&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="insulation-radios">
+                    <div class="choice-card rounded-xl p-4" data-name="sleepInsulation" data-value="quilt">
+                      <div class="flex items-center justify-between">
+                        <div class="text-sm font-bold text-white">Quilt</div>
+                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-amber-300 rounded-sm">Ultralight</span>
+                      </div>
+                      <p class="text-xs text-slate-300 mt-1">Open-backed top quilt; your pad insulates underneath. (e.g., Enlightened Equipment Revelation, Hammock Gear Burrow).</p>
+                    </div>
+                    <div class="choice-card rounded-xl p-4" data-name="sleepInsulation" data-value="sleeping_bag">
+                      <div class="flex items-center justify-between">
+                        <div class="text-sm font-bold text-white">Sleeping bag</div>
+                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-pine-300 rounded-sm">Classic</span>
+                      </div>
+                      <p class="text-xs text-slate-300 mt-1">Fully enclosed mummy bag with a hood and zip. (e.g., Western Mountaineering UltraLite, Feathered Friends, Sea to Summit Spark).</p>
+                    </div>
+                  </div>
+                  <input type="hidden" id="field-sleepInsulation" name="sleepInsulation" value="">
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- Step 4: on the trail -->
+          <div id="step-4" class="wizard-step">
+            <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
+              
+              <div>
+                <h3 class="text-xl sm:text-2xl font-bold text-white">4. On the trail</h3>
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">How you built up mileage, rested and slept.</p>
+              </div>
+
+              <!-- Starting Mileage Ramp-up (Weeks 1 to 4) -->
+              <div class="p-5 max-[399px]:p-3 rounded-xl bg-slate-900/60 border border-pine-500/30 space-y-4">
+                <div class="flex items-center justify-between max-sm:flex-col max-sm:items-start max-sm:gap-2">
+                  <div>
+                    <h4 class="text-sm font-bold text-white flex items-center gap-1.5 max-sm:block">
+                      <span class="w-2 h-2 shrink-0 rounded-full bg-emerald-400 max-sm:inline-block max-sm:mr-1 max-sm:align-middle"></span>
+                      How fast did you build up your daily distance?&nbsp;<span class="text-rose-400">*</span>
+                    </h4>
+                    <p class="text-xs text-slate-400 mt-0.5">How fast people ramp up is an important question regarding trail injuries.</p>
+                  </div>
+                  <span id="ramp-gradient-badge" class="px-2.5 py-1 rounded-sm text-xs font-mono font-semibold bg-slate-800 text-pine-300">
+                    Your ramp-up
+                  </span>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                  <span class="text-xs font-semibold text-slate-300">How long was your hike?&nbsp;<span class="text-rose-400">*</span></span>
+                  <div class="grid grid-cols-2 min-[400px]:grid-cols-4 max-sm:w-full sm:inline-flex rounded-lg p-1 bg-slate-900 border border-slate-700" id="ramp-weeks-switch">
+                    <button type="button" data-weeks="4" class="ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap bg-brand text-white transition">4+ weeks</button>
+                    <button type="button" data-weeks="3" class="ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap text-slate-400 hover:text-white transition">3 weeks</button>
+                    <button type="button" data-weeks="2" class="ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap text-slate-400 hover:text-white transition">2 weeks</button>
+                    <button type="button" data-weeks="1" class="ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap text-slate-400 hover:text-white transition">1 week</button>
+                  </div>
+                  <input type="hidden" id="field-rampWeeksHiked" name="rampWeeksHiked" value="4">
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div>
+                    <label for="field-week1DailyMiles" class="block text-xs font-semibold text-slate-300 mb-1" id="label-week1">Week 1 (mi/day)</label>
+                    <input type="number" step="0.5" id="field-week1DailyMiles" name="week1DailyMiles" min="0" max="60" placeholder="10.5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  </div>
+                  <div>
+                    <label for="field-week2DailyMiles" class="block text-xs font-semibold text-slate-300 mb-1" id="label-week2">Week 2 (mi/day)</label>
+                    <input type="number" step="0.5" id="field-week2DailyMiles" name="week2DailyMiles" min="0" max="60" placeholder="14.0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  </div>
+                  <div>
+                    <label for="field-week3DailyMiles" class="block text-xs font-semibold text-slate-300 mb-1" id="label-week3">Week 3 (mi/day)</label>
+                    <input type="number" step="0.5" id="field-week3DailyMiles" name="week3DailyMiles" min="0" max="60" placeholder="17.5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  </div>
+                  <div>
+                    <label for="field-week4DailyMiles" class="block text-xs font-semibold text-slate-300 mb-1" id="label-week4">Week 4 (mi/day)</label>
+                    <input type="number" step="0.5" id="field-week4DailyMiles" name="week4DailyMiles" min="0" max="60" placeholder="20.0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  </div>
+                </div>
+                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="week1DailyMiles,week2DailyMiles,week3DailyMiles,week4DailyMiles"> I don't remember my weekly mileage</label>
+              </div>
+
+              <!-- Overall Daily Miles & Rest Days -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="field-totalZeroDays" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Zero days (full rest days)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="number" id="field-totalZeroDays" name="totalZeroDays" min="0" max="150" placeholder="e.g. 18" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <span class="text-xs text-slate-400 mt-1 block">Days you didn't hike any trail miles at all.</span>
+                </div>
+
+                <div>
+                  <label for="field-totalNeroDays" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Nero days (short hiking days)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="number" id="field-totalNeroDays" name="totalNeroDays" min="0" max="150" placeholder="e.g. 14" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <span class="text-xs text-slate-400 mt-1 block">Days you hiked only a little, roughly under 10 mi (16 km), e.g. into or out of town. Don't count your zero days here too.</span>
+                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="totalNeroDays"> Don't know</label>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 italic">Your average daily pace is worked out automatically from the distance and dates.</p>
+
+              <!-- Sleep Hours & Quality -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div>
+                  <label for="field-hoursSleepPerNight" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                    Hours of sleep per night (average)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <input type="number" step="0.5" id="field-hoursSleepPerNight" name="hoursSleepPerNight" min="3" max="16" placeholder="e.g. 8.0" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="hoursSleepPerNight"> Don't know</label>
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between mb-1.5 max-sm:flex-col max-sm:items-start max-sm:gap-1.5">
+                    <label for="field-sleepQualityRating" class="text-sm font-semibold text-slate-200">
+                      Sleep quality (0 to 10)&nbsp;<span class="text-rose-400">*</span>
+                    </label>
+                    <span id="sleep-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
+                    Move the slider
+                  </span>
+                  </div>
+                  <input type="range" id="field-sleepQualityRating" name="sleepQualityRating" min="0" max="10" value="7" class="slider-untouched w-full mt-2" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <div class="grid grid-cols-2 gap-2 sm:flex sm:justify-between text-xs text-slate-400 mt-1">
+                    <span>0 (Tossing and freezing)</span>
+                    <span class="max-sm:text-right">10 (Deep, restful sleep)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Painkillers -->
+              <div class="pt-2">
+                <label for="field-painkillerUse" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                  How often did you take painkillers such as ibuprofen?&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <select id="field-painkillerUse" name="painkillerUse" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <option value="" disabled selected>Select…</option>
+                  <option value="never">Never or hardly ever</option>
+                  <option value="sometimes">Sometimes</option>
+                  <option value="daily">Daily or almost daily</option>
+                </select>
+                <span class="text-xs text-slate-400 mt-1 block">Any over-the-counter painkiller counts, e.g. naproxen or paracetamol too.</span>
+              </div>
+
+              <!-- Solo vs Tramily Hiking Percentage -->
+              <div class="pt-2 border-t border-slate-800">
+                <div class="flex items-center justify-between mb-2 max-sm:flex-col max-sm:items-start max-sm:gap-1.5">
+                  <label for="field-percentHikingAlone" class="text-sm font-semibold text-slate-200">
+                    How much of the time did you hike alone?&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <span id="alone-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
+                    Move the slider
+                  </span>
+                </div>
+                <input type="range" id="field-percentHikingAlone" name="percentHikingAlone" min="0" max="100" value="50" class="slider-untouched w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <div class="grid grid-cols-3 gap-2 sm:flex sm:justify-between text-xs text-slate-400 mt-1">
+                  <span>0% (Always with trail family)</span>
+                  <span class="max-sm:text-center">50% (Equal mix)</span>
+                  <span class="max-sm:text-right">100% (Always alone)</span>
+                </div>
+              </div>
+
+              <!-- Hard Completion Deadline -->
+              <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between max-sm:flex-col max-sm:items-start max-sm:gap-3">
+                  <div>
+                    <span class="text-sm font-semibold text-slate-200">Did you have a fixed deadline to finish?&nbsp;<span class="text-rose-400">*</span></span>
+                    <p class="text-xs text-slate-400">For example a return flight, a visa running out, or a job or semester starting.</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button type="button" id="btn-deadline-no" class="px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition">No</button>
+                    <button type="button" id="btn-deadline-yes" class="px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition">Yes</button>
+                  </div>
+                </div>
+                <input type="hidden" id="field-hadCompletionDeadline" name="hadCompletionDeadline" value="">
+
+                <div id="deadline-details-container" class="hidden pt-2">
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">
+                    What was the deadline? (select all that apply)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <div class="flex flex-wrap gap-2 pill-group" data-field="deadlineReasons">
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="return_flight">Return flight</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="job_school">Job or school start</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="visa">Visa / permit expiry</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="weather_window">Weather or season window</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="money">Money</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="other">Other</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- Step 5: how it ended -->
+          <div id="step-5" class="wizard-step">
+            <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
+              
+              <div>
+                <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                  <span>5. How it ended</span>
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">How it ended and how it felt. These are the answers the research is built around.</p>
+              </div>
+
+              <!-- Completion Status -->
+              <div>
+                <label class="block text-sm font-semibold text-slate-200 mb-2">
+                  How did your hike end?&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <p class="text-xs text-slate-400 -mt-1 mb-3">Didn't finish? Your answers are some of the most valuable in the whole dataset: hikes that end early are the ones nobody else records.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="status-radios">
+                  <div class="choice-card rounded-xl p-4" data-name="completionStatus" data-value="continuous_purist">
+                    <div class="flex items-center justify-between">
+                      <div class="text-sm font-bold text-white">Continuous hike</div>
+                      <span class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-emerald-950 text-emerald-300">In one go</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-1">You hiked every mile from one end to the other, without skipping or yellow-blazing.</p>
+                  </div>
+
+                  <div class="choice-card rounded-xl p-4" data-name="completionStatus" data-value="flip_flop">
+                    <div class="flex items-center justify-between">
+                      <div class="text-sm font-bold text-white">Flip-flop</div>
+                      <span class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-amber-950 text-amber-300">Every mile</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-1">You hiked every mile, just not in one go from end to end (e.g. jumped ahead and came back).</p>
+                  </div>
+
+                  <div class="choice-card rounded-xl p-4" data-name="completionStatus" data-value="skipped_sections">
+                    <div class="flex items-center justify-between">
+                      <div class="text-sm font-bold text-white">Skipped parts</div>
+                      <span class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-sky-950 text-sky-300">Reached the end</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-1">You made it to the end but skipped some parts, e.g. because of fire, snow or other closures.</p>
+                  </div>
+
+                  <div class="choice-card rounded-xl p-4" data-name="completionStatus" data-value="section_hike">
+                    <div class="flex items-center justify-between">
+                      <div class="text-sm font-bold text-white">Section hike</div>
+                      <span class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-slate-800 text-slate-300">As planned</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-1">Hiked the part of the trail you planned (e.g. the Washington section or the 100-Mile Wilderness).</p>
+                  </div>
+
+                  <div class="choice-card rounded-xl p-4" data-name="completionStatus" data-value="quit_early">
+                    <div class="flex items-center justify-between">
+                      <div class="text-sm font-bold text-white">Ended early</div>
+                      <span class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-rose-950 text-rose-300">Went home</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-1">You left the trail before you planned to, for any reason: injury, money, burnout, closures or life.</p>
+                  </div>
+                </div>
+                <input type="hidden" id="field-completionStatus" name="completionStatus" value="">
+              </div>
+
+              <!-- Main reason for leaving (only for early ends, flip-flops and skipped parts) -->
+              <div id="quit-reason-container" class="hidden p-4 rounded-xl bg-slate-900/60 border border-slate-700 space-y-2">
+                <label for="field-quitReason" class="block text-sm font-semibold text-slate-200">
+                  Main reason for leaving the trail, skipping parts or flip-flopping&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <select id="field-quitReason" name="quitReason" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <option value="" disabled selected>Select…</option>
+                  <option value="not_applicable_completed">Doesn't apply</option>
+                  <option value="overuse_injury" data-hint="e.g. plantar fasciitis, shin splints, IT band, joint pain">Overuse injury</option>
+                  <option value="severe_injury" data-hint="e.g. a fracture, torn ligament or concussion">Severe injury</option>
+                  <option value="mental_burnout_loneliness" data-hint="Also lost motivation">Burnout or loneliness</option>
+                  <option value="budget_exhaustion">Ran out of money</option>
+                  <option value="weather_wildfire_closure" data-hint="Wildfires, snow, smoke or trail closures">Weather or closures</option>
+                  <option value="family_personal_emergency" data-hint="A family, relationship or personal emergency">Family or personal</option>
+                  <option value="ran_out_of_time">Ran out of time</option>
+                  <option value="other">Other reason</option>
+                </select>
+              </div>
+
+              <!-- Thought about quitting -->
+              <div>
+                <label for="field-consideredQuitting" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                  How often did you seriously think about quitting?&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <select id="field-consideredQuitting" name="consideredQuitting" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <option value="" disabled selected>Select…</option>
+                  <option value="never">Never</option>
+                  <option value="once_or_twice">Once or twice</option>
+                  <option value="several_times">Several times</option>
+                  <option value="almost_constantly">Almost constantly</option>
+                </select>
+                <span class="text-xs text-slate-400 mt-1 block">Only the times you really considered it, not every bad afternoon. If your hike ended early, count the times before you decided.</span>
+              </div>
+
+              <!-- Severe Injury Occurrence -->
+              <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between max-sm:flex-col max-sm:items-start max-sm:gap-3">
+                  <div>
+                    <span class="text-sm font-semibold text-slate-200">Did you have an injury that changed your hike?&nbsp;<span class="text-rose-400">*</span></span>
+                    <p class="text-xs text-slate-400">One that needed several zero days or medical help, or ended your hike.</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button type="button" id="btn-injury-occurred-no" class="px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition">No</button>
+                    <button type="button" id="btn-injury-occurred-yes" class="px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition">Yes</button>
+                  </div>
+                </div>
+                <input type="hidden" id="field-severeInjuryOccurred" name="severeInjuryOccurred" value="">
+
+                <!-- Injury Type / Location Multi-Select Pills -->
+                <div id="injury-details-container" class="hidden pt-3 border-t border-slate-800 space-y-3">
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">
+                    What kind of injury? (select all that apply)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <div class="flex flex-wrap gap-2 pill-group" id="injury-pills" data-field="injuryLocations">
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="knee_it_band">Knee / IT band syndrome</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="plantar_fasciitis_foot">Plantar fasciitis / foot</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="shin_splints">Shin splints</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="stress_fracture">Stress fracture</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="achilles_tendon">Achilles tendonitis</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="ankle_sprain">Ankle sprain</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="extensor_tendonitis">Extensor tendonitis (top of foot)</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="foot_numbness_nerve">Foot numbness / nerve pain</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="hip_flexor">Hip / hip flexor</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="back_spine">Back / spine strain</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="fall_trauma">Fall: fracture, head or other trauma</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="blisters_severe">Severe blisters / infection</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="other">Other injury</span>
+                  </div>
+
+                  <div>
+                    <label for="field-injuryMilestoneMiles" class="block text-xs font-semibold text-slate-300 mb-1">
+                      After how many <span id="label-injuryMilestoneUnit">miles</span> into the hike did the injury happen?&nbsp;<span class="text-rose-400">*</span>
+                    </label>
+                    <input type="number" step="0.1" id="field-injuryMilestoneMiles" name="injuryMilestoneMiles" min="0" placeholder="e.g. 450" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-xs focus:outline-hidden focus:border-pine-500" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="injuryMilestoneMiles"> Don't know</label>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Sickness Tracking -->
+              <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between max-sm:flex-col max-sm:items-start max-sm:gap-3">
+                  <div>
+                    <span class="text-sm font-semibold text-slate-200">Did you get sick on the trail?&nbsp;<span class="text-rose-400">*</span></span>
+                    <p class="text-xs text-slate-400">For example norovirus, giardia or a cold.</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button type="button" id="btn-sick-no" class="px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition">No</button>
+                    <button type="button" id="btn-sick-yes" class="px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition">Yes</button>
+                  </div>
+                </div>
+                <input type="hidden" id="field-gotSick" name="gotSick" value="">
+
+                <div id="sick-details-container" class="hidden pt-2 space-y-2">
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">
+                    What did you have? (select all that apply)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <div class="flex flex-wrap gap-2 pill-group" data-field="illnessTypes">
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="norovirus_gi">Norovirus / stomach bug</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="giardia">Giardia</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="cold_flu_respiratory">Cold / flu / respiratory</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="covid">COVID-19</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="tick_borne">Lyme / tick-borne</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="heat_illness">Heat illness</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="hypothermia">Hypothermia</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="altitude_sickness">Altitude sickness</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="other">Other illness</span>
+                  </div>
+                  <div class="pt-2">
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">
+                      How many separate times were you sick?&nbsp;<span class="text-rose-400">*</span>
+                    </label>
+                    <div class="grid grid-cols-3 gap-2 max-w-xs" id="illnessEpisodes-radios">
+                      <div class="choice-card rounded-xl p-2 text-center" data-name="illnessEpisodes" data-value="1"><div class="text-sm font-bold text-white">Once</div></div>
+                      <div class="choice-card rounded-xl p-2 text-center" data-name="illnessEpisodes" data-value="2"><div class="text-sm font-bold text-white">Twice</div></div>
+                      <div class="choice-card rounded-xl p-2 text-center" data-name="illnessEpisodes" data-value="3"><div class="text-sm font-bold text-white whitespace-nowrap">3+ times</div></div>
+                    </div>
+                    <input type="hidden" id="field-illnessEpisodes" name="illnessEpisodes" value="">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Post-Trail Weight -->
+              <div class="pt-2 border-t border-slate-800">
+                <label for="field-postTrailWeight" class="block text-sm font-semibold text-slate-200 mb-1.5">
+                  <span id="label-postTrailWeight">Body weight after the hike (lbs)</span>&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <input type="number" step="0.5" id="field-postTrailWeight" name="postTrailWeight" min="0" placeholder="e.g. 155" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <span class="text-xs text-slate-400 mt-1 block">Right after the hike, to see how much weight hikers lose or gain.</span>
+              </div>
+
+              <!-- Overall Enjoyment Rating (1 to 10) -->
+              <div class="pt-2 border-t border-slate-800">
+                <div class="flex items-center justify-between mb-2 max-sm:flex-col max-sm:items-start max-sm:gap-1.5">
+                  <label for="field-overallEnjoymentRating" class="text-sm font-semibold text-slate-200">
+                    How much did you enjoy the hike overall? (1 to 10)&nbsp;<span class="text-rose-400">*</span>
+                  </label>
+                  <span id="enjoyment-label" class="font-mono text-xs font-bold text-amber-400 bg-amber-950 px-2 py-0.5 rounded-sm border border-amber-800">
+                    Move the slider
+                  </span>
+                </div>
+                <input type="range" id="field-overallEnjoymentRating" name="overallEnjoymentRating" min="1" max="10" value="9" class="slider-untouched w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <div class="grid grid-cols-3 gap-2 sm:flex sm:justify-between text-xs text-slate-400 mt-1">
+                  <span>1 (Miserable sufferfest)</span>
+                  <span class="max-sm:text-center">5 (Bittersweet, mixed)</span>
+                  <span class="max-sm:text-right">10 (Best thing I ever did)</span>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+          <!-- Errors of the current step -->
+          <div id="survey-validation-errors" role="alert" class="hidden mt-4 p-4 rounded-xl bg-rose-950/80 border border-rose-600/50 text-rose-200 text-xs sm:text-sm">
+            <div class="font-bold flex items-center gap-2 mb-1">
+              <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              <span>Please review the highlighted items:</span>
+            </div>
+            <ul id="survey-error-list" class="list-disc list-inside space-y-0.5 pl-1"></ul>
+          </div>
+
+          <!-- Back and Next -->
+          <div class="mt-6 flex items-center justify-between">
+            <button type="button" id="btn-wizard-prev" aria-label="Back" class="px-5 max-[379px]:px-3.5 py-3 rounded-xl font-semibold text-sm bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 opacity-40 cursor-not-allowed" disabled>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              <span class="max-[379px]:hidden">Back</span>
+            </button>
+
+            <button type="button" id="btn-wizard-next" class="px-7 max-[379px]:px-5 py-3 rounded-xl whitespace-nowrap font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/50 transition flex items-center gap-2">
+              <span id="btn-wizard-next-text">Next: About you</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+        </form>
+      </div>
+      </div>
+
+    </section>
+
+
+    <!-- Thank-you page -->
+    <section id="view-success" class="app-view">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
+        
+        <div class="w-20 h-20 rounded-full bg-linear-to-tr/srgb from-pine-600 to-emerald-400 border border-pine-300/40 flex items-center justify-center mx-auto shadow-xl shadow-pine-950/50 mb-6">
+          <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+
+        <span id="success-badge" class="sr-only px-3 py-1 rounded-full bg-pine-950 border border-pine-700/60 text-pine-300 font-mono text-xs font-semibold uppercase tracking-wider">
+          Hike Recorded
+        </span>
+
+        <h2 id="success-title" class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
+          Thank You for Advancing Trail Science!
+        </h2>
+
+        <p id="success-intro" class="text-base text-slate-300 mt-3 max-w-xl mx-auto">
+          Your hike is now part of the open dataset, thank you! Every single answer makes the picture of what really happens on long trails a little clearer, for future hikers and for anyone researching it.
+        </p>
+
+        <!-- Hike Summary Card -->
+        <div id="success-summary-card" class="card-glow rounded-2xl p-6 mt-8 max-w-xl mx-auto text-left space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+            <div class="whitespace-nowrap">
+              <span id="summary-trail-badge" class="px-2.5 py-1 rounded-sm text-xs font-bold font-mono bg-pine-900 text-pine-300 border border-pine-700">PCT</span>
+              <span id="summary-hike-year" class="ml-2 font-bold text-white text-base">2024 Hike</span>
+            </div>
+            <span id="summary-status" class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-emerald-950 text-emerald-300">Continuous hike</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+              <div class="text-[11px] text-slate-400 uppercase font-mono">Base Weight</div>
+              <div id="summary-base-weight" class="text-sm font-bold text-white mt-0.5">14.0 lbs</div>
+            </div>
+            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+              <div class="text-[11px] text-slate-400 uppercase font-mono">Daily Pace</div>
+              <div id="summary-daily-miles" class="text-sm font-bold text-white mt-0.5">19.5 mi/day</div>
+            </div>
+            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+              <div class="text-[11px] text-slate-400 uppercase font-mono">Zero Days</div>
+              <div id="summary-zero-days" class="text-sm font-bold text-white mt-0.5">16 days</div>
+            </div>
+            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+              <div class="text-[11px] text-slate-400 uppercase font-mono">Enjoyment</div>
+              <div id="summary-enjoyment" class="text-sm font-bold text-amber-400 mt-0.5">9 / 10</div>
+            </div>
+          </div>
+
+          <!-- Personal comparison, filled from the submit response -->
+          <div id="summary-comparison" class="hidden border-t border-slate-800 pt-4">
+            <div class="text-[11px] text-slate-400 uppercase font-mono mb-2">How You Compare</div>
+            <ul id="summary-comparison-list" class="space-y-1.5 text-sm text-slate-200"></ul>
+            <p id="summary-comparison-note" class="text-xs text-slate-500 mt-2"></p>
+          </div>
+
+          <!-- Every stored answer of this hike, filled by app.js (renderAllAnswers) -->
+          <details id="all-answers" class="border-t border-slate-800 pt-4">
+            <summary class="cursor-pointer text-sm font-semibold text-pine-400 hover:text-pine-300">Show all my answers</summary>
+            <p class="text-xs text-slate-400 mt-2">Exactly what is stored and published for this hike, after blurring.</p>
+            <div class="mt-3 overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <tbody id="all-answers-body"></tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+
+        <!-- Deletion code (shown once; only a hash is stored) -->
+        <div id="deletion-code-panel" class="hidden mt-6 max-w-xl mx-auto text-left p-5 rounded-2xl bg-slate-900/70 border border-pine-500/40">
+          <div class="text-[11px] text-pine-300 uppercase font-mono">Your personal code</div>
+          <h3 class="mt-1 font-bold text-white">Come back later and see how you compare</h3>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <code id="deletion-code-value" class="text-lg sm:text-xl font-mono font-bold tracking-wider text-white select-all"></code>
+            <button type="button" id="btn-copy-deletion-code" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">Copy</button>
+          </div>
+          <p class="text-sm text-slate-300 mt-2">Every new hike makes the comparison more accurate. Enter this code on the <a href="#insights" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">Insights page</a> anytime to see how your hike stacks up today, with a fresh share card.</p>
+          <p class="text-xs text-slate-400 mt-2">It's also the only way to delete your answer in case you change your mind later (on the <a href="#privacy-delete" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">privacy page</a>). I don't know who you are, so I can't look it up for you: please save it somewhere safe.</p>
+        </div>
+
+        <!-- Personal share card, drawn in the browser by share-card.js -->
+        <div id="share-card-container" class="hidden mt-8">
+          <div class="text-[11px] text-slate-400 uppercase font-mono mb-3">Your Share Card</div>
+          <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="w-full max-w-[260px] h-auto mx-auto rounded-2xl border border-slate-800 shadow-xl shadow-pine-950/50">
+          <a id="btn-download-card" href="#" download="open-trail-science.png" class="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-pine-400 hover:text-pine-300 transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Download card
+          </a>
+        </div>
+
+        <!-- Feedback about the survey: sent separately (/api/feedback), never linked to the answers -->
+        <div id="feedback-card" class="mt-8 max-w-xl mx-auto text-left p-5 rounded-2xl bg-slate-900/70 border border-slate-800">
+          <label for="feedback-message" class="block font-bold text-white">How can I improve this survey?</label>
+          <p class="text-xs text-slate-400 mt-1">Was a question confusing, missing or just annoying? Tell me! This box is optional. It isn't connected to your survey entry and isn't part of the released dataset.</p>
+          <p class="text-xs text-amber-300 mt-1">Please don't include your name or personal or health details.</p>
+          <textarea id="feedback-message" rows="4" maxlength="1000" class="mt-3 w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" placeholder="e.g. I wasn't sure how to count nero days…" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></textarea>
+          <div class="mt-2 flex flex-wrap items-center justify-between gap-3">
+            <p id="feedback-result" role="status" class="text-xs text-slate-400"></p>
+            <button type="button" id="btn-send-feedback" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition disabled:opacity-40 disabled:cursor-not-allowed">Send feedback</button>
+          </div>
+        </div>
+
+        <!-- Next Step Buttons -->
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center">
+          <a href="#download" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/60 transition flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <span>Download Full Dataset</span>
+          </a>
+          <button type="button" id="btn-share-survey" class="w-full sm:w-auto px-5 py-3 rounded-xl font-semibold text-sm bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 transition flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 text-pine-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+            <span>Share Survey with Tramily</span>
+          </button>
+          <button type="button" id="btn-add-another-hike" class="w-full sm:w-auto px-5 py-3 rounded-xl font-medium text-sm text-slate-400 hover:text-white transition">
+            + Add another hike
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- Dataset -->
+    <section id="view-download" class="app-view">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-10">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto">
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
+            Open Thru-Hiker Survey Dataset
+          </h2>
+          <p class="text-sm sm:text-base text-slate-300 mt-2">
+            Every answer from the survey, checked, documented and with identifying details blurred. Free to use for statistics, machine learning or just playing around with the numbers (please do!).
+          </p>
+          <p id="dataset-meta" class="text-xs font-mono text-slate-500 mt-3">CC0 public domain • schema documented below</p>
+        </div>
+
+        <!-- Download cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- CSV Download Card -->
+          <div class="card-glow rounded-2xl p-6 sm:p-7 border border-emerald-500/30 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-emerald-950 text-emerald-300 border border-emerald-700/60">CSV FORMAT</span>
+                <span class="text-xs text-slate-400 font-mono">For spreadsheets</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mt-3">Full Dataset (.CSV)</h3>
+              <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                A flat table that opens in Excel, Google Sheets, <strong>R</strong> or <strong>pandas</strong>: one row per hike, one column per field.
+              </p>
+              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-mono text-slate-400 space-y-1">
+                <div>File: <span class="text-slate-200">thru_hiker_survey_dataset.csv</span></div>
+                <div>Format: <span class="text-slate-200">UTF-8, comma-separated (RFC 4180)</span></div>
+                <div>Lists: <span class="text-slate-200">one cell, split by <code>;</code></span></div>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
+              <a href="/data/thru_hiker_survey_dataset.csv" download="thru_hiker_survey_dataset.csv" id="btn-download-csv" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/50 transition flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span>Download CSV</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- JSON Download Card -->
+          <div class="card-glow rounded-2xl p-6 sm:p-7 border border-amber-500/30 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-amber-950 text-amber-300 border border-amber-700/60">JSON FORMAT</span>
+                <span class="text-xs text-slate-400 font-mono">For code</span>
+              </div>
+              <h3 class="text-xl font-bold text-white mt-3">Full Dataset (.JSON)</h3>
+              <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                The same hikes and fields as the CSV, with types kept: numbers, true/false and real lists. Easiest to use from <strong>JavaScript</strong> or <strong>Python</strong>.
+              </p>
+              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-mono text-slate-400 space-y-1">
+                <div>File: <span class="text-slate-200">thru_hiker_survey_dataset.json</span></div>
+                <div>Format: <span class="text-slate-200">UTF-8, an array with one object per hike</span></div>
+                <div>Lists: <span class="text-slate-200">JSON arrays</span></div>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
+              <a href="/data/thru_hiker_survey_dataset.json" download="thru_hiker_survey_dataset.json" id="btn-download-json" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 transition flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span>Download JSON</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Data table preview -->
+        <div class="card-glow rounded-2xl p-6 sm:p-8 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-white">Data Preview</h2>
+              <p class="text-xs text-slate-400 mt-0.5">Have a quick look at the real entries right here in your browser. It updates whenever the dataset is rebuilt.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex items-center gap-2 flex-wrap">
+              <select id="preview-filter-trail" aria-label="Filter by trail" class="bg-slate-900 border border-slate-700 text-base sm:text-xs text-slate-200 rounded-lg px-3 py-2 focus:outline-hidden focus:border-pine-500" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <option value="ALL">All Trails</option>
+                <option value="PCT">PCT Only</option>
+                <option value="AT">AT Only</option>
+                <option value="CDT">CDT Only</option>
+                <option value="CT">CT Only</option>
+                <option value="AZT">AZT Only</option>
+              </select>
+
+              <select id="preview-filter-status" aria-label="Filter by outcome" class="bg-slate-900 border border-slate-700 text-base sm:text-xs text-slate-200 rounded-lg px-3 py-2 focus:outline-hidden focus:border-pine-500" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <option value="ALL">All Outcomes</option>
+                <option value="continuous_purist">Continuous hike</option>
+                <option value="flip_flop">Flip-flop, every mile</option>
+                <option value="skipped_sections">Skipped parts</option>
+                <option value="section_hike">Section hike</option>
+                <option value="quit_early">Ended early</option>
+              </select>
+
+              <button type="button" id="btn-refresh-preview" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 transition" title="Refresh Table">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table Container with Horizontal Scroll -->
+          <div class="overflow-x-auto rounded-xl border border-slate-800">
+            <table class="keep-mono w-full text-left text-xs whitespace-nowrap">
+              <thead class="bg-slate-950 text-slate-400 font-mono uppercase text-xs border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Trail</th>
+                  <th class="py-3 px-4">Year</th>
+                  <th class="py-3 px-4">Direction</th>
+                  <th class="py-3 px-4">Base Wt</th>
+                  <th class="py-3 px-4">Pace</th>
+                  <th class="py-3 px-4">Backpack</th>
+                  <th class="py-3 px-4">Cook Sys</th>
+                  <th class="py-3 px-4">Pad</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4">Injury</th>
+                  <th class="py-3 px-4 text-center">Enjoyment</th>
+                </tr>
+              </thead>
+              <tbody id="preview-table-body" class="divide-y divide-slate-800/60 font-mono text-slate-300">
+                <!-- Filled by app.js -->
+                <tr>
+                  <td colspan="11" class="py-8 text-center text-slate-500">Loading dataset preview...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div class="flex items-center justify-between text-xs text-slate-400 font-mono pt-2">
+            <span id="preview-pagination-info">Showing rows 1 - 10 of --</span>
+            <div class="flex items-center gap-2">
+              <button type="button" id="btn-preview-prev" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed">Previous</button>
+              <button type="button" id="btn-preview-next" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Citation -->
+        <div class="card-glow rounded-2xl p-6 sm:p-8">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 class="text-xl font-bold text-white">Cite this dataset</h2>
+              <p class="text-xs text-slate-400 mt-0.5">It's public domain (CC0), so you don't need my permission, but a citation really helps others find the data. The dataset keeps growing, so the citation names the schema version and the date you got the files. It shows today's date, so change it if you downloaded them earlier.</p>
+            </div>
+            <button type="button" id="btn-copy-citation" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">Copy</button>
+          </div>
+          <pre class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 whitespace-pre-wrap wrap-break-word"><code id="citation-text">Open Trail Science. (2026). Open Thru-Hiker Survey Dataset [Data set]. https://opentrailscience.org/#download</code></pre>
+        </div>
+
+        <!-- Quickstart Code Snippets -->
+        <div class="card-glow rounded-2xl p-6 sm:p-8 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-xl font-bold text-white">Quickstart for Researchers</h2>
+              <p class="text-xs text-slate-400 mt-0.5">Copy, run, and you've got a first model. The script downloads the data once, then reads it from disk, and handles missing values the right way.</p>
+            </div>
+            <!-- Code Tab Selector -->
+            <div class="flex gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs font-mono">
+              <button type="button" class="snippet-tab active px-3 py-1 rounded-sm bg-brand text-white font-semibold" data-target="snippet-python">Python</button>
+              <button type="button" class="snippet-tab px-3 py-1 rounded-sm text-slate-400 hover:text-white" data-target="snippet-r">R</button>
+              <button type="button" class="snippet-tab px-3 py-1 rounded-sm text-slate-400 hover:text-white" data-target="snippet-js">JavaScript</button>
+            </div>
+          </div>
+
+          <!-- Python snippet -->
+          <div id="snippet-python" class="snippet-block">
+            <div class="relative">
+              <pre class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="python">from pathlib import Path
+from urllib.request import urlretrieve
+
+import pandas as pd
+import statsmodels.formula.api as smf
+
+# Downloaded once, then read from disk. Delete the file to get the newest data.
+DATA = Path("thru_hiker_survey_dataset.csv")
+if not DATA.exists():
+    urlretrieve("https://opentrailscience.org/data/thru_hiker_survey_dataset.csv", DATA)
+df = pd.read_csv(DATA)
+print(len(df), "hikes")
+
+# Lists are ';'-separated. A null value listed in unknownAnswers means
+# "Don't know"; a null that is not listed means the question did not apply.
+for col in ["injuryLocations", "illnessTypes", "priorInjuryAreas", "deadlineReasons", "unknownAnswers"]:
+    df[col] = df[col].fillna("").str.split(";").apply(lambda xs: [x for x in xs if x])
+
+# Dates are coarsened: startMonth for every hike, startWeek on popular trails.
+df["startMonth"] = pd.PeriodIndex(df["startMonth"], freq="M")
+
+# Finished = every mile hiked (continuous or flip-flop). Section hikes are left out.
+hikes = df[df["completionStatus"] != "section_hike"].copy()
+hikes["finished"] = hikes["completionStatus"].isin(["continuous_purist", "flip_flop"]).astype(int)
+
+model = smf.logit(
+    "finished ~ baseWeightLbs + week1DailyMiles + preTrailFitnessRating + C(priorExperience)",
+    data=hikes.dropna(subset=["baseWeightLbs", "week1DailyMiles", "preTrailFitnessRating"]),
+).fit()
+print(model.summary())</code></pre>
+              <button type="button" class="copy-code-btn absolute top-3 right-3 text-[11px] px-2 py-1 rounded-sm bg-slate-800 hover:bg-slate-700 text-slate-300">Copy</button>
+            </div>
+          </div>
+
+          <!-- R snippet -->
+          <div id="snippet-r" class="snippet-block hidden">
+            <div class="relative">
+              <pre class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="r">library(readr)
+library(dplyr)
+library(tidyr)
+
+# Downloaded once, then read from disk. Delete the file to get the newest data.
+path &lt;- "thru_hiker_survey_dataset.csv"
+if (!file.exists(path)) {
+  download.file("https://opentrailscience.org/data/thru_hiker_survey_dataset.csv", path, mode = "wb")
+}
+df &lt;- read_csv(path, guess_max = Inf, show_col_types = FALSE)
+cat(nrow(df), "hikes\n")
+
+# Most common injuries per trail (one row per reported injury)
+df |&gt;
+  filter(severeInjuryOccurred) |&gt;
+  separate_rows(injuryLocations, sep = ";") |&gt;
+  count(trail, injuryLocations, sort = TRUE) |&gt;
+  print(n = 10)
+
+# Injury risk vs. first-week mileage, adjusting for pack weight and experience.
+# glm drops rows where week1DailyMiles is null ("Don't know").
+model &lt;- glm(severeInjuryOccurred ~ week1DailyMiles + baseWeightLbs + priorExperience,
+             data = df, family = binomial())
+summary(model)</code></pre>
+              <button type="button" class="copy-code-btn absolute top-3 right-3 text-[11px] px-2 py-1 rounded-sm bg-slate-800 hover:bg-slate-700 text-slate-300">Copy</button>
+            </div>
+          </div>
+
+          <!-- JS snippet -->
+          <div id="snippet-js" class="snippet-block hidden">
+            <div class="relative">
+              <pre class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="javascript">// Save as quickstart.mjs and run: node quickstart.mjs (Node 18 or newer)
+import { existsSync } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
+
+const base = 'https://opentrailscience.org/data';
+
+// Downloaded once, then read from disk. Delete the files to get the newest data.
+async function load(name) {
+  if (!existsSync(name)) {
+    const res = await fetch(`${base}/${name}`);
+    if (!res.ok) throw new Error(`${name}: HTTP ${res.status}`);
+    await writeFile(name, await res.text());
+  }
+  return JSON.parse(await readFile(name, 'utf8'));
+}
+
+const hikes = await load('thru_hiker_survey_dataset.json');
+const schema = await load('schema.json'); // machine-readable data dictionary
+console.log(`${hikes.length} hikes, schema ${schema.version}`);
+
+const finished = hikes.filter(h =&gt; ['continuous_purist', 'flip_flop'].includes(h.completionStatus));
+const weights = finished.map(h =&gt; h.baseWeightLbs).filter(w =&gt; w !== null).sort((a, b) =&gt; a - b);
+const mid = Math.floor(weights.length / 2);
+const median = weights.length % 2 ? weights[mid] : (weights[mid - 1] + weights[mid]) / 2;
+console.log('Median base weight of finishers (lb):', median);</code></pre>
+              <button type="button" class="copy-code-btn absolute top-3 right-3 text-[11px] px-2 py-1 rounded-sm bg-slate-800 hover:bg-slate-700 text-slate-300">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Dictionary (rendered from lib/survey-schema.js by app.js) -->
+        <div class="card-glow rounded-2xl p-6 sm:p-8 space-y-4">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 class="text-xl font-bold text-white">Data Dictionary</h2>
+              <p class="text-xs text-slate-400 mt-0.5">Every column in file order, generated from the same schema that checks each submission.</p>
+            </div>
+            <a href="/data/schema.json" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition font-mono">schema.json &darr;</a>
+          </div>
+          <ul class="text-xs text-slate-400 space-y-1 list-disc list-inside">
+            <li>Numbers are stored in imperial units; columns ending in <code class="text-slate-300">Kg</code>, <code class="text-slate-300">Cm</code>, <code class="text-slate-300">Km</code> or <code class="text-slate-300">M</code> repeat them in metric.</li>
+            <li><code class="text-slate-300">null</code> means the question did not apply, unless the column is listed in <code class="text-slate-300">unknownAnswers</code>, which means the hiker answered "Don't know".</li>
+            <li>Derived columns are computed on the server and never asked.</li>
+          </ul>
+
+          <div class="overflow-x-auto rounded-xl border border-slate-800">
+            <table class="keep-mono w-full text-left text-xs">
+              <thead class="bg-slate-950 text-slate-400 font-mono uppercase text-xs border-b border-slate-800">
+                <tr>
+                  <th class="py-2.5 px-3">Column</th>
+                  <th class="py-2.5 px-3">Type</th>
+                  <th class="py-2.5 px-3">Values / Units</th>
+                  <th class="py-2.5 px-3">Role</th>
+                  <th class="py-2.5 px-3">Notes</th>
+                </tr>
+              </thead>
+              <tbody id="dictionary-body" class="divide-y divide-slate-800/60 font-mono text-slate-300 text-xs"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Datasheet -->
+        <div class="card-glow rounded-2xl p-6 sm:p-8">
+          <h2 class="text-xl font-bold text-white">About This Data</h2>
+          <p class="text-xs text-slate-400 mt-0.5">How the data was collected, and what to keep in mind when you analyse it.</p>
+          <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5 mt-6 text-sm">
+            <div>
+              <dt class="font-semibold text-white">Collection</dt>
+              <dd class="text-slate-400 mt-1">An online survey for adults (18 or older when answering) who have hiked a long-distance trail, shared through hiking communities. The hike itself may be from before they turned 18, so the "20-and-under" age band can include hikes by minors. I ask for consent before the survey starts, and there are no names, emails or accounts. Each record is one hike.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Validation</dt>
+              <dd class="text-slate-400 mt-1">The same schema checks every answer, both in the browser and on the server: ranges, allowed values, dates in the right order and not in the future, ramp-up weeks that match the dates, and a pace below 100 mi/day. Every question has to be answered or explicitly marked "Don't know".</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Missing values</dt>
+              <dd class="text-slate-400 mt-1">No silent defaults: choice cards, sliders and yes/no questions all start unanswered. Missing numbers are null, never 0. Check <code class="text-slate-300">unknownAnswers</code> to tell "Don't know" from "not applicable".</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Known biases</dt>
+              <dd class="text-slate-400 mt-1">People decide themselves whether to take part (self-selection), and everyone answers after their hike, from memory (recall bias; <code class="text-slate-300">monthsSinceTrail</code> lets you control for it). Finishers are probably over-represented, which is why I really encourage people who went home early to answer too.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Privacy protection</dt>
+              <dd class="text-slate-400 mt-1">Anything that could help identify someone (quasi-identifiers) is generalised before it's stored, so the database is exactly the public file: ISO weeks instead of dates (months, 10-mi distances and whole-week durations on small trails, see <code class="text-slate-300">datePrecision</code>), 5-year age bands (one band for 20 and under) for the age at the start of the hike, world regions instead of countries, no submission timestamp and no free text. Derived values are computed from the exact answers first, then the exact answers are discarded. Rows are ordered by trail, year and start month (random within a group), never by submission order.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Spam and test data</dt>
+              <dd class="text-slate-400 mt-1">Bots are filtered out by honeypot fields, a minimum completion time, a short trail question, a small proof of work in the browser and a per-network rate limit. Synthetic records I use for development never end up in the public files.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Source code</dt>
+              <dd class="text-slate-400 mt-1">Everything behind this dataset is open source on <a href="https://github.com/opentrailscience/opentrailscience" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">GitHub</a>: the survey, the schema that validates every answer, the blurring and the export.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-white">Updates and license</dt>
+              <dd class="text-slate-400 mt-1">The CSV and JSON files are rebuilt after every 5 new or deleted answers (at most every 6 hours), and overnight if anything is still pending. Public domain under CC0 1.0. Every record keeps the <code class="text-slate-300">schemaVersion</code> it was collected under.</dd>
+            </div>
+          </dl>
+
+          <h3 class="font-semibold text-white mt-8">Schema changelog</h3>
+          <ol id="schema-changelog" class="mt-3 space-y-3 text-xs text-slate-400"></ol>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-slate-950/90 py-10 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <svg class="w-5 h-5 text-pine-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
+        </svg>
+        <span class="font-bold text-slate-200 whitespace-nowrap">Open Trail Science</span>
+        <span class="max-sm:hidden" aria-hidden="true">•</span>
+        <span class="whitespace-nowrap">Public Domain (CC0) Dataset</span>
+      </div>
+      <!-- Dots only where the links fit on one line; on phones the gap separates them. -->
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        <a href="#privacy" class="hover:text-slate-200">Privacy</a>
+        <span class="max-sm:hidden" aria-hidden="true">•</span>
+        <a href="#survey" class="text-pine-400 hover:text-pine-300">Contribute Hike</a>
+        <span class="max-sm:hidden" aria-hidden="true">•</span>
+        <a href="#insights" class="hover:text-slate-200">Insights</a>
+        <span class="max-sm:hidden" aria-hidden="true">•</span>
+        <a href="#about" class="hover:text-slate-200">About</a>
+        <span class="max-sm:hidden" aria-hidden="true">•</span>
+        <a href="#download" class="text-amber-400 hover:text-amber-300">Download Data</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <!-- lib/survey-schema.js, lib/survey-stats.js, lib/human-check.js, share-card.js, insights.js
+       and app.js, joined and minified by scripts/build-js.js -->
+  <script src="js/app.bundle.js" defer></script>
+</body>
+</html>

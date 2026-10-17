@@ -1,0 +1,213 @@
+/*
+ * Tailwind CSS v4 entry point, built to public/css/tailwind.css by
+ * `npm run build:css`. Classes are collected from the HTML and JS in public/.
+ */
+@import 'tailwindcss' source(none);
+@source '../public/**/*.{html,js}';
+
+/* light:… classes apply in the light theme only (e.g. the theme button icons). */
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
+/*
+ * Colors: Tailwind 3's hex values, so the site looks exactly as before
+ * (v4's default palette is oklch, more saturated on wide-gamut screens), and
+ * only the families the site uses. Add a family here before using it.
+ */
+@theme {
+  --color-*: initial;
+  --color-white: #f2f4f7;
+  --color-black: #000;
+
+  /* slate */
+  --color-slate-50: #f6f7f7; --color-slate-100: #eaebec; --color-slate-200: #dadbdc; --color-slate-300: #cbccce;
+  --color-slate-400: #a9abae; --color-slate-500: #909295; --color-slate-600: #67696c; --color-slate-700: #4b4d50;
+  --color-slate-800: #323437; --color-slate-850: #26282a; --color-slate-900: #1e1f21; --color-slate-950: #141517;
+  /* gray */
+  --color-gray-50: #f6f7f7; --color-gray-100: #eaebec; --color-gray-200: #dadbdc; --color-gray-300: #cbccce;
+  --color-gray-400: #a9abae; --color-gray-500: #909295; --color-gray-600: #67696c; --color-gray-700: #4b4d50;
+  --color-gray-800: #323437; --color-gray-850: #26282a; --color-gray-900: #1e1f21; --color-gray-950: #141517;
+  /* pine */
+  --color-pine-50: #eff6ff; --color-pine-100: #deebfd; --color-pine-200: #c6dbf9; --color-pine-300: #a7c4f0;
+  --color-pine-400: #85abe3; --color-pine-500: #6792d2; --color-pine-600: #4b79bd; --color-pine-700: #3361a5;
+  --color-pine-800: #1d4988; --color-pine-900: #0c336a; --color-pine-950: #021e48;
+  /* emerald */
+  --color-emerald-50: #f0f8f1; --color-emerald-100: #deeee2; --color-emerald-200: #c7e1cd; --color-emerald-300: #a7ceb0;
+  --color-emerald-400: #85b892; --color-emerald-500: #65a176; --color-emerald-600: #48895c; --color-emerald-700: #2e7245;
+  --color-emerald-800: #14592f; --color-emerald-900: #00411d; --color-emerald-950: #00290f;
+  /* amber */
+  --color-amber-50: #fbf4ea; --color-amber-100: #f6e7d3; --color-amber-200: #edd5b4; --color-amber-300: #dfbc8b;
+  --color-amber-400: #cda15f; --color-amber-500: #b98632; --color-amber-600: #a06e0f; --color-amber-700: #825807;
+  --color-amber-800: #644307; --color-amber-900: #493001; --color-amber-950: #2e1c00;
+  /* orange */
+  --color-orange-50: #fef2ed; --color-orange-100: #ffe3d5; --color-orange-200: #fbceb8; --color-orange-300: #f2b291;
+  --color-orange-400: #e49268; --color-orange-500: #d17441; --color-orange-600: #bb5817; --color-orange-700: #99460f;
+  --color-orange-800: #793200; --color-orange-900: #572403; --color-orange-950: #3a1300;
+  /* rose */
+  --color-rose-50: #fef2f1; --color-rose-100: #ffe2e0; --color-rose-200: #fdcbc8; --color-rose-300: #f9aba7;
+  --color-rose-400: #ec8986; --color-rose-500: #da6968; --color-rose-600: #c44a4d; --color-rose-700: #aa2e36;
+  --color-rose-800: #8b1020; --color-rose-900: #680414; --color-rose-950: #440109;
+  /* sky */
+  --color-sky-50: #eef7fb; --color-sky-100: #dcecf6; --color-sky-200: #c3deed; --color-sky-300: #a1c9df;
+  --color-sky-400: #7db1cd; --color-sky-500: #5b9aba; --color-sky-600: #3b82a4; --color-sky-700: #1c6a8c;
+  --color-sky-800: #09516e; --color-sky-900: #013b51; --color-sky-950: #002434;
+  /* teal */
+  --color-teal-50: #eef7f7; --color-teal-100: #dceeee; --color-teal-200: #c2e0e0; --color-teal-300: #a0cccc;
+  --color-teal-400: #7bb6b6; --color-teal-500: #589f9f; --color-teal-600: #368788; --color-teal-700: #127071;
+  --color-teal-800: #0e5556; --color-teal-900: #043e3e; --color-teal-950: #002627;
+  /* purple */
+  --color-purple-50: #f6f3fc; --color-purple-100: #ece6f8; --color-purple-200: #ddd4f0; --color-purple-300: #c8bbe3;
+  --color-purple-400: #b09fd3; --color-purple-500: #9984c0; --color-purple-600: #826baa; --color-purple-700: #6b5392;
+  --color-purple-800: #533c76; --color-purple-900: #3d295b; --color-purple-950: #26163d;
+
+  /* Primary buttons: the same colour in both themes, white text on it. */
+  --color-brand: #1f4f8f;
+  --color-brand-hover: #183e70;
+
+  /* Self-hosted in public/fonts (see public/styles.css). Design option: B, Plain and factual */
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-heading: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius-xs: 0.0625rem;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.125rem;
+  --radius-lg: 0.1875rem;
+  --radius-xl: 0.1875rem;
+  --radius-2xl: 0.25rem;
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
+
+  /*
+   * Tailwind 3's line heights for text sizes: fixed rem values, which child
+   * elements inherit as they are. v4 uses ratios, which children recompute
+   * for their own font size (e.g. a text-[11px] header in a text-sm table).
+   */
+  --text-xs--line-height: 1rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl--line-height: 2.5rem;
+}
+
+/*
+ * Light theme: the same classes, with the colors swapped. public/theme.js sets
+ * data-theme on <html> before the page is drawn (saved choice, otherwise the
+ * system setting); the header button switches it. Light backgrounds become the
+ * dark shades and the other way round; 300/400 (used for colored text) become
+ * the darker 800/700 so they stay readable on white and light grey. 500-700 stay as they are:
+ * they are button and accent colors that carry white text.
+ */
+@layer theme {
+  :root[data-theme='light'] {
+    --color-white: #15181c;
+    /* slate */
+    --color-slate-50: #181a1b; --color-slate-100: #26282a; --color-slate-200: #2c2e30; --color-slate-300: #3e4043;
+    --color-slate-400: #54575a; --color-slate-500: #67696c; --color-slate-600: #9c9fa1; --color-slate-700: #cbccce;
+    --color-slate-800: #e0e1e2; --color-slate-850: #eceded; --color-slate-900: #f6f7f7; --color-slate-950: #ffffff;
+    /* gray */
+    --color-gray-50: #181a1b; --color-gray-100: #26282a; --color-gray-200: #2c2e30; --color-gray-300: #3e4043;
+    --color-gray-400: #54575a; --color-gray-500: #67696c; --color-gray-600: #9c9fa1; --color-gray-700: #cbccce;
+    --color-gray-800: #e0e1e2; --color-gray-850: #eceded; --color-gray-900: #f6f7f7; --color-gray-950: #ffffff;
+    /* pine */
+    --color-pine-50: #021e48; --color-pine-100: #0c336a; --color-pine-200: #1d4988; --color-pine-300: #224e8f;
+    --color-pine-400: #3463a6; --color-pine-500: #6792d2; --color-pine-600: #4b79bd; --color-pine-700: #3361a5;
+    --color-pine-800: #c6dbf9; --color-pine-900: #deebfd; --color-pine-950: #eff6ff;
+    /* emerald */
+    --color-emerald-50: #00290f; --color-emerald-100: #00411d; --color-emerald-200: #14592f; --color-emerald-300: #1a5f34;
+    --color-emerald-400: #2f7346; --color-emerald-500: #65a176; --color-emerald-600: #48895c; --color-emerald-700: #2e7245;
+    --color-emerald-800: #c7e1cd; --color-emerald-900: #deeee2; --color-emerald-950: #f0f8f1;
+    /* amber */
+    --color-amber-50: #2e1c00; --color-amber-100: #493001; --color-amber-200: #644307; --color-amber-300: #6c4700;
+    --color-amber-400: #845a0b; --color-amber-500: #b98632; --color-amber-600: #a06e0f; --color-amber-700: #825807;
+    --color-amber-800: #edd5b4; --color-amber-900: #f6e7d3; --color-amber-950: #fbf4ea;
+    /* orange */
+    --color-orange-50: #3a1300; --color-orange-100: #572403; --color-orange-200: #793200; --color-orange-300: #803804;
+    --color-orange-400: #9b4812; --color-orange-500: #d17441; --color-orange-600: #bb5817; --color-orange-700: #99460f;
+    --color-orange-800: #fbceb8; --color-orange-900: #ffe3d5; --color-orange-950: #fef2ed;
+    /* rose */
+    --color-rose-50: #440109; --color-rose-100: #680414; --color-rose-200: #8b1020; --color-rose-300: #931725;
+    --color-rose-400: #ac3037; --color-rose-500: #da6968; --color-rose-600: #c44a4d; --color-rose-700: #aa2e36;
+    --color-rose-800: #fdcbc8; --color-rose-900: #ffe2e0; --color-rose-950: #fef2f1;
+    /* sky */
+    --color-sky-50: #002434; --color-sky-100: #013b51; --color-sky-200: #09516e; --color-sky-300: #005777;
+    --color-sky-400: #1e6c8e; --color-sky-500: #5b9aba; --color-sky-600: #3b82a4; --color-sky-700: #1c6a8c;
+    --color-sky-800: #c3deed; --color-sky-900: #dcecf6; --color-sky-950: #eef7fb;
+    /* teal */
+    --color-teal-50: #002627; --color-teal-100: #043e3e; --color-teal-200: #0e5556; --color-teal-300: #045c5d;
+    --color-teal-400: #147172; --color-teal-500: #589f9f; --color-teal-600: #368788; --color-teal-700: #127071;
+    --color-teal-800: #c2e0e0; --color-teal-900: #dceeee; --color-teal-950: #eef7f7;
+    /* purple */
+    --color-purple-50: #26163d; --color-purple-100: #3d295b; --color-purple-200: #533c76; --color-purple-300: #58427d;
+    --color-purple-400: #6c5594; --color-purple-500: #9984c0; --color-purple-600: #826baa; --color-purple-700: #6b5392;
+    --color-purple-800: #ddd4f0; --color-purple-900: #ece6f8; --color-purple-950: #f6f3fc;
+
+  }
+
+  /* White text stays white on colored buttons and badges. */
+  :root[data-theme='light'] :is(
+    [class~='bg-brand'], [class~='bg-pine-600'], [class~='bg-pine-700'],
+    [class~='bg-rose-600'], [class~='bg-rose-700'], [class~='from-pine-600'], [class~='from-pine-700']
+  ) {
+    --color-white: #ffffff;
+  }
+}
+
+/*
+ * Tailwind 3 defaults that v4 changed: gray-200 borders, gray-400
+ * placeholders and the pointer cursor on buttons.
+ */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-gray-400);
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/*
+ * Tailwind 3's space-x/space-y: a margin on every visible child after the
+ * first. v4 instead puts a margin after every child but the last, which
+ * differs for inline children (labels) and for a hidden last child. The
+ * first rule switches v4's version off (zero specificity, so a child's own
+ * margin classes still win); the others are the v3 rules for the values this
+ * site uses. test/tailwind.test.js fails if a new space-* value has no rule.
+ */
+@layer utilities {
+  :where([class*='space-y-'] > *) { margin-block: 0; }
+  :where([class*='space-x-'] > *) { margin-inline: 0; }
+
+  .space-y-0\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.125rem; margin-bottom: 0; }
+  .space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.25rem; margin-bottom: 0; }
+  .space-y-1\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.375rem; margin-bottom: 0; }
+  .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; margin-bottom: 0; }
+  .space-y-2\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.625rem; margin-bottom: 0; }
+  .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem; margin-bottom: 0; }
+  .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; margin-bottom: 0; }
+  .space-y-5 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.25rem; margin-bottom: 0; }
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5rem; margin-bottom: 0; }
+  .space-y-10 > :not([hidden]) ~ :not([hidden]) { margin-top: 2.5rem; margin-bottom: 0; }
+  .space-x-1 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.25rem; margin-right: 0; }
+  .space-x-2 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.5rem; margin-right: 0; }
+  @media (width >= 40rem) {
+    .sm\:space-x-3 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.75rem; margin-right: 0; }
+  }
+}
