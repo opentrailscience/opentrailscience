@@ -432,7 +432,7 @@
         <div>
           <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">How I handle your data</h2>
           <p class="mt-3">Open Trail Science publishes every survey answer as an open dataset. That only works if nobody can pick out the people who answered, so this page explains what I ask, what I store and why.</p>
-          <p class="text-xs text-slate-500 mt-2 font-mono">Last updated 16 October 2026 • consent version <span id="privacy-consent-version">1</span></p>
+          <p class="text-xs text-slate-500 mt-2 font-mono">Last updated 17 October 2026 • consent version <span id="privacy-consent-version">2</span></p>
         </div>
 
         <!-- Short version -->
@@ -464,7 +464,7 @@
                 <tr><td class="py-2.5 px-3">Age at the start of the hike<br><span class="text-slate-500">29</span></td><td class="py-2.5 px-3">5-year range (everyone 20 or younger shares one)<br><span class="text-slate-500">25–29</span></td><td class="py-2.5 px-3">An exact age plus dates narrows things down a lot.</td></tr>
                 <tr><td class="py-2.5 px-3">Where you live</td><td class="py-2.5 px-3">A world region<br><span class="text-slate-500">Western Europe</span></td><td class="py-2.5 px-3">I never ask for your country, only a region.</td></tr>
                 <tr><td class="py-2.5 px-3">Injuries, illness, prior injuries, deadline</td><td class="py-2.5 px-3">The categories you picked from a list</td><td class="py-2.5 px-3">Free text can accidentally contain names, places or other people's details, so there is none.</td></tr>
-                <tr><td class="py-2.5 px-3">Height, weight, budget (in USD or EUR), visa, gear, food, painkillers, mileage, zero days, ratings</td><td class="py-2.5 px-3">As you entered them</td><td class="py-2.5 px-3">These are what the research is about, and on their own they don't reveal who you are.</td></tr>
+                <tr><td class="py-2.5 px-3">Height, weight, what you spent on the trail and on gear (in USD or EUR), visa, gear, food, painkillers, mileage, zero days, ratings</td><td class="py-2.5 px-3">As you entered them</td><td class="py-2.5 px-3">These are what the research is about, and on their own they don't reveal who you are.</td></tr>
                 <tr><td class="py-2.5 px-3">"Don't know"</td><td class="py-2.5 px-3">An empty value and a note that you didn't know</td><td class="py-2.5 px-3">So researchers can tell "didn't know" from "didn't apply".</td></tr>
                 <tr><td class="py-2.5 px-3">How long the survey took you</td><td class="py-2.5 px-3">A rough range<br><span class="text-slate-500">10–20 minutes</span></td><td class="py-2.5 px-3">Helps researchers spot rushed answers. It's a duration, not a date or time.</td></tr>
                 <tr><td class="py-2.5 px-3">When you submitted</td><td class="py-2.5 px-3">Not stored</td><td class="py-2.5 px-3">Nobody needs it, and a timestamp is just another clue.</td></tr>
@@ -1068,22 +1068,32 @@
                 </div>
               </div>
 
-              <!-- Total Budget -->
+              <!-- Costs: on the trail and gear, in one currency -->
               <div>
-                <label for="field-totalBudget" class="block text-sm font-semibold text-slate-200 mb-1.5">
-                  Total cost of the hike&nbsp;<span class="text-rose-400">*</span>
-                </label>
-                <div class="flex gap-2">
-                  <label for="field-budgetCurrency" class="sr-only">Currency</label>
-                  <select id="field-budgetCurrency" name="budgetCurrency" class="w-28 shrink-0 bg-slate-900 border border-slate-700 rounded-xl px-3 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
-                    <option value="" disabled selected>Currency</option>
-                    <option value="USD">USD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                  </select>
-                  <input type="number" id="field-totalBudget" name="totalBudget" min="0" max="100000" step="100" placeholder="e.g. 7500" class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <span class="block text-sm font-semibold text-slate-200">What did the hike cost?</span>
+                <span class="text-xs text-slate-400 mt-0.5 block">Paid in another currency? Please convert it roughly.</span>
+                <div class="mt-3 space-y-4">
+                  <div>
+                    <label for="field-budgetCurrency" class="block text-xs font-semibold text-slate-300 mb-1.5">Currency of both amounts&nbsp;<span class="text-rose-400">*</span></label>
+                    <select id="field-budgetCurrency" name="budgetCurrency" class="w-32 bg-slate-900 border border-slate-700 rounded-xl px-3 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                      <option value="" disabled selected>Select…</option>
+                      <option value="USD">USD ($)</option>
+                      <option value="EUR">EUR (€)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="field-trailSpending" class="block text-xs font-semibold text-slate-300 mb-1.5">How much did you spend on and during the trail?&nbsp;<span class="text-rose-400">*</span></label>
+                    <input type="number" id="field-trailSpending" name="trailSpending" min="0" max="100000" step="10" placeholder="e.g. 5000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <span class="text-xs text-slate-400 mt-1 block"><strong class="font-semibold text-slate-200">Travel to the trail and back home is not included.</strong> Count permits, food and resupply, town stays, restaurants, shuttles and other costs along the way. Your gear is the next question.</span>
+                    <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="trailSpending"> Don't know</label>
+                  </div>
+                  <div>
+                    <label for="field-gearCost" class="block text-xs font-semibold text-slate-300 mb-1.5">How much did your gear cost?&nbsp;<span class="text-rose-400">*</span></label>
+                    <input type="number" id="field-gearCost" name="gearCost" min="0" max="100000" step="10" placeholder="e.g. 2500" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <span class="text-xs text-slate-400 mt-1 block">Roughly what all the gear you hiked with cost, including things you already owned.</span>
+                    <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="gearCost"> Don't know</label>
+                  </div>
                 </div>
-                <span class="text-xs text-slate-400 mt-1 block">Including gear, permits, travel, town stays, restaurants and resupply. Paid in another currency? Please convert it roughly.</span>
-                <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="totalBudget"> Don't know</label>
               </div>
 
               <!-- Start Alone or With Others -->
