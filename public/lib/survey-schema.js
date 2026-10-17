@@ -61,12 +61,16 @@
   };
 
   /**
-   * Which ways a trail can be hiked: the two main directions offered in the
-   * form. East-west trails, loops and the Camino have their own; everything
-   * else is NOBO/SOBO. Flip-flop and Section are always offered too.
+   * Which ways a trail can be hiked: the main directions offered in the form.
+   * East-west trails, loops and the Camino have their own, the "Other" choices
+   * offer both NOBO/SOBO and EABO/WEBO, and everything else is NOBO/SOBO.
+   * Flip-flop and Section are always offered too.
    */
+  const ANY_COMPASS_DIRECTION = ['NOBO', 'SOBO', 'EABO', 'WEBO'];
   const TRAIL_DIRECTIONS = {
     PNT: ['WEBO', 'EABO'], C2C: ['EABO', 'WEBO'], GR10: ['EABO', 'WEBO'], VIA: ['WEBO', 'EABO'], IAT: ['WEBO', 'EABO'],
+    Hayduke: ['WEBO', 'EABO'], // Arches to Zion
+    'Other North America': ANY_COMPASS_DIRECTION, 'Other Europe': ANY_COMPASS_DIRECTION, Other: ANY_COMPASS_DIRECTION,
     TMB: ['CCW', 'CW'], TRT: ['CW', 'CCW'],
     CDS: ['TO_SANTIAGO', 'FROM_SANTIAGO']
   };
@@ -189,7 +193,7 @@
       values: [...Object.keys(DIRECTION_LABELS), 'Flip-flop', 'Section'], role: 'Categorical feature',
       check: (value, d) => (['Flip-flop', 'Section'].includes(value) || directionsFor(d.trail).includes(value)
         ? null : 'Please pick a direction for this trail'),
-      description: 'NOBO/SOBO on most trails; EABO/WEBO on east-west trails, CW/CCW on loops, TO_SANTIAGO/FROM_SANTIAGO on the Camino.'
+      description: 'NOBO/SOBO on most trails; EABO/WEBO on east-west trails, CW/CCW on loops, TO_SANTIAGO/FROM_SANTIAGO on the Camino; the "Other" trail choices offer NOBO/SOBO and EABO/WEBO.'
     },
     {
       name: 'startDate', question: 'Start date', label: 'Start date', type: 'date', step: 1, input: 'field-startDate', store: false,

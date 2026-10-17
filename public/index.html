@@ -819,10 +819,10 @@
                 <div>
                   <div class="flex items-center gap-1.5 mb-1.5">
                     <span class="text-sm font-semibold text-slate-200">Direction&nbsp;<span class="text-rose-400">*</span></span>
-                    <button type="button" id="direction-help-btn" aria-label="How to choose NOBO or SOBO" aria-describedby="direction-help" aria-expanded="false" class="w-5 h-5 rounded-full border border-slate-600 text-slate-400 hover:text-white hover:border-slate-400 text-xs font-bold leading-none flex items-center justify-center transition">i</button>
                   </div>
                   <div class="grid grid-cols-2 gap-2" id="direction-radios">
-                    <!-- These two follow the trail (Schema.directionsFor): NOBO/SOBO, EABO/WEBO, loops, Camino. -->
+                    <!-- These follow the trail (Schema.directionsFor): NOBO/SOBO, EABO/WEBO, loops, Camino; the
+                         last two are only shown for the "Other" trails, which offer NOBO/SOBO and EABO/WEBO. -->
                     <div id="direction-card-0" class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="NOBO">
                       <div class="text-xs font-bold text-white">NOBO</div>
                       <div class="text-[11px] text-slate-400">Northbound</div>
@@ -830,6 +830,14 @@
                     <div id="direction-card-1" class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="SOBO">
                       <div class="text-xs font-bold text-white">SOBO</div>
                       <div class="text-[11px] text-slate-400">Southbound</div>
+                    </div>
+                    <div id="direction-card-2" class="hidden choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="EABO">
+                      <div class="text-xs font-bold text-white">EABO</div>
+                      <div class="text-[11px] text-slate-400">Eastbound</div>
+                    </div>
+                    <div id="direction-card-3" class="hidden choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="WEBO">
+                      <div class="text-xs font-bold text-white">WEBO</div>
+                      <div class="text-[11px] text-slate-400">Westbound</div>
                     </div>
                     <div class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="Flip-flop">
                       <div class="text-xs font-bold text-white">Flip-flop</div>
@@ -841,9 +849,6 @@
                     </div>
                   </div>
                   <input type="hidden" id="field-direction" name="direction" value="">
-                  <div id="direction-help" role="tooltip" class="hidden mt-2 p-3 rounded-lg bg-slate-950 border border-slate-700 text-xs text-slate-300 leading-relaxed">
-                    <strong class="text-white">NOBO or SOBO?</strong> On some trails this can be confusing. Just pick whichever best matches the direction you hiked on your first day.
-                  </div>
                 </div>
               </div>
 

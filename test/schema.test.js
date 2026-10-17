@@ -227,7 +227,7 @@ test('popular trails keep ISO weeks; months are always stored', () => {
 });
 
 test('small trails get months, rounded distance and whole-week durations', () => {
-  const d = validate({ trail: 'Hayduke', totalDistanceMiles: 812, totalZeroDays: 5, totalNeroDays: 3 }).data;
+  const d = validate({ trail: 'Hayduke', direction: 'WEBO', totalDistanceMiles: 812, totalZeroDays: 5, totalNeroDays: 3 }).data;
   assert.equal(d.datePrecision, 'month');
   assert.equal(d.startWeek, null);
   assert.equal(d.endWeek, null);
@@ -281,6 +281,10 @@ test('directions depend on the trail', () => {
   assert.equal(validate({ trail: 'CDS', direction: 'TO_SANTIAGO' }).isValid, true);
   assert.equal(validate({ trail: 'PCT', direction: 'Flip-flop' }).isValid, true);
   assert.match(validate({ trail: 'PCT', direction: 'EABO' }).errors[0], /direction for this trail/);
+  assert.equal(validate({ trail: 'Hayduke', direction: 'WEBO' }).isValid, true, 'Arches to Zion runs west');
+  for (const trail of ['Other North America', 'Other Europe', 'Other']) {
+    for (const direction of ['NOBO', 'SOBO', 'EABO', 'WEBO']) assert.equal(validate({ trail, direction }).isValid, true, `${trail} ${direction}`);
+  }
   for (const trail of Schema.TRAILS) {
     for (const d of Schema.directionsFor(trail)) assert.ok(Schema.DIRECTION_LABELS[d], `${trail}: ${d}`);
   }
