@@ -1,0 +1,34 @@
+<!doctype html>
+<!--
+  Source of public/img/example-share-card.webp, the example card on the home
+  page. It draws the real share card (public/share-card.js) with example
+  numbers. Regenerate after changing the card: npm run render:example-card
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Example share card</title>
+<link rel="stylesheet" href="/public/styles.css">
+<style>html, body { margin: 0; width: 1080px; height: 1350px; overflow: hidden; background: #ffffff; } img { display: block; }</style>
+</head>
+<body>
+<img id="card" width="1080" height="1350" alt="">
+<!-- Answered after a delay, so the screenshot waits until the card is drawn. -->
+<img src="/__wait" width="1" height="1" alt="" style="position: absolute">
+<script src="/public/lib/survey-schema.js"></script>
+<script src="/public/lib/survey-stats.js"></script>
+<script src="/public/share-card.js"></script>
+<script>
+  const example = { trail: 'PCT', hikeYear: 2025, completionStatus: 'continuous_purist' };
+  const comparison = {
+    group: 'PCT hikers', peerCount: 120,
+    items: [
+      { brag: true, percent: 86, cardLine: 'of PCT hikers carried a heavier pack' },
+      { brag: true, percent: 71, cardLine: 'of PCT hikers took zero days more often' }
+    ]
+  };
+  ShareCard.render(example, comparison, { unitSystem: 'imperial' })
+    .then(blob => { document.getElementById('card').src = URL.createObjectURL(blob); });
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+  # Builds public/css/tailwind.css and exports the dataset to public/data/
+  command = "npm run build"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Once a day: triggers a snapshot rebuild if answers are still waiting
+# (netlify/functions/utils/rebuild.js). Needs BUILD_HOOK_URL, see docs/DEVELOPMENT.md.
+[functions."snapshot-nightly"]
+  schedule = "@daily"
+
+# Every 1 January: delete all feedback, so none is kept longer than 12 months
+# (feedback has no date, see netlify/functions/feedback-cleanup.js).
+[functions."feedback-cleanup"]
+  schedule = "0 4 1 1 *"
+
+[dev]
+  command = "npm run dev"
+  port = 8888
+  targetPort = 3000
+  publish = "public"
+  autoLaunch = false
+
+# Proxy /api requests to Netlify Serverless Functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Direct clean URLs for static dataset downloads
+[[redirects]]
+  from = "/download/csv"
+  to = "/data/thru_hiker_survey_dataset.csv"
+  status = 200
+
+[[redirects]]
+  from = "/download/json"
+  to = "/data/thru_hiker_survey_dataset.json"
+  status = 200
+
+# SPA routing fallback (serves index.html for client-side navigation)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

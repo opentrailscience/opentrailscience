@@ -1,0 +1,19 @@
+node_modules/
+.env
+.netlify/
+.DS_Store
+*.log
+
+# Build outputs (created by `npm run build`)
+public/css/tailwind.css
+public/js/
+public/data/
+
+# Original photos (camera metadata incl. GPS); only stripped, cropped copies go in public/img
+src/photos/
+
+# Private notes: deployment guide, to-do list and coding-agent instructions (kept locally)
+docs/DEPLOYMENT.md
+docs/TODO.md
+AGENTS.md
+CLAUDE.md
