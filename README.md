@@ -12,7 +12,7 @@ While planning for the PCT I of course watched all the mandatory indie-folk-infu
 
 ## A word on vibe coding
 
-A lot of this code was written together with AI, so yes, it's vibe coded. I did however go through all of it, I understand how everything works and I made sure it's all good: the survey, the blurring, what gets stored and what gets published. There are tests for all of that too. If you still find something that's off, please tell me!
+The entire codebase was written by AI.  I did, however, run extensive local testing and understand all backend functionality, which (to the best of my abilities) looks good. If you think I missed something, let me know at hello@opentrailscience.org.
 
 ## What's in here
 
