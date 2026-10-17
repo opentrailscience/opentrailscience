@@ -350,13 +350,13 @@
       const res = await fetch(STATIC_STATS_URL);
       if (!res.ok) throw new Error('stats.json returned ' + res.status);
       state.stats = await res.json();
-      renderStats(state.stats, 'Open Dataset');
+      renderStats(state.stats);
     } catch (err) {
       console.warn('Could not load the stats snapshot:', err.message);
     }
   }
 
-  function renderStats(data, sourceLabel) {
+  function renderStats(data) {
     const mine = mySubmissionsAfter(data.lastUpdated);
     const total = (data.totalCount || 0) + mine.length;
     const early = total < FIRST_HIKERS_GOAL;
@@ -374,13 +374,6 @@
       animateNumber($('stat-completion-rate'), data.completionRate, 0, '%');
       animateNumber($('stat-median-baseweight'), data.medianBaseWeightLbs, 1, ' lbs');
       animateNumber($('stat-avg-miles'), data.avgDailyMiles, 1, ' mi');
-    }
-
-    const badgeEl = $('hero-live-badge-text');
-    if (badgeEl) {
-      badgeEl.textContent = early
-        ? `Early days • ${total === 0 ? 'be the very first hiker' : `${total} ${total === 1 ? 'hiker' : 'hikers'} so far`}`
-        : `${total} Hiker Journeys Logged • ${sourceLabel}`;
     }
 
     ['pct', 'at', 'cdt', 'ct', 'azt', 'tmb', 'ta'].forEach(t => {
@@ -2002,7 +1995,7 @@
           result.textContent = 'Done. Your answers have been deleted from the database. They will be gone from the website and download files with the next dataset update (usually within a day).';
           $('deletion-code-input').value = '';
           forgetMySubmission(code);
-          if (state.stats) renderStats(state.stats, 'Open Dataset');
+          if (state.stats) renderStats(state.stats);
           insightsLoaded = false;
         } else {
           result.className = 'mt-3 text-sm text-rose-300';
