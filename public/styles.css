@@ -515,7 +515,6 @@
   #view-home > div:first-child :is(h1, p), .app-view > div > .text-center:first-child:not(.max-w-6xl) { margin-left: 0; }
   #stats-first50 > p, #stats-first50 > div { margin-left: 0; }
   #view-home > div:first-child :is(.justify-center) { justify-content: flex-start; }
-  #view-home > div:first-child .rounded-full:has(#hero-live-badge-text) { background: transparent; border: 0; padding-left: 0; box-shadow: none; }
   /* Darker on hover (not lighter), so the white text keeps its contrast. */
   #btn-delete-answers:hover { background-color: var(--color-rose-700); filter: brightness(0.9); }
 }
