@@ -687,31 +687,6 @@
   }
 
   function initConditionals() {
-    // NOBO/SOBO help: shown while hovering those cards or the (i) button, or toggled with the button (touch, keyboard).
-    const help = $('direction-help');
-    const helpBtn = $('direction-help-btn');
-    let helpPinned = false;
-    const showHelp = visible => {
-      help.classList.toggle('hidden', !visible);
-      helpBtn.setAttribute('aria-expanded', String(visible));
-    };
-    helpBtn.addEventListener('click', () => { helpPinned = !helpPinned; showHelp(helpPinned); });
-    // Hover only with a real mouse. On phones a tap counts as hovering, so tapping
-    // NOBO opened the box and the next tap anywhere closed it: the page jumped
-    // under the finger. There the (i) button is the way to open it.
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      helpBtn.addEventListener('mouseenter', () => showHelp(true));
-      helpBtn.addEventListener('mouseleave', () => showHelp(helpPinned));
-      // Hovering NOBO or SOBO shows the explanation too; these cards change with the
-      // trail (clockwise, eastbound, ...), so check what they mean right now.
-      ['direction-card-0', 'direction-card-1'].forEach(id => {
-        const card = $(id);
-        const isNoboSobo = () => ['NOBO', 'SOBO'].includes(card.getAttribute('data-value'));
-        card.addEventListener('mouseenter', () => { if (isNoboSobo()) showHelp(true); });
-        card.addEventListener('mouseleave', () => showHelp(helpPinned));
-      });
-    }
-
     YES_NO_TOGGLES.forEach(t => bindYesNoToggle(t.name, t.field, t.details, t.yesClass));
 
     // Sleep location -> shelter and insulation (own gear only)
@@ -804,18 +779,18 @@
   // --- DIRECTION: the first two options follow the trail ------------------------
   function updateDirectionCards() {
     const options = Schema.directionsFor($('field-trail').value);
-    options.forEach((value, i) => {
+    // Four cards; most trails use two, the "Other" trails all four.
+    [0, 1, 2, 3].forEach(i => {
       const card = $(`direction-card-${i}`);
+      const value = options[i];
+      card.classList.toggle('hidden', !value);
+      if (!value || card.getAttribute('data-value') !== value) setCardSelected(card, false);
+      if (!value) return;
       const [title, subtitle] = Schema.DIRECTION_LABELS[value];
-      if (card.getAttribute('data-value') !== value) setCardSelected(card, false);
       card.setAttribute('data-value', value);
       card.children[0].textContent = title;
       card.children[1].textContent = subtitle;
     });
-    // The NOBO/SOBO explanation only fits trails that use NOBO/SOBO (including custom ones).
-    const nobo = options[0] === 'NOBO';
-    $('direction-help-btn').classList.toggle('hidden', !nobo);
-    if (!nobo) $('direction-help').classList.add('hidden');
     // An answer that this trail doesn't offer is cleared.
     const field = $('field-direction');
     if (field.value && !['Flip-flop', 'Section'].includes(field.value) && !options.includes(field.value)) field.value = '';

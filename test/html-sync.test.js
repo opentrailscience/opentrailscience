@@ -177,12 +177,6 @@ test('Open Graph tags use absolute URLs and the image exists at 1200x630', () =>
   assert.equal(meta('og:image:height'), '630');
 });
 
-test('the direction question explains how to pick NOBO or SOBO', () => {
-  assert.match(html, /id="direction-help-btn"[^>]*aria-describedby="direction-help"/);
-  const help = html.match(/<div id="direction-help"[^>]*>([\s\S]*?)<\/div>/);
-  assert.ok(help && /NOBO or SOBO/.test(help[1]) && /first day/.test(help[1]));
-});
-
 test('the trail check is on the start page, between the consent box and the start button', () => {
   const gate = html.slice(html.indexOf('id="consent-gate"'), html.indexOf('id="survey-body"'));
   const box = gate.indexOf('id="consent-checkbox"');
