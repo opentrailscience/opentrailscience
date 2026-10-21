@@ -24,11 +24,8 @@
   publish = "public"
   autoLaunch = false
 
-# Proxy /api requests to Netlify Serverless Functions
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+# The /api/* routes are set in the functions themselves (config.path in
+# netlify/functions/*.js), together with their rate limits.
 
 # Direct clean URLs for static dataset downloads
 [[redirects]]

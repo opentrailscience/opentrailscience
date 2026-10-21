@@ -2,7 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const crypto = require('crypto');
 const HumanCheck = require('../public/lib/human-check');
-const submit = require('../netlify/functions/submit');
+const submit = require('../netlify/functions/utils/submit');
 const { passesHumanCheck } = require('../netlify/functions/utils/spam');
 const { freshDb, submission, solvePow, post } = require('./helpers');
 

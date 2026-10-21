@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const feedback = require('../netlify/functions/feedback');
-const submit = require('../netlify/functions/submit');
+const feedback = require('../netlify/functions/utils/feedback');
+const submit = require('../netlify/functions/utils/submit');
 const { fetchPublicRecords, buildSnapshot } = require('../netlify/functions/utils/dataset');
 const { THROTTLE_MAX } = require('../netlify/functions/utils/spam');
 const { SCHEMA_VERSION } = require('../public/lib/survey-schema');

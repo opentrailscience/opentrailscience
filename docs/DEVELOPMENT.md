@@ -20,8 +20,8 @@ public/                     The website (Netlify's publish directory)
   lib/human-check.js        The trail check and the proof of work before submitting
   _headers                  Security headers, including a strict Content-Security-Policy
   fonts/, img/              Self-hosted fonts (SIL OFL) and images
-netlify/functions/          submit, delete, my-hike, feedback and two scheduled jobs
-  utils/                    Database, public dataset, insights, spam checks, rebuilds
+netlify/functions/          submit, hike-code (look up and delete), feedback, two scheduled jobs
+  utils/                    The request handlers, database, public dataset, insights, spam checks, rebuilds
 scripts/                    Dev server, dataset export, database scripts, data dictionary
 src/                        Tailwind theme, and the sources of the two generated images
 test/                       npm test
@@ -81,6 +81,11 @@ timestamp, and never published.
 Hidden honeypot fields, a minimum time on the form, a short trail question, a proof of work in
 the browser and at most 10 submissions per network and hour. The network is stored only as a
 keyed hash, apart from the answers, and is deleted after an hour.
+
+Before any of that, Netlify itself turns a network away after 5 submissions a minute, or after
+10 lookups and deletions a minute together (`rateLimit` in the `config` of
+`netlify/functions/submit.js` and `hike-code.js`; the free plan allows two such rules per site).
+The functions are only reachable at their `/api/…` paths.
 
 ## Running it locally
 

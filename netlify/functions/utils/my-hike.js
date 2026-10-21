@@ -5,12 +5,12 @@
  * people have answered. The record is public anyway; the code only proves
  * which row is yours. Limited per network and hour like the other endpoints.
  */
-const { getDb } = require('./utils/db');
-const { json, methodNotAllowed, readJsonBody } = require('./utils/http');
-const { isThrottled } = require('./utils/spam');
-const { findByCode } = require('./utils/deletion');
-const { comparisonFor } = require('./utils/peers');
-const { toPublicRecord } = require('./utils/dataset');
+const { getDb } = require('./db');
+const { json, methodNotAllowed, readJsonBody } = require('./http');
+const { isThrottled } = require('./spam');
+const { findByCode } = require('./deletion');
+const { comparisonFor } = require('./peers');
+const { toPublicRecord } = require('./dataset');
 
 const MAX_BODY_BYTES = 1024;
 

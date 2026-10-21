@@ -1,6 +1,8 @@
 /**
- * Local development server: serves public/ and runs the Netlify functions,
- * mirroring the redirects in netlify.toml. No dependencies beyond Node.
+ * Local development server: serves public/ and runs the Netlify functions at
+ * the paths in their config (netlify/functions/*.js) and the redirects in
+ * netlify.toml. No dependencies beyond Node. The rate limits in the
+ * function configs only exist on Netlify; the hourly limits apply here too.
  *
  *   npm run dev              # uses MONGODB_URI from .env, or offline mode without it
  *   npm run dev -- --offline # in-memory database with synthetic hikers
@@ -51,12 +53,12 @@ const MIME_TYPES = {
   '.txt': 'text/plain; charset=utf-8'
 };
 
-const functions = {
-  submit: require('../netlify/functions/submit'),
-  delete: require('../netlify/functions/delete'),
-  feedback: require('../netlify/functions/feedback'),
-  'my-hike': require('../netlify/functions/my-hike')
-};
+// Path -> function, from the functions' own config.path (as on Netlify).
+const functions = {};
+for (const name of ['submit', 'hike-code', 'feedback']) {
+  const fn = require(`../netlify/functions/${name}`);
+  for (const route of [].concat(fn.config.path)) functions[route] = fn.default;
+}
 
 /**
  * Offline mode has no files in public/data, so the snapshot (dataset,
@@ -104,25 +106,16 @@ function readBody(req) {
   });
 }
 
-async function runFunction(name, req, res, url) {
-  const fn = functions[name];
-  if (!fn) {
-    res.writeHead(404, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ error: `Function ${name} not found` }));
-  }
-
+async function runFunction(fn, req, res, url) {
   try {
     const body = await readBody(req);
-    const response = await fn.handler({
-      httpMethod: req.method,
-      headers: Object.assign({ 'x-nf-client-connection-ip': req.socket.remoteAddress }, req.headers),
-      queryStringParameters: Object.fromEntries(url.searchParams),
-      body: body || null
-    }, {});
-    res.writeHead(response.statusCode || 200, response.headers || {});
-    res.end(response.body || '');
+    const request = new Request(url, { method: req.method, headers: req.headers, body: ['GET', 'HEAD'].includes(req.method) ? undefined : body });
+    // As on Netlify, the client IP comes from the connection, not from a header.
+    const response = await fn(request, { ip: req.socket.remoteAddress });
+    res.writeHead(response.status, Object.fromEntries(response.headers));
+    res.end(await response.text());
   } catch (err) {
-    console.error(`Function ${name} threw:`, err);
+    console.error(`Function ${url.pathname} threw:`, err);
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: err.message }));
   }
@@ -167,8 +160,11 @@ const server = http.createServer((req, res) => {
     return res.end('Not found');
   }
 
-  const fnMatch = pathname.match(/^\/(?:api|\.netlify\/functions)\/([^/]+)/);
-  if (fnMatch) return runFunction(fnMatch[1], req, res, url);
+  if (functions[pathname]) return runFunction(functions[pathname], req, res, url);
+  if (pathname.startsWith('/api/')) {
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ success: false, error: 'Not found' }));
+  }
 
   if (pathname === `/${BUNDLE}`) return serveBundle(res);
 

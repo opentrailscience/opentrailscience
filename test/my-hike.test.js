@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const submit = require('../netlify/functions/submit');
-const myHike = require('../netlify/functions/my-hike');
+const submit = require('../netlify/functions/utils/submit');
+const myHike = require('../netlify/functions/utils/my-hike');
 const { THROTTLE_MAX } = require('../netlify/functions/utils/spam');
 const { freshDb, submission, get, post } = require('./helpers');
 
