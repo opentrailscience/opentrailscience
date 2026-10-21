@@ -3,10 +3,10 @@ const assert = require('node:assert/strict');
 const { PUBLIC_COLUMNS } = require('../public/lib/survey-schema');
 const { generateSyntheticHikers } = require('../scripts/lib/synthetic-hikers');
 const { useDatabase } = require('../netlify/functions/utils/db');
-const submit = require('../netlify/functions/submit');
+const submit = require('../netlify/functions/utils/submit');
 const { fetchPublicRecords, buildSnapshot, publicOrder, PREVIEW_FIELDS } = require('../netlify/functions/utils/dataset');
 const { THROTTLE_MAX } = require('../netlify/functions/utils/spam');
-const deleteFn = require('../netlify/functions/delete');
+const deleteFn = require('../netlify/functions/utils/delete');
 const { hashCode } = require('../netlify/functions/utils/deletion');
 const { freshDb, submission, get, post } = require('./helpers');
 

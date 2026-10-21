@@ -221,6 +221,13 @@
   });
 
   // --- HELPERS ---
+  // Netlify's rate limits (config in netlify/functions/*.js) answer 429 with their
+  // own page instead of our JSON, so there is no message from the server then.
+  function errorText(res, message, fallback) {
+    if (message) return message;
+    return res.status === 429 ? 'Too many attempts in a short time. Please wait a minute and try again.' : fallback;
+  }
+
   function escapeHtml(value) {
     return String(value === null || value === undefined ? '' : value)
       .replace(/&/g, '&amp;')
@@ -1089,7 +1096,7 @@
       const result = await res.json().catch(() => ({}));
 
       if (!res.ok || !result.success) {
-        throw new Error((result.errors && result.errors.join(', ')) || `Submission failed (HTTP ${res.status})`);
+        throw new Error(errorText(res, result.errors && result.errors.join(', '), `Submission failed (HTTP ${res.status})`));
       }
 
       // The server returns the stored record, including the derived pace.
@@ -1974,7 +1981,7 @@
           insightsLoaded = false;
         } else {
           result.className = 'mt-3 text-sm text-rose-300';
-          result.textContent = body.error || `Deletion failed (HTTP ${res.status}).`;
+          result.textContent = errorText(res, body.error, `Deletion failed (HTTP ${res.status}).`);
         }
       } catch (err) {
         result.className = 'mt-3 text-sm text-rose-300';
@@ -2064,7 +2071,7 @@
           body: JSON.stringify({ code })
         });
         const body = await res.json().catch(() => ({}));
-        if (!res.ok || !body.success) throw new Error(body.error || `Lookup failed (HTTP ${res.status}).`);
+        if (!res.ok || !body.success) throw new Error(errorText(res, body.error, `Lookup failed (HTTP ${res.status}).`));
         populateSuccessCard(body.data);
         populateComparison(body.comparison);
         prepareShare(body.data, body.comparison);
@@ -2113,7 +2120,7 @@
           body: JSON.stringify({ message })
         });
         const body = await res.json().catch(() => ({}));
-        if (!res.ok || !body.success) throw new Error(body.error || `Sending failed (HTTP ${res.status}).`);
+        if (!res.ok || !body.success) throw new Error(errorText(res, body.error, `Sending failed (HTTP ${res.status}).`));
         box.disabled = true;
         result.className = 'text-xs text-pine-300 font-semibold';
         result.textContent = 'Thank you! I read every single message.';

@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const submit = require('../netlify/functions/submit');
-const deleteFn = require('../netlify/functions/delete');
+const submit = require('../netlify/functions/utils/submit');
+const deleteFn = require('../netlify/functions/utils/delete');
 const { networkOf, THROTTLE_MAX } = require('../netlify/functions/utils/spam');
 const { freshDb, submission, post } = require('./helpers');
 

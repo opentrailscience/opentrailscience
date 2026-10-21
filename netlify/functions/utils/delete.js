@@ -4,11 +4,11 @@
  * The record is removed from the database at once, and from the website and
  * download files with the next snapshot rebuild (utils/rebuild.js).
  */
-const { getDb } = require('./utils/db');
-const { json, methodNotAllowed, readJsonBody } = require('./utils/http');
-const { isThrottled } = require('./utils/spam');
-const { deleteByCode } = require('./utils/deletion');
-const { notePublicChange } = require('./utils/rebuild');
+const { getDb } = require('./db');
+const { json, methodNotAllowed, readJsonBody } = require('./http');
+const { isThrottled } = require('./spam');
+const { deleteByCode } = require('./deletion');
+const { notePublicChange } = require('./rebuild');
 
 // { "code": "XXXX-XXXX-XXXX-XXXX" } is about 30 bytes.
 const MAX_BODY_BYTES = 1024;

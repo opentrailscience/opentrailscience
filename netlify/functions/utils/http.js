@@ -3,7 +3,8 @@
 function json(statusCode, body, headers) {
   return {
     statusCode,
-    headers: Object.assign({ 'Content-Type': 'application/json; charset=utf-8' }, headers),
+    // nosniff here too: it isn't documented whether public/_headers reaches functions with their own path.
+    headers: Object.assign({ 'Content-Type': 'application/json; charset=utf-8', 'X-Content-Type-Options': 'nosniff' }, headers),
     body: JSON.stringify(body)
   };
 }
@@ -36,4 +37,25 @@ function header(event, name) {
   return key ? headers[key] : undefined;
 }
 
-module.exports = { json, methodNotAllowed, readJsonBody, header };
+/**
+ * Runs a Lambda-style handler as a function of Netlify's current API (web
+ * Request in, Response out), which is what allows rate limits in `config`.
+ * The client IP comes from Netlify's context, so the hourly limits in
+ * spam.js keep working as before.
+ */
+function webHandler(handler) {
+  return async (req, context) => {
+    const headers = Object.fromEntries(req.headers);
+    if (context && context.ip) headers['x-nf-client-connection-ip'] = context.ip;
+    const event = {
+      httpMethod: req.method,
+      headers,
+      body: ['GET', 'HEAD'].includes(req.method) ? '' : await req.text(),
+      isBase64Encoded: false
+    };
+    const res = await handler(event);
+    return new Response(res.body, { status: res.statusCode, headers: res.headers });
+  };
+}
+
+module.exports = { json, methodNotAllowed, readJsonBody, header, webHandler };
