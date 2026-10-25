@@ -92,4 +92,4 @@ async function isThrottled(db, event, now, scope) {
   }
 }
 
-module.exports = { isLikelySpam, passesHumanCheck, isThrottled, networkOf, MIN_FILL_SECONDS, THROTTLE_MAX, HONEYPOT_FIELDS };
+module.exports = { isLikelySpam, passesHumanCheck, isThrottled, networkOf, clientIp, MIN_FILL_SECONDS, THROTTLE_MAX, HONEYPOT_FIELDS };

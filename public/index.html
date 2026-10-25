@@ -432,7 +432,7 @@
         <div>
           <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">How I handle your data</h2>
           <p class="mt-3">Open Trail Science publishes every survey answer as an open dataset. That only works if nobody can pick out the people who answered, so this page explains what I ask, what I store and why.</p>
-          <p class="text-xs text-slate-500 mt-2 font-mono">Last updated 17 October 2026 • consent version <span id="privacy-consent-version">2</span></p>
+          <p class="text-xs text-slate-500 mt-2 font-mono">Last updated 25 October 2026 • consent version <span id="privacy-consent-version">3</span></p>
         </div>
 
         <!-- Short version -->
@@ -521,6 +521,10 @@
               <dt class="font-semibold text-white">Spam protection</dt>
               <dd class="mt-1">To keep out bots and spam, I keep a scrambled version of your IP address (hashed) for one hour when you submit. That allows at most 10 submissions per hour. It is deleted automatically after the hour and never linked to your answers. The same applies to deletion attempts, code lookups and feedback messages. On top of that, you answer a small trail question before the survey starts, and when you submit, your browser solves a short calculation (about a second). Both only prove that you're not a bot, run without any third party and aren't stored.</dd>
             </div>
+            <div id="privacy-bot-check">
+              <dt class="font-semibold text-white">Bot check by Cloudflare</dt>
+              <dd class="mt-1">When you press Submit, Cloudflare Turnstile checks that you're a person and not a bot. For that, Cloudflare (a US company) sees your IP address and technical details of your browser, like its user agent. According to Cloudflare, these are only used for this check and not to identify or track you (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">Turnstile privacy addendum</a>). I don't receive any of it, only whether the check passed. The check only loads on the last page of the survey, so just visiting this website doesn't contact Cloudflare.</dd>
+            </div>
             <div>
               <dt class="font-semibold text-white">Your browser</dt>
               <dd class="mt-1">While you fill in the survey, your answers are saved in your own browser (only local storage), so a reload doesn't lose them. They stay on your device and are only sent when you submit. The draft is deleted when you submit, when you press "Start over" or after 14 days. If you switch between light and dark mode, your browser also remembers that choice. You can of course clear all of this in your browser's site data settings. None of it is a cookie, and none of it is sent anywhere or used for tracking.</dd>
@@ -546,6 +550,7 @@
             <li><strong class="text-white">Feedback:</strong> Feedback messages are deleted after at most 12 months.</li>
             <li><strong class="text-white">Server logs:</strong> Netlify keeps its logs online for 90 days and offline for one year (<a href="https://www.netlify.com/pdf/netlify-dpa.pdf" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">Netlify's data processing agreement</a>).</li>
             <li><strong class="text-white">Spam protection:</strong> the scrambled IP address is deleted after one hour.</li>
+            <li><strong class="text-white">Bot check:</strong> Cloudflare handles that data itself; I don't receive or keep any of it.</li>
             <li><strong class="text-white">Your draft:</strong> stays in your own browser and is deleted when you submit, press "Start over" or after 14 days.</li>
           </ul>
         </div>
@@ -556,9 +561,10 @@
           <ul class="mt-3 space-y-2">
             <li><strong class="text-white">Netlify, Inc. (USA):</strong> hosts the website and runs the code that checks and saves your answers.</li>
             <li><strong class="text-white">MongoDB, Inc. (MongoDB Atlas, USA):</strong> stores the blurred answers and, separately, the feedback messages.</li>
+            <li><strong class="text-white">Cloudflare, Inc. (USA):</strong> runs the bot check when you submit. It doesn't receive your answers.</li>
             <li><strong class="text-white">The open dataset:</strong> the same blurred answers, downloadable by anyone worldwide under the CC0 public domain dedication.</li>
           </ul>
-          <p class="mt-3">Both providers are US companies, and I have data processing agreements with both of them. The stored survey answers, including health information, are blurred but not anonymous, and they are stored in the USA.</p>
+          <p class="mt-3">All three providers are US companies, and I have data processing agreements with all of them. The stored survey answers, including health information, are blurred but not anonymous, and they are stored in the USA.</p>
         </div>
 
         <!-- Legal basis, in plain words -->
@@ -1826,6 +1832,12 @@
             <ul id="survey-error-list" class="list-disc list-inside space-y-0.5 pl-1"></ul>
           </div>
 
+          <!-- Cloudflare Turnstile, only on the last step (see app.js). The site key is public. -->
+          <div id="turnstile-box" class="hidden mt-6" data-sitekey="0x4AAAAAAFlz-4qpgfPjSnU2">
+            <div id="turnstile-widget"></div>
+            <p class="text-xs text-slate-400 mt-2">When you submit, Cloudflare quickly checks that you're a person and not a bot. <a href="#privacy-bot-check" class="underline underline-offset-2 hover:text-slate-200">What that means for your data</a></p>
+          </div>
+
           <!-- Back and Next -->
           <div class="mt-6 flex items-center justify-between">
             <button type="button" id="btn-wizard-prev" aria-label="Back" class="px-5 max-[379px]:px-3.5 py-3 rounded-xl font-semibold text-sm bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 opacity-40 cursor-not-allowed" disabled>
@@ -2298,7 +2310,7 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
             </div>
             <div>
               <dt class="font-semibold text-white">Spam and test data</dt>
-              <dd class="text-slate-400 mt-1">Bots are filtered out by honeypot fields, a minimum completion time, a short trail question, a small proof of work in the browser and a per-network rate limit. Synthetic records I use for development never end up in the public files.</dd>
+              <dd class="text-slate-400 mt-1">Bots are filtered out by honeypot fields, a minimum completion time, a short trail question, a small proof of work in the browser, Cloudflare Turnstile and per-network rate limits. Synthetic records I use for development never end up in the public files.</dd>
             </div>
             <div>
               <dt class="font-semibold text-white">Source code</dt>

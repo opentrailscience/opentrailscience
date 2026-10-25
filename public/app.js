@@ -944,6 +944,10 @@
     $('btn-wizard-next-text').textContent = meta.nextLabel;
 
     if (stepNumber === 4) syncRampWeeksWithDates();
+    // The bot check sits on the last step; load it early so Submit doesn't wait for it.
+    const lastStep = stepNumber === state.totalSteps;
+    $('turnstile-box').classList.toggle('hidden', !lastStep);
+    if (lastStep) loadTurnstile().catch(() => {});
 
     hideErrors();
     if (!options || options.scroll !== false) window.scrollTo({ top: 100, behavior: 'smooth' });
@@ -1058,6 +1062,66 @@
     if (box) box.classList.add('hidden');
   }
 
+  // --- CLOUDFLARE TURNSTILE (bot check before submitting) -----------------------
+  // Loaded only on the last step, so visiting the site never contacts Cloudflare.
+  // It runs when the hiker presses Submit and only shows a box if Cloudflare wants
+  // an interaction. The server checks the token (netlify/functions/utils/turnstile.js).
+  // Away from the real domain, Cloudflare's test key is used, which always passes.
+  const TURNSTILE_SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  const TURNSTILE_TEST_KEY = '1x00000000000000000000BB';
+  const TURNSTILE_BLOCKED = "Cloudflare's bot check couldn't load. Please allow challenges.cloudflare.com (for example in your ad blocker) or try another browser. Your answers are saved.";
+  const botCheck = { loading: null, widget: null, used: false, waiting: null };
+
+  function turnstileSiteKey() {
+    return location.hostname === 'opentrailscience.org' ? $('turnstile-box').dataset.sitekey : TURNSTILE_TEST_KEY;
+  }
+
+  /** Loads the script and renders the (invisible) widget once. */
+  function loadTurnstile() {
+    if (botCheck.loading) return botCheck.loading;
+    botCheck.loading = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = TURNSTILE_SCRIPT;
+      script.async = true;
+      script.onload = () => (window.turnstile ? resolve() : reject(new Error('Turnstile missing')));
+      script.onerror = () => reject(new Error('Turnstile blocked'));
+      document.head.appendChild(script);
+    }).then(() => {
+      botCheck.widget = window.turnstile.render('#turnstile-widget', {
+        sitekey: turnstileSiteKey(),
+        action: 'submit',
+        execution: 'execute',
+        appearance: 'interaction-only',
+        // Cloudflare's normal box is 300 px wide; on the narrowest phones use the compact one.
+        size: $('turnstile-widget').clientWidth < 300 ? 'compact' : 'normal',
+        // The site's own light/dark choice, not the system's (Cloudflare's default).
+        theme: document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark',
+        callback: token => { if (botCheck.waiting) botCheck.waiting.resolve(token); },
+        'error-callback': () => { if (botCheck.waiting) botCheck.waiting.reject(new Error(TURNSTILE_BLOCKED)); }
+      });
+    });
+    // A failed load can be retried with the next press of Submit.
+    botCheck.loading.catch(() => { botCheck.loading = null; });
+    return botCheck.loading;
+  }
+
+  /** A fresh token for one submission: tokens are single-use and valid for 5 minutes. */
+  async function getBotCheckToken() {
+    try {
+      await loadTurnstile();
+    } catch (err) {
+      throw new Error(TURNSTILE_BLOCKED);
+    }
+    if (botCheck.used) window.turnstile.reset(botCheck.widget);
+    botCheck.used = true;
+    const token = await new Promise((resolve, reject) => {
+      botCheck.waiting = { resolve, reject };
+      window.turnstile.execute(botCheck.widget);
+    });
+    botCheck.waiting = null;
+    return token;
+  }
+
   // --- FORM SUBMISSION & BACKEND COMMUNICATION ---
   async function submitSurveyForm() {
     // Normally answered on the start page; without it the server would silently drop the hike.
@@ -1074,8 +1138,10 @@
     const answers = collectAnswers();
 
     try {
+      btnNextText.textContent = 'Quick bot check…';
+      const botCheckToken = await getBotCheckToken();
       // Proof of work for these exact answers (see lib/human-check.js), about a second.
-      btnNextText.textContent = 'Checking your trail permit… 🥾';
+      btnNextText.textContent = 'Checking trail permit… 🥾';
       const powNonce = await HumanCheck.solveProofOfWork(answers);
       btnNextText.textContent = 'Sending your answers…';
 
@@ -1085,6 +1151,7 @@
         formElapsedSeconds: Math.round((Date.now() - (state.surveyStartedAt || Date.now())) / 1000),
         trailCheck: { id: state.trailCheck.round.id, choice: state.trailCheck.choice },
         powNonce,
+        turnstileToken: botCheckToken,
         schemaVersion: Schema.SCHEMA_VERSION
       });
 

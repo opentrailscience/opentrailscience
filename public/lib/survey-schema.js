@@ -148,7 +148,7 @@
   const POPULAR_TRAILS = ['PCT', 'AT', 'CDT', 'CT', 'AZT', 'JMT', 'Long Trail', 'CDS', 'TMB', 'WHW', 'GR20', 'TA'];
 
   // Version of the consent text shown before the survey; stored with each record.
-  const CONSENT_VERSION = '2';
+  const CONSENT_VERSION = '3';
 
   /**
    * Field definitions, in storage / CSV column order.

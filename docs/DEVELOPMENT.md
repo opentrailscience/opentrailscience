@@ -79,13 +79,20 @@ timestamp, and never published.
 ## Spam
 
 Hidden honeypot fields, a minimum time on the form, a short trail question, a proof of work in
-the browser and at most 10 submissions per network and hour. The network is stored only as a
-keyed hash, apart from the answers, and is deleted after an hour.
+the browser, Cloudflare Turnstile and at most 10 submissions per network and hour. The network
+is stored only as a keyed hash, apart from the answers, and is deleted after an hour.
 
 Before any of that, Netlify itself turns a network away after 5 submissions a minute, or after
 10 lookups and deletions a minute together (`rateLimit` in the `config` of
 `netlify/functions/submit.js` and `hike-code.js`; the free plan allows two such rules per site).
 The functions are only reachable at their `/api/…` paths.
+
+Cloudflare Turnstile runs when the hiker presses Submit (`public/app.js`); its script is only
+loaded on the last survey step, and the CSP allows `challenges.cloudflare.com` for it and nothing
+else. The server checks the token (`netlify/functions/utils/turnstile.js`) and refuses a missing
+or invalid one; if Cloudflare can't be reached, the other checks decide. Without
+`TURNSTILE_SECRET_KEY` the check is skipped, and away from opentrailscience.org the page uses
+Cloudflare's test key, so local development works without an account.
 
 ## Running it locally
 
@@ -125,7 +132,9 @@ The site runs on Netlify; the build settings are in `netlify.toml`.
 2. Set these environment variables in Netlify (Builds and Functions scopes):
    - `MONGODB_URI`: the database connection string;
    - `BUILD_HOOK_URL`: a Netlify build hook for the `main` branch, so new answers get published;
-   - `THROTTLE_SECRET`: a random string, the key for hashing networks.
+   - `THROTTLE_SECRET`: a random string, the key for hashing networks;
+   - `TURNSTILE_SECRET_KEY`: the secret key of the Turnstile widget (its site key is in
+     `public/index.html`, `data-sitekey` on `#turnstile-box`).
 3. Deploy. If the database can't be read during a build, the build fails and the previous
    version of the site stays live.
 

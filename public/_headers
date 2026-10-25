@@ -1,10 +1,12 @@
 # Response headers for every page and file (Netlify reads this file at deploy
 # time and does not serve it; scripts/dev-server.js applies it locally too).
-# The page loads nothing from other sites and has no inline scripts, inline
-# styles or inline event handlers, so the Content-Security-Policy can allow
-# only this origin. Keep it that way: add new scripts and styles as files.
+# The page has no inline scripts, inline styles or inline event handlers, and
+# loads nothing from other sites except Cloudflare's bot check (Turnstile) on
+# the last survey step, so the Content-Security-Policy allows only this origin
+# and challenges.cloudflare.com for that script and its frame. Keep it that
+# way: add new scripts and styles as files.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()

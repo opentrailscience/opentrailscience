@@ -8,7 +8,8 @@ const { validateSurvey, SCHEMA_VERSION } = require('../../../public/lib/survey-s
 const { getDb, COLLECTIONS } = require('./db');
 const { comparisonFor, addPeer } = require('./peers');
 const { json, methodNotAllowed, readJsonBody } = require('./http');
-const { isLikelySpam, passesHumanCheck, isThrottled } = require('./spam');
+const { isLikelySpam, passesHumanCheck, isThrottled, clientIp } = require('./spam');
+const { checkTurnstile } = require('./turnstile');
 const { createDeletionCode } = require('./deletion');
 const { notePublicChange } = require('./rebuild');
 
@@ -42,6 +43,16 @@ exports.handler = async (event) => {
   const validation = validateSurvey(body, { now, formElapsedSeconds: Number(body.formElapsedSeconds) });
   if (!validation.isValid) {
     return json(400, { success: false, errors: validation.errors, fieldErrors: validation.fieldErrors });
+  }
+
+  // Cloudflare Turnstile (utils/turnstile.js). Unlike the checks above, a failure
+  // is shown: a real person can simply press Submit again.
+  const turnstile = await checkTurnstile(body.turnstileToken, clientIp(event));
+  if (turnstile === 'missing') {
+    return json(400, { success: false, errors: ['The bot check is missing. Please reload the page and submit again: your answers are saved.'] });
+  }
+  if (turnstile === 'failed') {
+    return json(400, { success: false, errors: ["Cloudflare's bot check didn't go through. Please press Submit again."] });
   }
 
   let db;
