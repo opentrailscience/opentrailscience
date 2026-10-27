@@ -2080,15 +2080,6 @@
       applyTheme(next);
       try { localStorage.setItem(THEME_KEY, next); } catch (err) { /* not saved, still switched */ }
     });
-    // Follow the system setting until the hiker picks a theme themselves.
-    const media = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
-    if (media && media.addEventListener) {
-      media.addEventListener('change', e => {
-        let saved = null;
-        try { saved = localStorage.getItem(THEME_KEY); } catch (err) { /* storage blocked */ }
-        if (!saved) applyTheme(e.matches ? 'light' : 'dark');
-      });
-    }
   }
 
   // --- YOUR HIKE, COMPARED TODAY (deletion code -> /api/my-hike) ------------------
