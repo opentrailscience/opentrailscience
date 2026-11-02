@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+<title>Open Trail Science</title>
+<!-- The tab icon: the four stones of the cairn logo without the ground, filling the square. -->
+<g stroke="#22302A" stroke-width="1.4">
+<ellipse cx="16" cy="25.4" rx="14.2" ry="5" fill="#2F6B4F"/>
+<ellipse cx="15.4" cy="17.4" rx="10.6" ry="4" fill="#E8642B"/>
+<ellipse cx="16.6" cy="10.5" rx="7.6" ry="3.3" fill="#2F6DB3"/>
+<ellipse cx="15.8" cy="4.4" rx="4.6" ry="2.8" fill="#F2BE2B"/>
+</g>
+</svg>

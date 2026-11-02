@@ -276,7 +276,7 @@
     if (typeof record.baseWeightLbs === 'number') numbers.push(`${formatWeight(record.baseWeightLbs, unitSystem)} base weight`);
     if (typeof record.averageDailyMiles === 'number') numbers.push(formatPace(record.averageDailyMiles, unitSystem));
     const intro2 = numbers.length ? `Just added ${hike} (${numbers.join(', ')}) to Open Trail Science.` : intro;
-    return `${intro2} It's an open dataset on how long-distance hikes really go. Have you hiked one?`;
+    return `${intro2} It's an open dataset for every long trail, open all year. Have you hiked one?`;
   }
 
   return { computeStats, compareToPeers, buildShareText, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, MIN_PEERS, MIN_SHARE_PERCENT };

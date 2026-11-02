@@ -118,7 +118,7 @@ test('share text never brags about unflattering or weak results', () => {
 
 test('share text before there are enough peers mentions the hiker\'s own numbers', () => {
   assert.equal(buildShareText(hiker(), null),
-    "Just added my 2025 PCT thru-hike (12.5 lb base weight, 19 miles a day) to Open Trail Science. It's an open dataset on how long-distance hikes really go. Have you hiked one?");
+    "Just added my 2025 PCT thru-hike (12.5 lb base weight, 19 miles a day) to Open Trail Science. It's an open dataset for every long trail, open all year. Have you hiked one?");
   assert.match(buildShareText(hiker({ trail: 'CDS', completionStatus: 'section_hike' }), null, { unitSystem: 'metric' }),
     /^Just added my 2025 Camino section hike \(5\.7 kg base weight, 30\.6 km a day\)/);
   assert.match(buildShareText(hiker({ trail: 'Other' }), null), /^Just added my 2025 thru-hike \(/, 'custom trails have no name');

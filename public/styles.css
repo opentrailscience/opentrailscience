@@ -65,141 +65,147 @@
    * picker icon, number spinners, select menus, scrollbars) to match.
    */
   :root {
-    --selection-text: #e8eaed;
+    color-scheme: dark;
+    --page-bg: #131518;
+    --page-text: #e9eaec;
+    --text-secondary: #c4c8ce;
+    --text-muted: #9ea5ae;
+    --surface: #1b1e22;
+    --subtle: #272b30;
+    --strong-border: #9ea5ae;
+    --soft-border: #343941;
+    --outline-btn: #5f666e;
+    --link: #8fb4ea;
+    --link-hover: #e9eaec;
+    --accent: #8fb4ea;
+    --selection-text: #e9eaec;
     --selection-bg: #24406a;
     --note-bg: #1c2533;
-    --accent: #8fb4ea;
-    color-scheme: dark;
-    --page-bg: #121417;
-    --page-text: #e8eaed;
-    --dot-green: rgba(16, 185, 129, 0.08);
-    --dot-amber: rgba(217, 119, 6, 0.05);
-    --card-bg: #1a1d21;
-    --card-border: #30353b;
-    --card-hover-border: #4a5059;
+    --callout-bg: #2f2720;
+    --callout-label: #e8b392;
+    --stone-empty: #4f555c;
+    --dot-green: transparent;
+    --dot-amber: transparent;
+    --card-bg: var(--surface);
+    --card-border: var(--strong-border);
+    --card-hover-border: var(--strong-border);
     --card-hover-shadow: transparent;
-    --choice-border: #30353b;
-    --choice-bg: #1a1d21;
-    --choice-hover-bg: #1c2533;
+    --choice-border: var(--soft-border);
+    --choice-bg: var(--surface);
+    --choice-hover-bg: #1f2328;
     --choice-selected-bg: #1c2533;
-    --pill-border: #30353b;
-    --pill-bg: #1a1d21;
-    --pill-text: #c3c8cf;
-    --pill-hover-text: #e8eaed;
-    --pill-active-bg: #1f4f8f;
+    --pill-border: var(--soft-border);
+    --pill-bg: var(--surface);
+    --pill-text: #c4c8ce;
+    --pill-hover-text: #e9eaec;
+    --pill-active-bg: #255aa0;
     --pill-active-text: #ffffff;
-    --range-track: #30353b;
-    --range-thumb: #1f4f8f;
-    --range-thumb-hover: #2a62ad;
-    --range-thumb-border: #1a1d21;
-    --sticky-bg: #121417;
-    --sticky-border: #30353b;
-    --milestone-from: #1c2533;
-    --milestone-to: #1c2533;
-    --scroll-track: #121417;
-    --scroll-thumb: #4a5059;
-    --scroll-thumb-hover: #c3c8cf;
+    --range-track: #343941;
+    --range-thumb: #8fb4ea;
+    --range-thumb-hover: #a7c4ef;
+    --range-thumb-border: #1b1e22;
+    --sticky-bg: var(--surface);
+    --sticky-border: var(--strong-border);
+    --milestone-from: var(--note-bg);
+    --milestone-to: var(--note-bg);
+    --scroll-track: #131518;
+    --scroll-thumb: #343941;
+    --scroll-thumb-hover: #9ea5ae;
+
+    /* The four accents of the design, in this order wherever several things need colors:
+       sage, terracotta, dusty blue, soft yellow. */
+    --sage: #8db89c;
+    --terracotta: #e39a72;
+    --blue: #93b4d6;
+    --yellow: #e5c77a;
+    /* Three more, only where many things need their own color (trails in charts, the
+       cairn, the data preview): teal, lavender, pink. */
+    --teal: #8fc2bc;
+    --lavender: #bba9d6;
+    --pink: #e3a6c8;
+    --on-accent: #1e2622;
 
     /*
-     * Insights bar colors (public/insights.js). Same families as the survey and
-     * home page; shades picked with the dataviz palette validator for this
-     * surface: color-blind separation, and at least 3:1 against the card.
+     * Insights bar colors (public/insights.js): the accents, plus a neutral grey for
+     * "the rest". Every trail has its own color, the same in the cairn and the data preview. Every bar has an outline in the text color (see
+     * .chart-bar below), which carries the contrast against the card in both themes.
      */
-    --chart-outcome-continuous_purist: #6ee7b7;
-    --chart-outcome-flip_flop: #f59e0b;
-    --chart-outcome-skipped_sections: #0369a1;
-    --chart-outcome-section_hike: #94a3b8;
-    --chart-outcome-quit_early: #e11d48;
-    --chart-trail-pct: #10b981;
-    --chart-trail-at: #047857;
-    --chart-trail-cdt: #fcd34d;
-    --chart-trail-ct: #38bdf8;
-    --chart-trail-azt: #fb923c;
-    --chart-trail-tmb: #e11d48;
-    --chart-trail-ta: #5eead4;
-    --chart-trail-other: #a855f7;
-    --chart-injury-feet: #0369a1;
-    --chart-injury-legs: #fcd34d;
-    --chart-injury-back: #a855f7;
-    --chart-injury-falls: #e11d48;
-    --chart-injury-other: #94a3b8;
-    /* Ordered bins (first-week mileage): one green, more = lighter on dark. */
-    --chart-ramp-0: #047857;
-    --chart-ramp-1: #059669;
-    --chart-ramp-2: #10b981;
-    --chart-ramp-3: #6ee7b7;
+    --chart-outcome-continuous_purist: var(--sage);
+    --chart-outcome-flip_flop: var(--yellow);
+    --chart-outcome-skipped_sections: var(--blue);
+    --chart-outcome-section_hike: #8b938c;
+    --chart-outcome-quit_early: var(--terracotta);
+    --chart-trail-pct: var(--terracotta);
+    --chart-trail-at: var(--yellow);
+    --chart-trail-cdt: var(--blue);
+    --chart-trail-ct: var(--sage);
+    --chart-trail-azt: var(--pink);
+    --chart-trail-tmb: var(--lavender);
+    --chart-trail-ta: var(--teal);
+    --chart-trail-other: #8b938c;
+    --chart-injury-feet: var(--sage);
+    --chart-injury-legs: var(--terracotta);
+    --chart-injury-back: var(--blue);
+    --chart-injury-falls: var(--yellow);
+    --chart-injury-other: #8b938c;
+    /* Ordered bins (first-week mileage): one sage, light to dark. */
+    --chart-ramp-0: #c4dccb;
+    --chart-ramp-1: #8db89c;
+    --chart-ramp-2: #5e9a72;
+    --chart-ramp-3: #3e6f57;
 
     /* Quickstart code colors (highlightCode in app.js), at least 4.5:1 on the code block. */
-    --code-comment: #94a3b8;
-    --code-keyword: #c084fc;
-    --code-string: #6ee7b7;
-    --code-number: #fcd34d;
-    --code-function: #7dd3fc;
+    --code-comment: #a3aaa4;
+    --code-keyword: #bba9d6;
+    --code-string: #8db89c;
+    --code-number: #e5c77a;
+    --code-function: #93b4d6;
   }
 
   :root[data-theme='light'] {
-    --selection-text: #15181c;
+    color-scheme: light;
+    --page-bg: #f2f2ef;
+    --page-text: #181b1f;
+    --text-secondary: #3c4248;
+    --text-muted: #555c63;
+    --surface: #ffffff;
+    --subtle: #e5e6e3;
+    --strong-border: #181b1f;
+    --soft-border: #cdd0d4;
+    --outline-btn: #9aa1aa;
+    --link: #1f4f8f;
+    --link-hover: #181b1f;
+    --accent: #1f4f8f;
+    --selection-text: #181b1f;
     --selection-bg: #c9dbf3;
     --note-bg: #eaf0f8;
-    --accent: #1f4f8f;
-    color-scheme: light;
-    --code-comment: #64748b;
-    --code-keyword: #7e22ce;
-    --code-string: #047857;
-    --code-number: #b45309;
-    --code-function: #0369a1;
-    --page-bg: #f3f4f6;
-    --page-text: #15181c;
-    --dot-green: rgba(5, 150, 105, 0.12);
-    --dot-amber: rgba(180, 83, 9, 0.07);
-    --card-bg: #ffffff;
-    --card-border: #d3d7dc;
-    --card-hover-border: #9aa1aa;
-    --card-hover-shadow: transparent;
-    --choice-border: #d3d7dc;
-    --choice-bg: #ffffff;
-    --choice-hover-bg: #eaf0f8;
+    --callout-bg: #f4e5d4;
+    --callout-label: #8a4422;
+    --stone-empty: #b9bcc0;
+    --choice-hover-bg: #f2f2ef;
     --choice-selected-bg: #eaf0f8;
-    --pill-border: #d3d7dc;
-    --pill-bg: #ffffff;
-    --pill-text: #3f454c;
-    --pill-hover-text: #15181c;
+    --pill-text: #3c4248;
+    --pill-hover-text: #181b1f;
     --pill-active-bg: #1f4f8f;
-    --pill-active-text: #ffffff;
-    --range-track: #d3d7dc;
+    --range-track: #cdd0d4;
     --range-thumb: #1f4f8f;
     --range-thumb-hover: #183e70;
     --range-thumb-border: #ffffff;
-    --sticky-bg: #f3f4f6;
-    --sticky-border: #d3d7dc;
-    --milestone-from: #eaf0f8;
-    --milestone-to: #eaf0f8;
-    --scroll-track: #f3f4f6;
-    --scroll-thumb: #9aa1aa;
-    --scroll-thumb-hover: #3f454c;
-    --chart-outcome-continuous_purist: #059669;
-    --chart-outcome-flip_flop: #b45309;
-    --chart-outcome-skipped_sections: #0284c7;
-    --chart-outcome-section_hike: #475569;
-    --chart-outcome-quit_early: #f43f5e;
-    --chart-trail-pct: #059669;
-    --chart-trail-at: #065f46;
-    --chart-trail-cdt: #d97706;
-    --chart-trail-ct: #0284c7;
-    --chart-trail-azt: #c2410c;
-    --chart-trail-tmb: #f43f5e;
-    --chart-trail-ta: #0d9488;
-    --chart-trail-other: #9333ea;
-    --chart-injury-feet: #0284c7;
-    --chart-injury-legs: #b45309;
-    --chart-injury-back: #7e22ce;
-    --chart-injury-falls: #f43f5e;
-    --chart-injury-other: #475569;
-    /* More = darker on light. */
-    --chart-ramp-0: #10b981;
-    --chart-ramp-1: #059669;
-    --chart-ramp-2: #047857;
-    --chart-ramp-3: #064e3b;
+    --scroll-track: #f2f2ef;
+    --scroll-thumb: #cdd0d4;
+    --scroll-thumb-hover: #555c63;
+    --chart-outcome-section_hike: #b9bcc0;
+    --chart-trail-other: #b9bcc0;
+    --chart-injury-other: #b9bcc0;
+    --chart-ramp-0: #c4dccb;
+    --chart-ramp-1: #8db89c;
+    --chart-ramp-2: #5e9a72;
+    --chart-ramp-3: #3e6f57;
+    --code-comment: #58625c;
+    --code-keyword: #5e4a86;
+    --code-string: #3e6f57;
+    --code-number: #7a5a12;
+    --code-function: #2f5f86;
   }
 
   body {
@@ -459,12 +465,10 @@
 
 /*
  * The design layer comes after Tailwind's utilities, so these rules can
- * override classes in the markup. The first block removes the generated-UI
- * habits every design option drops; each design adds its own look below it.
+ * override classes in the markup. The first block removes generated-UI
+ * habits; the second is the site's look.
  */
 @layer design {
-  /* Monospace only for code, codes and data, not as a "technical" costume. */
-  .font-mono:not(code, pre, input, kbd, .keep-mono, .keep-mono *) { font-family: inherit; }
   /* Labels in sentence case, without wide tracking. Inputs keep their uppercase. */
   .uppercase:not(input) { text-transform: none; }
   .tracking-wider, .tracking-widest { letter-spacing: normal; }
@@ -477,44 +481,231 @@
   .milestone-badge { border-left: 0; }
 }
 
-/* Design option: B, Plain and factual */
+
+/* The knobs of the design: option C, In between. */
+@layer site {
+  :root {
+    --card-line: 1.5px; --frame-line: 1.5px; --card-radius: 8px; --control-radius: 6px;
+    --heading-weight: 700; --word-accent: #8fb4ea; --card-border: #4f555c; --progress: #8fb4ea;
+    --face-bg: #ffffff; --face-ink: #181b1f; --face-border: #000; --face-text: #3c4248; --face-word: #1f4f8f;
+    --face-n1: #b4572d; --face-n2: #1f4f8f; --face-radius: 8px; --face-tilt: 0deg; --face-shadow: 4px 4px 0 #000;
+    --stone-line: 1.5px; --stone-radius: 6px; --stone-tint: 24%; --cairn-step: 6%;
+  }
+  :root[data-theme='light'] { --word-accent: #1f4f8f; --card-border: #181b1f; --progress: #1f4f8f; --face-border: #181b1f; --face-shadow: 4px 4px 0 #181b1f; --stone-tint: 36%; }
+}
+
+/*
+ * The design (option C, In between): IBM Plex Sans with IBM Plex Mono for numbers,
+ * codes and small labels, blue as the main color, four accents (sage, terracotta,
+ * dusty blue, soft yellow) for the trail stones, steps and charts. Calm: no gradients, glows or shadows, except the
+ * offset shadow of the example share card.
+ */
 @layer design {
-  :root { --font-heading: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif; }
-  body { font-family: var(--font-sans); }
-  h1, h2, h3, h4 { font-family: var(--font-heading); }
-  [class*="bg-linear-"] { background-image: none; }
-  .progress-fill, [class*="from-pine-500"] { background-color: var(--color-pine-500); }
-  [class*="from-pine-600"] { background-color: var(--color-brand); border-color: transparent; }
-  [class*="from-pine-600"] svg { color: #fff; }
-  .topo-pattern { background-image: none; }
-  .card-glow { background: var(--card-bg); border: 1px solid var(--card-border); transition: border-color .15s ease; }
-  .card-glow:hover { border-color: var(--card-hover-border); box-shadow: none; }
-  .choice-card { border-width: 1px; transition: border-color .15s ease, background-color .15s ease; }
-  .choice-card:hover { border-color: var(--accent); transform: none; }
-  .choice-card.selected { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
-  .choice-card:focus-visible, .select-pill:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .select-pill:hover, .select-pill.active { border-color: var(--accent); }
-  .milestone-badge { background: var(--note-bg); border: 1px solid var(--card-border); }
+  body { font-family: var(--font-sans); font-size: 17px; line-height: 1.6; color: var(--page-text); background: var(--page-bg); }
+  h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: var(--heading-weight); letter-spacing: -0.01em; }
+  h1 { letter-spacing: -0.02em; }
   ::selection { background: var(--selection-bg); color: var(--selection-text); }
   body { caret-color: var(--accent); }
-  input[type="checkbox"], input[type="radio"] { accent-color: var(--color-brand); }
   a { text-underline-offset: 3px; }
-  .stat-counter { font-variant-numeric: tabular-nums; }
-  /* The four headline stats: a row of figures, not glowing tiles. */
-  .card-glow:has(> .stat-counter) { background: transparent; border: 0; border-top: 1px solid var(--card-border); border-radius: 0; text-align: left; padding-left: 0; padding-right: 0; }
-  .card-glow:has(> .stat-counter) > div:last-child { justify-content: flex-start; }
+  p a, li a, dd a, figcaption a { color: var(--link); text-decoration: underline; }
+  p a:hover, li a:hover, dd a:hover { color: var(--link-hover); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .mono, .keep-mono { font-family: var(--font-mono); }
+  /* Mono only for numbers and codes: word labels with `font-mono` stay in the text font. */
+  .font-mono:not(code, pre, input, kbd, .keep-mono, .keep-mono *) { font-family: inherit; }
+  .stat-counter { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 500; }
+  input[type="checkbox"], input[type="radio"] { accent-color: var(--color-brand); }
+  [class*="bg-linear-"] { background-image: none; }
+  .topo-pattern { background-image: none; }
+  .dark-only { display: none; }
+  :root:not([data-theme='light']) .dark-only { display: revert; }
+  :root:not([data-theme='light']) .light-only { display: none; }
 
-  /* Plain and factual: a public data portal. One accent, square corners, underlined links. */
-  h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.005em; }
-  .font-extrabold { font-weight: 600; }
-  h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.1; }
-  p a, li a, dd a { text-decoration: underline; }
-  header { border-top: 4px solid var(--color-brand); }
-  /* Left-aligned like a reference site, not a centred landing page. */
-  #view-home > div:first-child > div, .app-view > div > .text-center:first-child { text-align: left; }
-  #view-home > div:first-child :is(h1, p), .app-view > div > .text-center:first-child:not(.max-w-6xl) { margin-left: 0; }
-  #stats-first50 > p, #stats-first50 > div { margin-left: 0; }
-  #view-home > div:first-child :is(.justify-center) { justify-content: flex-start; }
-  /* Darker on hover (not lighter), so the white text keeps its contrast. */
-  #btn-delete-answers:hover { background-color: var(--color-rose-700); filter: brightness(0.9); }
+  /* Layout frame shared by header, home page and footer. */
+  .frame { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header: logo and name, then Insights, Dataset, About and the theme button. */
+  .site-header { background: var(--surface); border-bottom: var(--frame-line) solid var(--card-border); }
+  .site-header .frame { padding-top: 12px; padding-bottom: 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px; }
+  .brand-link { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--page-text); }
+  .brand-link img { width: 46px; height: 46px; }
+  .brand-name { display: flex; flex-direction: column; line-height: 1.1; }
+  .brand-name strong { font-weight: var(--heading-weight); font-size: 18px; letter-spacing: 0.02em; white-space: nowrap; }
+  .brand-name strong span { color: var(--word-accent); }
+    .brand-name small { font-size: 13px; color: var(--text-muted); }
+  .site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-weight: 600; font-size: 15px; }
+  .site-nav a { display: block; min-width: 48px; flex: none; text-align: center; text-decoration: none; color: var(--page-text); padding: 10px 14px; border-radius: var(--control-radius); }
+  .site-nav a:hover { background: var(--subtle); }
+  .site-nav a.is-active { background: var(--subtle); }
+  #theme-toggle { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: none; border: 0; color: var(--page-text); border-radius: var(--control-radius); }
+  #theme-toggle:hover { background: var(--subtle); }
+
+  /* Footer */
+  .site-footer { background: var(--surface); border-top: var(--frame-line) solid var(--card-border); font-size: 14px; }
+  .site-footer .frame { padding-top: 22px; padding-bottom: 22px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+  .site-footer .footer-brand { display: flex; align-items: center; gap: 8px; }
+  .site-footer .footer-brand img { width: 26px; height: 26px; }
+  .site-footer .footer-brand span { color: var(--text-muted); }
+  .site-footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 20px; }
+  .site-footer ul a { color: var(--page-text); display: inline-block; padding: 6px 0; }
+
+  /* Cards: an ink outline, no shadow. Inner boxes lose their frame, except in the survey. */
+  .card-glow, .ui-card { background: var(--surface); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); box-shadow: none; transition: none; }
+  .card-glow:hover { border-color: var(--strong-border); }
+  .card-glow:not(#view-survey *) :is(.border, [class*="border-slate-"], [class*="border-pine-"]):not(input, select, textarea, button, .choice-card, .select-pill, .chart-bar, .chart-swatch, .card-glow, table, th, td, tr, hr, [class*="border-t"], [class*="border-b"], [class*="border-l"], [class*="divide-"] *) { border-color: transparent; }
+
+  /* Buttons. Primary: solid blue; secondary: outline; both weight 600, no icons, no shadow. */
+  .bg-brand { border: 1.5px solid var(--color-brand); font-weight: 600; border-radius: var(--control-radius); box-shadow: none; }
+  .bg-brand:hover { border-color: var(--color-brand-hover); }
+  .success-check { border-radius: 50%; } /* the tick on the thank-you page: a circle, not a button */
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; text-decoration: none; padding: 11px 22px; border-radius: var(--control-radius); font-weight: 600; font-size: 17px; line-height: 1.2; border: 1.5px solid transparent; }
+  .btn-primary { color: #ffffff; background: var(--color-brand); border-color: var(--color-brand); }
+  .btn-primary:hover { background: var(--color-brand-hover); border-color: var(--color-brand-hover); color: #ffffff; }
+  .btn-secondary { color: var(--page-text); background: transparent; border-color: var(--outline-btn); }
+  .btn-secondary:hover { border-color: var(--page-text); }
+  .btn-callout { color: var(--on-accent); background: var(--terracotta); border-color: var(--terracotta); }
+  .btn-callout:hover { border-color: var(--on-accent); }
+
+  /* Form fields: surface color, soft border that turns ink on focus, a visible ring. */
+  :is(input[type="text"], input[type="number"], input[type="date"], input[type="email"], select, textarea) { background-color: var(--surface); border: 1.5px solid var(--soft-border); border-radius: var(--control-radius); color: var(--page-text); }
+  :is(input[type="text"], input[type="number"], input[type="date"], select, textarea):focus { border-color: var(--strong-border); outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  /* Choice cards and pills */
+  .choice-card { border: 1.5px solid var(--choice-border); background: var(--choice-bg); border-radius: var(--control-radius); transition: border-color .12s ease, background-color .12s ease; }
+  .choice-card:hover { border-color: var(--strong-border); transform: none; background: var(--choice-hover-bg); }
+  .choice-card.selected { border-color: var(--strong-border); background: var(--choice-selected-bg); box-shadow: inset 0 0 0 1px var(--strong-border); }
+  .select-pill { border: 1.5px solid var(--pill-border); border-radius: 999px; }
+  .select-pill:hover { border-color: var(--strong-border); }
+  .select-pill.active { border-color: var(--pill-active-bg); background: var(--pill-active-bg); color: var(--pill-active-text); }
+
+  /* The survey's progress bar and its "Mood" note */
+  .sticky-progress { backdrop-filter: none; box-shadow: none; border-bottom: var(--frame-line) solid var(--card-border); }
+  .progress-fill, [class*="from-pine-500"] { background-color: var(--progress); }
+  .milestone-badge { background: var(--note-bg); border: 0; border-radius: var(--control-radius); }
+  #btn-delete-answers:hover { filter: brightness(0.9); }
+
+  /* Insights: accent bars with an ink outline (it carries the contrast). */
+  .chart-bar, .chart-swatch { border: 1.5px solid var(--strong-border); }
+  .chart-bar { border-left: 0; }
+  .chart-fill { box-shadow: inset 0 0 0 1.5px var(--strong-border); }
+
+  /* ---------- Home page ---------- */
+  .home-hero { position: relative; padding: 72px 0 56px; }
+  .hero-topo { position: absolute; top: 0; bottom: 0; left: 68%; right: calc(50% - 50vw); width: calc(32% + 50vw - 50%); height: 100%; object-fit: cover; object-position: left bottom; z-index: 0; pointer-events: none; }
+  @media (max-width: 760px) { .hero-topo { display: none !important; } }
+  .home-hero .hero-text { position: relative; z-index: 1; max-width: 760px; }
+  .home-hero h1 { margin: 0; font-size: clamp(36px, 5vw, 56px); font-weight: var(--heading-weight); line-height: 1.08; letter-spacing: -0.02em; }
+  .home-hero .lead { margin: 22px 0 0; font-size: 19px; color: var(--text-secondary); }
+  .home-hero .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+  .home-hero .fine { margin: 18px 0 0; font-size: 15px; color: var(--text-muted); }
+
+  .home-card { background: var(--surface); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); }
+  .first50:not(.hidden) { padding: 30px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 40px; }
+  .first50 > div { flex: 1 1 420px; min-width: 0; }
+  .first50 h2, .home-why h2 { margin: 0; font-size: 28px; font-weight: var(--heading-weight); letter-spacing: -0.01em; }
+  .first50 p { margin: 8px 0 0; color: var(--text-secondary); }
+  .first50 .first50-count { margin: 10px 0 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-muted); }
+  .stones { display: grid; grid-template-columns: repeat(25, minmax(0, 1fr)); gap: 5px; margin-top: 20px; max-width: 520px; }
+  .stones span { display: block; height: 12px; border-radius: 50%; border: 1.5px solid var(--stone-empty); }
+  .stones span.filled { border-color: var(--strong-border); }
+  .stones span:nth-child(4n+1).filled { background: var(--sage); }
+  .stones span:nth-child(4n+2).filled { background: var(--terracotta); }
+  .stones span:nth-child(4n+3).filled { background: var(--blue); }
+  .stones span:nth-child(4n+4).filled { background: var(--yellow); }
+
+  .home-stats:not(.hidden) { padding: 24px 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px 32px; }
+  .home-stats .stat-label { font-size: 15px; font-weight: 600; color: var(--text-secondary); }
+  .home-stats .stat-counter { font-size: 32px; line-height: 1.2; margin-top: 2px; }
+  .home-stats .stat-note { font-size: 14px; color: var(--text-muted); }
+
+  .home-how { padding: 80px 0 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px; }
+  .home-how > div { flex: 1 1 520px; min-width: 0; }
+  .home-how h2 { margin: 0; font-size: 32px; font-weight: var(--heading-weight); line-height: 1.15; letter-spacing: -0.01em; }
+  .home-how ol { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-direction: column; gap: 22px; }
+  .home-how li { display: flex; gap: 16px; }
+  .step-dot { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--strong-border); display: flex; align-items: center; justify-content: center; font-weight: var(--heading-weight); font-size: 15px; color: var(--on-accent); }
+  .home-how li:nth-child(1) .step-dot { background: var(--sage); }
+  .home-how li:nth-child(2) .step-dot { background: var(--terracotta); }
+  .home-how li:nth-child(3) .step-dot { background: var(--blue); }
+  .home-how h3 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: 0; }
+  .home-how li p { margin: 2px 0 0; color: var(--text-secondary); }
+  .example-card { flex: 0 1 300px; min-width: 260px; margin: 0; }
+  .example-card .card-face { background: var(--face-bg); color: var(--face-ink); border: var(--card-line) solid var(--face-border); border-radius: var(--face-radius); box-shadow: var(--face-shadow); padding: 22px; transform: rotate(var(--face-tilt)); }
+  .card-face .card-brand { display: flex; align-items: center; gap: 8px; font-weight: var(--heading-weight); font-size: 12px; letter-spacing: 0.04em; }
+  .card-face .card-brand img { width: 28px; height: 28px; }
+  .card-face .card-title { margin: 16px 0 0; font-size: 22px; font-weight: var(--heading-weight); line-height: 1.15; }
+  .card-face .card-title span { color: var(--face-word); }
+  .card-face .card-big { margin: 16px 0 0; font-size: 34px; font-weight: var(--heading-weight); line-height: 1; }
+  .card-face .card-big + .card-small { margin: 4px 0 0; font-size: 13px; color: var(--face-text); }
+  .card-face .card-big.terra { color: var(--face-n1); }
+  .card-face .card-big.blue { color: var(--face-n2); margin-top: 14px; }
+  .card-face .card-url { margin: 18px 0 0; padding-top: 12px; border-top: var(--card-line) solid var(--face-ink); font-family: var(--font-mono); font-size: 12px; }
+  .example-card figcaption { margin-top: 16px; text-align: center; font-size: 14px; color: var(--text-muted); }
+
+  .home-dnf { background: var(--callout-bg); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; }
+  .home-dnf > div { flex: 1 1 520px; min-width: 0; }
+  .home-dnf .label { margin: 0; font-weight: 700; font-size: 15px; color: var(--callout-label); }
+  .home-dnf h2 { margin: 4px 0 0; font-size: 26px; font-weight: var(--heading-weight); }
+  .home-dnf p:not(.label) { margin: 8px 0 0; color: var(--text-secondary); }
+
+  .home-trails { padding: 80px 0 72px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; }
+  .home-trails > div { flex: 1 1 280px; min-width: 0; align-self: flex-start; }
+  .home-trails h2 { margin: 0; font-size: 28px; font-weight: var(--heading-weight); }
+  .home-trails > div p { margin: 6px 0 0; color: var(--text-muted); max-width: 340px; }
+  /* The trail cairn: a straight stepped pile, each stone a light tint of its accent with a
+     border in the accent mixed with the text color, so it stays calm in both themes. */
+  .cairn { flex: 2 1 480px; max-width: 600px; min-width: 0; list-style: none; margin: 0 auto; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .cairn .stone { --c: var(--surface); width: calc(100% - var(--n) * var(--cairn-step)); background: color-mix(in srgb, var(--c) var(--stone-tint), var(--surface)); border: var(--stone-line) solid color-mix(in srgb, var(--c) 60%, var(--page-text)); border-radius: var(--stone-radius); transition: transform .16s ease, background-color .16s ease; }
+  .cairn .stone:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--c) calc(var(--stone-tint) + 14%), var(--surface)); }
+  .cairn .stone a { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; padding: 8px 16px; text-decoration: none; color: var(--page-text); border-radius: var(--stone-radius); }
+  .cairn .stone .name { font-weight: 600; font-size: 15px; line-height: 1.25; }
+  .cairn .stone .meta { font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; color: var(--text-secondary); white-space: nowrap; }
+  .cairn .s1 { --n: 7; border-style: dashed; border-color: var(--text-muted); }
+  .cairn .s2 { --n: 6; --c: var(--chart-trail-tmb); }
+  .cairn .s3 { --n: 5; --c: var(--sage); }
+  .cairn .s4 { --n: 4; --c: var(--pink); }
+  .cairn .s5 { --n: 3; --c: var(--chart-trail-ta); }
+  .cairn .s6 { --n: 2; --c: var(--chart-trail-at); }
+  .cairn .s7 { --n: 1; --c: var(--chart-trail-pct); }
+  .cairn .s8 { --n: 0; --c: var(--chart-trail-cdt); }
+  /* Trail codes in the data preview, tinted like the cairn stones. */
+  .trail-chip { --c: var(--chart-trail-other); display: inline-block; padding: 1px 8px; border-radius: 4px; font-weight: 600; color: var(--page-text); background: color-mix(in srgb, var(--c) var(--stone-tint), var(--surface)); border: 1px solid color-mix(in srgb, var(--c) 60%, var(--page-text)); white-space: nowrap; }
+  .trail-chip[data-trail="PCT"] { --c: var(--chart-trail-pct); } .trail-chip[data-trail="AT"] { --c: var(--chart-trail-at); }
+  .trail-chip[data-trail="CDT"] { --c: var(--chart-trail-cdt); } .trail-chip[data-trail="CT"] { --c: var(--chart-trail-ct); }
+  .trail-chip[data-trail="AZT"] { --c: var(--chart-trail-azt); } .trail-chip[data-trail="TMB"] { --c: var(--chart-trail-tmb); }
+  .trail-chip[data-trail="TA"] { --c: var(--chart-trail-ta); }
+  .cairn .ground { width: 100%; border-top: 2px solid var(--text-muted); margin-top: 8px; }
+
+  .home-why { background: var(--surface); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); padding: 40px 40px 36px; margin-bottom: 80px; }
+  .home-why h2 { font-size: 30px; }
+  .home-why > p { margin: 12px 0 0; max-width: 720px; color: var(--text-secondary); }
+  .home-why .why-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 28px; margin-top: 28px; padding-top: 28px; border-top: 2px solid var(--subtle); }
+  .home-why h3 { margin: 0; font-size: 18px; font-weight: var(--heading-weight); }
+  .home-why .why-items p { margin: 6px 0 0; font-size: 15px; color: var(--text-secondary); }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--strong-border); margin-right: 8px; }
+  .dot.sage { background: var(--sage); } .dot.blue { background: var(--blue); }
+  .home-why .why-links { margin: 28px 0 0; display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 15px; }
+  .home-why .why-links a:first-child { font-weight: 700; }
+  .home-why .why-links a:last-child { color: var(--text-muted); }
+  .home-why .why-links a { display: inline-block; padding: 6px 0; }
+
+  /* Phones: everything you tap is at least 44px tall. */
+  @media (max-width: 760px) {
+    .cairn { --cairn-step: 1.5%; }
+    .cairn .stone a { min-height: 44px; align-items: center; padding: 6px 12px; gap: 0 12px; }
+    .cairn .stone .meta { font-size: 12px; }
+    .site-footer ul a, .home-why .why-links a { padding: 11px 0; }
+    main :is(button, .select-pill, select, input[type="text"], input[type="number"], input[type="date"], .btn, a.inline-flex) { min-height: 44px; }
+    main :is(button, .select-pill):not(.choice-card) { display: inline-flex; align-items: center; justify-content: center; }
+    main :is(button, .choice-card, .select-pill, .btn) { min-width: 44px; }
+    main .choice-card { min-height: 44px; }
+    main summary { padding-top: 14px; padding-bottom: 14px; }
+    .site-footer ul a { min-width: 44px; text-align: center; }
+    #view-download a[href="/data/schema.json"] { display: inline-flex; align-items: center; min-height: 44px; }
+    #btn-download-card { padding: 14px 0; }
+  }
+  /* The smallest phones: miles under the name on every stone, so they all match. */
+  @media (max-width: 359px) {
+    .cairn .stone a { flex-direction: column; align-items: flex-start; justify-content: center; }
+  }
 }

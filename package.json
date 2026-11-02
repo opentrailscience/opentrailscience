@@ -22,7 +22,6 @@
     "db:remove-synthetic": "node scripts/remove-synthetic.js",
     "db:check": "node scripts/check-db.js",
     "db:setup": "node scripts/setup-db.js",
-    "render:example-card": "node scripts/render-example-card.js",
     "feedback": "node scripts/read-feedback.js"
   },
   "keywords": [

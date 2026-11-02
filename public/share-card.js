@@ -13,13 +13,15 @@
 
   const W = 1080;
   const H = 1350;
-  const PAD = 90;
+  // The card face sits on the page color with the design's offset shadow.
+  const CARD = { x: 54, y: 54, w: W - 108 - 18, h: H - 108 - 18, shadow: 18, radius: 24, line: 5 };
+  const PAD = 130;
   const FONT = '"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif';
   const MONO = '"IBM Plex Mono", ui-monospace, monospace';
-  // The site's light theme.
+  // The site's light theme and two of its accents.
   const C = {
-    bg: '#ffffff', ink: '#15181c', text: '#3f454c', muted: '#5b626b',
-    brand: '#1f4f8f', box: '#f7f8f9', border: '#d3d7dc', ridgeBack: '#e3e8ef', ridgeFront: '#d2dbe7'
+    page: '#f2f2ef', card: '#ffffff', ink: '#181b1f', text: '#3c4248', muted: '#555c63',
+    green: '#1f4f8f', terracotta: '#b4572d', blue: '#1f4f8f', soft: '#cdd0d4'
   };
   // Same threshold as the share text: weaker results are not bragged about.
   const MIN_PERCENT = window.SurveyStats.MIN_SHARE_PERCENT;
@@ -58,74 +60,59 @@
   }
 
   function drawBackground(ctx) {
-    ctx.fillStyle = C.bg;
+    ctx.fillStyle = C.page;
     ctx.fillRect(0, 0, W, H);
-    // The blue band along the top of the site's header.
-    ctx.fillStyle = C.brand;
-    ctx.fillRect(0, 0, W, 14);
-    // Mountain ridges along the bottom.
-    const ridge = (points, color) => {
-      ctx.beginPath();
-      ctx.moveTo(0, H);
-      points.forEach(([x, y]) => ctx.lineTo(x, y));
-      ctx.lineTo(W, H);
-      ctx.closePath();
-      ctx.fillStyle = color;
-      ctx.fill();
-    };
-    ridge([[0, 1150], [150, 1060], [260, 1120], [410, 1010], [560, 1130], [690, 1060], [820, 1140], [960, 1040], [1080, 1100]], C.ridgeBack);
-    ridge([[0, 1220], [190, 1150], [320, 1205], [490, 1120], [640, 1210], [800, 1140], [950, 1215], [1080, 1170]], C.ridgeFront);
+    roundRect(ctx, CARD.x + CARD.shadow, CARD.y + CARD.shadow, CARD.w, CARD.h, CARD.radius);
+    ctx.fillStyle = C.ink;
+    ctx.fill();
+    roundRect(ctx, CARD.x, CARD.y, CARD.w, CARD.h, CARD.radius);
+    ctx.fillStyle = C.card;
+    ctx.fill();
+    ctx.lineWidth = CARD.line;
+    ctx.strokeStyle = C.ink;
+    ctx.stroke();
   }
 
-  function drawBrand(ctx) {
-    const y = PAD;
-    roundRect(ctx, PAD, y, 84, 84, 6);
-    ctx.fillStyle = C.brand;
-    ctx.fill();
+  /** The cairn logo (img/cairn-logo.svg), or nothing if it can't be loaded. */
+  async function loadLogo() {
+    try {
+      const img = new Image();
+      img.src = new URL('img/cairn-logo.svg', document.baseURI).href;
+      await img.decode();
+      return img;
+    } catch (err) {
+      return null;
+    }
+  }
 
-    // Logo mark (the site's mountain icon, 24x24 path scaled).
-    ctx.save();
-    ctx.translate(PAD + 18, y + 18);
-    ctx.scale(2, 2);
-    ctx.beginPath();
-    ctx.moveTo(8, 3); ctx.lineTo(12, 11); ctx.lineTo(17, 6); ctx.lineTo(22, 21); ctx.lineTo(2, 21); ctx.closePath();
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 2;
-    ctx.lineJoin = 'round';
-    ctx.stroke();
-    ctx.restore();
-
+  function drawBrand(ctx, logo) {
+    const y = PAD - 10;
+    if (logo) ctx.drawImage(logo, PAD - 6, y, 84, 84);
     ctx.textBaseline = 'alphabetic';
-    ctx.font = `600 40px ${FONT}`;
+    ctx.font = `700 36px ${FONT}`;
     ctx.fillStyle = C.ink;
-    ctx.fillText('OPEN TRAIL', PAD + 110, y + 44);
-    const w = ctx.measureText('OPEN TRAIL ').width;
-    ctx.fillStyle = C.brand;
-    ctx.fillText('SCIENCE', PAD + 110 + w, y + 44);
-    ctx.font = `400 24px ${FONT}`;
-    ctx.fillStyle = C.muted;
-    ctx.fillText('Thru-Hiker Survey', PAD + 111, y + 78);
+    ctx.fillText('OPEN TRAIL SCIENCE', PAD + (logo ? 96 : 0), y + 56);
   }
 
   function drawHeadline(ctx, record) {
     const trail = window.SurveySchema.trailName(record.trail) || 'long-distance';
-    ctx.font = `600 76px ${FONT}`;
+    ctx.font = `700 76px ${FONT}`;
     ctx.fillStyle = C.ink;
-    let y = wrapText(ctx, `My ${record.hikeYear} ${trail}`, PAD, 330, W - 2 * PAD, 86);
-    ctx.fillStyle = C.brand;
+    let y = wrapText(ctx, `My ${record.hikeYear} ${trail}`, PAD, 340, W - 2 * PAD, 86);
+    ctx.fillStyle = C.green;
     ctx.fillText(hikeNoun(record), PAD, y);
     return y + 40;
   }
 
   function drawComparisons(ctx, items, y) {
-    y += 60;
-    items.forEach(item => {
-      ctx.font = `600 128px ${FONT}`;
-      ctx.fillStyle = C.brand;
+    y += 50;
+    items.forEach((item, i) => {
+      ctx.font = `700 128px ${FONT}`;
+      ctx.fillStyle = i === 0 ? C.terracotta : C.blue;
       ctx.fillText(`${item.percent}%`, PAD, y + 112);
       ctx.font = `500 38px ${FONT}`;
       ctx.fillStyle = C.text;
-      y = wrapText(ctx, item.cardLine, PAD + 4, y + 168, W - 2 * PAD, 48) + 76;
+      y = wrapText(ctx, item.cardLine, PAD + 4, y + 168, W - 2 * PAD, 48) + 66;
     });
     return y;
   }
@@ -147,35 +134,35 @@
 
   function drawStatsGrid(ctx, record, unitSystem, y) {
     const stats = formatStats(record, unitSystem);
-    const gap = 30;
+    const gap = 28;
     const boxW = (W - 2 * PAD - gap) / 2;
-    const boxH = 190;
+    const boxH = 180;
     stats.forEach(([label, value], i) => {
       const x = PAD + (i % 2) * (boxW + gap);
       const by = y + Math.floor(i / 2) * (boxH + gap);
-      roundRect(ctx, x, by, boxW, boxH, 6);
-      ctx.fillStyle = C.box;
-      ctx.fill();
-      ctx.strokeStyle = C.border;
-      ctx.lineWidth = 2;
+      roundRect(ctx, x, by, boxW, boxH, 24);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = C.soft;
       ctx.stroke();
-      ctx.font = `500 28px ${FONT}`;
+      ctx.font = `600 28px ${FONT}`;
       ctx.fillStyle = C.muted;
-      ctx.fillText(label, x + 36, by + 64);
-      ctx.font = `600 64px ${FONT}`;
+      ctx.fillText(label, x + 32, by + 60);
+      ctx.font = `500 60px ${MONO}`;
       ctx.fillStyle = C.ink;
-      ctx.fillText(value, x + 36, by + 148);
+      ctx.fillText(value, x + 32, by + 138);
     });
     return y + Math.ceil(stats.length / 2) * (boxH + gap);
   }
 
   function drawFooter(ctx) {
-    ctx.font = `600 50px ${FONT}`;
+    const lineY = 1120;
     ctx.fillStyle = C.ink;
-    ctx.fillText('How does yours compare?', PAD, 1145);
-    ctx.font = `500 34px ${MONO}`;
-    ctx.fillStyle = C.brand;
-    ctx.fillText('opentrailscience.org', PAD, 1205);
+    ctx.fillRect(PAD, lineY, W - 2 * PAD - 18, CARD.line);
+    ctx.font = `700 46px ${FONT}`;
+    ctx.fillText('How does yours compare?', PAD, lineY + 76);
+    ctx.font = `500 32px ${MONO}`;
+    ctx.fillStyle = C.blue;
+    ctx.fillText('opentrailscience.org', PAD, lineY + 128);
   }
 
   async function render(record, comparison, options) {
@@ -183,10 +170,11 @@
     // Canvas only uses web fonts that are already loaded.
     if (document.fonts && document.fonts.load) {
       await Promise.all([
-        document.fonts.load(`600 76px ${FONT}`),
+        document.fonts.load(`700 76px ${FONT}`),
         document.fonts.load(`500 38px ${FONT}`),
-        document.fonts.load(`400 24px ${FONT}`),
-        document.fonts.load(`500 34px ${MONO}`)
+        document.fonts.load(`600 28px ${FONT}`),
+        document.fonts.load(`500 60px ${MONO}`),
+        document.fonts.load(`500 32px ${MONO}`)
       ]).catch(() => {});
     }
 
@@ -196,7 +184,7 @@
     const ctx = canvas.getContext('2d');
 
     drawBackground(ctx);
-    drawBrand(ctx);
+    drawBrand(ctx, await loadLogo());
     let y = drawHeadline(ctx, record);
 
     const brags = ((comparison && comparison.items) || []).filter(i => i.brag && i.percent >= MIN_PERCENT);

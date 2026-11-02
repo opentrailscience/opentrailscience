@@ -31,6 +31,7 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    { version: '1.2.0', date: '2026-11-02', changes: ['trail can be Annapurna (the Annapurna Circuit in Nepal; directions CCW or CW, dates by month like other small trails).'] },
     {
       version: '1.1.0', date: '2026-10-17',
       changes: [
@@ -56,7 +57,7 @@
 
   const TRAILS = [
     'PCT', 'AT', 'CDT', 'CT', 'AZT', 'JMT', 'TRT', 'PNT', 'Long Trail', 'Hayduke', 'FT', 'IAT', 'BMT', 'SHT',
-    'CDS', 'TMB', 'WHW', 'GR20', 'GR10', 'HEX', 'VIA', 'AV1', 'KUN', 'C2C', 'TA',
+    'CDS', 'TMB', 'WHW', 'GR20', 'GR10', 'HEX', 'VIA', 'AV1', 'KUN', 'C2C', 'TA', 'Annapurna',
     'Other North America', 'Other Europe', 'Other'
   ];
 
@@ -65,7 +66,8 @@
     PCT: 'PCT', AT: 'AT', CDT: 'CDT', CT: 'Colorado Trail', AZT: 'Arizona Trail', JMT: 'JMT', TRT: 'Tahoe Rim Trail',
     PNT: 'PNT', 'Long Trail': 'Long Trail', Hayduke: 'Hayduke', CDS: 'Camino', TMB: 'Tour du Mont Blanc',
     WHW: 'West Highland Way', GR20: 'GR20', TA: 'Te Araroa', KUN: 'Kungsleden', C2C: 'Coast to Coast', SHT: 'Superior Hiking Trail',
-    GR10: 'GR10', HEX: 'Hexatrek', VIA: 'Via Alpina', AV1: 'Alta Via 1', FT: 'Florida Trail', IAT: 'Ice Age Trail', BMT: 'Benton MacKaye Trail'
+    GR10: 'GR10', HEX: 'Hexatrek', VIA: 'Via Alpina', AV1: 'Alta Via 1', FT: 'Florida Trail', IAT: 'Ice Age Trail', BMT: 'Benton MacKaye Trail',
+    Annapurna: 'Annapurna Circuit'
   };
 
   /**
@@ -78,6 +80,7 @@
   const TRAIL_DIRECTIONS = {
     PNT: ['WEBO', 'EABO'], C2C: ['EABO', 'WEBO'], GR10: ['EABO', 'WEBO'], VIA: ['WEBO', 'EABO'], IAT: ['WEBO', 'EABO'],
     Hayduke: ['WEBO', 'EABO'], // Arches to Zion
+    Annapurna: ['CCW', 'CW'], // usually counter-clockwise, Besisahar over the Thorong La to Jomsom
     'Other North America': ANY_COMPASS_DIRECTION, 'Other Europe': ANY_COMPASS_DIRECTION, Other: ANY_COMPASS_DIRECTION,
     TMB: ['CCW', 'CW'], TRT: ['CW', 'CCW'],
     CDS: ['TO_SANTIAGO', 'FROM_SANTIAGO']
@@ -191,7 +194,10 @@
     },
 
     // --- Pillar 1: Trail & journey metadata ---
-    { name: 'trail', question: 'Which long-distance trail did you hike?', label: 'Trail', type: 'enum', step: 1, input: 'field-trail', values: TRAILS, role: 'Categorical feature' },
+    {
+      name: 'trail', question: 'Which long-distance trail did you hike?', label: 'Trail', type: 'enum', step: 1, input: 'field-trail', values: TRAILS, role: 'Categorical feature',
+      description: '"Other North America" and "Other Europe" are unlisted trails in those regions; "Other" is an unlisted trail anywhere else. Regions get their own "Other" once the survey lists trails there.'
+    },
     {
       name: 'hikeYear', question: 'Year of the hike', label: 'Year of the hike', type: 'integer', step: 1, input: 'field-hikeYear',
       min: 1970, max: ctx => ctx.now.getUTCFullYear() + 1, role: 'Temporal feature'
@@ -201,7 +207,7 @@
       values: [...Object.keys(DIRECTION_LABELS), 'Flip-flop', 'Section'], role: 'Categorical feature',
       check: (value, d) => (['Flip-flop', 'Section'].includes(value) || directionsFor(d.trail).includes(value)
         ? null : 'Please pick a direction for this trail'),
-      description: 'NOBO/SOBO on most trails; EABO/WEBO on east-west trails, CW/CCW on loops, TO_SANTIAGO/FROM_SANTIAGO on the Camino; the "Other" trail choices offer NOBO/SOBO and EABO/WEBO.'
+      description: 'NOBO/SOBO on most trails; EABO/WEBO on east-west trails, CW/CCW on loops and the Annapurna Circuit, TO_SANTIAGO/FROM_SANTIAGO on the Camino; the "Other" trail choices offer NOBO/SOBO and EABO/WEBO.'
     },
     {
       name: 'startDate', question: 'Start date', label: 'Start date', type: 'date', step: 1, input: 'field-startDate', store: false,

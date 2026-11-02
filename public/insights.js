@@ -111,7 +111,7 @@
 
       // Bar area: hairline baseline on the left, value at the bar's tip.
       const track = el('div', 'flex items-center gap-2 border-l border-slate-700 min-h-[24px]');
-      const bar = el('div', 'h-[18px] rounded-r transition');
+      const bar = el('div', 'chart-bar h-[18px] rounded-r transition');
       bar.style.width = `${Math.max(0.5, (row.value / max) * 85)}%`;
       bar.style.backgroundColor = chart.color(row);
       const value = el('span', 'text-xs font-semibold text-slate-200 whitespace-nowrap', text.value);
@@ -137,7 +137,7 @@
     const legend = el('div', 'mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-slate-400');
     entries.forEach(entry => {
       const item = el('span', 'inline-flex items-center gap-1.5');
-      const swatch = el('span', 'inline-block w-2.5 h-2.5 rounded-sm');
+      const swatch = el('span', 'chart-swatch inline-block w-2.5 h-2.5 rounded-sm');
       swatch.style.backgroundColor = entry.color;
       item.append(swatch, document.createTextNode(entry.label));
       legend.appendChild(item);
@@ -219,7 +219,7 @@
       const top = el('div', 'flex items-baseline justify-between gap-3 text-xs');
       top.append(el('span', 'text-slate-300', `${group.label} (${group.n})`), el('span', 'font-bold text-white tabular-nums whitespace-nowrap', group.display));
       const track = el('div', 'mt-1 h-2.5 rounded-full bg-slate-800 overflow-hidden');
-      const fill = el('div', 'h-full rounded-full');
+      const fill = el('div', 'chart-fill h-full rounded-full');
       fill.style.width = `${Math.max(3, (group.value / max) * 100)}%`;
       fill.style.backgroundColor = accent;
       if (g === 1) fill.style.opacity = '0.45';

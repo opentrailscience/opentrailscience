@@ -23,7 +23,7 @@ public/                     The website (Netlify's publish directory)
 netlify/functions/          submit, hike-code (look up and delete), feedback, two scheduled jobs
   utils/                    The request handlers, database, public dataset, insights, spam checks, rebuilds
 scripts/                    Dev server, dataset export, database scripts, data dictionary
-src/                        Tailwind theme, and the sources of the two generated images
+src/                        Tailwind theme, and the source of the link preview image
 test/                       npm test
 ```
 
@@ -118,7 +118,6 @@ MONGODB_DB="hikersurvey"   # optional, this is the default
 | `npm test` | All tests |
 | `npm run build` | Tailwind CSS, the JS bundle and the dataset files |
 | `npm run docs` | Rewrites `docs/DATA_DICTIONARY.md` after schema changes |
-| `npm run render:example-card` | Redraws the example share card (needs Firefox and ImageMagick) |
 | `npm run db:setup` | Creates the database indexes; safe to run again |
 | `npm run db:check` | Connection check and record counts |
 | `npm run feedback` | Prints the feedback messages |

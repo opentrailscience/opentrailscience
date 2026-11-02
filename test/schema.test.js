@@ -282,6 +282,10 @@ test('directions depend on the trail', () => {
   assert.equal(validate({ trail: 'PCT', direction: 'Flip-flop' }).isValid, true);
   assert.match(validate({ trail: 'PCT', direction: 'EABO' }).errors[0], /direction for this trail/);
   assert.equal(validate({ trail: 'Hayduke', direction: 'WEBO' }).isValid, true, 'Arches to Zion runs west');
+  assert.equal(validate({ trail: 'Annapurna', direction: 'CCW' }).isValid, true);
+  assert.match(validate({ trail: 'Annapurna', direction: 'NOBO' }).errors[0], /direction for this trail/);
+  assert.equal(Schema.datePrecision('Annapurna'), 'month', 'a small trail: dates by month');
+  assert.equal(Schema.trailName('Annapurna'), 'Annapurna Circuit');
   for (const trail of ['Other North America', 'Other Europe', 'Other']) {
     for (const direction of ['NOBO', 'SOBO', 'EABO', 'WEBO']) assert.equal(validate({ trail, direction }).isValid, true, `${trail} ${direction}`);
   }

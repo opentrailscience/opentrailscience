@@ -2,7 +2,7 @@
 
 ![Open Trail Science: How does your thru-hike compare?](public/og-image.png)
 
-Do low-cut shoes lead to more injuries? What's the optimized pack weight for maximal happiness? Everyone on trail has an answer, but hardly anyone has exact numbers.
+Which trail sends the most hikers home early, and why? What pack weight makes for the happiest hike? Everyone on trail has an answer, but hardly anyone has exact numbers.
 
 [opentrailscience.org](https://opentrailscience.org) is a survey for anyone who has hiked a long-distance trail, finished or not. I never ask for your name or an annoying sign-up, and I blur the data a bit to prevent pinpointing a specific hiker, then publish every answer as an open dataset that anyone can download and play around with. Every hike gets us one step closer to some real answers!
 
@@ -12,7 +12,7 @@ While planning for the PCT I of course watched all the mandatory indie-folk-infu
 
 ## A word on vibe coding
 
-The entire codebase was written by AI.  I did, however, run extensive local testing and understand all backend functionality, which (to the best of my abilities) looks good. If you think I missed something, let me know at hello@opentrailscience.org.
+The entire codebase was written by AI. I did, however, run extensive local testing and understand all backend functionality, which (to the best of my abilities with a decent amount of pre-LLM programming experience) looks good. If you think I missed something, let me know at hello@opentrailscience.org.
 
 ## What's in here
 

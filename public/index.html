@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Open Trail Science | Thru-Hiker Survey & Open Trail Dataset</title>
-  <meta name="description" content="Crowdsourced long-distance thru-hiker survey (PCT, AT, CDT, CT, AZT) collecting structured data for machine learning models predicting trail completion, injury, and hiker enjoyment.">
+  <meta name="description" content="One survey for every long trail, open all year. Share your hike in about 10 minutes; every answer goes into a free, open dataset.">
   <link rel="canonical" href="https://opentrailscience.org/">
 
   <!-- Link previews (WhatsApp, Reddit, Slack, iMessage, X...). URLs must be absolute.
@@ -24,9 +24,9 @@
   <meta name="twitter:title" content="How does your thru-hike compare? | Open Trail Science">
   <meta name="twitter:description" content="Share your gear, pacing and outcome in about 10 minutes. No names or accounts; open data for trail science.">
   <meta name="twitter:image" content="https://opentrailscience.org/og-image.png">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f4f8f'/%3E%3Cpath d='m8 3 4 8 5-5 5 15H2L8 3z' transform='translate(5 5.5) scale(.92)' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="img/cairn-icon.svg">
   
-  <meta name="theme-color" content="#f3f4f6">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="dark light">
   <!-- Sets data-theme before anything is drawn (light/dark switch, see theme.js). -->
   <script src="theme.js"></script>
@@ -35,42 +35,31 @@
        as the old Tailwind CDN script injected its styles last. -->
   <link rel="stylesheet" href="css/tailwind.css">
 </head>
-<body class="min-h-full flex flex-col topo-pattern text-slate-100 selection:bg-pine-600 selection:text-white">
+<body class="min-h-full flex flex-col">
 
-  <!-- Navigation -->
-  <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 max-[399px]:px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <a href="#home" class="flex items-center space-x-2 sm:space-x-3 group cursor-pointer text-left">
-        <div class="w-10 h-10 max-[399px]:w-8 max-[399px]:h-8 max-[359px]:hidden rounded-xl bg-linear-to-br/srgb from-pine-600 to-pine-900 border border-pine-500/30 flex items-center justify-center shadow-lg shadow-pine-950/50 group-hover:scale-105 transition-transform">
-          <svg class="w-6 h-6 text-pine-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
-          </svg>
-        </div>
-        <div>
-          <span class="font-extrabold tracking-tight text-white flex items-center gap-1.5 text-base max-[399px]:text-sm sm:text-lg whitespace-nowrap">
-            OPEN TRAIL <span class="text-pine-400">SCIENCE</span>
-          </span>
-          <span class="block text-xs font-mono tracking-wider uppercase text-slate-400 whitespace-nowrap">Thru-Hiker Survey</span>
-        </div>
+  <!-- Navigation: the logo links home; Insights, Dataset, About and the theme switch -->
+  <header class="site-header">
+    <div class="frame">
+      <a href="#home" class="brand-link" aria-label="Open Trail Science, home">
+        <img src="img/cairn-logo.svg" alt="" class="light-only" width="46" height="46"><img src="img/cairn-logo-dark.svg" alt="" class="dark-only" width="46" height="46">
+        <span class="brand-name">
+          <strong>OPEN TRAIL <span>SCIENCE</span></strong>
+          <small>Thru-Hiker Survey</small>
+        </span>
       </a>
-
-      <!-- Navigation links -->
-      <nav class="flex items-center space-x-1 sm:space-x-3">
-        <a href="#home" id="nav-link-home" class="nav-btn hidden md:block px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition">Home</a>
-        <a href="#survey" id="nav-link-survey" class="nav-btn px-3.5 max-[399px]:px-2.5 py-1.5 rounded-lg text-sm font-semibold bg-brand hover:bg-brand-hover text-white shadow-xs shadow-pine-950/60 transition flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          <span class="hidden sm:inline">Contribute</span> Hike
-        </a>
-        <a href="#insights" id="nav-link-insights" class="nav-btn hidden md:block px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition">Insights</a>
-        <a href="#download" id="nav-link-download" aria-label="Dataset" class="nav-btn px-3 max-[399px]:px-2 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1">
-          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          <span class="hidden sm:inline">Dataset</span>
-        </a>
-        <button type="button" id="theme-toggle" aria-label="Switch to light mode" title="Switch to light mode" class="nav-btn p-2 max-[399px]:p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition">
-          <!-- Shows the theme you switch to: a sun in dark mode, a moon in light mode. -->
-          <svg class="w-4 h-4 light:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-          <svg class="w-4 h-4 hidden light:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-        </button>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="#insights" id="nav-link-insights">Insights</a></li>
+          <li><a href="#download" id="nav-link-download">Dataset</a></li>
+          <li><a href="#about" id="nav-link-about">About</a></li>
+          <li>
+            <button type="button" id="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
+              <!-- Shows the theme you switch to: a sun in dark mode, a moon in light mode. -->
+              <svg class="w-5 h-5 light:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+              <svg class="w-5 h-5 hidden light:block" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            </button>
+          </li>
+        </ul>
       </nav>
     </div>
   </header>
@@ -83,308 +72,122 @@
 
     <!-- Home -->
     <section id="view-home" class="app-view active">
-      <!-- Hero Section -->
-      <div class="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          
-          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight sm:leading-none">
-            Crowdsourcing the Future of <br>
-            <span class="hero-accent text-pine-400">
-              Long-Distance Trail Science
-            </span>
-          </h1>
+      <div class="frame">
 
-          <p class="mt-6 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed sm:leading-7">
-            Why do some hikers finish and others go home early? What's really behind injuries? There is surprisingly little data to be found! Open Trail Science aims to change this by providing survey data from long-distance hikers for everyone.
-          </p>
-
-          <!-- Primary CTAs -->
-          <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="#survey" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-base bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-900/50 hover:shadow-pine-800/60 transform hover:-translate-y-0.5 transition flex items-center justify-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-              <span>Contribute Your Hike</span>
-            </a>
-            <a href="#download" class="w-full sm:w-auto px-7 py-3.5 rounded-xl font-semibold text-base bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 transition flex items-center justify-center gap-2">
-              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>Explore Public Dataset</span>
-            </a>
-          </div>
-
-          <!-- Effort estimate -->
-          <div class="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm text-slate-400">
-            <span class="inline-flex items-center gap-1.5"><svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>About 10 minutes</span>
-            <span class="text-slate-600 max-sm:hidden" aria-hidden="true">•</span>
-            <span>No account needed</span>
-            <span class="text-slate-600 max-sm:hidden" aria-hidden="true">•</span>
-            <span>Saved on your device as you go</span>
-          </div>
-
-          <!-- Privacy Guarantee Callout -->
-          <div class="mt-8 inline-flex items-center gap-2 text-xs text-slate-400 bg-slate-900/60 border border-slate-800 px-4 py-2 rounded-full">
-            <svg class="w-4 h-4 text-pine-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-            <span>No names, emails or accounts. Dates, age and country are blurred before anything is saved. <a href="#privacy" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">How I protect your privacy</a></span>
-          </div>
-
-          <div class="mt-4">
-            <a href="#about" class="text-xs text-slate-500 hover:text-slate-300 transition underline-offset-2 hover:underline">Who's behind this? About the creator &rarr;</a>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Stats -->
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-10 mb-16">
-        <!-- Shown until 50 hikers have taken part (see app.js FIRST_HIKERS_GOAL) -->
-        <div id="stats-first50" class="hidden card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/20 text-center">
-          <span class="px-3 py-1 rounded-full bg-amber-950/70 border border-amber-700/50 text-amber-300 font-mono text-xs font-semibold uppercase tracking-wider">Early days</span>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-3">Be part of the first 50!</h2>
-          <p class="text-sm text-slate-300 mt-2 max-w-xl mx-auto">Once 50 hikers have shared their hike, this space shows the numbers on completion rates, base weights and pace. Until then, every single survey visibly moves the needle.</p>
-          <div class="mt-5 max-w-md mx-auto">
-            <div class="h-2.5 rounded-full bg-slate-800 overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" aria-label="Hikers so far" id="first50-progress">
-              <div id="first50-bar" class="h-full rounded-full bg-linear-to-r/srgb from-pine-500 to-amber-400 transition-all duration-700 w-0"></div>
+        <!-- Hero; the contour map fills the space to the right (hidden below 760px) -->
+        <section class="home-hero">
+          <img class="hero-topo light-only" src="img/hero-topo.svg" alt="">
+          <img class="hero-topo dark-only" src="img/hero-topo-dark.svg" alt="">
+          <div class="hero-text">
+            <h1>One survey for every long trail, open all year.</h1>
+            <p class="lead">Most hiker surveys run once a year on a single trail. This one stays open all year, takes any long trail, and counts every hike, including hikes that ended early. Every answer goes into a free, public dataset.</p>
+            <div class="actions">
+              <a href="#survey" class="btn btn-primary">Contribute your hike</a>
+              <a href="#download" class="btn btn-secondary">Explore the dataset</a>
             </div>
-            <div id="first50-count" class="text-xs font-mono text-slate-400 mt-2">Be the very first</div>
+            <p class="fine">About 10 minutes. No names, emails or accounts, and your answers save on your device as you go. <a href="#privacy">Privacy</a> · <a href="#about">Who's behind this?</a></p>
           </div>
-          <a href="#survey" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white transition">Add your hike</a>
-        </div>
+        </section>
 
-        <div id="stats-tiles" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
-          
-          <div class="card-glow rounded-2xl p-5 max-sm:px-3 md:max-lg:px-4 text-center">
-            <div class="text-xs uppercase font-mono tracking-wider text-slate-400">Journeys Recorded</div>
-            <div id="stat-total-count" class="text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap font-extrabold text-pine-400 mt-1 stat-counter">--</div>
-            <div class="text-xs text-slate-400 mt-1 flex items-center justify-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-pine-400"></span> Updated after new answers
+        <!-- Shown until 50 hikers have taken part (see app.js FIRST_HIKERS_GOAL): one stone per hike -->
+        <section id="stats-first50" class="hidden home-card first50" aria-labelledby="first50-title">
+          <div>
+            <h2 id="first50-title">Be part of the first 50</h2>
+            <p>Once 50 hikers have shared their hike, this space shows completion rates, base weights and pace. Until then, every survey adds a stone.</p>
+            <div id="first50-progress" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" aria-label="Hikers so far">
+              <div id="first50-bar" class="stones" aria-hidden="true"></div>
             </div>
+            <p id="first50-count" class="first50-count">0 of 50 hikers so far</p>
           </div>
+        </section>
 
-          <div class="card-glow rounded-2xl p-5 max-sm:px-3 md:max-lg:px-4 text-center">
-            <div class="text-xs uppercase font-mono tracking-wider text-slate-400">Completion Rate</div>
-            <div id="stat-completion-rate" class="text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap font-extrabold text-amber-400 mt-1 stat-counter">--%</div>
-            <div class="text-xs text-slate-400 mt-1">Continuous and flip-flop finishes</div>
-          </div>
+        <!-- From 50 hikers on: the headline numbers -->
+        <section id="stats-tiles" class="hidden home-card home-stats" aria-label="The dataset in numbers">
+          <div><div class="stat-label">Hikes shared</div><div id="stat-total-count" class="stat-counter">--</div><div class="stat-note">Updated after new answers</div></div>
+          <div><div class="stat-label">Completion rate</div><div id="stat-completion-rate" class="stat-counter">--%</div><div class="stat-note">Continuous and flip-flop finishes</div></div>
+          <div><div class="stat-label">Median base weight</div><div id="stat-median-baseweight" class="stat-counter">-- lbs</div><div class="stat-note">Dry pack loadout</div></div>
+          <div><div class="stat-label">Average daily miles</div><div id="stat-avg-miles" class="stat-counter">-- mi</div><div class="stat-note">Sustained trail pace</div></div>
+        </section>
 
-          <div class="card-glow rounded-2xl p-5 max-sm:px-3 md:max-lg:px-4 text-center">
-            <div class="text-xs uppercase font-mono tracking-wider text-slate-400">Median Base Weight</div>
-            <div id="stat-median-baseweight" class="text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap font-extrabold text-emerald-400 mt-1 stat-counter">-- lbs</div>
-            <div class="text-xs text-slate-400 mt-1">Dry pack loadout</div>
-          </div>
-
-          <div class="card-glow rounded-2xl p-5 max-sm:px-3 md:max-lg:px-4 text-center">
-            <div class="text-xs uppercase font-mono tracking-wider text-slate-400">Avg Daily Miles</div>
-            <div id="stat-avg-miles" class="text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap font-extrabold text-sky-400 mt-1 stat-counter">-- mi</div>
-            <div class="text-xs text-slate-400 mt-1">Sustained trail pace</div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- How it works -->
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
-          <div class="lg:col-span-3">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">Ten minutes for you, years of answers for everyone</h2>
-            <ol class="mt-6 space-y-5">
-              <li class="flex gap-4">
-                <span class="w-8 h-8 shrink-0 rounded-lg bg-pine-900/80 text-pine-300 flex items-center justify-center font-bold text-sm">1</span>
-                <div>
-                  <h3 class="font-bold text-white">Tell us about your hike</h3>
-                  <p class="text-sm text-slate-400 mt-0.5">Gear, pacing, training, rest days and how it ended. Don't remember a specific detail? Your experience is still highly appreciated!</p>
-                </div>
+        <!-- How it works, with an example share card -->
+        <section class="home-how">
+          <div>
+            <h2>Ten minutes for you, years of answers for everyone</h2>
+            <ol>
+              <li>
+                <span class="step-dot" aria-hidden="true">1</span>
+                <div><h3>Tell us about your hike</h3><p>Gear, pacing, training, rest days and how it ended. Don't remember a specific detail? Your experience is still highly appreciated!</p></div>
               </li>
-              <li class="flex gap-4">
-                <span class="w-8 h-8 shrink-0 rounded-lg bg-amber-900/80 text-amber-300 flex items-center justify-center font-bold text-sm">2</span>
-                <div>
-                  <h3 class="font-bold text-white">See how you compare</h3>
-                  <p class="text-sm text-slate-400 mt-0.5">As responses come in, we'll show you how your pack weight, pace and zero days stack up against other hikers on your trail, with a card you can share.</p>
-                </div>
+              <li>
+                <span class="step-dot" aria-hidden="true">2</span>
+                <div><h3>See how you compare</h3><p>As responses come in, you'll see how your pack weight, pace and zero days stack up against other hikers on your trail, with a card you can share.</p></div>
               </li>
-              <li class="flex gap-4">
-                <span class="w-8 h-8 shrink-0 rounded-lg bg-emerald-900/80 text-emerald-300 flex items-center justify-center font-bold text-sm">3</span>
-                <div>
-                  <h3 class="font-bold text-white">Help future hikers</h3>
-                  <p class="text-sm text-slate-400 mt-0.5">Your answers, with identifying details blurred, join a free, open dataset that anyone can download, from hikers planning their first trail to researchers studying injuries.</p>
-                </div>
+              <li>
+                <span class="step-dot" aria-hidden="true">3</span>
+                <div><h3>Help future hikers</h3><p>Your answers, with identifying details blurred, join a free, open dataset anyone can download, from first-time planners to injury researchers.</p></div>
               </li>
             </ol>
           </div>
-          <figure class="lg:col-span-2 text-center">
-            <img id="example-share-card" src="img/example-share-card.webp" alt="Example share card: 86% of PCT hikers carried a heavier pack" width="560" height="700" loading="lazy" decoding="async" class="w-full max-w-[280px] h-auto mx-auto rounded-2xl border border-slate-800 shadow-2xl shadow-pine-950/60 rotate-1">
-            <figcaption class="text-xs text-slate-500 mt-3">Example card. Yours shows your own results.</figcaption>
+          <figure class="example-card">
+            <div class="card-face" role="img" aria-label="Example share card: 86% of PCT hikers carried a heavier pack, 71% took zero days more often">
+              <div class="card-brand"><img src="img/cairn-logo.svg" alt="" width="28" height="28">OPEN TRAIL SCIENCE</div>
+              <p class="card-title">My 2025 PCT<br><span>thru-hike</span></p>
+              <p class="card-big terra">86%</p>
+              <p class="card-small">of PCT hikers carried a heavier pack</p>
+              <p class="card-big blue">71%</p>
+              <p class="card-small">of PCT hikers took zero days more often</p>
+              <p class="card-url">opentrailscience.org</p>
+            </div>
+            <figcaption>Example card. Yours shows your own results.</figcaption>
           </figure>
-        </div>
-      </div>
+        </section>
 
-      <!-- People who did not finish -->
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <div class="card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/25 flex flex-col md:flex-row md:items-center gap-5">
-          <div class="flex-1">
-            <p class="text-sm font-semibold text-amber-300">Didn't finish?</p>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-white mt-1">Your hike matters just as much. Arguably more!</h2>
-            <p class="text-sm text-slate-300 mt-2 leading-relaxed">The hikes that stopped early are the ones that explain <em>why</em> hikes end. Section hikers and people who skipped large sections are welcome too. Keep your story ready.</p>
-          </div>
-          <a href="#survey" class="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-sm bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-700/50 transition">Share your hike &rarr;</a>
-        </div>
-      </div>
-
-      <!-- Trails -->
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-        <div class="flex items-center justify-between mb-6">
+        <!-- People who did not finish -->
+        <section class="home-dnf">
           <div>
-            <h2 class="text-xl sm:text-2xl font-bold text-white">Trails in the Survey</h2>
-            <p class="text-sm text-slate-400 mt-0.5">Click any trail to start your survey with it pre-selected</p>
+            <p class="label">Didn't finish?</p>
+            <h2>Your hike matters just as much. Arguably more!</h2>
+            <p>The hikes that stopped early are the ones that explain why hikes end. Section hikers and people who skipped large sections are welcome too.</p>
           </div>
-          <span class="text-xs font-mono text-pine-400 hidden sm:inline-block">75 to 3,000 miles, any continent</span>
-        </div>
+          <a href="#survey" class="btn btn-callout">Share your hike</a>
+        </section>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          
-          <!-- PCT Card -->
-          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="PCT">
-            <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-pine-900/80 text-pine-300 border border-pine-700/50">PCT</span>
-              <span class="text-xs font-medium text-slate-400">2,650 mi • 420,880 ft elev</span>
-            </div>
-            <h3 class="text-lg font-bold text-white mt-2">Pacific Crest Trail</h3>
-            <p class="text-xs text-slate-300 mt-1">Campo, CA to Manning Park, BC through desert, High Sierra granite passes, and Cascade volcanoes.</p>
-            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold group">
-              <span>Log PCT Hike &rarr;</span>
-              <span class="text-slate-400 text-xs" id="trail-count-pct">-- entries</span>
-            </div>
+        <!-- Trails as a pile of stones; each starts the survey with its trail selected (initTrailQuickCards in app.js) -->
+        <section class="home-trails" id="trails">
+          <div>
+            <h2>Trails in the survey</h2>
+            <p>Pick a trail to start the survey with it already selected. 75 to 3,000 miles, any continent.</p>
           </div>
+          <ol class="cairn">
+            <li class="stone s1"><a href="#survey" class="trail-quick-card"><span class="name">Any other long trail</span><span class="meta">MORE · 75 MI +</span></a></li>
+            <li class="stone s2"><a href="#survey" class="trail-quick-card" data-trail="TMB"><span class="name">Tour du Mont Blanc</span><span class="meta">TMB · 106 MI</span></a></li>
+            <li class="stone s3"><a href="#survey" class="trail-quick-card" data-trail="Annapurna"><span class="name">Annapurna Circuit</span><span class="meta">NEPAL · ~130 MI</span></a></li>
+            <li class="stone s4"><a href="#survey" class="trail-quick-card" data-trail="CDS"><span class="name">Camino de Santiago</span><span class="meta">ANY ROUTE</span></a></li>
+            <li class="stone s5"><a href="#survey" class="trail-quick-card" data-trail="TA"><span class="name">Te Araroa</span><span class="meta">TA · 1,864 MI</span></a></li>
+            <li class="stone s6"><a href="#survey" class="trail-quick-card" data-trail="AT"><span class="name">Appalachian Trail</span><span class="meta">AT · 2,198 MI</span></a></li>
+            <li class="stone s7"><a href="#survey" class="trail-quick-card" data-trail="PCT"><span class="name">Pacific Crest Trail</span><span class="meta">PCT · 2,650 MI</span></a></li>
+            <li class="stone s8"><a href="#survey" class="trail-quick-card" data-trail="CDT"><span class="name">Continental Divide Trail</span><span class="meta">CDT · ~3,000 MI</span></a></li>
+            <li class="ground" aria-hidden="true"></li>
+          </ol>
+        </section>
 
-          <!-- AT Card -->
-          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="AT">
-            <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-emerald-950 text-emerald-300 border border-emerald-700/50">AT</span>
-              <span class="text-xs font-medium text-slate-400">2,198 mi • 464,500 ft elev</span>
-            </div>
-            <h3 class="text-lg font-bold text-white mt-2">Appalachian Trail</h3>
-            <p class="text-xs text-slate-300 mt-1">Springer Mtn, GA to Mt Katahdin, ME across the ancient Appalachian range, green tunnels, and rocks.</p>
-            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
-              <span>Log AT Hike &rarr;</span>
-              <span class="text-slate-400 text-xs" id="trail-count-at">-- entries</span>
-            </div>
-          </div>
-
-          <!-- CDT Card -->
-          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="CDT">
-            <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-amber-950 text-amber-300 border border-amber-700/50">CDT</span>
-              <span class="text-xs font-medium text-slate-400">~3,000 mi • High Divide</span>
-            </div>
-            <h3 class="text-lg font-bold text-white mt-2">Continental Divide Trail</h3>
-            <p class="text-xs text-slate-300 mt-1">Crazy Cook, NM to Waterton Lakes, MT. The crown of the continent, rugged navigation and altitude.</p>
-            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
-              <span>Log CDT Hike &rarr;</span>
-              <span class="text-slate-400 text-xs" id="trail-count-cdt">-- entries</span>
-            </div>
-          </div>
-
-          <!-- Colorado Trail Card -->
-          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="CT">
-            <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-sky-950 text-sky-300 border border-sky-700/50">CT</span>
-              <span class="text-xs font-medium text-slate-400">486 mi • Avg 10,300 ft elev</span>
-            </div>
-            <h3 class="text-lg font-bold text-white mt-2">Colorado Trail</h3>
-            <p class="text-xs text-slate-300 mt-1">Denver to Durango across the Rocky Mountains, Collegiate Peaks, and San Juan wilderness.</p>
-            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
-              <span>Log CT Hike &rarr;</span>
-              <span class="text-slate-400 text-xs" id="trail-count-ct">-- entries</span>
-            </div>
-          </div>
-
-          <!-- Arizona Trail Card -->
-          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="AZT">
-            <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-orange-950 text-orange-300 border border-orange-700/50">AZT</span>
-              <span class="text-xs font-medium text-slate-400">800 mi • Sky Islands</span>
-            </div>
-            <h3 class="text-lg font-bold text-white mt-2">Arizona Trail</h3>
-            <p class="text-xs text-slate-300 mt-1">Coronado National Memorial to Utah border across the Sonoran desert and Grand Canyon.</p>
-            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
-              <span>Log AZT Hike &rarr;</span>
-              <span class="text-slate-400 text-xs" id="trail-count-azt">-- entries</span>
-            </div>
-          </div>
-
-          <!-- Tour du Mont Blanc Card -->
-          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="TMB">
-            <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-rose-950 text-rose-300 border border-rose-700/50">TMB</span>
-              <span class="text-xs font-medium text-slate-400">106 mi • 32,800 ft elev</span>
-            </div>
-            <h3 class="text-lg font-bold text-white mt-2">Tour du Mont Blanc</h3>
-            <p class="text-xs text-slate-300 mt-1">A loop around the Mont Blanc massif through France, Italy and Switzerland, over high alpine passes from hut to hut.</p>
-            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
-              <span>Log TMB Hike &rarr;</span>
-              <span class="text-slate-400 text-xs" id="trail-count-tmb">-- entries</span>
-            </div>
-          </div>
-
-          <!-- Te Araroa Card -->
-          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="TA">
-            <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-teal-950 text-teal-300 border border-teal-700/50">TA</span>
-              <span class="text-xs font-medium text-slate-400">1,864 mi • Beaches to Alps</span>
-            </div>
-            <h3 class="text-lg font-bold text-white mt-2">Te Araroa</h3>
-            <p class="text-xs text-slate-300 mt-1">The length of New Zealand, Cape Reinga to Bluff: beaches, forests, river crossings and the Southern Alps.</p>
-            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
-              <span>Log TA Hike &rarr;</span>
-              <span class="text-slate-400 text-xs" id="trail-count-ta">-- entries</span>
-            </div>
-          </div>
-
-          <!-- Other / More Trails Card -->
-          <div class="card-glow rounded-xl p-5 cursor-pointer hover:border-pine-500/60 transition trail-quick-card" data-trail="Other">
-            <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-purple-950 text-purple-300 border border-purple-700/50">MORE</span>
-              <span class="text-xs font-medium text-slate-400">JMT, PNT, Camino, etc.</span>
-            </div>
-            <h3 class="text-lg font-bold text-white mt-2">Other Long Trails</h3>
-            <p class="text-xs text-slate-300 mt-1">John Muir Trail, Pacific Northwest Trail, Long Trail, Hayduke, Camino de Santiago, West Highland Way, GR20, or one we haven't listed.</p>
-            <div class="mt-4 flex items-center justify-between text-xs text-pine-400 font-semibold">
-              <span>Log Other Trail &rarr;</span>
-              <span class="text-slate-400 text-xs">All welcome</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Lots of opinions, not much data -->
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div class="card-glow rounded-2xl p-6 sm:p-10 border border-pine-500/20 bg-linear-to-b/srgb from-slate-900/90 to-slate-950/90">
-          <div class="max-w-3xl">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">Lots of opinions, not much data.</h2>
-            <p class="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed sm:leading-6">
-              Do low-cut shoes lead to more injuries? What's the optimized pack weight for maximal happiness? Everyone on trail has an answer, but hardly anyone has exact numbers. That's what this survey is for, and every hike gets us one step closer to some real answers!
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-slate-800">
+        <!-- Lots of opinions, not much data -->
+        <section class="home-why">
+          <h2>Lots of opinions, not much data</h2>
+          <p>Which trail sends the most hikers home early, and why? What pack weight makes for the happiest hike? Everyone on trail has an answer, but hardly anyone has numbers. That's what this survey is for.</p>
+          <div class="why-items">
             <div>
-              <h3 class="font-bold text-white text-base">Settle a few trail debates</h3>
-              <p class="text-xs text-slate-400 mt-1">Trail runners or boots? Stove or cold soak? Tent or tarp? With enough hikes we can see what actually goes along with finishing and what's just preference.</p>
+              <h3><span class="dot sage" aria-hidden="true"></span>Room for machine learning</h3>
+              <p>A big, clean dataset is what you need to train models, for example one that flags a high injury risk or one that optimizes your number of zero days for a minimal budget. That takes a lot of hikes tho!</p>
             </div>
             <div>
-              <h3 class="font-bold text-white text-base">Room for machine learning</h3>
-              <p class="text-xs text-slate-400 mt-1">A big, clean dataset is what you need to train models, for example one that flags a high injury risk or one that optimizes your number of zero days for a minimal budget. That takes a lot of hikes tho!
-              </p>
-            </div>
-            <div>
-              <h3 class="font-bold text-white text-base">Open to everyone</h3>
-              <p class="text-xs text-slate-400 mt-1">Every answer ends up in a free CSV and JSON download, with identifying details blurred, which anybody can use to continue their own ideas.</p>
+              <h3><span class="dot blue" aria-hidden="true"></span>Open to everyone</h3>
+              <p>Every answer ends up in a free CSV and JSON download, with identifying details blurred, for anyone to use for their own ideas.</p>
             </div>
           </div>
+          <p class="why-links"><a href="#insights">See what the data says so far</a><a href="#about">Built by a hiker who likes statistics</a></p>
+        </section>
 
-          <div class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            <a href="#insights" class="font-semibold text-pine-400 hover:text-pine-300">See what the data says so far &rarr;</a>
-            <a href="#about" class="text-slate-400 hover:text-slate-200">Built by a hiker who likes statistics &rarr;</a>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -632,13 +435,11 @@
         <div id="insights-locked" class="hidden card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/20 text-center max-w-2xl mx-auto mt-10">
           <h3 class="text-xl sm:text-2xl font-extrabold text-white">Charts unlock at 50 hikers</h3>
           <p class="text-sm text-slate-300 mt-2">With fewer hikes, any chart would mostly show noise. Help us get there.</p>
-          <div class="mt-5 max-w-md mx-auto">
-            <div class="h-2.5 rounded-full bg-slate-800 overflow-hidden">
-              <div id="insights-locked-bar" class="h-full rounded-full bg-linear-to-r/srgb from-pine-500 to-amber-400 transition-all duration-700 w-0"></div>
-            </div>
-            <div id="insights-locked-count" class="text-xs font-mono text-slate-400 mt-2"></div>
+          <div class="mt-5 max-w-[520px] mx-auto">
+            <div id="insights-locked-bar" class="stones" aria-hidden="true"></div>
+            <div id="insights-locked-count" class="text-sm font-mono keep-mono text-slate-400 mt-2"></div>
           </div>
-          <a href="#survey" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white transition">Add your hike</a>
+          <a href="#survey" class="btn btn-primary mt-6">Add your hike</a>
         </div>
 
         <div id="insights-charts" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10"></div>
@@ -800,7 +601,7 @@
                     <option value="Other North America">Other, North America</option>
                   </optgroup>
                   <optgroup label="Europe">
-                    <option value="CDS" data-hint="Camino de Santiago, about 485 mi / 780 km">Camino Francés (CDS)</option>
+                    <option value="CDS" data-hint="Any route to Santiago de Compostela">Camino de Santiago (CDS)</option>
                     <option value="TMB" data-hint="106 mi / 170 km">Tour du Mont Blanc (TMB)</option>
                     <option value="WHW" data-hint="96 mi / 154 km">West Highland Way (WHW)</option>
                     <option value="GR20" data-hint="112 mi / 180 km">GR20 (Corsica)</option>
@@ -812,9 +613,10 @@
                     <option value="C2C" data-hint="190 mi / 306 km">Coast to Coast Walk (C2C)</option>
                     <option value="Other Europe">Other, Europe</option>
                   </optgroup>
-                  <optgroup label="Elsewhere">
+                  <optgroup label="Rest of the world">
                     <option value="TA" data-hint="about 1,860 mi / 3,000 km">Te Araroa Trail (TA)</option>
-                    <option value="Other">Other, elsewhere</option>
+                    <option value="Annapurna" data-hint="Nepal, about 130 mi / 210 km">Annapurna Circuit</option>
+                    <option value="Other">Other, rest of the world</option>
                   </optgroup>
                 </select>
               </div>
@@ -1670,7 +1472,7 @@
                   <div class="choice-card rounded-xl p-4" data-name="completionStatus" data-value="quit_early">
                     <div class="flex items-center justify-between">
                       <div class="text-sm font-bold text-white">Ended early</div>
-                      <span class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-rose-950 text-rose-300">Went home</span>
+                      <span class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-orange-950 text-orange-300">Went home</span>
                     </div>
                     <p class="text-xs text-slate-300 mt-1">You left the trail before you planned to, for any reason: injury, money, burnout, closures or life.</p>
                   </div>
@@ -1850,13 +1652,11 @@
           <!-- Back and Next -->
           <div class="mt-6 flex items-center justify-between">
             <button type="button" id="btn-wizard-prev" aria-label="Back" class="px-5 max-[379px]:px-3.5 py-3 rounded-xl font-semibold text-sm bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 opacity-40 cursor-not-allowed" disabled>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-              <span class="max-[379px]:hidden">Back</span>
+              <span>Back</span>
             </button>
 
             <button type="button" id="btn-wizard-next" class="px-7 max-[379px]:px-5 py-3 rounded-xl whitespace-nowrap font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/50 transition flex items-center gap-2">
               <span id="btn-wizard-next-text">Next: About you</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
           </div>
 
@@ -1871,7 +1671,7 @@
     <section id="view-success" class="app-view">
       <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
         
-        <div class="w-20 h-20 rounded-full bg-linear-to-tr/srgb from-pine-600 to-emerald-400 border border-pine-300/40 flex items-center justify-center mx-auto shadow-xl shadow-pine-950/50 mb-6">
+        <div class="success-check w-20 h-20 rounded-full bg-brand flex items-center justify-center mx-auto mb-6">
           <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
           </svg>
@@ -1886,7 +1686,7 @@
         </h2>
 
         <p id="success-intro" class="text-base text-slate-300 mt-3 max-w-xl mx-auto">
-          Your hike is now part of the open dataset, thank you! Every single answer makes the picture of what really happens on long trails a little clearer, for future hikers and for anyone researching it.
+          Your hike is now part of the open dataset, thank you! Every single answer makes the picture of thru-hiking a little clearer, for future hikers and for anyone researching it.
         </p>
 
         <!-- Hike Summary Card -->
@@ -1937,8 +1737,30 @@
           </details>
         </div>
 
+        <!-- Personal share card, drawn in the browser by share-card.js -->
+        <div id="share-card-container" class="hidden mt-8">
+          <div class="text-[11px] text-slate-400 uppercase font-mono mb-3">Your Share Card</div>
+          <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="w-full max-w-[260px] h-auto mx-auto rounded-2xl border border-slate-800 shadow-xl shadow-pine-950/50">
+          <a id="btn-download-card" href="#" download="open-trail-science.png" class="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-pine-400 hover:text-pine-300 transition">
+            Download card
+          </a>
+        </div>
+
+        <!-- Next Step Buttons -->
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center">
+          <a href="#download" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/60 transition flex items-center justify-center gap-2">
+            <span>Download Full Dataset</span>
+          </a>
+          <button type="button" id="btn-share-survey" class="w-full sm:w-auto px-5 py-3 rounded-xl font-semibold text-sm bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 transition flex items-center justify-center gap-2">
+            <span>Share Survey with Tramily</span>
+          </button>
+          <button type="button" id="btn-add-another-hike" class="w-full sm:w-auto px-5 py-3 rounded-xl font-medium text-sm text-slate-400 hover:text-white transition">
+            + Add another hike
+          </button>
+        </div>
+
         <!-- Deletion code (shown once; only a hash is stored) -->
-        <div id="deletion-code-panel" class="hidden mt-6 max-w-xl mx-auto text-left p-5 rounded-2xl bg-slate-900/70 border border-pine-500/40">
+        <div id="deletion-code-panel" class="hidden mt-8 max-w-xl mx-auto text-left p-5 rounded-2xl bg-slate-900/70 border border-pine-500/40">
           <div class="text-[11px] text-pine-300 uppercase font-mono">Your personal code</div>
           <h3 class="mt-1 font-bold text-white">Come back later and see how you compare</h3>
           <div class="mt-2 flex flex-wrap items-center gap-3">
@@ -1947,16 +1769,6 @@
           </div>
           <p class="text-sm text-slate-300 mt-2">Every new hike makes the comparison more accurate. Enter this code on the <a href="#insights" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">Insights page</a> anytime to see how your hike stacks up today, with a fresh share card.</p>
           <p class="text-xs text-slate-400 mt-2">It's also the only way to delete your answer in case you change your mind later (on the <a href="#privacy-delete" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">privacy page</a>). I don't know who you are, so I can't look it up for you: please save it somewhere safe.</p>
-        </div>
-
-        <!-- Personal share card, drawn in the browser by share-card.js -->
-        <div id="share-card-container" class="hidden mt-8">
-          <div class="text-[11px] text-slate-400 uppercase font-mono mb-3">Your Share Card</div>
-          <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="w-full max-w-[260px] h-auto mx-auto rounded-2xl border border-slate-800 shadow-xl shadow-pine-950/50">
-          <a id="btn-download-card" href="#" download="open-trail-science.png" class="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-pine-400 hover:text-pine-300 transition">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Download card
-          </a>
         </div>
 
         <!-- Feedback about the survey: sent separately (/api/feedback), never linked to the answers -->
@@ -1969,21 +1781,6 @@
             <p id="feedback-result" role="status" class="text-xs text-slate-400"></p>
             <button type="button" id="btn-send-feedback" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition disabled:opacity-40 disabled:cursor-not-allowed">Send feedback</button>
           </div>
-        </div>
-
-        <!-- Next Step Buttons -->
-        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center">
-          <a href="#download" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/60 transition flex items-center justify-center gap-2">
-            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            <span>Download Full Dataset</span>
-          </a>
-          <button type="button" id="btn-share-survey" class="w-full sm:w-auto px-5 py-3 rounded-xl font-semibold text-sm bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 transition flex items-center justify-center gap-2">
-            <svg class="w-4 h-4 text-pine-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-            <span>Share Survey with Tramily</span>
-          </button>
-          <button type="button" id="btn-add-another-hike" class="w-full sm:w-auto px-5 py-3 rounded-xl font-medium text-sm text-slate-400 hover:text-white transition">
-            + Add another hike
-          </button>
         </div>
 
       </div>
@@ -2028,7 +1825,6 @@
 
             <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
               <a href="/data/thru_hiker_survey_dataset.csv" download="thru_hiker_survey_dataset.csv" id="btn-download-csv" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/50 transition flex items-center justify-center gap-2">
-                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 <span>Download CSV</span>
               </a>
             </div>
@@ -2054,7 +1850,6 @@
 
             <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
               <a href="/data/thru_hiker_survey_dataset.json" download="thru_hiker_survey_dataset.json" id="btn-download-json" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 transition flex items-center justify-center gap-2">
-                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 <span>Download JSON</span>
               </a>
             </div>
@@ -2341,28 +2136,16 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-slate-800 bg-slate-950/90 py-10 text-slate-400 text-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-4">
-      <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-        <svg class="w-5 h-5 text-pine-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
-        </svg>
-        <span class="font-bold text-slate-200 whitespace-nowrap">Open Trail Science</span>
-        <span class="max-sm:hidden" aria-hidden="true">•</span>
-        <span class="whitespace-nowrap">Public Domain (CC0) Dataset</span>
-      </div>
-      <!-- Dots only where the links fit on one line; on phones the gap separates them. -->
-      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <a href="#privacy" class="hover:text-slate-200">Privacy</a>
-        <span class="max-sm:hidden" aria-hidden="true">•</span>
-        <a href="#survey" class="text-pine-400 hover:text-pine-300">Contribute Hike</a>
-        <span class="max-sm:hidden" aria-hidden="true">•</span>
-        <a href="#insights" class="hover:text-slate-200">Insights</a>
-        <span class="max-sm:hidden" aria-hidden="true">•</span>
-        <a href="#about" class="hover:text-slate-200">About</a>
-        <span class="max-sm:hidden" aria-hidden="true">•</span>
-        <a href="#download" class="text-amber-400 hover:text-amber-300">Download Data</a>
-      </div>
+  <footer class="site-footer">
+    <div class="frame">
+      <span class="footer-brand"><img src="img/cairn-logo.svg" alt="" class="light-only" width="26" height="26"><img src="img/cairn-logo-dark.svg" alt="" class="dark-only" width="26" height="26"><strong>Open Trail Science</strong><span>Public domain (CC0) dataset</span></span>
+      <ul>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#survey">Contribute hike</a></li>
+        <li><a href="#insights">Insights</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#download">Download data</a></li>
+      </ul>
     </div>
   </footer>
 

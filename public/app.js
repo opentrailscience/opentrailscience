@@ -178,10 +178,9 @@
   };
 
   const navLinks = {
-    home: $('nav-link-home'),
-    survey: $('nav-link-survey'),
     insights: $('nav-link-insights'),
-    download: $('nav-link-download')
+    download: $('nav-link-download'),
+    about: $('nav-link-about')
   };
 
   // --- INITIALIZATION ---
@@ -283,14 +282,12 @@
     });
 
     // Update active nav link styling
+    // The current page gets the pill in the header; the logo is the way home.
     Object.keys(navLinks).forEach(key => {
-      // The survey link is a green button already; it keeps its look everywhere.
-      if (!navLinks[key] || key === 'survey') return;
-      if (key === hash) {
-        navLinks[key].classList.add('text-white', 'bg-slate-800/80');
-      } else {
-        navLinks[key].classList.remove('text-white', 'bg-slate-800/80');
-      }
+      if (!navLinks[key]) return;
+      navLinks[key].classList.toggle('is-active', key === hash);
+      if (key === hash) navLinks[key].setAttribute('aria-current', 'page');
+      else navLinks[key].removeAttribute('aria-current');
     });
 
     if (anchor) {
@@ -382,23 +379,17 @@
       animateNumber($('stat-median-baseweight'), data.medianBaseWeightLbs, 1, ' lbs');
       animateNumber($('stat-avg-miles'), data.avgDailyMiles, 1, ' mi');
     }
-
-    ['pct', 'at', 'cdt', 'ct', 'azt', 'tmb', 'ta'].forEach(t => {
-      const el = $(`trail-count-${t}`);
-      if (el) {
-        const count = ((data.trails || {})[t.toUpperCase()] || 0) + mine.filter(s => s.trail === t.toUpperCase()).length;
-        el.textContent = early ? 'Be one of the first' : `${count} ${count === 1 ? 'entry' : 'entries'}`;
-      }
-    });
   }
 
-  function renderFirstHikersProgress(bar, label, total, includesYou) {
-    if (bar) bar.style.width = `${Math.min(100, (total / FIRST_HIKERS_GOAL) * 100)}%`;
-    if (label) {
-      label.textContent = total === 0
-        ? 'Be the very first'
-        : `${total} of ${FIRST_HIKERS_GOAL} hikers so far${includesYou ? ', including you 🎉' : ''}`;
+  /** One stone per hike so far, colored in the order of the four accents (styles.css .stones). */
+  function renderFirstHikersProgress(stones, label, total, includesYou) {
+    if (stones) {
+      if (stones.children.length !== FIRST_HIKERS_GOAL) {
+        stones.replaceChildren(...Array.from({ length: FIRST_HIKERS_GOAL }, () => document.createElement('span')));
+      }
+      [...stones.children].forEach((stone, i) => stone.classList.toggle('filled', i < total));
     }
+    if (label) label.textContent = `${Math.min(total, FIRST_HIKERS_GOAL)} of ${FIRST_HIKERS_GOAL} hikers so far${includesYou ? ', including you' : ''}`;
   }
 
   /** Counts up from 0 to `end`; shows a dash when there is no value yet. */
@@ -423,14 +414,16 @@
   function initTrailQuickCards() {
     document.querySelectorAll('.trail-quick-card').forEach(card => {
       card.addEventListener('click', () => {
+        // "Any other long trail" has no data-trail: the "Other" choice depends on the region,
+        // so the hiker picks it in the list.
         const trail = card.getAttribute('data-trail');
         const trailSelect = $('field-trail');
-        if (trailSelect) {
+        if (trail && trailSelect) {
           trailSelect.value = trail;
           trailSelect.dispatchEvent(new Event('change'));
         }
         window.location.hash = '#survey';
-        showToast(`Selected: ${Schema.trailName(trail) || 'another trail'}`);
+        showToast(trail ? `Selected: ${Schema.trailName(trail)}` : 'Pick your trail from the list in the survey');
       });
     });
   }
@@ -1203,7 +1196,7 @@
     flip_flop: 'bg-amber-950 text-amber-300',
     skipped_sections: 'bg-sky-950 text-sky-300',
     section_hike: 'bg-slate-800 text-slate-300',
-    quit_early: 'bg-rose-950 text-rose-300'
+    quit_early: 'bg-orange-950 text-orange-300'
   };
   const STATUS_LABELS = Schema.COMPLETION_LABELS;
 
@@ -1511,7 +1504,7 @@
         : '<span class="text-slate-500">None</span>';
 
       tr.innerHTML = `
-        <td class="py-3 px-4 font-bold text-pine-400">${escapeHtml(r.trail)}</td>
+        <td class="py-3 px-4"><span class="trail-chip" data-trail="${escapeHtml(r.trail)}">${escapeHtml(r.trail)}</span></td>
         <td class="py-3 px-4">${escapeHtml(r.hikeYear)}</td>
         <td class="py-3 px-4">${escapeHtml(r.direction)}</td>
         <td class="py-3 px-4 font-semibold text-white">${escapeHtml(orDash(r.baseWeightLbs, ' lbs'))}</td>
@@ -2070,7 +2063,7 @@
     $('theme-toggle').setAttribute('aria-label', label);
     $('theme-toggle').title = label;
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#f3f4f6' : '#121417');
+    if (meta) meta.setAttribute('content', theme === 'light' ? '#ffffff' : '#1b1e22');
   }
 
   function initTheme() {
@@ -2088,7 +2081,7 @@
     submitted: {
       badge: 'Hike Recorded',
       title: 'Thank You for Advancing Trail Science!',
-      intro: 'Your hike is now part of the open dataset, thank you! Every single answer makes the picture of what really happens on long trails a little clearer, for future hikers and for anyone researching it.'
+      intro: 'Your hike is now part of the open dataset, thank you! Every single answer makes the picture of thru-hiking a little clearer, for future hikers and for anyone researching it.'
     },
     revisit: {
       badge: 'Your hike',
@@ -2102,6 +2095,8 @@
     $('success-badge').textContent = text.badge;
     $('success-title').textContent = text.title;
     $('success-intro').textContent = text.intro;
+    // Right after submitting the share card says it all; a looked-up hike shows the full summary.
+    $('success-summary-card').classList.toggle('hidden', mode === 'submitted');
     if (mode === 'revisit') {
       populateDeletionCode(null); // they have the code already
       resetFeedback();
