@@ -104,7 +104,7 @@ function generateAnswers(h, now) {
   const footwear = h.pick(['trail_runners', 'trail_runners', 'trail_runners', 'hiking_shoes', 'boots', 'sandals_minimalist']);
   const milesPerPair = footwear === 'boots' || footwear === 'hiking_shoes' ? h.range(550, 900) : h.range(350, 600);
 
-  return {
+  const answers = {
     consent: true,
     trail: trail.name,
     hikeYear: year,
@@ -173,6 +173,9 @@ function generateAnswers(h, now) {
     // Some hikers do not remember the harder numbers.
     unknownAnswers: ['totalElevationGainFt', 'averageCalories', 'week2DailyMiles', 'week3DailyMiles', 'shoePairsUsed'].filter(() => h.chance(0.12))
   };
+  // Hikers who slept in huts mostly ate there too (no extra random draw, so the other answers stay the same).
+  if (answers.sleepLocation === 'huts_refuges' && answers.cookSystem !== 'hybrid') answers.cookSystem = 'huts_restaurants';
+  return answers;
 }
 
 /**

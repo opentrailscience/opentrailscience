@@ -1049,10 +1049,10 @@
                 <input type="hidden" id="field-backpackType" name="backpackType" value="">
               </div>
 
-              <!-- Cold Soaking vs Stove -->
+              <!-- How hikers ate on most days: stove, cold soaking, dry food, huts or restaurants, or mixed -->
               <div class="pt-2">
                 <label class="block text-sm font-semibold text-slate-200 mb-2">
-                  Cooking: stove or cold soaking&nbsp;<span class="text-rose-400">*</span>
+                  How did you eat on most days?&nbsp;<span class="text-rose-400">*</span>
                 </label>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="cook-radios">
                   <div class="choice-card rounded-xl p-3.5" data-name="cookSystem" data-value="stove_cooked">
@@ -1067,9 +1067,13 @@
                     <div class="text-sm font-bold text-white">No cooking, dry food only</div>
                     <p class="text-xs text-slate-300 mt-1">Bars, tortillas, cheese, chips, tuna packets. No soaking or heating.</p>
                   </div>
+                  <div class="choice-card rounded-xl p-3.5" data-name="cookSystem" data-value="huts_restaurants">
+                    <div class="text-sm font-bold text-white">Mostly ate at huts or restaurants</div>
+                    <p class="text-xs text-slate-300 mt-1">Ate at huts, refuges, guesthouses or restaurants on most days.</p>
+                  </div>
                   <div class="choice-card rounded-xl p-3.5" data-name="cookSystem" data-value="hybrid">
                     <div class="text-sm font-bold text-white">Mixed / switched</div>
-                    <p class="text-xs text-slate-300 mt-1">Switched between a stove and cold soaking during the hike.</p>
+                    <p class="text-xs text-slate-300 mt-1">Switched between a stove and going without one (cold soaking or dry food).</p>
                   </div>
                 </div>
                 <input type="hidden" id="field-cookSystem" name="cookSystem" value="">

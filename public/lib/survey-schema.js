@@ -31,6 +31,7 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    { version: '1.3.0', date: '2026-11-03', changes: ['cookSystem can be huts_restaurants (ate at huts, refuges, guesthouses or restaurants on most days); the question now asks what hikers did on most days. Before 1.3.0 such hikers had to pick one of the other answers.', 'cookSystem hybrid now means switching between a stove and going without one (cold soaking or dry food); before 1.3.0 the form only mentioned a stove and cold soaking.'] },
     { version: '1.2.0', date: '2026-11-02', changes: ['trail can be Annapurna (the Annapurna Circuit in Nepal; directions CCW or CW, dates by month like other small trails).'] },
     {
       version: '1.1.0', date: '2026-10-17',
@@ -349,7 +350,7 @@
     { name: 'trekkingPoleUsage', question: 'Trekking poles', label: 'Trekking pole usage', type: 'enum', step: 3, input: 'field-trekkingPoleUsage', values: ['two_poles', 'one_pole', 'no_poles'], role: 'Categorical feature' },
     { name: 'waterFiltration', question: 'Water treatment: filter or chemicals', label: 'Water treatment', type: 'enum', step: 3, input: 'field-waterFiltration', values: ['water_filter', 'chemical_drops', 'uv_purifier', 'boil_only', 'none', 'combination'], role: 'Categorical feature' },
     { name: 'backpackType', question: 'Backpack: framed or frameless', label: 'Backpack type', type: 'enum', step: 3, input: 'field-backpackType', values: ['framed', 'frameless'], role: 'Binary category' },
-    { name: 'cookSystem', question: 'Cooking: stove or cold soaking', label: 'Cook system', type: 'enum', step: 3, input: 'field-cookSystem', values: ['stove_cooked', 'cold_soaking', 'no_cook_packaged', 'hybrid'], role: 'Categorical feature' },
+    { name: 'cookSystem', question: 'How did you eat on most days?', label: 'Meals on trail', type: 'enum', step: 3, input: 'field-cookSystem', values: ['stove_cooked', 'cold_soaking', 'no_cook_packaged', 'huts_restaurants', 'hybrid'], role: 'Categorical feature' },
     { name: 'sleepPadType', question: 'Sleeping pad: inflatable or foam', label: 'Sleeping pad', type: 'enum', step: 3, input: 'field-sleepPadType', values: ['inflatable', 'foam_closed_cell', 'both_hybrid', 'hammock_underquilt', 'none'], role: 'Categorical feature' },
     { name: 'sleepLocation', question: 'Where did you sleep most nights?', label: 'Sleep location', type: 'enum', step: 3, input: 'field-sleepLocation', values: ['own_system', 'huts_refuges'], role: 'Categorical feature' },
     { name: 'shelterType', question: 'Shelter: tent or tarp', label: 'Shelter', type: 'enum', step: 3, input: 'field-shelterType', values: ['tent', 'tarp', 'hammock'], when: d => d.sleepLocation === 'own_system', role: 'Categorical feature' },

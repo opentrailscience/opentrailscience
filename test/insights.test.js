@@ -89,3 +89,15 @@ test('planted effects are found with the right direction and the right numbers',
     assert.ok(Math.abs(r - s.r) < 1e-12);
   }
 });
+
+test('hikers who mostly ate at huts or restaurants stay out of the stove comparison', () => {
+  const records = [
+    ...Array.from({ length: 20 }, () => hiker({ cookSystem: 'stove_cooked', baseWeightLbs: 20 })),
+    ...Array.from({ length: 20 }, () => hiker({ cookSystem: 'cold_soaking', baseWeightLbs: 10 })),
+    ...Array.from({ length: 20 }, () => hiker({ cookSystem: 'huts_restaurants', baseWeightLbs: 30 }))
+  ];
+  const stove = computeCorrelations(records).find(c => /stove/i.test(c.headline));
+  assert.ok(stove, 'the stove pair is found');
+  assert.equal(stove.n, 40, 'hut and restaurant meals are neither "no stove" nor "stove"');
+  assert.deepEqual(stove.groups.map(g => [g.label, g.n]).sort(), [['No stove', 20], ['Stove', 20]]);
+});
