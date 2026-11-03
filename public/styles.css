@@ -488,7 +488,7 @@
     --card-line: 1.5px; --frame-line: 1.5px; --card-radius: 8px; --control-radius: 6px;
     --heading-weight: 700; --word-accent: #8fb4ea; --card-border: #4f555c; --progress: #8fb4ea;
     --face-bg: #ffffff; --face-ink: #181b1f; --face-border: #000; --face-text: #3c4248; --face-word: #1f4f8f;
-    --face-n1: #b4572d; --face-n2: #1f4f8f; --face-radius: 8px; --face-tilt: 0deg; --face-shadow: 4px 4px 0 #000;
+    --face-n1: #b4572d; --face-n2: #1f4f8f; --face-n3: #3e6f57; --face-n4: #7a5a12; --face-radius: 8px; --face-tilt: 0deg; --face-shadow: 4px 4px 0 #000;
     --stone-line: 1.5px; --stone-radius: 6px; --stone-tint: 24%; --cairn-step: 6%;
   }
   :root[data-theme='light'] { --word-accent: #1f4f8f; --card-border: #181b1f; --progress: #1f4f8f; --face-border: #181b1f; --face-shadow: 4px 4px 0 #181b1f; --stone-tint: 36%; }
@@ -635,10 +635,15 @@
   .card-face .card-brand img { width: 28px; height: 28px; }
   .card-face .card-title { margin: 16px 0 0; font-size: 22px; font-weight: var(--heading-weight); line-height: 1.15; }
   .card-face .card-title span { color: var(--face-word); }
-  .card-face .card-big { margin: 16px 0 0; font-size: 34px; font-weight: var(--heading-weight); line-height: 1; }
-  .card-face .card-big + .card-small { margin: 4px 0 0; font-size: 13px; color: var(--face-text); }
+  /* One row per comparison, percentage beside its line, as on the real card. */
+  .card-face .card-row { display: grid; grid-template-columns: 3.6em 1fr; align-items: center; gap: 10px; margin-top: 12px; }
+  .card-face .card-title + .card-row { margin-top: 18px; }
+  .card-face .card-big { margin: 0; font-size: 24px; font-weight: var(--heading-weight); line-height: 1; }
+  .card-face .card-small { margin: 0; font-size: 12.5px; line-height: 1.3; color: var(--face-text); }
   .card-face .card-big.terra { color: var(--face-n1); }
-  .card-face .card-big.blue { color: var(--face-n2); margin-top: 14px; }
+  .card-face .card-big.blue { color: var(--face-n2); }
+  .card-face .card-big.sage { color: var(--face-n3); }
+  .card-face .card-big.ochre { color: var(--face-n4); }
   .card-face .card-url { margin: 18px 0 0; padding-top: 12px; border-top: var(--card-line) solid var(--face-ink); font-family: var(--font-mono); font-size: 12px; }
   .example-card figcaption { margin-top: 16px; text-align: center; font-size: 14px; color: var(--text-muted); }
 
