@@ -88,7 +88,9 @@
 
   // --- Personal comparison shown after submitting ---------------------------
 
-  // Below this many peers a percentage would be noise, so none is shown.
+  // Below this many peers a percentage would be noise, so none is shown: 5 on the
+  // same trail (like the Insights charts), 10 when compared with everyone.
+  const MIN_TRAIL_PEERS = 5;
   const MIN_PEERS = 10;
 
   /** Zero days per day on trail, so short and long hikes compare fairly. */
@@ -173,7 +175,7 @@
     let peers;
     let group;
     let groupSingular;
-    const sameTrailGroup = sameTrail.length >= MIN_PEERS;
+    const sameTrailGroup = sameTrail.length >= MIN_TRAIL_PEERS;
     if (sameTrailGroup) {
       peers = sameTrail;
       group = `${name} hikers`;
@@ -193,7 +195,7 @@
       const mine = read(record);
       if (typeof mine !== 'number' || !Number.isFinite(mine)) return;
       const values = peers.map(read).filter(v => typeof v === 'number' && Number.isFinite(v));
-      if (values.length < MIN_PEERS) return;
+      if (values.length < (sameTrailGroup ? MIN_TRAIL_PEERS : MIN_PEERS)) return;
 
       const above = percent(values.filter(v => v > mine).length, values.length);
       const below = percent(values.filter(v => v < mine).length, values.length);
@@ -278,5 +280,5 @@
     return `${intro2} It's an open dataset for every long trail, open all year. Have you hiked one?`;
   }
 
-  return { computeStats, compareToPeers, buildShareText, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, MIN_PEERS, MIN_SHARE_PERCENT };
+  return { computeStats, compareToPeers, buildShareText, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, MIN_TRAIL_PEERS, MIN_PEERS, MIN_SHARE_PERCENT };
 });

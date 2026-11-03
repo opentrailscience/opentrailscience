@@ -50,7 +50,7 @@ test('docs/DATA_DICTIONARY.md is up to date (run `npm run docs`)', () => {
   assert.equal(fs.readFileSync(dictionary.OUT_FILE, 'utf-8'), dictionary.render());
 });
 
-const { compareToPeers, MIN_PEERS } = require('../public/lib/survey-stats');
+const { compareToPeers, MIN_TRAIL_PEERS, MIN_PEERS } = require('../public/lib/survey-stats');
 
 function peers(n, overrides) {
   return Array.from({ length: n }, (_, i) => Object.assign({
@@ -82,9 +82,12 @@ test('comparison picks the true direction and skips unflattering enjoyment', () 
 });
 
 test('comparison falls back to all hikers, and needs enough peers', () => {
-  const mixed = peers(6).concat(peers(6, () => ({ trail: 'AT' })));
+  // 5 on the same trail are enough; fewer fall back to everyone, which needs 10.
+  assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, peers(MIN_TRAIL_PEERS)).group, 'PCT hikers');
+  const mixed = peers(MIN_TRAIL_PEERS - 1).concat(peers(8, () => ({ trail: 'AT' })));
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, mixed).group, 'hikers in the dataset');
-  assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, peers(MIN_PEERS - 1)), null);
+  assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, peers(MIN_TRAIL_PEERS - 1)), null);
+  assert.equal(compareToPeers({ trail: 'Other', baseWeightLbs: 9 }, peers(MIN_PEERS - 1)), null);
   assert.equal(compareToPeers({ trail: 'Other', baseWeightLbs: 9 }, peers(12)).group, 'hikers in the dataset');
   for (const trail of ['Other Europe', 'Other North America']) {
     const result = compareToPeers({ trail, baseWeightLbs: 9 }, peers(12, () => ({ trail })));

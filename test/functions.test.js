@@ -88,9 +88,9 @@ test('submit returns a peer comparison once enough hikers have shared', async ()
   await seededDb(); // 12 real submissions (6 PCT, 6 AT) plus synthetic ones, which are ignored
   const res = await post(submit, submission({ baseWeightLbs: 9.5, maxHeavyLoadLbs: 20 }), { 'x-nf-client-connection-ip': '10.0.1.1' });
   const body = JSON.parse(res.body);
-  assert.equal(body.comparison.group, 'hikers in the dataset', 'only 6 PCT peers, so all 12 are used');
-  assert.equal(body.comparison.peerCount, 12, 'synthetic records and the new record are excluded');
-  assert.equal(body.comparison.items[0].text, 'Your base weight was lighter than 100% of hikers in the dataset.');
+  assert.equal(body.comparison.group, 'PCT hikers', '6 PCT peers are enough for a same-trail comparison');
+  assert.equal(body.comparison.peerCount, 6, 'synthetic records, other trails and the new record are excluded');
+  assert.equal(body.comparison.items[0].text, 'Your base weight was lighter than 100% of PCT hikers.');
 });
 
 test('submit has no comparison while the dataset is small', async () => {
