@@ -76,9 +76,11 @@ test('comparison phrases the share of same-trail hikers the record beats', () =>
   assert.ok(result.items.every((item, i, all) => i === 0 || all[i - 1].percent >= item.percent), 'sorted, strongest first');
 });
 
-test('comparison picks the true direction and skips unflattering enjoyment', () => {
+test('comparison picks the true direction, flattering or not', () => {
   const result = compareToPeers({ trail: 'PCT', baseWeightLbs: 18.5, overallEnjoymentRating: 3 }, peers(10));
-  assert.deepEqual(result.items.map(i => i.text), ['Your base weight was heavier than 90% of PCT hikers.']);
+  assert.deepEqual(result.items.map(i => i.text),
+    ['You enjoyed your hike less than 100% of PCT hikers.', 'Your base weight was heavier than 90% of PCT hikers.']);
+  assert.deepEqual(result.items.map(i => i.cardLine), ['of PCT hikers rated their hike higher', 'of PCT hikers carried a lighter pack']);
 });
 
 test('comparison falls back to all hikers, and needs enough peers', () => {
@@ -102,7 +104,7 @@ const hiker = overrides => Object.assign({
   overallEnjoymentRating: 8, daysOnTrail: 123, totalZeroDays: 20
 }, overrides);
 
-test('share text leads with the two strongest flattering comparisons', () => {
+test('share text leads with the two strongest comparisons', () => {
   const text = buildShareText(hiker(), compareToPeers(hiker(), peers(12)));
   assert.equal(text, 'Just added my 2025 PCT thru-hike to Open Trail Science. Turns out my pack was lighter than 75% of PCT hikers, and I hiked faster than 67% of them. How does yours compare?');
 });
@@ -112,15 +114,14 @@ test('share text says "every other" instead of 100%', () => {
   assert.match(buildShareText(record, compareToPeers(record, peers(12))), /my pack was lighter than every other PCT hiker, and/);
 });
 
-test('share text never brags about unflattering or weak results', () => {
-  const slow = hiker({ baseWeightLbs: 30, averageDailyMiles: 10, overallEnjoymentRating: 3, totalZeroDays: 60 });
-  const comparison = compareToPeers(slow, peers(12));
-  assert.ok(comparison.items.length > 0, 'the results page still shows them');
-  assert.equal(buildShareText(slow, comparison),
-    'Just added my 2025 PCT thru-hike to Open Trail Science and saw how it stacks up against 12 other PCT hikers. How does yours compare?');
+test('share text includes unflattering results, but never weak ones', () => {
+  const slow = hiker({ baseWeightLbs: 30, averageDailyMiles: 10, overallEnjoymentRating: 8, totalZeroDays: 60 });
+  assert.equal(buildShareText(slow, compareToPeers(slow, peers(12))),
+    'Just added my 2025 PCT thru-hike to Open Trail Science. Turns out my pack was heavier than every other PCT hiker, and I hiked slower than all of them. How does yours compare?');
 
-  const weak = { group: 'PCT hikers', peerCount: 12, items: [{ brag: true, percent: MIN_SHARE_PERCENT - 1, shareFirst: 'x' }] };
-  assert.doesNotMatch(buildShareText(hiker(), weak), /Turns out/);
+  const weak = { group: 'PCT hikers', peerCount: 12, items: [{ percent: MIN_SHARE_PERCENT - 1, shareFirst: 'x' }] };
+  assert.equal(buildShareText(hiker(), weak),
+    'Just added my 2025 PCT thru-hike to Open Trail Science and saw how it stacks up against 12 other PCT hikers. How does yours compare?');
 });
 
 test('share text before there are enough peers mentions the hiker\'s own numbers', () => {

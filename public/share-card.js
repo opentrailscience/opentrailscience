@@ -23,7 +23,7 @@
     page: '#f2f2ef', card: '#ffffff', ink: '#181b1f', text: '#3c4248', muted: '#555c63',
     green: '#1f4f8f', terracotta: '#b4572d', blue: '#1f4f8f', soft: '#cdd0d4'
   };
-  // Same threshold as the share text: weaker results are not bragged about.
+  // Same threshold as the share text: weaker results are left off the card.
   const MIN_PERCENT = window.SurveyStats.MIN_SHARE_PERCENT;
 
   function hikeNoun(record) {
@@ -187,10 +187,10 @@
     drawBrand(ctx, await loadLogo());
     let y = drawHeadline(ctx, record);
 
-    const brags = ((comparison && comparison.items) || []).filter(i => i.brag && i.percent >= MIN_PERCENT);
-    if (brags.length) {
+    const strongest = ((comparison && comparison.items) || []).filter(i => i.percent >= MIN_PERCENT);
+    if (strongest.length) {
       // The two strongest, like the share text; a third would crowd the footer.
-      drawComparisons(ctx, brags.slice(0, 2), y);
+      drawComparisons(ctx, strongest.slice(0, 2), y);
     } else {
       y = drawStatsGrid(ctx, record, unitSystem, y + 30);
       if (comparison) {

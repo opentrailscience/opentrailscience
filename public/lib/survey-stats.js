@@ -102,11 +102,11 @@
    * Each comparison phrases the hiker's value against the share of peers it
    * beats. `value` reads the compared number (default: the field).
    * `smaller` applies when the value is below most peers, `larger` when
-   * above; a missing direction is never shown. Per direction:
+   * above. Per direction:
    *   text   sentence on the results page
-   *   brag   whether it is flattering enough to put in the share text / card
    *   share  first-person phrase for the share text, given "89% of PCT hikers"
    *   card   caption under the big percentage on the share card
+   * Both directions are shared, flattering or not: it is about comparing, not bragging.
    * `sameTrailOnly` comparisons are skipped when the hiker is compared with
    * everyone: pace depends too much on the trail (a hut-to-hut hike vs a
    * desert thru-hike).
@@ -115,19 +115,25 @@
     {
       field: 'baseWeightLbs',
       smaller: {
-        brag: true,
         text: (p, g) => `Your base weight was lighter than ${p}% of ${g}.`,
         share: who => `my pack was lighter than ${who}`,
         card: g => `of ${g} carried a heavier pack`
       },
-      larger: { text: (p, g) => `Your base weight was heavier than ${p}% of ${g}.` }
+      larger: {
+        text: (p, g) => `Your base weight was heavier than ${p}% of ${g}.`,
+        share: who => `my pack was heavier than ${who}`,
+        card: g => `of ${g} carried a lighter pack`
+      }
     },
     {
       field: 'averageDailyMiles',
       sameTrailOnly: true,
-      smaller: { text: (p, g) => `Your average pace was slower than ${p}% of ${g}.` },
+      smaller: {
+        text: (p, g) => `Your average pace was slower than ${p}% of ${g}.`,
+        share: who => `I hiked slower than ${who}`,
+        card: g => `of ${g} hiked a faster pace`
+      },
       larger: {
-        brag: true,
         text: (p, g) => `Your average pace was faster than ${p}% of ${g}.`,
         share: who => `I hiked faster than ${who}`,
         card: g => `of ${g} hiked a slower pace`
@@ -137,17 +143,24 @@
       field: 'zeroDayRate',
       value: zeroDayRate,
       smaller: {
-        brag: true,
         text: (p, g) => `You took zero days less often than ${p}% of ${g}.`,
         share: who => `I took zero days less often than ${who}`,
         card: g => `of ${g} took zero days more often`
       },
-      larger: { text: (p, g) => `You took zero days more often than ${p}% of ${g}.` }
+      larger: {
+        text: (p, g) => `You took zero days more often than ${p}% of ${g}.`,
+        share: who => `I took zero days more often than ${who}`,
+        card: g => `of ${g} took zero days less often`
+      }
     },
     {
       field: 'overallEnjoymentRating',
+      smaller: {
+        text: (p, g) => `You enjoyed your hike less than ${p}% of ${g}.`,
+        share: who => `I enjoyed it less than ${who}`,
+        card: g => `of ${g} rated their hike higher`
+      },
       larger: {
-        brag: true,
         text: (p, g) => `You enjoyed your hike more than ${p}% of ${g}.`,
         share: who => `I enjoyed it more than ${who}`,
         card: g => `of ${g} rated their hike lower`
@@ -162,9 +175,9 @@
    * enough of them, otherwise everyone. Returns null when there are too few
    * peers to say anything meaningful.
    *
-   * Items are sorted strongest first. Each has `text` (results page); items
-   * with `brag: true` also have `shareFirst` / `shareThen` (share text, as
-   * first or second clause) and `cardLine` (share card).
+   * Items are sorted strongest first. Each has `text` (results page),
+   * `shareFirst` / `shareThen` (share text, as first or second clause) and
+   * `cardLine` (share card).
    *
    * @returns {{ group, groupSingular, peerCount, items: object[] } | null}
    */
@@ -210,13 +223,14 @@
       }
       if (!direction) return;
 
-      const item = { field: c.field, percent: p, brag: !!direction.brag, text: direction.text(p, group) };
-      if (direction.brag) {
-        item.shareFirst = direction.share(p === 100 ? `every other ${groupSingular}` : `${p}% of ${group}`);
-        item.shareThen = direction.share(p === 100 ? 'all of them' : `${p}% of them`);
-        item.cardLine = direction.card(group);
-      }
-      items.push(item);
+      items.push({
+        field: c.field,
+        percent: p,
+        text: direction.text(p, group),
+        shareFirst: direction.share(p === 100 ? `every other ${groupSingular}` : `${p}% of ${group}`),
+        shareThen: direction.share(p === 100 ? 'all of them' : `${p}% of them`),
+        cardLine: direction.card(group)
+      });
     });
 
     items.sort((a, b) => b.percent - a.percent);
@@ -225,7 +239,7 @@
 
   // --- Share text -------------------------------------------------------------
 
-  // Below this a comparison is not worth bragging about in the share text.
+  // Below this a comparison is too weak for the share text and card.
   const MIN_SHARE_PERCENT = 60;
 
   function hikeNoun(record) {
@@ -246,7 +260,7 @@
    * The text shared with "Share Survey with Tramily". Written to sound like a
    * person, not a bot: no emoji, hashtags or exclamation marks. Once there
    * are enough peers it is about the comparison: the (at most) two strongest
-   * flattering results, or just the number of peers if none is flattering.
+   * results, flattering or not, or just the number of peers if none is clear.
    * Before that it mentions two of the hiker's own numbers. The link is
    * added separately.
    */
@@ -256,18 +270,18 @@
     const hike = `my ${record.hikeYear} ${trail ? trail + ' ' : ''}${hikeNoun(record)}`;
     const intro = `Just added ${hike} to Open Trail Science.`;
 
-    const brags = ((comparison && comparison.items) || [])
-      .filter(i => i.brag && i.percent >= MIN_SHARE_PERCENT)
+    const strongest = ((comparison && comparison.items) || [])
+      .filter(i => i.percent >= MIN_SHARE_PERCENT)
       .slice(0, 2);
 
-    if (brags.length) {
-      const facts = brags.length === 2
-        ? `${brags[0].shareFirst}, and ${brags[1].shareThen}`
-        : brags[0].shareFirst;
+    if (strongest.length) {
+      const facts = strongest.length === 2
+        ? `${strongest[0].shareFirst}, and ${strongest[1].shareThen}`
+        : strongest[0].shareFirst;
       return `${intro} Turns out ${facts}. How does yours compare?`;
     }
 
-    // Enough peers but nothing flattering: still about comparing, without the numbers.
+    // Enough peers but nothing clear: still about comparing, without the numbers.
     if (comparison) {
       return `Just added ${hike} to Open Trail Science and saw how it stacks up against ` +
         `${comparison.peerCount} other ${comparison.group.replace(' in the dataset', '')}. How does yours compare?`;
