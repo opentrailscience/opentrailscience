@@ -2,8 +2,8 @@
  * Draws the personal share card (1080x1350 PNG, the 4:5 portrait size that
  * works in WhatsApp, Instagram and most feeds) shown after submitting.
  *
- * With comparisons it leads with the big percentages ("89% of PCT hikers
- * carried a heavier pack"); otherwise it shows the hiker's own numbers.
+ * With comparisons it shows every one of them ("89% of PCT hikers carried a
+ * heavier pack"); otherwise it shows the hiker's own numbers.
  * Everything happens in the browser; nothing is uploaded.
  *
  *   ShareCard.render(record, comparison, { unitSystem }) -> Promise<Blob>
@@ -21,10 +21,8 @@
   // The site's light theme and two of its accents.
   const C = {
     page: '#f2f2ef', card: '#ffffff', ink: '#181b1f', text: '#3c4248', muted: '#555c63',
-    green: '#1f4f8f', terracotta: '#b4572d', blue: '#1f4f8f', soft: '#cdd0d4'
+    green: '#1f4f8f', terracotta: '#b4572d', blue: '#1f4f8f', soft: '#cdd0d4', sage: '#3e6f57', ochre: '#7a5a12'
   };
-  // Same threshold as the share text: weaker results are left off the card.
-  const MIN_PERCENT = window.SurveyStats.MIN_SHARE_PERCENT;
 
   function hikeNoun(record) {
     if (record.completionStatus === 'section_hike') return 'section hike';
@@ -104,17 +102,46 @@
     return y + 40;
   }
 
+  const PERCENT_COLORS = [C.terracotta, C.blue, C.sage, C.ochre];
+  const FOOTER_Y = 1120;
+
+  /** One or two comparisons: big percentages. Three or four: compact rows, percentage beside its line. */
   function drawComparisons(ctx, items, y) {
-    y += 50;
+    if (items.length <= 2) {
+      y += 50;
+      items.forEach((item, i) => {
+        ctx.font = `700 128px ${FONT}`;
+        ctx.fillStyle = PERCENT_COLORS[i];
+        ctx.fillText(`${item.percent}%`, PAD, y + 112);
+        ctx.font = `500 38px ${FONT}`;
+        ctx.fillStyle = C.text;
+        y = wrapText(ctx, item.cardLine, PAD + 4, y + 168, W - 2 * PAD, 48) + 66;
+      });
+      return y;
+    }
+    const top = y + 10;
+    const rowH = Math.min(165, (FOOTER_Y - 40 - top) / items.length);
+    const percentFont = `700 ${Math.round(rowH * 0.56)}px ${FONT}`;
+    ctx.font = percentFont;
+    const numW = Math.max(...items.map(item => ctx.measureText(`${item.percent}%`).width)) + 36;
     items.forEach((item, i) => {
-      ctx.font = `700 128px ${FONT}`;
-      ctx.fillStyle = i === 0 ? C.terracotta : C.blue;
-      ctx.fillText(`${item.percent}%`, PAD, y + 112);
-      ctx.font = `500 38px ${FONT}`;
+      const mid = top + i * rowH + rowH / 2;
+      ctx.font = percentFont;
+      ctx.fillStyle = PERCENT_COLORS[i];
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`${item.percent}%`, PAD, mid);
+      ctx.font = `500 36px ${FONT}`;
       ctx.fillStyle = C.text;
-      y = wrapText(ctx, item.cardLine, PAD + 4, y + 168, W - 2 * PAD, 48) + 66;
+      // Up to two lines, centered on the percentage.
+      const words = item.cardLine.split(' ');
+      const maxW = W - 2 * PAD - numW - 18;
+      let first = '';
+      while (words.length && ctx.measureText(first ? `${first} ${words[0]}` : words[0]).width <= maxW) first = first ? `${first} ${words.shift()}` : words.shift();
+      const lines = words.length ? [first, words.join(' ')] : [first];
+      lines.forEach((line, j) => ctx.fillText(line, PAD + numW, mid + (j - (lines.length - 1) / 2) * 44));
+      ctx.textBaseline = 'alphabetic';
     });
-    return y;
+    return top + items.length * rowH;
   }
 
   function formatStats(record, unitSystem) {
@@ -155,7 +182,7 @@
   }
 
   function drawFooter(ctx) {
-    const lineY = 1120;
+    const lineY = FOOTER_Y;
     ctx.fillStyle = C.ink;
     ctx.fillRect(PAD, lineY, W - 2 * PAD - 18, CARD.line);
     ctx.font = `700 46px ${FONT}`;
@@ -187,10 +214,9 @@
     drawBrand(ctx, await loadLogo());
     let y = drawHeadline(ctx, record);
 
-    const strongest = ((comparison && comparison.items) || []).filter(i => i.percent >= MIN_PERCENT);
-    if (strongest.length) {
-      // The two strongest, like the share text; a third would crowd the footer.
-      drawComparisons(ctx, strongest.slice(0, 2), y);
+    const items = (comparison && comparison.items) || [];
+    if (items.length) {
+      drawComparisons(ctx, items, y);
     } else {
       y = drawStatsGrid(ctx, record, unitSystem, y + 30);
       if (comparison) {

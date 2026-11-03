@@ -97,30 +97,34 @@ test('comparison falls back to all hikers, and needs enough peers', () => {
   }
 });
 
-const { buildShareText, MIN_SHARE_PERCENT } = require('../public/lib/survey-stats');
+const { buildShareText } = require('../public/lib/survey-stats');
 
 const hiker = overrides => Object.assign({
   trail: 'PCT', hikeYear: 2025, completionStatus: 'continuous_purist', baseWeightLbs: 12.5, averageDailyMiles: 19,
   overallEnjoymentRating: 8, daysOnTrail: 123, totalZeroDays: 20
 }, overrides);
 
-test('share text leads with the two strongest comparisons', () => {
+test('share text lists every comparison, strongest first', () => {
   const text = buildShareText(hiker(), compareToPeers(hiker(), peers(12)));
-  assert.equal(text, 'Just added my 2025 PCT thru-hike to Open Trail Science. Turns out my pack was lighter than 75% of PCT hikers, and I hiked faster than 67% of them. How does yours compare?');
+  assert.equal(text, 'Just added my 2025 PCT thru-hike to Open Trail Science. Turns out my pack was lighter than 75% of PCT hikers, I hiked faster than 67% of them, and I took zero days more often than 58% of them. How does yours compare?');
+  const other = hiker({ trail: 'Other' });
+  assert.equal(buildShareText(other, compareToPeers(other, peers(12))),
+    'Just added my 2025 thru-hike to Open Trail Science. Turns out my pack was lighter than 75% of hikers in the dataset, and I took zero days more often than 58% of them. How does yours compare?',
+    'no pace when compared with everyone');
 });
 
 test('share text says "every other" instead of 100%', () => {
   const record = hiker({ baseWeightLbs: 5 });
-  assert.match(buildShareText(record, compareToPeers(record, peers(12))), /my pack was lighter than every other PCT hiker, and/);
+  assert.match(buildShareText(record, compareToPeers(record, peers(12))), /my pack was lighter than every other PCT hiker, I/);
 });
 
-test('share text includes unflattering results, but never weak ones', () => {
+test('share text includes unflattering results', () => {
   const slow = hiker({ baseWeightLbs: 30, averageDailyMiles: 10, overallEnjoymentRating: 8, totalZeroDays: 60 });
   assert.equal(buildShareText(slow, compareToPeers(slow, peers(12))),
-    'Just added my 2025 PCT thru-hike to Open Trail Science. Turns out my pack was heavier than every other PCT hiker, and I hiked slower than all of them. How does yours compare?');
+    'Just added my 2025 PCT thru-hike to Open Trail Science. Turns out my pack was heavier than every other PCT hiker, I hiked slower than all of them, and I took zero days more often than all of them. How does yours compare?');
 
-  const weak = { group: 'PCT hikers', peerCount: 12, items: [{ percent: MIN_SHARE_PERCENT - 1, shareFirst: 'x' }] };
-  assert.equal(buildShareText(hiker(), weak),
+  const empty = { group: 'PCT hikers', peerCount: 12, items: [] };
+  assert.equal(buildShareText(hiker(), empty),
     'Just added my 2025 PCT thru-hike to Open Trail Science and saw how it stacks up against 12 other PCT hikers. How does yours compare?');
 });
 
@@ -136,11 +140,14 @@ test('share text reads like a person: no emoji, hashtags or exclamation marks', 
   const texts = [
     buildShareText(hiker(), compareToPeers(hiker(), peers(12))),
     buildShareText(hiker({ baseWeightLbs: 40 }), compareToPeers(hiker({ baseWeightLbs: 40 }), peers(12))),
-    buildShareText(hiker(), null)
+    buildShareText(hiker(), null),
+    // all four comparisons, longest trail code and wording
+    buildShareText(hiker({ baseWeightLbs: 5, averageDailyMiles: 30, overallEnjoymentRating: 10, totalZeroDays: 1 }),
+      compareToPeers(hiker({ baseWeightLbs: 5, averageDailyMiles: 30, overallEnjoymentRating: 10, totalZeroDays: 1 }), peers(12)))
   ];
   texts.forEach(t => {
     assert.doesNotMatch(t, /[#!]|\p{Extended_Pictographic}/u, t);
-    assert.ok(t.length < 220, `short enough for a chat message: ${t.length}`);
+    assert.ok(t.length < 300, `short enough for a chat message, even with all four comparisons: ${t.length}`);
   });
 });
 

@@ -239,8 +239,6 @@
 
   // --- Share text -------------------------------------------------------------
 
-  // Below this a comparison is too weak for the share text and card.
-  const MIN_SHARE_PERCENT = 60;
 
   function hikeNoun(record) {
     if (record.completionStatus === 'section_hike') return 'section hike';
@@ -259,8 +257,7 @@
   /**
    * The text shared with "Share Survey with Tramily". Written to sound like a
    * person, not a bot: no emoji, hashtags or exclamation marks. Once there
-   * are enough peers it is about the comparison: the (at most) two strongest
-   * results, flattering or not, or just the number of peers if none is clear.
+   * are enough peers it lists every comparison, flattering or not, strongest first.
    * Before that it mentions two of the hiker's own numbers. The link is
    * added separately.
    */
@@ -270,18 +267,15 @@
     const hike = `my ${record.hikeYear} ${trail ? trail + ' ' : ''}${hikeNoun(record)}`;
     const intro = `Just added ${hike} to Open Trail Science.`;
 
-    const strongest = ((comparison && comparison.items) || [])
-      .filter(i => i.percent >= MIN_SHARE_PERCENT)
-      .slice(0, 2);
-
-    if (strongest.length) {
-      const facts = strongest.length === 2
-        ? `${strongest[0].shareFirst}, and ${strongest[1].shareThen}`
-        : strongest[0].shareFirst;
+    const items = (comparison && comparison.items) || [];
+    if (items.length) {
+      // "a", "a, and b", "a, b, and c"
+      const phrases = items.map((item, i) => (i === 0 ? item.shareFirst : item.shareThen));
+      const facts = phrases.length === 1 ? phrases[0] : `${phrases.slice(0, -1).join(', ')}, and ${phrases[phrases.length - 1]}`;
       return `${intro} Turns out ${facts}. How does yours compare?`;
     }
 
-    // Enough peers but nothing clear: still about comparing, without the numbers.
+    // Enough peers but no answer to compare (e.g. everyone gave the same): still about comparing.
     if (comparison) {
       return `Just added ${hike} to Open Trail Science and saw how it stacks up against ` +
         `${comparison.peerCount} other ${comparison.group.replace(' in the dataset', '')}. How does yours compare?`;
@@ -294,5 +288,5 @@
     return `${intro2} It's an open dataset for every long trail, open all year. Have you hiked one?`;
   }
 
-  return { computeStats, compareToPeers, buildShareText, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, MIN_TRAIL_PEERS, MIN_PEERS, MIN_SHARE_PERCENT };
+  return { computeStats, compareToPeers, buildShareText, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, MIN_TRAIL_PEERS, MIN_PEERS };
 });
