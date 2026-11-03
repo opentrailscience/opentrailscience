@@ -1522,7 +1522,7 @@
         <td class="py-3 px-4 font-semibold text-white">${escapeHtml(orDash(r.baseWeightLbs, ' lbs'))}</td>
         <td class="py-3 px-4">${escapeHtml(orDash(r.averageDailyMiles, ' mi/d'))}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(r.backpackType)}</td>
-        <td class="py-3 px-4 capitalize">${escapeHtml(humanize(r.cookSystem))}</td>
+        <td class="py-3 px-4 capitalize">${escapeHtml(r.cookSystem === 'huts_restaurants' ? 'huts / restaurants' : humanize(r.cookSystem))}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(humanize(r.sleepPadType))}</td>
         <td class="py-3 px-4">${statusBadge(r.completionStatus)}</td>
         <td class="py-3 px-4">${injuryBadge}</td>
