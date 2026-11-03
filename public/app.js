@@ -21,6 +21,7 @@
   // Below this many public records the home page and Insights show a
   // "be part of the first 50" invitation instead of statistics.
   const FIRST_HIKERS_GOAL = 50;
+  const STONES_PER_CAIRN = 5;
 
   // --- STATE STORE ---
   const state = {
@@ -382,13 +383,23 @@
     }
   }
 
-  /** One stone per hike so far, colored in the order of the four accents (styles.css .stones). */
+  /** One stone per hike so far, colored in the order of the four accents (styles.css .stones), as 10 cairns of 5. */
   function renderFirstHikersProgress(stones, label, total, includesYou) {
     if (stones) {
-      if (stones.children.length !== FIRST_HIKERS_GOAL) {
-        stones.replaceChildren(...Array.from({ length: FIRST_HIKERS_GOAL }, () => document.createElement('span')));
+      // 10 small cairns of 5, filled one cairn at a time from the bottom stone up.
+      // The color follows the stone's number (c0 to c3, repeating), not its cairn.
+      if (stones.querySelectorAll('span').length !== FIRST_HIKERS_GOAL) {
+        stones.replaceChildren(...Array.from({ length: FIRST_HIKERS_GOAL / STONES_PER_CAIRN }, (_, c) => {
+          const cairn = document.createElement('div');
+          cairn.append(...Array.from({ length: STONES_PER_CAIRN }, (__, s) => {
+            const stone = document.createElement('span');
+            stone.className = `c${(c * STONES_PER_CAIRN + s) % 4}`;
+            return stone;
+          }));
+          return cairn;
+        }));
       }
-      [...stones.children].forEach((stone, i) => stone.classList.toggle('filled', i < total));
+      stones.querySelectorAll('span').forEach((stone, i) => stone.classList.toggle('filled', i < total));
     }
     if (label) label.textContent = `${Math.min(total, FIRST_HIKERS_GOAL)} of ${FIRST_HIKERS_GOAL} hikers so far${includesYou ? ', including you' : ''}`;
   }

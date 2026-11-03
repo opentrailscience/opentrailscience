@@ -605,13 +605,25 @@
   .first50 h2, .home-why h2 { margin: 0; font-size: 28px; font-weight: var(--heading-weight); letter-spacing: -0.01em; }
   .first50 p { margin: 8px 0 0; color: var(--text-secondary); }
   .first50 .first50-count { margin: 10px 0 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-muted); }
-  .stones { display: grid; grid-template-columns: repeat(25, minmax(0, 1fr)); gap: 5px; margin-top: 20px; max-width: 520px; }
-  .stones span { display: block; height: 12px; border-radius: 50%; border: 1.5px solid var(--stone-empty); }
+  /* The 50 stones as 10 small cairns of 5, like the logo (built in renderFirstHikersProgress).
+     Each cairn grows from its bottom stone up; phones get two rows of five. */
+  .stones { display: grid; grid-template-columns: repeat(10, minmax(0, 34px)); gap: 14px clamp(8px, 2.5vw, 14px); margin-top: 20px; max-width: 520px; }
+  #insights-locked-bar { justify-content: center; }
+  .stones > div { display: flex; flex-direction: column-reverse; align-items: center; gap: 2px; }
+  .stones span { display: block; height: 11px; border-radius: 50%; border: 1.5px solid var(--stone-empty); }
+  .stones span:nth-child(1) { width: 100%; }
+  .stones span:nth-child(2) { width: 84%; }
+  .stones span:nth-child(3) { width: 70%; }
+  .stones span:nth-child(4) { width: 56%; }
+  .stones span:nth-child(5) { width: 42%; }
   .stones span.filled { border-color: var(--strong-border); }
-  .stones span:nth-child(4n+1).filled { background: var(--sage); }
-  .stones span:nth-child(4n+2).filled { background: var(--terracotta); }
-  .stones span:nth-child(4n+3).filled { background: var(--blue); }
-  .stones span:nth-child(4n+4).filled { background: var(--yellow); }
+  .stones span.c0.filled { background: var(--sage); }
+  .stones span.c1.filled { background: var(--terracotta); }
+  .stones span.c2.filled { background: var(--blue); }
+  .stones span.c3.filled { background: var(--yellow); }
+  @media (max-width: 560px) {
+    .stones { grid-template-columns: repeat(5, minmax(0, 40px)); justify-content: space-between; max-width: 300px; }
+  }
 
   .home-stats:not(.hidden) { padding: 24px 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px 32px; }
   .home-stats .stat-label { font-size: 15px; font-weight: 600; color: var(--text-secondary); }
