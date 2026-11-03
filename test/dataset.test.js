@@ -86,6 +86,10 @@ test('comparison falls back to all hikers, and needs enough peers', () => {
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, mixed).group, 'hikers in the dataset');
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, peers(MIN_PEERS - 1)), null);
   assert.equal(compareToPeers({ trail: 'Other', baseWeightLbs: 9 }, peers(12)).group, 'hikers in the dataset');
+  for (const trail of ['Other Europe', 'Other North America']) {
+    const result = compareToPeers({ trail, baseWeightLbs: 9 }, peers(12, () => ({ trail })));
+    assert.equal(result.group, 'hikers in the dataset', trail);
+  }
 });
 
 const { buildShareText, MIN_SHARE_PERCENT } = require('../public/lib/survey-stats');

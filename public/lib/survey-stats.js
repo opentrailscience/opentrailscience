@@ -167,15 +167,14 @@
    * @returns {{ group, groupSingular, peerCount, items: object[] } | null}
    */
   function compareToPeers(record, others) {
-    const sameTrail = record.trail && record.trail !== 'Other'
-      ? others.filter(d => d.trail === record.trail)
-      : [];
+    // The "Other" choices (any region) are many different trails: compared with everyone.
+    const name = Schema.trailName(record.trail);
+    const sameTrail = name ? others.filter(d => d.trail === record.trail) : [];
     let peers;
     let group;
     let groupSingular;
     const sameTrailGroup = sameTrail.length >= MIN_PEERS;
     if (sameTrailGroup) {
-      const name = Schema.trailName(record.trail);
       peers = sameTrail;
       group = `${name} hikers`;
       groupSingular = `${name} hiker`;
