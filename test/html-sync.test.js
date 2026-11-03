@@ -58,11 +58,14 @@ test('every multi-select question has a pill group matching the schema', () => {
   });
 });
 
-test('there are no free-text inputs apart from the hidden honeypots', () => {
+test('there are no free-text inputs apart from the hidden honeypots and the trail suggestion', () => {
   const survey = html.slice(html.indexOf('id="view-survey"'), html.indexOf('id="view-success"'));
   const textInputs = Array.from(survey.matchAll(/<input type="text" id="([^"]+)"/g), m => m[1]);
-  assert.deepEqual(textInputs, ['website_url', 'hiker_anti_spam']);
+  assert.deepEqual(textInputs, ['website_url', 'hiker_anti_spam', 'trail-suggest-survey']);
   assert.doesNotMatch(survey, /<textarea/);
+  // The suggestion is sent on its own (/api/trail-suggestion): no name, no schema field, never an answer.
+  assert.doesNotMatch(survey.match(/<input type="text" id="trail-suggest-survey"[^>]*>/)[0], /\bname=/);
+  assert.ok(!Schema.FIELDS.some(f => f.input === 'trail-suggest-survey'));
 });
 
 test('consent is asked before the survey, and only adults (today) can answer', () => {
@@ -150,14 +153,15 @@ test('the page has exactly one h1 (all four views share one document)', () => {
 });
 
 test('honeypot fields are hidden from screen readers and keyboard users', () => {
-  const trap = html.match(/<div class="anti-spam-trap"([^>]*)>([\s\S]*?)<\/div>/);
-  assert.ok(trap, 'honeypot container exists');
-  assert.match(trap[1], /aria-hidden="true"/);
-  const inputs = trap[2].match(/<input[^>]*>/g);
-  assert.equal(inputs.length, 2);
-  inputs.forEach(input => {
-    assert.match(input, /tabindex="-1"/);
-    assert.match(input, /autocomplete="off"/);
+  const traps = [...html.matchAll(/<div class="anti-spam-trap"([^>]*)>([\s\S]*?)<\/div>/g)];
+  // The survey's two, and one per "suggest a trail" form.
+  assert.deepEqual(traps.map(t => t[2].match(/<input[^>]*>/g).length).sort(), [1, 1, 2]);
+  traps.forEach(([, attrs, inner]) => {
+    assert.match(attrs, /aria-hidden="true"/);
+    inner.match(/<input[^>]*>/g).forEach(input => {
+      assert.match(input, /tabindex="-1"/);
+      assert.match(input, /autocomplete="off"/);
+    });
   });
 });
 

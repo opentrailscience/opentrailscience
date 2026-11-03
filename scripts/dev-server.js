@@ -55,7 +55,7 @@ const MIME_TYPES = {
 
 // Path -> function, from the functions' own config.path (as on Netlify).
 const functions = {};
-for (const name of ['submit', 'hike-code', 'feedback']) {
+for (const name of ['submit', 'hike-code', 'feedback', 'trail-suggestion']) {
   const fn = require(`../netlify/functions/${name}`);
   for (const route of [].concat(fn.config.path)) functions[route] = fn.default;
 }
@@ -188,5 +188,5 @@ server.listen(PORT, HOST, () => {
   console.log(OFFLINE
     ? `Database: in-memory with ${SYNTHETIC_HIKERS} synthetic hikers (offline mode; submissions are lost on restart)`
     : `Database: MongoDB (${process.env.MONGODB_DB || 'hikersurvey'})`);
-  console.log('API: POST /api/submit, POST /api/delete, POST /api/feedback, POST /api/my-hike. Page data: /data/*.json\n');
+  console.log('API: POST /api/submit, POST /api/delete, POST /api/feedback, POST /api/trail-suggestion, POST /api/my-hike. Page data: /data/*.json\n');
 });

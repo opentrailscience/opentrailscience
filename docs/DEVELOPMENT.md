@@ -20,7 +20,7 @@ public/                     The website (Netlify's publish directory)
   lib/human-check.js        The trail check and the proof of work before submitting
   _headers                  Security headers, including a strict Content-Security-Policy
   fonts/, img/              Self-hosted fonts (SIL OFL) and images
-netlify/functions/          submit, hike-code (look up and delete), feedback, two scheduled jobs
+netlify/functions/          submit, hike-code (look up and delete), feedback, trail-suggestion, two scheduled jobs
   utils/                    The request handlers, database, public dataset, insights, spam checks, rebuilds
 scripts/                    Dev server, dataset export, database scripts, data dictionary
 src/                        Tailwind theme, and the source of the link preview image
@@ -64,7 +64,8 @@ the derived values and then saves only the blurred version:
 After submitting, a hiker gets a personal code. Only its SHA-256 hash is stored, in a separate
 collection, so the code can show the hiker's own comparison later or delete the hike. The
 optional feedback box on the thank-you page is stored apart from the answers, without a
-timestamp, and never published.
+timestamp, and never published. Trail suggestions ("Don't see your trail?" on the home page and
+in step 1 for the "Other" trails) are stored the same way, and anyone can send one.
 
 ## Free tiers
 
@@ -121,6 +122,7 @@ MONGODB_DB="hikersurvey"   # optional, this is the default
 | `npm run db:setup` | Creates the database indexes; safe to run again |
 | `npm run db:check` | Connection check and record counts |
 | `npm run feedback` | Prints the feedback messages |
+| `npm run trail-suggestions` | Prints the trail suggestions grouped by trail; `-- --clear` deletes them after review |
 | `npm run seed` / `npm run db:remove-synthetic` | Adds or removes synthetic hikers in the real database |
 
 ## Deploying
@@ -145,4 +147,5 @@ The site runs on Netlify; the build settings are in `netlify.toml`.
 | `POST /api/my-hike` | `{ "code": "XXXX-XXXX-XXXX-XXXX" }`. 200 with the hike and today's comparison, 404 for unknown codes. |
 | `POST /api/delete` | `{ "code": "XXXX-XXXX-XXXX-XXXX" }`. 200 when deleted, 404 for unknown codes. |
 | `POST /api/feedback` | `{ "message": "…" }`, up to 1000 characters. 201 when saved. |
+| `POST /api/trail-suggestion` | `{ "trail": "…" }`, up to 100 characters. 201 when saved, 429 when throttled or 500 are waiting for review. |
 | `/data/*.json`, `/data/*.csv` | The static dataset files and page data. |

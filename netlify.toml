@@ -12,7 +12,7 @@
 [functions."snapshot-nightly"]
   schedule = "@daily"
 
-# Every 1 January: delete all feedback, so none is kept longer than 12 months
+# Every 1 January: delete all feedback and trail suggestions, so none is kept longer than 12 months
 # (feedback has no date, see netlify/functions/feedback-cleanup.js).
 [functions."feedback-cleanup"]
   schedule = "0 4 1 1 *"

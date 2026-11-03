@@ -8,6 +8,7 @@ const DIR = path.join(__dirname, '../netlify/functions');
 const submit = require('../netlify/functions/submit');
 const hikeCode = require('../netlify/functions/hike-code');
 const feedback = require('../netlify/functions/feedback');
+const trailSuggestion = require('../netlify/functions/trail-suggestion');
 const functionFiles = fs.readdirSync(DIR).filter(f => f.endsWith('.js'));
 const load = f => require(path.join(DIR, f));
 
@@ -24,6 +25,7 @@ test('every web function has its own path, so none is reachable at /.netlify/fun
   assert.equal(submit.config.path, '/api/submit');
   assert.deepEqual(hikeCode.config.path, ['/api/my-hike', '/api/delete']);
   assert.equal(feedback.config.path, '/api/feedback');
+  assert.equal(trailSuggestion.config.path, '/api/trail-suggestion');
   // The other function files are the two scheduled jobs, which have no URL in production.
   const web = functionFiles.filter(f => typeof load(f).default === 'function');
   for (const f of web) assert.ok(load(f).config && load(f).config.path, `${f} has a path`);

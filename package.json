@@ -22,7 +22,8 @@
     "db:remove-synthetic": "node scripts/remove-synthetic.js",
     "db:check": "node scripts/check-db.js",
     "db:setup": "node scripts/setup-db.js",
-    "feedback": "node scripts/read-feedback.js"
+    "feedback": "node scripts/read-feedback.js",
+    "trail-suggestions": "node scripts/read-trail-suggestions.js"
   },
   "keywords": [
     "thru-hiking",

@@ -27,7 +27,7 @@ test('every color class uses a color defined in the theme', () => {
 test('form fields use at least 16px text on phones, so iOS does not zoom in on focus', () => {
   const html = read('public/index.html');
   for (const [tag] of html.matchAll(/<(?:input|select|textarea)\b[^>]*>/g)) {
-    if (/type="(hidden|checkbox|range|radio)"|website_url|hiker_anti_spam/.test(tag)) continue;
+    if (/type="(hidden|checkbox|range|radio)"|website_url|hiker_anti_spam|trail-suggest-trap/.test(tag)) continue;
     const classes = (tag.match(/class="([^"]*)"/) || [, ''])[1].split(/\s+/);
     const size = classes.find(c => /^text-(xs|sm|base|lg|xl)$/.test(c));
     assert.ok(size === 'text-base' || size === 'text-lg' || size === 'text-xl', `${tag.slice(0, 80)}… needs text-base (sm:text-sm for desktop)`);

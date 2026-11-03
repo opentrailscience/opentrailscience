@@ -10,7 +10,9 @@ const COLLECTIONS = {
   snapshotState: 'snapshot_state',
   // { _id: random UUID, message, schemaVersion }: survey feedback. Never published,
   // and on purpose not linked to a survey record and without a timestamp.
-  feedback: 'feedback'
+  feedback: 'feedback',
+  // { _id: random UUID, trail, schemaVersion }: "suggest a trail", stored like the feedback.
+  trailSuggestions: 'trail_suggestions'
 };
 
 let clientPromise = null;

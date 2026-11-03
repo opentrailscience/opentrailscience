@@ -157,6 +157,19 @@
           <div>
             <h2>Trails in the survey</h2>
             <p>Pick a trail to start the survey with it already selected. 75 to 3,000 miles, any continent.</p>
+            <!-- "Suggest a trail", no survey needed: sent on its own (initTrailSuggestions in app.js, /api/trail-suggestion) -->
+            <details class="trail-suggest mt-6">
+              <summary class="text-sm font-semibold text-pine-400 hover:text-pine-300 cursor-pointer">Don't see your trail? Suggest it</summary>
+              <div class="mt-3">
+                <label for="trail-suggest-home" class="block text-sm font-semibold text-slate-200 mb-1.5">Which trail is missing?</label>
+                  <div class="flex gap-2 max-sm:flex-col">
+                    <input type="text" id="trail-suggest-home" class="trail-suggest-input flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" maxlength="100" spellcheck="false" placeholder="e.g. Lycian Way, Turkey" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <button type="button" class="trail-suggest-send btn btn-secondary">Suggest trail</button>
+                  </div>
+                  <div class="anti-spam-trap" aria-hidden="true"><input type="text" class="trail-suggest-trap" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></div>
+                  <p class="trail-suggest-result text-xs text-slate-400 mt-2" role="status">I'll add trails that several hikers ask for.</p>
+              </div>
+            </details>
           </div>
           <ol class="cairn">
             <li class="stone s1"><a href="#survey" class="trail-quick-card"><span class="name">Any other long trail</span><span class="meta">MORE · 75 MI +</span></a></li>
@@ -272,6 +285,7 @@
                 <tr><td class="py-2.5 px-3">How long the survey took you</td><td class="py-2.5 px-3">A rough range<br><span class="text-slate-500">10–20 minutes</span></td><td class="py-2.5 px-3">Helps researchers spot rushed answers. It's a duration, not a date or time.</td></tr>
                 <tr><td class="py-2.5 px-3">When you submitted</td><td class="py-2.5 px-3">Not stored</td><td class="py-2.5 px-3">Nobody needs it, and a timestamp is just another clue.</td></tr>
                 <tr><td class="py-2.5 px-3">Feedback (optional, after submitting)</td><td class="py-2.5 px-3">Your message only, <strong class="text-white">not part of the dataset</strong></td><td class="py-2.5 px-3">It only helps me improve the survey, so it isn't connected to your survey entry. Deleted after at most 12 months. See below.</td></tr>
+                <tr><td class="py-2.5 px-3">Trail suggestion (optional, anytime)</td><td class="py-2.5 px-3">The trail you type only, <strong class="text-white">not part of the dataset</strong></td><td class="py-2.5 px-3">So I can add missing trails. It isn't connected to any survey entry. Deleted once I've reviewed it, at the latest after 12 months. See below.</td></tr>
               </tbody>
             </table>
           </div>
@@ -345,12 +359,19 @@
           <p class="mt-2">At the very end you can tell me how to improve the survey. Your feedback isn't connected to your survey entry and isn't part of the released dataset, it's saved on its own and only I read it. All feedback messages are deleted once a year, on 1 January.</p>
         </div>
 
+        <!-- Trail suggestions -->
+        <div>
+          <h3 class="text-xl font-bold text-white">Suggesting a trail</h3>
+          <p class="mt-2">On the home page, and in the survey when you pick one of the "Other" trails, you can suggest a trail that's missing from the list. Only the text you type is saved, on its own: it isn't connected to your survey entry and isn't part of the released dataset. I delete suggestions once I've looked at them, and all remaining ones on 1 January.</p>
+        </div>
+
         <!-- Retention -->
         <div>
           <h3 class="text-xl font-bold text-white">How long I keep your data</h3>
           <ul class="mt-3 space-y-1.5 list-disc list-inside">
             <li><strong class="text-white">Survey answers:</strong> I keep your answers for as long as the project and the open dataset exist, or until you delete them with your personal code.</li>
             <li><strong class="text-white">Feedback:</strong> Feedback messages are deleted after at most 12 months.</li>
+            <li><strong class="text-white">Trail suggestions:</strong> deleted once I've reviewed them, and after at most 12 months.</li>
             <li><strong class="text-white">Server logs:</strong> Netlify keeps its logs online for 90 days and offline for one year (<a href="https://www.netlify.com/pdf/netlify-dpa.pdf" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">Netlify's data processing agreement</a>).</li>
             <li><strong class="text-white">Spam protection:</strong> the scrambled IP address is deleted after one hour.</li>
             <li><strong class="text-white">Bot check:</strong> Cloudflare handles that data itself; I don't receive or keep any of it.</li>
@@ -363,7 +384,7 @@
           <h3 class="text-xl font-bold text-white">Where your data is stored</h3>
           <ul class="mt-3 space-y-2">
             <li><strong class="text-white">Netlify, Inc. (USA):</strong> hosts the website and runs the code that checks and saves your answers.</li>
-            <li><strong class="text-white">MongoDB, Inc. (MongoDB Atlas, USA):</strong> stores the blurred answers and, separately, the feedback messages.</li>
+            <li><strong class="text-white">MongoDB, Inc. (MongoDB Atlas, USA):</strong> stores the blurred answers and, separately, the feedback messages and trail suggestions.</li>
             <li><strong class="text-white">Cloudflare, Inc. (USA):</strong> runs the bot check when you submit. It doesn't receive your answers.</li>
             <li><strong class="text-white">The open dataset:</strong> the same blurred answers, downloadable by anyone worldwide under the CC0 public domain dedication.</li>
           </ul>
@@ -377,6 +398,7 @@
           <ul class="mt-3 space-y-1.5 list-disc list-inside">
             <li><strong class="text-white">Survey answers, including health information:</strong> only because you agree to it before the survey starts. Without your agreement nothing is stored.</li>
             <li><strong class="text-white">Feedback:</strong> only if you decide to send a message.</li>
+            <li><strong class="text-white">Trail suggestions:</strong> only if you decide to send one.</li>
             <li><strong class="text-white">Server logs and the spam check:</strong> the website can't run safely or keep bots out without them.</li>
             <li><strong class="text-white">The draft and the light/dark setting in your browser:</strong> they only exist so these features work for you.</li>
           </ul>
@@ -621,7 +643,17 @@
                 </select>
               </div>
 
-              <!-- Conditional Custom Trail Name -->
+              <!-- "Other" trails: suggest the missing one, sent on its own and never part of the answers -->
+              <div id="trail-suggest-survey-box" class="trail-suggest hidden p-4 rounded-xl bg-slate-900/60 border border-slate-700">
+                <label for="trail-suggest-survey" class="block text-sm font-semibold text-slate-200 mb-1.5">Missing from the list? Tell me which trail (optional)</label>
+                  <div class="flex gap-2 max-sm:flex-col">
+                    <input type="text" id="trail-suggest-survey" class="trail-suggest-input flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" maxlength="100" spellcheck="false" placeholder="e.g. Lycian Way, Turkey" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <button type="button" class="trail-suggest-send btn btn-secondary">Suggest trail</button>
+                  </div>
+                  <div class="anti-spam-trap" aria-hidden="true"><input type="text" class="trail-suggest-trap" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></div>
+                  <p class="trail-suggest-result text-xs text-slate-400 mt-2" role="status">This is sent on its own, not with your answers. Then just carry on with the survey.</p>
+              </div>
+
               <!-- Hike Year & Direction Grid -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
