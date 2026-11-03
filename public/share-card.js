@@ -94,12 +94,28 @@
 
   function drawHeadline(ctx, record) {
     const trail = window.SurveySchema.trailName(record.trail) || 'long-distance';
+    const noun = hikeNoun(record);
+    const maxWidth = W - 2 * PAD;
     ctx.font = `700 76px ${FONT}`;
     ctx.fillStyle = C.ink;
-    let y = wrapText(ctx, `My ${record.hikeYear} ${trail}`, PAD, 340, W - 2 * PAD, 86);
+    // "My 2025 PCT" above "thru-hike"; when a long trail name wraps anyway, the
+    // hike type follows on its last line if it fits ("…Mont Blanc hike").
+    const lines = [];
+    `My ${record.hikeYear} ${trail}`.split(' ').forEach(word => {
+      const last = lines[lines.length - 1];
+      if (last && ctx.measureText(`${last} ${word}`).width <= maxWidth) lines[lines.length - 1] = `${last} ${word}`;
+      else lines.push(word);
+    });
+    lines.forEach((line, i) => ctx.fillText(line, PAD, 340 + i * 86));
+    const lastY = 340 + (lines.length - 1) * 86;
+    const last = lines[lines.length - 1];
     ctx.fillStyle = C.green;
-    ctx.fillText(hikeNoun(record), PAD, y);
-    return y + 40;
+    if (lines.length > 1 && ctx.measureText(`${last} ${noun}`).width <= maxWidth) {
+      ctx.fillText(noun, PAD + ctx.measureText(`${last} `).width, lastY);
+      return lastY + 40;
+    }
+    ctx.fillText(noun, PAD, lastY + 86);
+    return lastY + 86 + 40;
   }
 
   const PERCENT_COLORS = [C.terracotta, C.blue, C.sage, C.ochre];
