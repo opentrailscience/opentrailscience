@@ -286,6 +286,10 @@ test('directions depend on the trail', () => {
   assert.match(validate({ trail: 'Annapurna', direction: 'NOBO' }).errors[0], /direction for this trail/);
   assert.equal(Schema.datePrecision('Annapurna'), 'month', 'a small trail: dates by month');
   assert.equal(Schema.trailName('Annapurna'), 'Annapurna Circuit');
+  assert.equal(validate({ trail: 'GR11', direction: 'WEBO' }).isValid, true, 'GR11 runs east-west like the GR10');
+  assert.match(validate({ trail: 'GR11', direction: 'NOBO' }).errors[0], /direction for this trail/);
+  assert.equal(validate({ trail: 'Cumbria Way', direction: 'NOBO' }).isValid, true, 'Ulverston to Carlisle');
+  for (const trail of ['GR11', 'Cumbria Way']) assert.equal(Schema.datePrecision(trail), 'month', `${trail}: dates by month`);
   for (const trail of ['Other North America', 'Other Europe', 'Other']) {
     for (const direction of ['NOBO', 'SOBO', 'EABO', 'WEBO']) assert.equal(validate({ trail, direction }).isValid, true, `${trail} ${direction}`);
   }
