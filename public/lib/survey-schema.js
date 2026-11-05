@@ -31,6 +31,7 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    { version: '1.5.0', date: '2026-11-05', changes: ['trail can be GSB (the Main Beskid Trail in Poland, directions EABO or WEBO, dates by month like other small trails). Added from a hiker\'s trail suggestion.'] },
     { version: '1.4.0', date: '2026-11-04', changes: ['trail can be GR11 (the Spanish Pyrenees, directions EABO or WEBO) or Cumbria Way (England, NOBO or SOBO); both dates by month like other small trails. Added from hikers\' trail suggestions.'] },
     { version: '1.3.0', date: '2026-11-03', changes: ['cookSystem can be huts_restaurants (ate at huts, refuges, guesthouses or restaurants on most days); the question now asks what hikers did on most days. Before 1.3.0 such hikers had to pick one of the other answers.', 'cookSystem hybrid now means switching between a stove and going without one (cold soaking or dry food); before 1.3.0 the form only mentioned a stove and cold soaking.'] },
     { version: '1.2.0', date: '2026-11-02', changes: ['trail can be Annapurna (the Annapurna Circuit in Nepal; directions CCW or CW, dates by month like other small trails).'] },
@@ -59,7 +60,7 @@
 
   const TRAILS = [
     'PCT', 'AT', 'CDT', 'CT', 'AZT', 'JMT', 'TRT', 'PNT', 'Long Trail', 'Hayduke', 'FT', 'IAT', 'BMT', 'SHT',
-    'CDS', 'TMB', 'WHW', 'GR20', 'GR10', 'GR11', 'HEX', 'VIA', 'AV1', 'KUN', 'C2C', 'Cumbria Way', 'TA', 'Annapurna',
+    'CDS', 'TMB', 'WHW', 'GR20', 'GR10', 'GR11', 'HEX', 'VIA', 'AV1', 'KUN', 'GSB', 'C2C', 'Cumbria Way', 'TA', 'Annapurna',
     'Other North America', 'Other Europe', 'Other'
   ];
 
@@ -69,7 +70,7 @@
     PNT: 'PNT', 'Long Trail': 'Long Trail', Hayduke: 'Hayduke', CDS: 'Camino', TMB: 'Tour du Mont Blanc',
     WHW: 'West Highland Way', GR20: 'GR20', TA: 'Te Araroa', KUN: 'Kungsleden', C2C: 'Coast to Coast', SHT: 'Superior Hiking Trail',
     GR10: 'GR10', HEX: 'Hexatrek', VIA: 'Via Alpina', AV1: 'Alta Via 1', FT: 'Florida Trail', IAT: 'Ice Age Trail', BMT: 'Benton MacKaye Trail',
-    Annapurna: 'Annapurna Circuit', GR11: 'GR11', 'Cumbria Way': 'Cumbria Way'
+    Annapurna: 'Annapurna Circuit', GR11: 'GR11', 'Cumbria Way': 'Cumbria Way', GSB: 'Main Beskid Trail'
   };
 
   /**
@@ -80,7 +81,7 @@
    */
   const ANY_COMPASS_DIRECTION = ['NOBO', 'SOBO', 'EABO', 'WEBO'];
   const TRAIL_DIRECTIONS = {
-    PNT: ['WEBO', 'EABO'], C2C: ['EABO', 'WEBO'], GR10: ['EABO', 'WEBO'], GR11: ['EABO', 'WEBO'], VIA: ['WEBO', 'EABO'], IAT: ['WEBO', 'EABO'],
+    PNT: ['WEBO', 'EABO'], C2C: ['EABO', 'WEBO'], GR10: ['EABO', 'WEBO'], GR11: ['EABO', 'WEBO'], GSB: ['EABO', 'WEBO'], VIA: ['WEBO', 'EABO'], IAT: ['WEBO', 'EABO'],
     Hayduke: ['WEBO', 'EABO'], // Arches to Zion
     Annapurna: ['CCW', 'CW'], // usually counter-clockwise, Besisahar over the Thorong La to Jomsom
     'Other North America': ANY_COMPASS_DIRECTION, 'Other Europe': ANY_COMPASS_DIRECTION, Other: ANY_COMPASS_DIRECTION,
