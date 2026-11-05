@@ -23,7 +23,8 @@
     "db:check": "node scripts/check-db.js",
     "db:setup": "node scripts/setup-db.js",
     "feedback": "node scripts/read-feedback.js",
-    "trail-suggestions": "node scripts/read-trail-suggestions.js"
+    "trail-suggestions": "node scripts/read-trail-suggestions.js",
+    "new-entries": "node scripts/read-new-entries.js"
   },
   "keywords": [
     "thru-hiking",

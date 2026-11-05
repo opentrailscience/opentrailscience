@@ -122,6 +122,7 @@ MONGODB_DB="hikersurvey"   # optional, this is the default
 | `npm run db:setup` | Creates the database indexes; safe to run again |
 | `npm run db:check` | Connection check and record counts |
 | `npm run feedback` | Prints the feedback messages |
+| `npm run new-entries` | Entries in the database not yet on the live site: trail, home region, survey time |
 | `npm run trail-suggestions` | Prints the trail suggestions grouped by trail; `-- --clear` deletes them after review |
 | `npm run seed` / `npm run db:remove-synthetic` | Adds or removes synthetic hikers in the real database |
 
