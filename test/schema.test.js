@@ -352,3 +352,17 @@ test('how often someone thought about quitting is one of four answers', () => {
   assert.equal(validate({ consideredQuitting: 'first_two_weeks' }).isValid, false);
   assert.deepEqual(validate({ consideredQuitting: '' }).errors, ['Please answer: How often did you seriously think about quitting?']);
 });
+
+test('urination aids are asked of female and "prefer not to say" hikers only', () => {
+  assert.deepEqual(validate().data.urinationAids, ['urine_cloth']);
+  assert.match(validate({ urinationAids: [] }).errors.join(), /urination aid/, 'required when asked');
+  assert.equal(validate({ biologicalSex: 'prefer_not_to_say', urinationAids: ['urination_device'] }).isValid, true);
+  const male = validate({ biologicalSex: 'male', urinationAids: ['urination_device'] });
+  assert.equal(male.isValid, true, 'not asked, so not required');
+  assert.deepEqual(male.data.urinationAids, [], 'and never stored for men');
+  assert.equal(validate({ urinationAids: ['urination_device', 'urine_cloth'] }).isValid, true);
+  for (const alone of ['none', 'prefer_not_to_say']) {
+    assert.match(validate({ urinationAids: [alone, 'urine_cloth'] }).errors.join(), /can't be combined/, alone);
+  }
+  assert.ok(Schema.ILLNESS_TYPES.includes('urinary_tract_infection'), 'UTI is an illness for everyone');
+});

@@ -280,7 +280,7 @@
                 <tr><td class="py-2.5 px-3">Dates and distance on a small trail</td><td class="py-2.5 px-3">Months only, distance to the nearest 10 mi, days rounded to whole weeks</td><td class="py-2.5 px-3">Few people hike these trails, so even a week could point to you.</td></tr>
                 <tr><td class="py-2.5 px-3">Age at the start of the hike<br><span class="text-slate-500">29</span></td><td class="py-2.5 px-3">5-year range (everyone 20 or younger shares one)<br><span class="text-slate-500">25–29</span></td><td class="py-2.5 px-3">An exact age plus dates narrows things down a lot.</td></tr>
                 <tr><td class="py-2.5 px-3">Where you live</td><td class="py-2.5 px-3">A world region<br><span class="text-slate-500">Western Europe</span></td><td class="py-2.5 px-3">I never ask for your country, only a region.</td></tr>
-                <tr><td class="py-2.5 px-3">Injuries, illness, prior injuries, deadline</td><td class="py-2.5 px-3">The categories you picked from a list</td><td class="py-2.5 px-3">Free text can accidentally contain names, places or other people's details, so there is none.</td></tr>
+                <tr><td class="py-2.5 px-3">Injuries, illness, prior injuries, deadline, urination aids</td><td class="py-2.5 px-3">The categories you picked from a list</td><td class="py-2.5 px-3">Free text can accidentally contain names, places or other people's details, so there is none.</td></tr>
                 <tr><td class="py-2.5 px-3">Height, weight, what you spent on the trail and on gear (in USD or EUR), visa, gear, food, painkillers, mileage, zero days, ratings</td><td class="py-2.5 px-3">As you entered them</td><td class="py-2.5 px-3">These are what the research is about, and on their own they don't reveal who you are.</td></tr>
                 <tr><td class="py-2.5 px-3">"Don't know"</td><td class="py-2.5 px-3">An empty value and a note that you didn't know</td><td class="py-2.5 px-3">So researchers can tell "didn't know" from "didn't apply".</td></tr>
                 <tr><td class="py-2.5 px-3">How long the survey took you</td><td class="py-2.5 px-3">A rough range<br><span class="text-slate-500">10–20 minutes</span></td><td class="py-2.5 px-3">Helps researchers spot rushed answers. It's a duration, not a date or time.</td></tr>
@@ -1134,6 +1134,20 @@
                 <input type="hidden" id="field-waterFiltration" name="waterFiltration" value="">
               </div>
 
+              <!-- Urination aids: shown when biological sex is female or "prefer not to say" (urinationAids in the schema) -->
+              <div id="urination-aids-container" class="hidden pt-2">
+                <label class="block text-sm font-semibold text-slate-200 mb-1">
+                  Did you use a urination aid? (select all that apply)&nbsp;<span class="text-rose-400">*</span>
+                </label>
+                <p class="text-xs text-slate-400 mb-2">For example a urination device (pStyle, Shewee) or a reusable urine cloth (Kula Cloth).</p>
+                <div class="flex flex-wrap gap-2 pill-group" data-field="urinationAids">
+                  <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="urination_device">Urination device</span>
+                  <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="urine_cloth">Reusable urine cloth</span>
+                  <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="none" data-exclusive>Neither</span>
+                  <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="prefer_not_to_say" data-exclusive>Prefer not to say</span>
+                </div>
+              </div>
+
               <!-- Footwear & Trekking Poles -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div>
@@ -1627,6 +1641,7 @@
                     <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="heat_illness">Heat illness</span>
                     <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="hypothermia">Hypothermia</span>
                     <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="altitude_sickness">Altitude sickness</span>
+                    <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="urinary_tract_infection">Urinary tract infection (UTI)</span>
                     <span class="select-pill px-3 py-1.5 rounded-lg text-xs" data-val="other">Other illness</span>
                   </div>
                   <div class="pt-2">

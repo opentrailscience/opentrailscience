@@ -175,6 +175,8 @@ function generateAnswers(h, now) {
   };
   // Hikers who slept in huts mostly ate there too (no extra random draw, so the other answers stay the same).
   if (answers.sleepLocation === 'huts_refuges' && answers.cookSystem !== 'hybrid') answers.cookSystem = 'huts_restaurants';
+  // Asked only when sex is female or "prefer not to say"; picked from the shelter and calorie draws so the other answers stay the same.
+  if (answers.biologicalSex !== 'male') answers.urinationAids = answers.averageCalories > 3800 ? ['urination_device', 'urine_cloth'] : answers.averageCalories > 3200 ? ['urine_cloth'] : answers.averageCalories > 2900 ? ['urination_device'] : ['none'];
   return answers;
 }
 

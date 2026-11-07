@@ -16,6 +16,7 @@ function validAnswers(overrides) {
     totalElevationGainFt: 420880,
     age: 29,
     biologicalSex: 'female',
+    urinationAids: ['urine_cloth'],
     heightInches: 67,
     homeRegion: 'north_america',
     neededVisa: false,

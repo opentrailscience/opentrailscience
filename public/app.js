@@ -195,6 +195,7 @@
     initSliders();
     initUnitSwitcher();
     initPillGroups();
+    initUrinationAids();
     initConsent();
     initPrivacyPage();
     initConditionals();
@@ -640,9 +641,17 @@
           const val = pill.getAttribute('data-val');
           const set = pillSet(field);
           if (set.has(val)) set.delete(val);
-          else set.add(val);
-          pill.classList.toggle('active', set.has(val));
-          pill.setAttribute('aria-checked', String(set.has(val)));
+          else {
+            // "Neither" or "Prefer not to say" (data-exclusive) stand alone.
+            group.querySelectorAll('.select-pill').forEach(other => {
+              if (other !== pill && (pill.hasAttribute('data-exclusive') || other.hasAttribute('data-exclusive'))) set.delete(other.getAttribute('data-val'));
+            });
+            set.add(val);
+          }
+          group.querySelectorAll('.select-pill').forEach(p => {
+            p.classList.toggle('active', set.has(p.getAttribute('data-val')));
+            p.setAttribute('aria-checked', String(set.has(p.getAttribute('data-val'))));
+          });
         };
         pill.addEventListener('click', toggle);
         pill.addEventListener('keydown', e => {
@@ -650,6 +659,22 @@
         });
       });
     });
+  }
+
+  /** The urination aids question follows the biological sex answer (urinationAids `when` in the schema). */
+  function initUrinationAids() {
+    const sex = $('field-biologicalSex');
+    const box = $('urination-aids-container');
+    const sync = () => {
+      const asked = Schema.FIELDS_BY_NAME.urinationAids.when({ biologicalSex: sex.value });
+      box.classList.toggle('hidden', !asked);
+      if (!asked) {
+        pillSet('urinationAids').clear();
+        box.querySelectorAll('.select-pill').forEach(p => { p.classList.remove('active'); p.setAttribute('aria-checked', 'false'); });
+      }
+    };
+    sex.addEventListener('change', sync);
+    sync();
   }
 
   function clearPills() {
@@ -1789,7 +1814,7 @@
       });
       $(t.details).classList.add('hidden');
     });
-    ['quit-reason-container', 'own-shelter-container', 'trail-suggest-survey-box'].forEach(id => $(id).classList.add('hidden'));
+    ['quit-reason-container', 'own-shelter-container', 'trail-suggest-survey-box', 'urination-aids-container'].forEach(id => $(id).classList.add('hidden'));
     resetTrailSuggestion($('trail-suggest-survey-box'));
     clearPills();
     document.querySelectorAll('.dont-know-toggle').forEach(box => { box.checked = false; });

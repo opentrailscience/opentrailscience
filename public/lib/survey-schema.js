@@ -31,6 +31,10 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    { version: '1.6.0', date: '2026-11-07', changes: [
+      'New question urinationAids (urination device, reusable urine cloth, neither, prefer not to say), asked when biologicalSex is female or prefer_not_to_say; [] otherwise and for hikes before 1.6.0.',
+      'illnessTypes can be urinary_tract_infection.'
+    ] },
     { version: '1.5.0', date: '2026-11-05', changes: ['trail can be GSB (the Main Beskid Trail in Poland, directions EABO or WEBO, dates by month like other small trails). Added from a hiker\'s trail suggestion.'] },
     { version: '1.4.0', date: '2026-11-04', changes: ['trail can be GR11 (the Spanish Pyrenees, directions EABO or WEBO) or Cumbria Way (England, NOBO or SOBO); both dates by month like other small trails. Added from hikers\' trail suggestions.'] },
     { version: '1.3.0', date: '2026-11-03', changes: ['cookSystem can be huts_restaurants (ate at huts, refuges, guesthouses or restaurants on most days); the question now asks what hikers did on most days. Before 1.3.0 such hikers had to pick one of the other answers.', 'cookSystem hybrid now means switching between a stove and going without one (cold soaking or dry food); before 1.3.0 the form only mentioned a stove and cold soaking.'] },
@@ -136,7 +140,7 @@
   const INJURY_LOCATIONS = Object.keys(INJURY_LABELS);
 
   const ILLNESS_TYPES = [
-    'norovirus_gi', 'giardia', 'cold_flu_respiratory', 'covid', 'tick_borne', 'heat_illness', 'hypothermia', 'altitude_sickness', 'other'
+    'norovirus_gi', 'giardia', 'cold_flu_respiratory', 'covid', 'tick_borne', 'heat_illness', 'hypothermia', 'altitude_sickness', 'urinary_tract_infection', 'other'
   ];
 
   const HOME_REGIONS = [
@@ -154,7 +158,7 @@
   const POPULAR_TRAILS = ['PCT', 'AT', 'CDT', 'CT', 'AZT', 'JMT', 'Long Trail', 'CDS', 'TMB', 'WHW', 'GR20', 'TA'];
 
   // Version of the consent text shown before the survey; stored with each record.
-  const CONSENT_VERSION = '3';
+  const CONSENT_VERSION = '4';
 
   /**
    * Field definitions, in storage / CSV column order.
@@ -351,6 +355,14 @@
     },
     { name: 'trekkingPoleUsage', question: 'Trekking poles', label: 'Trekking pole usage', type: 'enum', step: 3, input: 'field-trekkingPoleUsage', values: ['two_poles', 'one_pole', 'no_poles'], role: 'Categorical feature' },
     { name: 'waterFiltration', question: 'Water treatment: filter or chemicals', label: 'Water treatment', type: 'enum', step: 3, input: 'field-waterFiltration', values: ['water_filter', 'chemical_drops', 'uv_purifier', 'boil_only', 'none', 'combination'], role: 'Categorical feature' },
+    {
+      name: 'urinationAids', question: 'Did you use a urination aid? (select all that apply)', label: 'Urination aids', type: 'enumArray', step: 3,
+      values: ['urination_device', 'urine_cloth', 'none', 'prefer_not_to_say'], when: d => ['female', 'prefer_not_to_say'].includes(d.biologicalSex),
+      requiredMessage: 'Please select whether you used a urination aid',
+      check: v => (v.length > 1 && (v.includes('none') || v.includes('prefer_not_to_say')) ? '"Neither" and "Prefer not to say" can\'t be combined with other answers' : null),
+      role: 'Multi-label category',
+      description: 'Urination device (e.g. pStyle) or reusable urine cloth (e.g. Kula Cloth). Asked when biologicalSex is female or prefer_not_to_say; [] otherwise.'
+    },
     { name: 'backpackType', question: 'Backpack: framed or frameless', label: 'Backpack type', type: 'enum', step: 3, input: 'field-backpackType', values: ['framed', 'frameless'], role: 'Binary category' },
     { name: 'cookSystem', question: 'How did you eat on most days?', label: 'Meals on trail', type: 'enum', step: 3, input: 'field-cookSystem', values: ['stove_cooked', 'cold_soaking', 'no_cook_packaged', 'huts_restaurants', 'hybrid'], role: 'Categorical feature' },
     { name: 'sleepPadType', question: 'Sleeping pad: inflatable or foam', label: 'Sleeping pad', type: 'enum', step: 3, input: 'field-sleepPadType', values: ['inflatable', 'foam_closed_cell', 'both_hybrid', 'hammock_underquilt', 'none'], role: 'Categorical feature' },
