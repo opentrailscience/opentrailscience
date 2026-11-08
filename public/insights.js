@@ -183,10 +183,10 @@
   const TOGETHER_ACCENTS = ['var(--chart-outcome-continuous_purist)', 'var(--chart-outcome-flip_flop)', 'var(--chart-outcome-skipped_sections)'];
   const STRENGTH = { weak: ['Weak link', 2], moderate: ['Moderate link', 3], strong: ['Strong link', 5] };
 
-  /** "Some correlations we found": the strongest links in the data, one card each. */
+  /** "Some things that go together": the strongest links in the data, one card each. */
   function renderTogether(section, note, cards, insights) {
     const list = insights.correlations || [];
-    note.textContent = `Calculated from the ${insights.total} hikes in the dataset each time it is updated: we check ` +
+    note.textContent = `Calculated from the ${insights.total} hikes in the dataset each time it is updated: I check ` +
       `${insights.comparisonsTried || 'several'} pairs of answers and show the strongest links. With this many hikes they are ` +
       'hints, not findings: going together doesn\u2019t mean one causes the other.';
     cards.replaceChildren();

@@ -86,7 +86,7 @@
       percent: '100%',
       nextLabel: 'Submit my hike',
       milestoneTitle: 'Mood: Summit fever',
-      milestoneDesc: 'The last climb, we promise. How did it end, and how did it feel?'
+      milestoneDesc: 'The last climb, I promise. How did it end, and how did it feel?'
     }
   ];
 
