@@ -233,7 +233,7 @@
 
     // The hiker's best three comparisons (highlights in survey-stats.js).
     const items = (comparison && comparison.highlights) || [];
-    const comparedWith = comparison && `Compared with ${comparison.peerCount} other ${comparison.group.replace(' in the dataset', '')}`;
+    const comparedWith = comparison && `Compared with ${comparison.peerCount} other ${comparison.peerNoun}`;
     ctx.font = `500 30px ${FONT}`;
     ctx.fillStyle = C.muted;
     if (items.length) {

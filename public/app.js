@@ -1379,7 +1379,7 @@
     });
 
     $('summary-comparison-note').textContent =
-      `Compared with ${comparison.peerCount} ${comparison.group} who shared their data.`;
+      `Compared with ${comparison.peerCount} ${comparison.peerNoun} who shared their data.`;
     box.classList.remove('hidden');
   }
 

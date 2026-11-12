@@ -211,24 +211,27 @@
    * `shareFirst` / `shareThen` (share text, as first or later clause).
    * Peers with the same value count for neither side.
    *
-   * @returns {{ group, groupSingular, peerCount, items: object[], highlights: object[] } | null}
+   * @returns {{ group, groupSingular, peerNoun, peerCount, items: object[], highlights: object[] } | null}
    */
   function compareToPeers(record, others) {
     // The "Other" choices (any region) are many different trails: compared with everyone.
     const name = Schema.trailName(record.trail);
     const sameTrail = name ? others.filter(d => d.trail === record.trail) : [];
+    // group: "70% of PCT hikers" / "70% of all hikers"; peerNoun: "compared with 112 other PCT hikers" / "300 other hikers".
     let peers;
     let group;
     let groupSingular;
+    let peerNoun;
     const sameTrailGroup = sameTrail.length >= MIN_TRAIL_PEERS;
     if (sameTrailGroup) {
       peers = sameTrail;
-      group = `${name} hikers`;
+      group = peerNoun = `${name} hikers`;
       groupSingular = `${name} hiker`;
     } else if (others.length >= MIN_PEERS) {
       peers = others;
-      group = 'hikers in the dataset';
-      groupSingular = 'hiker in the dataset';
+      group = 'all hikers';
+      groupSingular = 'hiker';
+      peerNoun = 'hikers';
     } else {
       return null;
     }
@@ -261,7 +264,7 @@
     items.sort((a, b) => b.percent - a.percent);
     // Stable sort: equal shares keep the order of COMPARISONS.
     const highlights = candidates.sort((a, b) => b.percent - a.percent).slice(0, HIGHLIGHTS);
-    return candidates.length ? { group, groupSingular, peerCount: peers.length, items, highlights } : null;
+    return candidates.length ? { group, groupSingular, peerNoun, peerCount: peers.length, items, highlights } : null;
   }
 
   // --- Every answer compared: the table on the thank-you page ------------------
@@ -421,7 +424,7 @@
     // Enough peers but nothing the hiker answered to compare with: still about comparing.
     if (comparison) {
       return `Just added ${hike} to Open Trail Science and saw how it stacks up against ` +
-        `${comparison.peerCount} other ${comparison.group.replace(' in the dataset', '')}. How does yours compare?`;
+        `${comparison.peerCount} other ${comparison.peerNoun}. How does yours compare?`;
     }
 
     const numbers = [];

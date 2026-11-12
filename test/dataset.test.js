@@ -110,13 +110,13 @@ test('comparison falls back to all hikers, and needs enough peers', () => {
   // 3 others on the same trail are enough; fewer fall back to everyone, which needs 10.
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, peers(MIN_TRAIL_PEERS)).group, 'PCT hikers');
   const mixed = peers(MIN_TRAIL_PEERS - 1).concat(peers(8, () => ({ trail: 'AT' })));
-  assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, mixed).group, 'hikers in the dataset');
+  assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, mixed).group, 'all hikers');
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, peers(MIN_TRAIL_PEERS - 1)), null);
   assert.equal(compareToPeers({ trail: 'Other', baseWeightLbs: 9 }, peers(MIN_PEERS - 1)), null);
-  assert.equal(compareToPeers({ trail: 'Other', baseWeightLbs: 9 }, peers(12)).group, 'hikers in the dataset');
+  assert.equal(compareToPeers({ trail: 'Other', baseWeightLbs: 9 }, peers(12)).group, 'all hikers');
   for (const trail of ['Other Europe', 'Other North America']) {
     const result = compareToPeers({ trail, baseWeightLbs: 9 }, peers(12, () => ({ trail })));
-    assert.equal(result.group, 'hikers in the dataset', trail);
+    assert.equal(result.group, 'all hikers', trail);
   }
 });
 
@@ -145,7 +145,7 @@ test('share text is always phrased the good way round, even below average', () =
   assert.doesNotMatch(text, /heavier|slower|more often/);
   assert.equal((text.match(/ than /g) || []).length, 3, 'still three comparisons');
 
-  const empty = { group: 'PCT hikers', peerCount: 12, items: [], highlights: [] };
+  const empty = { group: 'PCT hikers', peerNoun: 'PCT hikers', peerCount: 12, items: [], highlights: [] };
   assert.equal(buildShareText(hiker(), empty),
     'Just added my 2025 PCT thru-hike to Open Trail Science and saw how it stacks up against 12 other PCT hikers. How does yours compare?');
 });
@@ -191,7 +191,7 @@ test('describeSchema lists every public column in file order', () => {
 test('pace is only compared within the same trail', () => {
   const others = Array.from({ length: 12 }, (_, i) => ({ trail: 'PCT', averageDailyMiles: 18 + i * 0.1, baseWeightLbs: 15 + i, overallEnjoymentRating: 8 }));
   const tmb = compareToPeers({ trail: 'TMB', averageDailyMiles: 7, baseWeightLbs: 12, overallEnjoymentRating: 9 }, others);
-  assert.equal(tmb.group, 'hikers in the dataset');
+  assert.equal(tmb.group, 'all hikers');
   assert.ok(!tmb.items.some(i => i.field === 'averageDailyMiles'));
   const pct = compareToPeers({ trail: 'PCT', averageDailyMiles: 25, baseWeightLbs: 12, overallEnjoymentRating: 9 }, others);
   assert.ok(pct.items.some(i => i.field === 'averageDailyMiles'));
