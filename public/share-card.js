@@ -2,8 +2,8 @@
  * Draws the personal share card (1080x1350 PNG, the 4:5 portrait size that
  * works in WhatsApp, Instagram and most feeds) shown after submitting.
  *
- * With comparisons it shows every one of them ("89% of PCT hikers carried a
- * heavier pack"); otherwise it shows the hiker's own numbers.
+ * With comparisons it shows the hiker's best three ("89% of PCT hikers carried
+ * a heavier pack"); otherwise it shows the hiker's own numbers.
  * Everything happens in the browser; nothing is uploaded.
  *
  *   ShareCard.render(record, comparison, { unitSystem }) -> Promise<Blob>
@@ -230,7 +230,8 @@
     drawBrand(ctx, await loadLogo());
     let y = drawHeadline(ctx, record);
 
-    const items = (comparison && comparison.items) || [];
+    // The hiker's best three comparisons (highlights in survey-stats.js).
+    const items = (comparison && comparison.highlights) || [];
     if (items.length) {
       drawComparisons(ctx, items, y);
     } else {
