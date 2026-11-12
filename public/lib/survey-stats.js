@@ -193,8 +193,11 @@
   // How many comparisons the share card and text show.
   const HIGHLIGHTS = 3;
 
+  // Every field the comparisons and the "every answer" table read from other hikers.
   const COMPARISON_FIELDS = ['trail', 'baseWeightLbs', 'averageDailyMiles', 'totalDistanceMiles', 'overallEnjoymentRating', 'totalZeroDays', 'daysOnTrail',
-    'hoursSleepPerNight', 'sleepQualityRating', 'trailSpending', 'budgetCurrency', 'consideredQuitting'];
+    'hoursSleepPerNight', 'sleepQualityRating', 'trailSpending', 'budgetCurrency', 'consideredQuitting',
+    'totalElevationGainFt', 'week1DailyMiles', 'totalNeroDays', 'maxHeavyLoadLbs', 'shoePairsUsed', 'gearCost', 'averageCalories',
+    'preTrailFitnessRating', 'percentHikingAlone', 'painkillerUse', 'preTrailWeightLbs', 'postTrailWeightLbs'];
 
   /**
    * Compares one record with other hikers: the same trail when there are
@@ -261,6 +264,122 @@
     return candidates.length ? { group, groupSingular, peerCount: peers.length, items, highlights } : null;
   }
 
+  // --- Every answer compared: the table on the thank-you page ------------------
+
+  const PAINKILLER_ORDER = ['never', 'sometimes', 'daily'];
+  const ordinal = (field, order) => d => { const i = order.indexOf(d[field]); return i === -1 ? null : i; };
+  const per100Days = field => d => (d.daysOnTrail && typeof d[field] === 'number' ? (d[field] / d.daysOnTrail) * 100 : null);
+  const toUsd = (amount, currency) => (currency === 'EUR' ? amount * EUR_TO_USD : amount);
+  const weightChange = d => (typeof d.postTrailWeightLbs === 'number' && typeof d.preTrailWeightLbs === 'number' ? d.postTrailWeightLbs - d.preTrailWeightLbs : null);
+
+  function money(amount, currency) {
+    if (typeof amount !== 'number') return null;
+    const n = Math.round(amount).toLocaleString('en-US');
+    return currency === 'EUR' ? `€${n}` : `$${n}`;
+  }
+
+  /**
+   * The rows of the "every answer" table: each numeric answer, compared with
+   * the same trail and with everyone. `value` reads the compared number
+   * (default: the field), `words` phrase a lower / higher value, and `show`
+   * writes the hiker's own answer (in their units and currency).
+   */
+  const TABLE_ROWS = [
+    { key: 'totalDistanceMiles', label: 'Total distance', words: ['Shorter than', 'Longer than'], unit: 'mi' },
+    { key: 'daysOnTrail', label: 'Days on trail', words: ['Fewer days than', 'More days than'], show: d => (d.daysOnTrail ? `${d.daysOnTrail} days` : null) },
+    { key: 'totalElevationGainFt', label: 'Elevation gain', words: ['Less climbing than', 'More climbing than'], unit: 'ft' },
+    { key: 'averageDailyMiles', label: 'Average daily distance', words: ['Slower than', 'Faster than'], unit: 'mi/day' },
+    { key: 'week1DailyMiles', label: 'First-week daily distance', words: ['Slower start than', 'Faster start than'], unit: 'mi/day' },
+    { key: 'zeroDaysPer100', label: 'Zero days per 100 days', value: per100Days('totalZeroDays'), words: ['Fewer than', 'More than'] },
+    { key: 'neroDaysPer100', label: 'Nero days per 100 days', value: per100Days('totalNeroDays'), words: ['Fewer than', 'More than'] },
+    { key: 'baseWeightLbs', label: 'Base weight', words: ['Lighter than', 'Heavier than'], unit: 'lb' },
+    { key: 'maxHeavyLoadLbs', label: 'Heaviest pack', words: ['Lighter than', 'Heavier than'], unit: 'lb' },
+    { key: 'shoePairsUsed', label: 'Pairs of shoes', words: ['Fewer than', 'More than'] },
+    {
+      key: 'gearCost', label: 'Gear cost', words: ['Cheaper than', 'More expensive than'],
+      value: d => (typeof d.gearCost === 'number' ? toUsd(d.gearCost, d.budgetCurrency) : null),
+      show: d => money(d.gearCost, d.budgetCurrency)
+    },
+    {
+      key: 'spendingPerDay', label: 'Spent per day on trail', words: ['Less than', 'More than'], value: spendingPerDay,
+      show: d => (typeof d.trailSpending === 'number' && d.daysOnTrail ? money(d.trailSpending / d.daysOnTrail, d.budgetCurrency) : null)
+    },
+    { key: 'averageCalories', label: 'Calories per day', words: ['Fewer than', 'More than'] },
+    { key: 'hoursSleepPerNight', label: 'Hours of sleep per night', words: ['Less than', 'More than'], show: d => (typeof d.hoursSleepPerNight === 'number' ? `${d.hoursSleepPerNight} h` : null) },
+    { key: 'sleepQualityRating', label: 'Sleep quality', words: ['Worse than', 'Better than'], suffix: ' / 10' },
+    { key: 'preTrailFitnessRating', label: 'Fitness before the hike', words: ['Lower than', 'Higher than'], suffix: ' / 10' },
+    { key: 'percentHikingAlone', label: 'Time hiking alone', words: ['Less than', 'More than'], suffix: '%' },
+    {
+      key: 'consideredQuitting', label: 'Thoughts of quitting', words: ['Less often than', 'More often than'], value: quittingLevel,
+      show: d => ({ never: 'Never', once_or_twice: 'Once or twice', several_times: 'Several times', almost_constantly: 'Almost constantly' })[d.consideredQuitting] || null
+    },
+    {
+      key: 'painkillerUse', label: 'Painkiller use', words: ['Less often than', 'More often than'], value: ordinal('painkillerUse', PAINKILLER_ORDER),
+      show: d => ({ never: 'Never', sometimes: 'Sometimes', daily: 'Daily' })[d.painkillerUse] || null
+    },
+    {
+      key: 'weightChange', label: 'Body weight change', words: ['Lost more than', 'Lost less than'], value: weightChange,
+      show: (d, metric) => {
+        const v = weightChange(d);
+        if (v === null) return null;
+        return `${v > 0 ? '+' : ''}${metric ? `${round1(v * 0.45359237)} kg` : `${round1(v)} lb`}`;
+      }
+    },
+    { key: 'overallEnjoymentRating', label: 'Enjoyment', words: ['Lower than', 'Higher than'], suffix: ' / 10' }
+  ];
+
+  /** The hiker's own answer for a table row, in their units; null if not answered or "Don't know". */
+  function tableValueText(row, record, unitSystem) {
+    const metric = unitSystem === 'metric';
+    if (row.show) return row.show(record, metric);
+    const v = row.value ? row.value(record) : record[row.key];
+    if (typeof v !== 'number' || !Number.isFinite(v)) return null;
+    if (row.unit) {
+      const u = Schema.UNITS[row.unit];
+      return metric ? `${round1(v * u.factor).toLocaleString('en-US')} ${u.metric}` : `${round1(v).toLocaleString('en-US')} ${u.label}`;
+    }
+    return `${round1(v).toLocaleString('en-US')}${row.suffix || ''}`;
+  }
+
+  /** One cell: { percent, lower } or { status: 'few' | 'same' }; null when the hiker has no value. */
+  function tableCell(read, mine, group, min) {
+    if (typeof mine !== 'number' || !Number.isFinite(mine)) return null;
+    const values = group.map(read).filter(v => typeof v === 'number' && Number.isFinite(v));
+    if (values.length < min) return { status: 'few' };
+    const above = percent(values.filter(v => v > mine).length, values.length);
+    const below = percent(values.filter(v => v < mine).length, values.length);
+    if (!above && !below) return { status: 'same' };
+    return above >= below ? { percent: above, lower: true } : { percent: below, lower: false };
+  }
+
+  /** The words for a cell: "Lighter than 70%", "Same as everyone", "Not enough hikers yet" or "–". */
+  function tableCellText(row, cell) {
+    if (!cell) return '–';
+    if (cell.status === 'few') return 'Not enough hikers yet';
+    if (cell.status === 'same') return 'Same as everyone';
+    return `${row.words[cell.lower ? 0 : 1]} ${cell.percent}%`;
+  }
+
+  /**
+   * Every answer compared with the same trail and with everyone, for the
+   * "How you compare on every answer" table. The trail column is null for the
+   * "Other" trails. Peers with the same value count for neither side.
+   */
+  function compareAll(record, others) {
+    const name = Schema.trailName(record.trail);
+    const sameTrail = name ? others.filter(d => d.trail === record.trail) : null;
+    const rows = TABLE_ROWS.map(row => {
+      const read = row.value || (d => d[row.key]);
+      const mine = read(record);
+      return {
+        key: row.key,
+        trail: sameTrail ? tableCell(read, mine, sameTrail, MIN_TRAIL_PEERS) : null,
+        all: tableCell(read, mine, others, MIN_PEERS)
+      };
+    });
+    return { trailName: name, trailCount: sameTrail ? sameTrail.length : null, allCount: others.length, rows };
+  }
+
   // --- Share text -------------------------------------------------------------
 
 
@@ -312,5 +431,6 @@
     return `${intro2} It's an open dataset for every long trail, open all year. Have you hiked one?`;
   }
 
-  return { computeStats, compareToPeers, buildShareText, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, HIGHLIGHTS, MIN_TRAIL_PEERS, MIN_PEERS };
+  return { computeStats, compareToPeers, buildShareText, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, HIGHLIGHTS, MIN_TRAIL_PEERS, MIN_PEERS,
+    compareAll, TABLE_ROWS, tableValueText, tableCellText };
 });

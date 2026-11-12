@@ -4,7 +4,7 @@
  * doesn't re-read the whole collection on every request (Atlas Free allows
  * 10 GB out per week).
  */
-const { compareToPeers, COMPARISON_FIELDS } = require('../../../public/lib/survey-stats');
+const { compareToPeers, compareAll, COMPARISON_FIELDS } = require('../../../public/lib/survey-stats');
 const { COLLECTIONS } = require('./db');
 const { publicFilter } = require('./dataset');
 
@@ -22,18 +22,20 @@ async function peers(db) {
 }
 
 /**
- * "Your base weight was lighter than 70% of PCT hikers", or null. Leaves out
- * the record `ownId` (the hiker's own hike, when looking it up later). Never
- * throws: a comparison is a bonus, not a requirement.
+ * `comparison`: "Your base weight was lighter than 70% of PCT hikers" and the
+ * share card's highlights, or null. `table`: every answer compared with the
+ * same trail and with everyone. Leaves out the record `ownId` (the hiker's own
+ * hike, when looking it up later). Never throws: a comparison is a bonus, not
+ * a requirement.
  */
 async function comparisonFor(db, record, ownId) {
   try {
     const { records } = await peers(db);
     const others = ownId ? records.filter(r => String(r._id) !== String(ownId)) : records;
-    return compareToPeers(record, others);
+    return { comparison: compareToPeers(record, others), table: compareAll(record, others) };
   } catch (err) {
     console.warn('Peer comparison unavailable:', err.message);
-    return null;
+    return { comparison: null, table: null };
   }
 }
 

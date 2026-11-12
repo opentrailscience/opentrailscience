@@ -68,7 +68,7 @@ exports.handler = async (event) => {
   }
 
   // Read the peers before inserting so the hiker is not compared with themselves.
-  const comparison = await comparisonFor(db, validation.data);
+  const { comparison, table } = await comparisonFor(db, validation.data);
 
   let deletionCode;
   let insertedId = null;
@@ -95,5 +95,5 @@ exports.handler = async (event) => {
   await notePublicChange(db, now);
 
   // The deletion code is shown to the hiker once and never stored in readable form.
-  return json(201, { success: true, data: validation.data, comparison, deletionCode, message: THANK_YOU });
+  return json(201, { success: true, data: validation.data, comparison, table, deletionCode, message: THANK_YOU });
 };

@@ -207,3 +207,31 @@ test('the public files carry only the documented columns, even if a record has m
     assert.ok(!/2026-10-14T19|2026-08-17|United States|totalBudgetUsd|hikerCountry|submittedAt/.test(content));
   }
 });
+
+const { compareAll, TABLE_ROWS, tableValueText, tableCellText } = require('../public/lib/survey-stats');
+
+test('the "every answer" table compares with the same trail and with everyone', () => {
+  const others = peers(6).concat(peers(6, () => ({ trail: 'AT', baseWeightLbs: 30 })));
+  const record = { trail: 'PCT', baseWeightLbs: 12.5, daysOnTrail: 100, totalZeroDays: 30, averageCalories: null, unknownAnswers: ['averageCalories'] };
+  const table = compareAll(record, others);
+  assert.deepEqual([table.trailName, table.trailCount, table.allCount], ['PCT', 6, 12]);
+  assert.deepEqual(table.rows.map(r => r.key), TABLE_ROWS.map(r => r.key), 'one row per category, calories included');
+  const row = key => [TABLE_ROWS.find(r => r.key === key), table.rows.find(r => r.key === key)];
+  const [baseDef, base] = row('baseWeightLbs');
+  assert.equal(tableCellText(baseDef, base.trail), 'Lighter than 50%', 'base weights 10..15: 12.5 is below 3 of 6');
+  assert.equal(tableCellText(baseDef, base.all), 'Lighter than 75%', 'plus six AT hikers at 30 lb');
+  assert.equal(tableValueText(baseDef, record, 'metric'), '5.7 kg');
+  const [calDef, cal] = row('averageCalories');
+  assert.deepEqual([cal.trail, cal.all], [null, null], '"Don\'t know" has nothing to compare');
+  assert.equal(tableCellText(calDef, cal.trail), '–');
+  const [, zeros] = row('zeroDaysPer100');
+  assert.deepEqual(zeros.trail, { percent: 100, lower: false }, '30 per 100 days is more than everyone');
+  const few = compareAll(record, peers(4));
+  assert.deepEqual(few.rows.find(r => r.key === 'baseWeightLbs').trail, { status: 'few' });
+  assert.equal(tableCellText(baseDef, { status: 'few' }), 'Not enough hikers yet');
+  const same = compareAll({ trail: 'PCT', overallEnjoymentRating: 8 }, peers(6));
+  assert.equal(tableCellText(TABLE_ROWS.find(r => r.key === 'overallEnjoymentRating'), same.rows.find(r => r.key === 'overallEnjoymentRating').trail), 'Same as everyone');
+  const other = compareAll(Object.assign({}, record, { trail: 'Other Europe' }), others);
+  assert.equal(other.trailName, null);
+  assert.ok(other.rows.every(r => r.trail === null), 'no trail column for the "Other" trails');
+});

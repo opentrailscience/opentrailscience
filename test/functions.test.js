@@ -91,6 +91,12 @@ test('submit returns a peer comparison once enough hikers have shared', async ()
   assert.equal(body.comparison.group, 'PCT hikers', '6 PCT peers are enough for a same-trail comparison');
   assert.equal(body.comparison.peerCount, 6, 'synthetic records, other trails and the new record are excluded');
   assert.equal(body.comparison.items[0].text, 'Your base weight was lighter than 100% of PCT hikers.');
+  // The "every answer" table: same trail (6) and everyone (12), never the new hike itself.
+  assert.equal(body.table.trailName, 'PCT');
+  assert.equal(body.table.trailCount, 6);
+  assert.equal(body.table.allCount, 12);
+  const base = body.table.rows.find(r => r.key === 'baseWeightLbs');
+  assert.deepEqual([base.trail, base.all], [{ percent: 100, lower: true }, { percent: 100, lower: true }]);
 });
 
 test('submit has no comparison while the dataset is small', async () => {

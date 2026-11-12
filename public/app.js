@@ -1201,6 +1201,7 @@
         averageDailyMiles: Schema.computeAverageDailyMiles(answers)
       }));
       populateComparison(result.comparison);
+      renderCompareTable(result.data || answers, result.table);
       populateDeletionCode(result.deletionCode);
       prepareShare(result.data || answers, result.comparison);
       setSuccessMode('submitted');
@@ -1379,6 +1380,45 @@
 
     $('summary-comparison-note').textContent =
       `Compared with ${comparison.peerCount} ${comparison.group} who shared their data.`;
+    box.classList.remove('hidden');
+  }
+
+  /** "How you compare on every answer": one row per answer, against the same trail and against everyone. */
+  function renderCompareTable(record, table) {
+    const box = $('compare-all');
+    const body = $('compare-all-body');
+    if (!box || !body) return;
+    box.open = false;
+    body.replaceChildren();
+    if (!table) {
+      box.classList.add('hidden');
+      return;
+    }
+    $('compare-all-trail-head').textContent = table.trailName ? `${table.trailName} hikers (${table.trailCount})` : 'Same trail';
+    $('compare-all-all-head').textContent = `All hikers (${table.allCount})`;
+    $('compare-all-note').textContent = table.trailName
+      ? 'Same trail needs at least 5 other hikers, all hikers at least 10. Money is compared in dollars, with euros converted at a fixed rate.'
+      : 'Hikes on the "Other" trails are compared with all hikers only, which needs at least 10. Money is compared in dollars, with euros converted at a fixed rate.';
+    const unknown = record.unknownAnswers || [];
+    table.rows.forEach(r => {
+      const def = Stats.TABLE_ROWS.find(row => row.key === r.key);
+      if (!def) return;
+      const cells = [
+        def.label,
+        Stats.tableValueText(def, record, state.unitSystem) || (unknown.includes(def.key) ? "Don't know" : '–'),
+        table.trailName ? Stats.tableCellText(def, r.trail) : '–',
+        Stats.tableCellText(def, r.all)
+      ];
+      const tr = document.createElement('tr');
+      tr.className = 'border-t border-slate-800/60 align-top';
+      cells.forEach((text, i) => {
+        const td = document.createElement('td');
+        td.className = `py-1.5 ${i < 3 ? 'pr-3 ' : ''}${i === 0 ? 'text-slate-400' : 'text-slate-200'}`;
+        td.textContent = text;
+        tr.appendChild(td);
+      });
+      body.appendChild(tr);
+    });
     box.classList.remove('hidden');
   }
 
@@ -2165,6 +2205,7 @@
         if (!res.ok || !body.success) throw new Error(errorText(res, body.error, `Lookup failed (HTTP ${res.status}).`));
         populateSuccessCard(body.data);
         populateComparison(body.comparison);
+        renderCompareTable(body.data, body.table);
         prepareShare(body.data, body.comparison);
         setSuccessMode('revisit');
         state.hasSubmitted = true;

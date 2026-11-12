@@ -35,8 +35,8 @@ exports.handler = async (event) => {
   try {
     const record = await findByCode(db, parsed.body.code);
     if (!record) return json(404, { success: false, error: 'No hike found for this code. Please check it and try again.' });
-    const comparison = await comparisonFor(db, record, record._id);
-    return json(200, { success: true, data: toPublicRecord(record), comparison });
+    const { comparison, table } = await comparisonFor(db, record, record._id);
+    return json(200, { success: true, data: toPublicRecord(record), comparison, table });
   } catch (err) {
     console.error('Looking up a hike failed:', err.message);
     return json(503, { success: false, error: 'Database temporarily unavailable. Please try again shortly.' });
