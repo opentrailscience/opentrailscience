@@ -1424,7 +1424,7 @@
 
   /** Builds the share text and the share card image for this submission. */
   async function prepareShare(record, comparison) {
-    state.shareText = Stats.buildShareText(record, comparison, { unitSystem: state.unitSystem });
+    state.shareText = Stats.buildShareText(record, comparison);
 
     const container = $('share-card-container');
     if (state.shareCard) URL.revokeObjectURL(state.shareCard.url);

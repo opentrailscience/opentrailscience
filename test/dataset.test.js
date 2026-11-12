@@ -129,14 +129,14 @@ const hiker = overrides => Object.assign({
 
 test('share text names the three best comparisons, like the card', () => {
   const text = buildShareText(hiker(), compareToPeers(hiker(), peers(12)));
-  assert.equal(text, 'Just added my 2025 PCT thru-hike to Open Trail Science. Turns out my pack was lighter than 75% of PCT hikers, I hiked faster than 67% of them, and I took zero days less often than 42% of them. How does yours compare?');
+  assert.equal(text, 'Just added my 2025 PCT thru-hike to Open Trail Science: lighter pack than 75% of PCT hikers, faster than 67% and fewer zero days than 42%. How does yours compare?');
   const other = hiker({ trail: 'Other' });
   assert.doesNotMatch(buildShareText(other, compareToPeers(other, peers(12))), /faster/, 'no pace when compared with everyone');
 });
 
 test('share text says "every other" instead of 100%', () => {
   const record = hiker({ baseWeightLbs: 5 });
-  assert.match(buildShareText(record, compareToPeers(record, peers(12))), /my pack was lighter than every other PCT hiker, I/);
+  assert.match(buildShareText(record, compareToPeers(record, peers(12))), /: lighter pack than every other PCT hiker, faster/);
 });
 
 test('share text is always phrased the good way round, even below average', () => {
@@ -147,15 +147,14 @@ test('share text is always phrased the good way round, even below average', () =
 
   const empty = { group: 'PCT hikers', peerNoun: 'PCT hikers', peerCount: 12, items: [], highlights: [] };
   assert.equal(buildShareText(hiker(), empty),
-    'Just added my 2025 PCT thru-hike to Open Trail Science and saw how it stacks up against 12 other PCT hikers. How does yours compare?');
+    'Just added my 2025 PCT thru-hike to Open Trail Science and compared it with 12 other PCT hikers. How does yours compare?');
 });
 
-test('share text before there are enough peers mentions the hiker\'s own numbers', () => {
+test('share text before there are enough peers is about the dataset', () => {
   assert.equal(buildShareText(hiker(), null),
-    "Just added my 2025 PCT thru-hike (12.5 lb base weight, 19 miles a day) to Open Trail Science. It's an open dataset for every long trail, open all year. Have you hiked one?");
-  assert.match(buildShareText(hiker({ trail: 'CDS', completionStatus: 'section_hike' }), null, { unitSystem: 'metric' }),
-    /^Just added my 2025 Camino section hike \(5\.7 kg base weight, 30\.6 km a day\)/);
-  assert.match(buildShareText(hiker({ trail: 'Other' }), null), /^Just added my 2025 thru-hike \(/, 'custom trails have no name');
+    "Just added my 2025 PCT thru-hike to Open Trail Science. It's an open dataset for every long trail, open all year. Have you hiked one?");
+  assert.match(buildShareText(hiker({ trail: 'CDS', completionStatus: 'section_hike' }), null), /^Just added my 2025 Camino section hike to/);
+  assert.match(buildShareText(hiker({ trail: 'Other' }), null), /^Just added my 2025 thru-hike to/, 'custom trails have no name');
 });
 
 test('share text reads like a person: no emoji, hashtags or exclamation marks', () => {
@@ -169,7 +168,7 @@ test('share text reads like a person: no emoji, hashtags or exclamation marks', 
   ];
   texts.forEach(t => {
     assert.doesNotMatch(t, /[#!]|\p{Extended_Pictographic}/u, t);
-    assert.ok(t.length < 300, `short enough for a chat message, even with all four comparisons: ${t.length}`);
+    assert.ok(t.length < 200, `short enough for a chat message, even with three comparisons: ${t.length}`);
   });
 });
 

@@ -116,7 +116,7 @@
    * What hikers are compared on. `value` reads the compared number (default:
    * the field) and `better` says which end is the good one.
    *   smaller / larger  results-page sentence when the hiker is below / above most peers
-   *   share             first-person phrase for the share text, given "89% of PCT hikers"
+   *   share             short phrase for the share text, before "75% of PCT hikers" or "67%"
    *   card              caption under the percentage on the share card
    * The results page is honest and shows every comparison in its real direction.
    * The share card and text show the hiker's best three (`highlights`), always
@@ -129,63 +129,63 @@
       field: 'baseWeightLbs', better: 'smaller',
       smaller: (p, g) => `Your base weight was lighter than ${p}% of ${g}.`,
       larger: (p, g) => `Your base weight was heavier than ${p}% of ${g}.`,
-      share: who => `my pack was lighter than ${who}`,
+      share: 'lighter pack than',
       card: g => `of ${g} carried a heavier pack`
     },
     {
       field: 'averageDailyMiles', better: 'larger', sameTrailOnly: true,
       smaller: (p, g) => `Your average pace was slower than ${p}% of ${g}.`,
       larger: (p, g) => `Your average pace was faster than ${p}% of ${g}.`,
-      share: who => `I hiked faster than ${who}`,
+      share: 'faster than',
       card: g => `of ${g} hiked a slower pace`
     },
     {
       field: 'totalDistanceMiles', better: 'larger', sameTrailOnly: true,
       smaller: (p, g) => `You hiked fewer miles than ${p}% of ${g}.`,
       larger: (p, g) => `You hiked further than ${p}% of ${g}.`,
-      share: who => `I hiked further than ${who}`,
+      share: 'further than',
       card: g => `of ${g} hiked fewer miles`
     },
     {
       field: 'zeroDayRate', value: zeroDayRate, better: 'smaller',
       smaller: (p, g) => `You took zero days less often than ${p}% of ${g}.`,
       larger: (p, g) => `You took zero days more often than ${p}% of ${g}.`,
-      share: who => `I took zero days less often than ${who}`,
+      share: 'fewer zero days than',
       card: g => `of ${g} took zero days more often`
     },
     {
       field: 'overallEnjoymentRating', better: 'larger',
       smaller: (p, g) => `You enjoyed your hike less than ${p}% of ${g}.`,
       larger: (p, g) => `You enjoyed your hike more than ${p}% of ${g}.`,
-      share: who => `I enjoyed it more than ${who}`,
+      share: 'enjoyed it more than',
       card: g => `of ${g} rated their hike lower`
     },
     {
       field: 'hoursSleepPerNight', better: 'larger',
       smaller: (p, g) => `You slept less than ${p}% of ${g}.`,
       larger: (p, g) => `You slept more than ${p}% of ${g}.`,
-      share: who => `I slept more than ${who}`,
+      share: 'more sleep than',
       card: g => `of ${g} slept less`
     },
     {
       field: 'sleepQualityRating', better: 'larger',
       smaller: (p, g) => `You rated your sleep worse than ${p}% of ${g}.`,
       larger: (p, g) => `You rated your sleep better than ${p}% of ${g}.`,
-      share: who => `I slept better than ${who}`,
+      share: 'better sleep than',
       card: g => `of ${g} rated their sleep lower`
     },
     {
       field: 'spendingPerDay', value: spendingPerDay, better: 'smaller',
       smaller: (p, g) => `You spent less per day than ${p}% of ${g}.`,
       larger: (p, g) => `You spent more per day than ${p}% of ${g}.`,
-      share: who => `I spent less per day than ${who}`,
+      share: 'spent less per day than',
       card: g => `of ${g} spent more per day`
     },
     {
       field: 'consideredQuitting', value: quittingLevel, better: 'smaller',
       smaller: (p, g) => `You thought about quitting less often than ${p}% of ${g}.`,
       larger: (p, g) => `You thought about quitting more often than ${p}% of ${g}.`,
-      share: who => `I thought about quitting less often than ${who}`,
+      share: 'thought about quitting less than',
       card: g => `of ${g} thought about quitting more often`
     }
   ];
@@ -208,7 +208,7 @@
    * first, each with `text`. `highlights` (share card and text): the hiker's
    * best HIGHLIGHTS categories by the share of peers they did better than,
    * whatever that share is, each with `percent`, `cardLine` and
-   * `shareFirst` / `shareThen` (share text, as first or later clause).
+   * `shareFirst` / `shareThen` (share text: "lighter pack than 75% of PCT hikers", then "faster than 67%").
    * Peers with the same value count for neither side.
    *
    * @returns {{ group, groupSingular, peerNoun, peerCount, items: object[], highlights: object[] } | null}
@@ -256,8 +256,8 @@
         field: c.field,
         percent: p,
         cardLine: c.card(group),
-        shareFirst: c.share(p === 100 ? `every other ${groupSingular}` : `${p}% of ${group}`),
-        shareThen: c.share(p === 100 ? 'all of them' : `${p}% of them`)
+        shareFirst: `${c.share} ${p === 100 ? `every other ${groupSingular}` : `${p}% of ${group}`}`,
+        shareThen: `${c.share} ${p === 100 ? 'all' : `${p}%`}`
       });
     });
 
@@ -392,47 +392,32 @@
     return 'thru-hike';
   }
 
-  function formatWeight(lbs, unitSystem) {
-    return unitSystem === 'metric' ? `${round1(lbs * 0.45359237)} kg` : `${round1(lbs)} lb`;
-  }
-
-  function formatPace(miPerDay, unitSystem) {
-    return unitSystem === 'metric' ? `${round1(miPerDay * 1.60934)} km a day` : `${round1(miPerDay)} miles a day`;
-  }
-
   /**
-   * The text shared with "Share Survey with Tramily". Written to sound like a
-   * person, not a bot: no emoji, hashtags or exclamation marks. Once there
-   * are enough peers it names the hiker's best three comparisons, like the card.
-   * Before that it mentions two of the hiker's own numbers. The link is
-   * added separately.
+   * The text shared with "Share Survey with Tramily": short, and written to
+   * sound like a person, not a bot (no emoji, hashtags or exclamation marks).
+   * Once there are enough peers it names the hiker's best three comparisons,
+   * like the card. The link is added separately.
    */
-  function buildShareText(record, comparison, options) {
-    const unitSystem = (options && options.unitSystem) || 'imperial';
+  function buildShareText(record, comparison) {
     const trail = Schema.trailName(record.trail);
     const hike = `my ${record.hikeYear} ${trail ? trail + ' ' : ''}${hikeNoun(record)}`;
-    const intro = `Just added ${hike} to Open Trail Science.`;
 
     const highlights = (comparison && comparison.highlights) || [];
     if (highlights.length) {
-      // "a", "a, and b", "a, b, and c"
+      // "a", "a and b", "a, b and c"
       const phrases = highlights.map((item, i) => (i === 0 ? item.shareFirst : item.shareThen));
-      const facts = phrases.length === 1 ? phrases[0] : `${phrases.slice(0, -1).join(', ')}, and ${phrases[phrases.length - 1]}`;
-      return `${intro} Turns out ${facts}. How does yours compare?`;
+      const facts = phrases.length === 1 ? phrases[0] : `${phrases.slice(0, -1).join(', ')} and ${phrases[phrases.length - 1]}`;
+      return `Just added ${hike} to Open Trail Science: ${facts}. How does yours compare?`;
     }
 
     // Enough peers but nothing the hiker answered to compare with: still about comparing.
     if (comparison) {
-      return `Just added ${hike} to Open Trail Science and saw how it stacks up against ` +
-        `${comparison.peerCount} other ${comparison.peerNoun}. How does yours compare?`;
+      return `Just added ${hike} to Open Trail Science and compared it with ${comparison.peerCount} other ${comparison.peerNoun}. How does yours compare?`;
     }
 
-    const numbers = [];
-    if (typeof record.baseWeightLbs === 'number') numbers.push(`${formatWeight(record.baseWeightLbs, unitSystem)} base weight`);
-    if (typeof record.averageDailyMiles === 'number') numbers.push(formatPace(record.averageDailyMiles, unitSystem));
-    const intro2 = numbers.length ? `Just added ${hike} (${numbers.join(', ')}) to Open Trail Science.` : intro;
-    return `${intro2} It's an open dataset for every long trail, open all year. Have you hiked one?`;
+    return `Just added ${hike} to Open Trail Science. It's an open dataset for every long trail, open all year. Have you hiked one?`;
   }
+
 
   return { computeStats, compareToPeers, buildShareText, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, HIGHLIGHTS, MIN_TRAIL_PEERS, MIN_PEERS,
     compareAll, TABLE_ROWS, tableValueText, tableCellText };
