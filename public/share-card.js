@@ -136,7 +136,8 @@
       return y;
     }
     const top = y + 10;
-    const rowH = Math.min(165, (FOOTER_Y - 40 - top) / items.length);
+    // Room below the rows for the "Compared with" line.
+    const rowH = Math.min(165, (FOOTER_Y - 100 - top) / items.length);
     const percentFont = `700 ${Math.round(rowH * 0.56)}px ${FONT}`;
     ctx.font = percentFont;
     const numW = Math.max(...items.map(item => ctx.measureText(`${item.percent}%`).width)) + 36;
@@ -232,15 +233,17 @@
 
     // The hiker's best three comparisons (highlights in survey-stats.js).
     const items = (comparison && comparison.highlights) || [];
+    const comparedWith = comparison && `Compared with ${comparison.peerCount} other ${comparison.group.replace(' in the dataset', '')}`;
+    ctx.font = `500 30px ${FONT}`;
+    ctx.fillStyle = C.muted;
     if (items.length) {
       drawComparisons(ctx, items, y);
+      ctx.font = `500 30px ${FONT}`;
+      ctx.fillStyle = C.muted;
+      ctx.fillText(comparedWith, PAD, FOOTER_Y - 44);
     } else {
       y = drawStatsGrid(ctx, record, unitSystem, y + 30);
-      if (comparison) {
-        ctx.font = `500 30px ${FONT}`;
-        ctx.fillStyle = C.muted;
-        ctx.fillText(`Compared with ${comparison.peerCount} other ${comparison.group.replace(' in the dataset', '')}`, PAD, y + 30);
-      }
+      if (comparedWith) ctx.fillText(comparedWith, PAD, y + 30);
     }
     drawFooter(ctx);
 

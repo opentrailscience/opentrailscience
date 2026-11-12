@@ -88,9 +88,9 @@
 
   // --- Personal comparison shown after submitting ---------------------------
 
-  // Below this many peers a percentage would be noise, so none is shown: 5 on the
-  // same trail (like the Insights charts), 10 when compared with everyone.
-  const MIN_TRAIL_PEERS = 5;
+  // Below this many peers a percentage would be noise, so none is shown: 3 others on
+  // the same trail (so the 4th hiker gets a comparison), 10 when compared with everyone.
+  const MIN_TRAIL_PEERS = 3;
   const MIN_PEERS = 10;
 
   /** Zero days per day on trail, so short and long hikes compare fairly. */
