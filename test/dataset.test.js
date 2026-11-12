@@ -80,8 +80,8 @@ test('the results page is honest; the card highlights the best, phrased the good
   const result = compareToPeers({ trail: 'PCT', baseWeightLbs: 18.5, overallEnjoymentRating: 3 }, peers(10));
   assert.deepEqual(result.items.map(i => i.text),
     ['You enjoyed your hike less than 100% of PCT hikers.', 'Your base weight was heavier than 90% of PCT hikers.']);
-  assert.deepEqual(result.highlights.map(h => [h.percent, h.cardLine]),
-    [[10, 'of PCT hikers carried a heavier pack'], [0, 'of PCT hikers rated their hike lower']]);
+  assert.deepEqual(result.highlights.map(h => [h.percent, h.cardLine]), [[10, 'of PCT hikers carried a heavier pack']],
+    'beating nobody ("0% of PCT hikers rated their hike lower") is never shown');
 });
 
 test('the card shows the three best of all categories, including sleep, money, quitting and distance', () => {
@@ -140,10 +140,13 @@ test('share text says "every other" instead of 100%', () => {
 });
 
 test('share text is always phrased the good way round, even below average', () => {
-  const slow = hiker({ baseWeightLbs: 30, averageDailyMiles: 10, overallEnjoymentRating: 8, totalZeroDays: 60 });
-  const text = buildShareText(slow, compareToPeers(slow, peers(12)));
+  const below = hiker({ baseWeightLbs: 18, averageDailyMiles: 16, overallEnjoymentRating: 8, totalZeroDays: 20 });
+  const text = buildShareText(below, compareToPeers(below, peers(12)));
   assert.doesNotMatch(text, /heavier|slower|more often/);
   assert.equal((text.match(/ than /g) || []).length, 3, 'still three comparisons');
+  // Worst at everything: no "0% of …", so the text is about comparing instead.
+  const slow = hiker({ baseWeightLbs: 30, averageDailyMiles: 10, overallEnjoymentRating: 8, totalZeroDays: 60 });
+  assert.doesNotMatch(buildShareText(slow, compareToPeers(slow, peers(12))), / 0%/);
 
   const empty = { group: 'PCT hikers', peerNoun: 'PCT hikers', peerCount: 12, items: [], highlights: [] };
   assert.equal(buildShareText(hiker(), empty),
@@ -233,4 +236,15 @@ test('the "every answer" table compares with the same trail and with everyone', 
   const other = compareAll(Object.assign({}, record, { trail: 'Other Europe' }), others);
   assert.equal(other.trailName, null);
   assert.ok(other.rows.every(r => r.trail === null), 'no trail column for the "Other" trails');
+});
+
+test('a weight gain is not worded as a weight loss', () => {
+  const others = peers(6, i => ({ preTrailWeightLbs: 160, postTrailWeightLbs: 150 - i }));
+  const def = TABLE_ROWS.find(r => r.key === 'weightChange');
+  const gained = { trail: 'PCT', preTrailWeightLbs: 160, postTrailWeightLbs: 162 };
+  const lost = { trail: 'PCT', preTrailWeightLbs: 160, postTrailWeightLbs: 140 };
+  const cell = r => compareAll(r, others).rows.find(x => x.key === 'weightChange').trail;
+  assert.equal(tableValueText(def, gained, 'imperial'), '+2 lb');
+  assert.equal(tableCellText(def, cell(gained), gained), 'Gained more than 100%');
+  assert.equal(tableCellText(def, cell(lost), lost), 'Lost more than 100%');
 });

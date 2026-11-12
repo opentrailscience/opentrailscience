@@ -206,8 +206,8 @@
    *
    * `items` (results page): every comparison in its real direction, strongest
    * first, each with `text`. `highlights` (share card and text): the hiker's
-   * best HIGHLIGHTS categories by the share of peers they did better than,
-   * whatever that share is, each with `percent`, `cardLine` and
+   * best HIGHLIGHTS categories by the share of peers they did better than
+   * (any share above 0), each with `percent`, `cardLine` and
    * `shareFirst` / `shareThen` (share text: "lighter pack than 75% of PCT hikers", then "faster than 67%").
    * Peers with the same value count for neither side.
    *
@@ -262,8 +262,9 @@
     });
 
     items.sort((a, b) => b.percent - a.percent);
-    // Stable sort: equal shares keep the order of COMPARISONS.
-    const highlights = candidates.sort((a, b) => b.percent - a.percent).slice(0, HIGHLIGHTS);
+    // Stable sort: equal shares keep the order of COMPARISONS. A result where the hiker
+    // beat nobody ("0% of PCT hikers…") is never shown, so in rare cases there are fewer.
+    const highlights = candidates.filter(c => c.percent > 0).sort((a, b) => b.percent - a.percent).slice(0, HIGHLIGHTS);
     return candidates.length ? { group, groupSingular, peerNoun, peerCount: peers.length, items, highlights } : null;
   }
 
@@ -321,7 +322,8 @@
       show: d => ({ never: 'Never', sometimes: 'Sometimes', daily: 'Daily' })[d.painkillerUse] || null
     },
     {
-      key: 'weightChange', label: 'Body weight change', words: ['Lost more than', 'Lost less than'], value: weightChange,
+      key: 'weightChange', label: 'Body weight change', value: weightChange,
+      words: d => (weightChange(d) > 0 ? ['Gained less than', 'Gained more than'] : ['Lost more than', 'Lost less than']),
       show: (d, metric) => {
         const v = weightChange(d);
         if (v === null) return null;
@@ -356,11 +358,12 @@
   }
 
   /** The words for a cell: "Lighter than 70%", "Same as everyone", "Not enough hikers yet" or "–". */
-  function tableCellText(row, cell) {
+  function tableCellText(row, cell, record) {
     if (!cell) return '–';
     if (cell.status === 'few') return 'Not enough hikers yet';
     if (cell.status === 'same') return 'Same as everyone';
-    return `${row.words[cell.lower ? 0 : 1]} ${cell.percent}%`;
+    const words = typeof row.words === 'function' ? row.words(record || {}) : row.words;
+    return `${words[cell.lower ? 0 : 1]} ${cell.percent}%`;
   }
 
   /**

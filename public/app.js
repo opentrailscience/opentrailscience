@@ -1406,8 +1406,8 @@
       const cells = [
         def.label,
         Stats.tableValueText(def, record, state.unitSystem) || (unknown.includes(def.key) ? "Don't know" : '–'),
-        table.trailName ? Stats.tableCellText(def, r.trail) : '–',
-        Stats.tableCellText(def, r.all)
+        table.trailName ? Stats.tableCellText(def, r.trail, record) : '–',
+        Stats.tableCellText(def, r.all, record)
       ];
       const tr = document.createElement('tr');
       tr.className = 'border-t border-slate-800/60 align-top';
