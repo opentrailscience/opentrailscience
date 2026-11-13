@@ -366,3 +366,8 @@ test('urination aids are asked of female and "prefer not to say" hikers only', (
   }
   assert.ok(Schema.ILLNESS_TYPES.includes('urinary_tract_infection'), 'UTI is an illness for everyone');
 });
+
+test('the home page\'s "More trails (25+)" stone stays true', () => {
+  const named = Schema.TRAILS.filter(t => !t.startsWith('Other'));
+  assert.ok(named.length >= 25, `${named.length} named trails`);
+});

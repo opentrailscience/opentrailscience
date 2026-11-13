@@ -74,18 +74,52 @@
     <section id="view-home" class="app-view active">
       <div class="frame">
 
-        <!-- Hero; the contour map fills the space to the right (hidden below 760px) -->
-        <section class="home-hero">
-          <img class="hero-topo light-only" src="img/hero-topo.svg" alt="">
-          <img class="hero-topo dark-only" src="img/hero-topo-dark.svg" alt="">
+        <!-- Hero: the trail pile is the way in; each stone starts the survey with its trail selected -->
+        <section class="home-hero hero-pick" id="trails">
           <div class="hero-text">
             <h1>One survey for every long trail, open all year.</h1>
-            <p class="lead">Most hiker surveys run once a year on a single trail. This one stays open all year, takes any long trail, and counts every hike, including hikes that ended early. Every answer goes into a free, public dataset.</p>
-            <div class="actions">
-              <a href="#survey" class="btn btn-primary">Contribute your hike</a>
-              <a href="#download" class="btn btn-secondary">Explore the dataset</a>
-            </div>
+            <p class="lead">Pick your trail from the pile to start. Complete the survey and see how you compare to others. Every answer goes into a free, public dataset.</p>
             <p class="fine">About 10 minutes. No names, emails or accounts, and your answers save on your device as you go. <a href="#privacy">Privacy</a> · <a href="#about">Who's behind this?</a></p>
+          </div>
+          <div class="hero-more">
+            <!-- "Suggest a trail", no survey needed: sent on its own (initTrailSuggestions in app.js, /api/trail-suggestion) -->
+            <details class="trail-suggest mt-4">
+              <summary>Don't see your trail? Suggest it</summary>
+              <div class="mt-3">
+                <label for="trail-suggest-home" class="block text-sm font-semibold text-slate-200 mb-1.5">Which trail is missing?</label>
+                  <div class="flex gap-2 max-sm:flex-col">
+                    <input type="text" id="trail-suggest-home" class="trail-suggest-input flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" maxlength="100" spellcheck="false" placeholder="e.g. Kessel Run, a galaxy far away" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <button type="button" class="trail-suggest-send btn btn-secondary">Suggest trail</button>
+                  </div>
+                  <div class="anti-spam-trap" aria-hidden="true"><input type="text" class="trail-suggest-trap" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></div>
+                  <p class="trail-suggest-result text-xs text-slate-400 mt-2" role="status">I'll add trails that several hikers ask for.</p>
+              </div>
+            </details>
+            <!-- Added from hikers' suggestions (feedback box and trail suggestions): by hand, newest first -->
+            <details class="home-news">
+              <summary>Added from your suggestions <span>latest 7 Nov</span></summary>
+              <ul>
+                <li><span>7 Nov</span>A question on urination aids. Suggested in the feedback box.</li>
+                <li><span>5 Nov</span>Main Beskid Trail (Poland), suggested by a hiker.</li>
+                <li><span>4 Nov</span>GR11 and Cumbria Way, suggested by hikers.</li>
+                <li><span>3 Nov</span>"Mostly ate at huts or restaurants" as a way of eating on trail. Suggested in the feedback box.</li>
+              </ul>
+            </details>
+          </div>
+          <!-- The way in: a label says what the stones do; "More trails" starts with the full list (test/schema.test.js checks the 25+) -->
+          <div class="pile">
+            <p class="pile-label" id="pile-label">Start here: pick your trail</p>
+          <ol class="cairn" aria-labelledby="pile-label">
+            <li class="stone s1"><a href="#survey" class="trail-quick-card"><span class="name">More trails (25+)</span><span class="meta">OR ANY 70 MI +</span></a></li>
+            <li class="stone s2"><a href="#survey" class="trail-quick-card" data-trail="TMB"><span class="name">Tour du Mont Blanc</span><span class="meta">TMB · 106 MI</span></a></li>
+            <li class="stone s3"><a href="#survey" class="trail-quick-card" data-trail="Annapurna"><span class="name">Annapurna Circuit</span><span class="meta">NEPAL · ~130 MI</span></a></li>
+            <li class="stone s4"><a href="#survey" class="trail-quick-card" data-trail="CDS"><span class="name">Camino de Santiago</span><span class="meta">ANY ROUTE</span></a></li>
+            <li class="stone s5"><a href="#survey" class="trail-quick-card" data-trail="TA"><span class="name">Te Araroa</span><span class="meta">TA · 1,864 MI</span></a></li>
+            <li class="stone s6"><a href="#survey" class="trail-quick-card" data-trail="AT"><span class="name">Appalachian Trail</span><span class="meta">AT · 2,198 MI</span></a></li>
+            <li class="stone s7"><a href="#survey" class="trail-quick-card" data-trail="PCT"><span class="name">Pacific Crest Trail</span><span class="meta">PCT · 2,650 MI</span></a></li>
+            <li class="stone s8"><a href="#survey" class="trail-quick-card" data-trail="CDT"><span class="name">Continental Divide Trail</span><span class="meta">CDT · ~3,000 MI</span></a></li>
+            <li class="ground" aria-hidden="true"></li>
+          </ol>
           </div>
         </section>
 
@@ -109,24 +143,21 @@
           <div><div class="stat-label">Average daily miles</div><div id="stat-avg-miles" class="stat-counter">-- mi</div><div class="stat-note">Sustained trail pace</div></div>
         </section>
 
-        <!-- How it works, with an example share card -->
+        <!-- People who did not finish -->
+        <section class="home-dnf">
+          <div>
+            <p class="label">Didn't finish?</p>
+            <h2>Your hike matters just as much. Arguably more!</h2>
+            <p>The hikes that stopped early are the ones that explain why hikes end. Section hikers and people who skipped large sections are welcome too.</p>
+          </div>
+          <a href="#survey" class="btn btn-callout">Share your hike</a>
+        </section>
+
+        <!-- How it works: a few sentences in the first person, with an example share card -->
         <section class="home-how">
           <div>
             <h2>Takes about ten minutes, yields valuable insights forever</h2>
-            <ol>
-              <li>
-                <span class="step-dot" aria-hidden="true">1</span>
-                <div><h3>Tell me about your hike</h3><p>Gear, pacing, training, rest days and how it ended. Don't remember a detail? Pick "Don't know" and keep going, the rest still helps.</p></div>
-              </li>
-              <li>
-                <span class="step-dot" aria-hidden="true">2</span>
-                <div><h3>See how you compare</h3><p>As responses come in, you'll see how your pack weight, pace and zero days stack up against other hikers on your trail, with a card you can share.</p></div>
-              </li>
-              <li>
-                <span class="step-dot" aria-hidden="true">3</span>
-                <div><h3>Help future hikers</h3><p>Your answers, with identifying details blurred, join a free, open dataset anyone can download, from first-time planners to injury researchers.</p></div>
-              </li>
-            </ol>
+            <p>Tell me about your hike. Don't remember something? Pick "Don't know" and continue, the rest you do know is still really valuable. You'll get a fun card showing how you compare on your trail, to share with others. All survey entries are completely open, with identifying details blurred before anything is saved. <a href="#privacy">How I handle your data</a></p>
           </div>
           <figure class="example-card">
             <!-- Like the real card (share-card.js): the hiker's three best comparisons -->
@@ -143,74 +174,11 @@
           </figure>
         </section>
 
-        <!-- People who did not finish -->
-        <section class="home-dnf">
-          <div>
-            <p class="label">Didn't finish?</p>
-            <h2>Your hike matters just as much. Arguably more!</h2>
-            <p>The hikes that stopped early are the ones that explain why hikes end. Section hikers and people who skipped large sections are welcome too.</p>
-          </div>
-          <a href="#survey" class="btn btn-callout">Share your hike</a>
-        </section>
-
-        <!-- Trails as a pile of stones; each starts the survey with its trail selected (initTrailQuickCards in app.js) -->
-        <section class="home-trails" id="trails">
-          <div>
-            <h2>Trails in the survey</h2>
-            <p>Pick a trail to start the survey with it already selected. 70 to 3,000 miles, any continent.</p>
-            <!-- "Suggest a trail", no survey needed: sent on its own (initTrailSuggestions in app.js, /api/trail-suggestion) -->
-            <details class="trail-suggest mt-6">
-              <summary class="text-sm font-semibold text-pine-400 hover:text-pine-300 cursor-pointer">Don't see your trail? Suggest it</summary>
-              <div class="mt-3">
-                <label for="trail-suggest-home" class="block text-sm font-semibold text-slate-200 mb-1.5">Which trail is missing?</label>
-                  <div class="flex gap-2 max-sm:flex-col">
-                    <input type="text" id="trail-suggest-home" class="trail-suggest-input flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" maxlength="100" spellcheck="false" placeholder="e.g. Kessel Run, a galaxy far away" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
-                    <button type="button" class="trail-suggest-send btn btn-secondary">Suggest trail</button>
-                  </div>
-                  <div class="anti-spam-trap" aria-hidden="true"><input type="text" class="trail-suggest-trap" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></div>
-                  <p class="trail-suggest-result text-xs text-slate-400 mt-2" role="status">I'll add trails that several hikers ask for.</p>
-              </div>
-            </details>
-            <!-- What's new: added by hand, newest first, at most about five entries -->
-            <div class="home-news">
-              <h3>What's new</h3>
-              <ul>
-                <li><span>7 Nov</span>A question on urination aids, and UTIs in the illness list. Suggested in the feedback box.</li>
-                <li><span>5 Nov</span>Main Beskid Trail (Poland), suggested by a hiker.</li>
-                <li><span>4 Nov</span>GR11 and Cumbria Way, suggested by hikers.</li>
-                <li><span>3 Nov</span>"Mostly ate at huts or restaurants" as a way of eating on trail. Suggested in the feedback box.</li>
-                <li><span>2 Nov</span>Annapurna Circuit.</li>
-              </ul>
-            </div>
-          </div>
-          <ol class="cairn">
-            <li class="stone s1"><a href="#survey" class="trail-quick-card"><span class="name">Any other long trail</span><span class="meta">MORE · 70 MI +</span></a></li>
-            <li class="stone s2"><a href="#survey" class="trail-quick-card" data-trail="TMB"><span class="name">Tour du Mont Blanc</span><span class="meta">TMB · 106 MI</span></a></li>
-            <li class="stone s3"><a href="#survey" class="trail-quick-card" data-trail="Annapurna"><span class="name">Annapurna Circuit</span><span class="meta">NEPAL · ~130 MI</span></a></li>
-            <li class="stone s4"><a href="#survey" class="trail-quick-card" data-trail="CDS"><span class="name">Camino de Santiago</span><span class="meta">ANY ROUTE</span></a></li>
-            <li class="stone s5"><a href="#survey" class="trail-quick-card" data-trail="TA"><span class="name">Te Araroa</span><span class="meta">TA · 1,864 MI</span></a></li>
-            <li class="stone s6"><a href="#survey" class="trail-quick-card" data-trail="AT"><span class="name">Appalachian Trail</span><span class="meta">AT · 2,198 MI</span></a></li>
-            <li class="stone s7"><a href="#survey" class="trail-quick-card" data-trail="PCT"><span class="name">Pacific Crest Trail</span><span class="meta">PCT · 2,650 MI</span></a></li>
-            <li class="stone s8"><a href="#survey" class="trail-quick-card" data-trail="CDT"><span class="name">Continental Divide Trail</span><span class="meta">CDT · ~3,000 MI</span></a></li>
-            <li class="ground" aria-hidden="true"></li>
-          </ol>
-        </section>
-
-        <!-- Lots of opinions, not much data -->
+        <!-- Why the survey exists: a closing paragraph, no card -->
         <section class="home-why">
           <h2>Lots of opinions, not much data</h2>
-          <p>Which trail sends the most hikers home early, and why? What pack weight makes for the happiest hike? Everyone on trail has an answer, but hardly anyone has numbers. That's what this survey is for.</p>
-          <div class="why-items">
-            <div>
-              <h3>Room for machine learning</h3>
-              <p>A big, clean dataset is what you need to train models, for example one that flags a high injury risk or one that optimizes your number of zero days for a minimal budget. That takes a lot of hikes tho!</p>
-            </div>
-            <div>
-              <h3>Open to everyone</h3>
-              <p>Every answer ends up in a free CSV and JSON download, with identifying details blurred, for anyone to use for their own ideas.</p>
-            </div>
-          </div>
-          <p class="why-links"><a href="#insights">See what the data says so far</a><a href="#about">Built by a hiker who likes statistics</a></p>
+          <p>Which trail sends the most hikers home early, and why? What pack weight makes for the happiest hike? Everyone on trail has an answer, but hardly anyone has the data to check.</p>
+          <p class="why-answer"><strong>That's what this survey is for.</strong> Every hike is published as a complete row, meaning all of one hiker's answers are together, so anyone can look for their own connections or even train models, like one that flags a high injury risk or optimizes pack weight for a specific happiness. That takes a lot of hikes tho!</p>
         </section>
 
       </div>
@@ -511,7 +479,6 @@
       </div>
     </section>
 
-
     <!-- Survey -->
     <section id="view-survey" class="app-view">
       
@@ -754,7 +721,6 @@
               </div>
             </div>
           </div>
-
 
           <!-- Step 2: about you -->
           <div id="step-2" class="wizard-step">
@@ -1008,7 +974,6 @@
 
             </div>
           </div>
-
 
           <!-- Step 3: gear -->
           <div id="step-3" class="wizard-step">
@@ -1314,7 +1279,6 @@
             </div>
           </div>
 
-
           <!-- Step 4: on the trail -->
           <div id="step-4" class="wizard-step">
             <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
@@ -1482,7 +1446,6 @@
 
             </div>
           </div>
-
 
           <!-- Step 5: how it ended -->
           <div id="step-5" class="wizard-step">
@@ -1696,7 +1659,6 @@
                 </div>
               </div>
 
-
             </div>
           </div>
 
@@ -1731,7 +1693,6 @@
       </div>
 
     </section>
-
 
     <!-- Thank-you page -->
     <section id="view-success" class="app-view">
@@ -1871,7 +1832,6 @@
 
       </div>
     </section>
-
 
     <!-- Dataset -->
     <section id="view-download" class="app-view">
