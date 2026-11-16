@@ -41,7 +41,6 @@
     surveyStartedAt: null,
     publicCount: null,
     hasSubmitted: false,
-    shareText: null,
     shareCard: null, // { blob, url, filename }
     trailCheck: { round: null, choice: null, passed: false }
   };
@@ -1422,10 +1421,8 @@
     box.classList.remove('hidden');
   }
 
-  /** Builds the share text and the share card image for this submission. */
+  /** Builds the share card image for this submission. */
   async function prepareShare(record, comparison) {
-    state.shareText = Stats.buildShareText(record, comparison);
-
     const container = $('share-card-container');
     if (state.shareCard) URL.revokeObjectURL(state.shareCard.url);
     state.shareCard = null;
@@ -1445,19 +1442,22 @@
     }
   }
 
+  /**
+   * Shares just the link (and on phones the card image): no ready-made text,
+   * so hikers say it in their own words instead of sending something that reads like a bot.
+   */
   async function shareSurvey() {
     const url = window.location.origin + window.location.pathname + '#survey';
-    const text = state.shareText || 'Help build the open dataset on long-distance hiking. Sharing your hike takes about 10 minutes.';
 
-    // Phones: share the card image with the text (apps often drop `url` when
-    // files are attached, so it goes into the text).
+    // Phones: share the card image with the link (apps often drop `url` when
+    // files are attached, so it goes into `text`).
     const card = state.shareCard;
     const file = card && typeof File === 'function' ? new File([card.blob], card.filename, { type: 'image/png' }) : null;
     const attempts = [];
     if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-      attempts.push({ title: 'Open Trail Science', text: `${text} ${url}`, files: [file] });
+      attempts.push({ text: url, files: [file] });
     }
-    if (navigator.share) attempts.push({ title: 'Open Trail Science', text, url });
+    if (navigator.share) attempts.push({ url });
 
     for (const data of attempts) {
       try {
@@ -1468,10 +1468,10 @@
       }
     }
     if (navigator.clipboard) {
-      await navigator.clipboard.writeText(`${text} ${url}`);
-      showToast('Copied to clipboard: paste it to your tramily!');
+      await navigator.clipboard.writeText(url);
+      showToast('Link copied.');
     } else {
-      showToast('Share link: ' + url);
+      showToast('Link: ' + url);
     }
   }
 

@@ -165,7 +165,7 @@ test('honeypot fields are hidden from screen readers and keyboard users', () => 
   });
 });
 
-test('Open Graph tags use absolute URLs and the image exists at 1200x630', () => {
+test('Open Graph tags use absolute URLs and the image is the 512x512 icon, shown small', () => {
   const meta = name => {
     const m = html.match(new RegExp(`<meta (?:property|name)="${name}" content="([^"]+)"`));
     return m && m[1];
@@ -175,10 +175,11 @@ test('Open Graph tags use absolute URLs and the image exists at 1200x630', () =>
   assert.match(meta('og:image'), /^https:\/\/opentrailscience\.org\/og-image\.png$/);
 
   const png = fs.readFileSync(path.join(__dirname, '../public/og-image.png'));
-  assert.equal(png.readUInt32BE(16), 1200);
-  assert.equal(png.readUInt32BE(20), 630);
-  assert.equal(meta('og:image:width'), '1200');
-  assert.equal(meta('og:image:height'), '630');
+  assert.equal(png.readUInt32BE(16), 512);
+  assert.equal(png.readUInt32BE(20), 512);
+  assert.equal(meta('og:image:width'), '512');
+  assert.equal(meta('og:image:height'), '512');
+  assert.equal(meta('twitter:card'), 'summary');
 });
 
 test('the trail check is on the start page, between the consent box and the start button', () => {

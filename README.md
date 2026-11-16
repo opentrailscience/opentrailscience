@@ -1,6 +1,6 @@
 # Open Trail Science
 
-![Open Trail Science: How does your thru-hike compare?](public/og-image.png)
+<img src="public/og-image.png" alt="Open Trail Science logo: a cairn of four stones" width="96">
 
 Which trail sends the most hikers home early, and why? What pack weight makes for the happiest hike? Everyone on trail has an answer, but hardly anyone has exact numbers.
 

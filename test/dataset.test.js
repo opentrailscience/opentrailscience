@@ -120,59 +120,14 @@ test('comparison falls back to all hikers, and needs enough peers', () => {
   }
 });
 
-const { buildShareText } = require('../public/lib/survey-stats');
-
-const hiker = overrides => Object.assign({
-  trail: 'PCT', hikeYear: 2025, completionStatus: 'continuous_purist', baseWeightLbs: 12.5, averageDailyMiles: 19,
-  overallEnjoymentRating: 8, daysOnTrail: 123, totalZeroDays: 20
-}, overrides);
-
-test('share text names the three best comparisons, like the card', () => {
-  const text = buildShareText(hiker(), compareToPeers(hiker(), peers(12)));
-  assert.equal(text, 'Just added my 2025 PCT thru-hike to Open Trail Science: lighter pack than 75% of PCT hikers, faster than 67% and fewer zero days than 42%. How does yours compare?');
-  const other = hiker({ trail: 'Other' });
-  assert.doesNotMatch(buildShareText(other, compareToPeers(other, peers(12))), /faster/, 'no pace when compared with everyone');
-});
-
-test('share text says "every other" instead of 100%', () => {
-  const record = hiker({ baseWeightLbs: 5 });
-  assert.match(buildShareText(record, compareToPeers(record, peers(12))), /: lighter pack than every other PCT hiker, faster/);
-});
-
-test('share text is always phrased the good way round, even below average', () => {
-  const below = hiker({ baseWeightLbs: 18, averageDailyMiles: 16, overallEnjoymentRating: 8, totalZeroDays: 20 });
-  const text = buildShareText(below, compareToPeers(below, peers(12)));
-  assert.doesNotMatch(text, /heavier|slower|more often/);
-  assert.equal((text.match(/ than /g) || []).length, 3, 'still three comparisons');
-  // Worst at everything: no "0% of …", so the text is about comparing instead.
-  const slow = hiker({ baseWeightLbs: 30, averageDailyMiles: 10, overallEnjoymentRating: 8, totalZeroDays: 60 });
-  assert.doesNotMatch(buildShareText(slow, compareToPeers(slow, peers(12))), / 0%/);
-
-  const empty = { group: 'PCT hikers', peerNoun: 'PCT hikers', peerCount: 12, items: [], highlights: [] };
-  assert.equal(buildShareText(hiker(), empty),
-    'Just added my 2025 PCT thru-hike to Open Trail Science and compared it with 12 other PCT hikers. How does yours compare?');
-});
-
-test('share text before there are enough peers is about the dataset', () => {
-  assert.equal(buildShareText(hiker(), null),
-    "Just added my 2025 PCT thru-hike to Open Trail Science. It's an open dataset for every long trail, open all year. Have you hiked one?");
-  assert.match(buildShareText(hiker({ trail: 'CDS', completionStatus: 'section_hike' }), null), /^Just added my 2025 Camino section hike to/);
-  assert.match(buildShareText(hiker({ trail: 'Other' }), null), /^Just added my 2025 thru-hike to/, 'custom trails have no name');
-});
-
-test('share text reads like a person: no emoji, hashtags or exclamation marks', () => {
-  const texts = [
-    buildShareText(hiker(), compareToPeers(hiker(), peers(12))),
-    buildShareText(hiker({ baseWeightLbs: 40 }), compareToPeers(hiker({ baseWeightLbs: 40 }), peers(12))),
-    buildShareText(hiker(), null),
-    // all four comparisons, longest trail code and wording
-    buildShareText(hiker({ baseWeightLbs: 5, averageDailyMiles: 30, overallEnjoymentRating: 10, totalZeroDays: 1 }),
-      compareToPeers(hiker({ baseWeightLbs: 5, averageDailyMiles: 30, overallEnjoymentRating: 10, totalZeroDays: 1 }), peers(12)))
-  ];
-  texts.forEach(t => {
-    assert.doesNotMatch(t, /[#!]|\p{Extended_Pictographic}/u, t);
-    assert.ok(t.length < 200, `short enough for a chat message, even with three comparisons: ${t.length}`);
-  });
+test('sharing sends only the link (and card), never a ready-made text', () => {
+  const app = require('fs').readFileSync(require('path').join(__dirname, '../public/app.js'), 'utf8');
+  const fn = app.slice(app.indexOf('async function shareSurvey()'), app.indexOf('// --- PUBLIC DOWNLOAD VIEW'));
+  assert.ok(fn.length > 100, 'shareSurvey found');
+  for (const [, value] of fn.matchAll(/\btext: ([^,}]+)/g)) assert.equal(value.trim(), 'url');
+  assert.doesNotMatch(fn, /\btitle:/);
+  assert.match(fn, /writeText\(url\)/);
+  assert.equal(require('../public/lib/survey-stats').buildShareText, undefined);
 });
 
 test('comparison groups use readable trail names', () => {

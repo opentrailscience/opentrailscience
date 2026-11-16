@@ -129,63 +129,54 @@
       field: 'baseWeightLbs', better: 'smaller',
       smaller: (p, g) => `Your base weight was lighter than ${p}% of ${g}.`,
       larger: (p, g) => `Your base weight was heavier than ${p}% of ${g}.`,
-      share: 'lighter pack than',
       card: g => `of ${g} carried a heavier pack`
     },
     {
       field: 'averageDailyMiles', better: 'larger', sameTrailOnly: true,
       smaller: (p, g) => `Your average pace was slower than ${p}% of ${g}.`,
       larger: (p, g) => `Your average pace was faster than ${p}% of ${g}.`,
-      share: 'faster than',
       card: g => `of ${g} hiked a slower pace`
     },
     {
       field: 'totalDistanceMiles', better: 'larger', sameTrailOnly: true,
       smaller: (p, g) => `You hiked fewer miles than ${p}% of ${g}.`,
       larger: (p, g) => `You hiked further than ${p}% of ${g}.`,
-      share: 'further than',
       card: g => `of ${g} hiked fewer miles`
     },
     {
       field: 'zeroDayRate', value: zeroDayRate, better: 'smaller',
       smaller: (p, g) => `You took zero days less often than ${p}% of ${g}.`,
       larger: (p, g) => `You took zero days more often than ${p}% of ${g}.`,
-      share: 'fewer zero days than',
       card: g => `of ${g} took zero days more often`
     },
     {
       field: 'overallEnjoymentRating', better: 'larger',
       smaller: (p, g) => `You enjoyed your hike less than ${p}% of ${g}.`,
       larger: (p, g) => `You enjoyed your hike more than ${p}% of ${g}.`,
-      share: 'enjoyed it more than',
       card: g => `of ${g} rated their hike lower`
     },
     {
       field: 'hoursSleepPerNight', better: 'larger',
       smaller: (p, g) => `You slept less than ${p}% of ${g}.`,
       larger: (p, g) => `You slept more than ${p}% of ${g}.`,
-      share: 'more sleep than',
       card: g => `of ${g} slept less`
     },
     {
       field: 'sleepQualityRating', better: 'larger',
       smaller: (p, g) => `You rated your sleep worse than ${p}% of ${g}.`,
       larger: (p, g) => `You rated your sleep better than ${p}% of ${g}.`,
-      share: 'better sleep than',
       card: g => `of ${g} rated their sleep lower`
     },
     {
       field: 'spendingPerDay', value: spendingPerDay, better: 'smaller',
       smaller: (p, g) => `You spent less per day than ${p}% of ${g}.`,
       larger: (p, g) => `You spent more per day than ${p}% of ${g}.`,
-      share: 'spent less per day than',
       card: g => `of ${g} spent more per day`
     },
     {
       field: 'consideredQuitting', value: quittingLevel, better: 'smaller',
       smaller: (p, g) => `You thought about quitting less often than ${p}% of ${g}.`,
       larger: (p, g) => `You thought about quitting more often than ${p}% of ${g}.`,
-      share: 'thought about quitting less than',
       card: g => `of ${g} thought about quitting more often`
     }
   ];
@@ -207,11 +198,10 @@
    * `items` (results page): every comparison in its real direction, strongest
    * first, each with `text`. `highlights` (share card and text): the hiker's
    * best HIGHLIGHTS categories by the share of peers they did better than
-   * (any share above 0), each with `percent`, `cardLine` and
-   * `shareFirst` / `shareThen` (share text: "lighter pack than 75% of PCT hikers", then "faster than 67%").
+   * (any share above 0), each with `percent` and `cardLine`.
    * Peers with the same value count for neither side.
    *
-   * @returns {{ group, groupSingular, peerNoun, peerCount, items: object[], highlights: object[] } | null}
+   * @returns {{ group, peerNoun, peerCount, items: object[], highlights: object[] } | null}
    */
   function compareToPeers(record, others) {
     // The "Other" choices (any region) are many different trails: compared with everyone.
@@ -220,17 +210,14 @@
     // group: "70% of PCT hikers" / "70% of all hikers"; peerNoun: "compared with 112 other PCT hikers" / "300 other hikers".
     let peers;
     let group;
-    let groupSingular;
     let peerNoun;
     const sameTrailGroup = sameTrail.length >= MIN_TRAIL_PEERS;
     if (sameTrailGroup) {
       peers = sameTrail;
       group = peerNoun = `${name} hikers`;
-      groupSingular = `${name} hiker`;
     } else if (others.length >= MIN_PEERS) {
       peers = others;
       group = 'all hikers';
-      groupSingular = 'hiker';
       peerNoun = 'hikers';
     } else {
       return null;
@@ -255,9 +242,7 @@
       candidates.push({
         field: c.field,
         percent: p,
-        cardLine: c.card(group),
-        shareFirst: `${c.share} ${p === 100 ? `every other ${groupSingular}` : `${p}% of ${group}`}`,
-        shareThen: `${c.share} ${p === 100 ? 'all' : `${p}%`}`
+        cardLine: c.card(group)
       });
     });
 
@@ -265,7 +250,7 @@
     // Stable sort: equal shares keep the order of COMPARISONS. A result where the hiker
     // beat nobody ("0% of PCT hikers…") is never shown, so in rare cases there are fewer.
     const highlights = candidates.filter(c => c.percent > 0).sort((a, b) => b.percent - a.percent).slice(0, HIGHLIGHTS);
-    return candidates.length ? { group, groupSingular, peerNoun, peerCount: peers.length, items, highlights } : null;
+    return candidates.length ? { group, peerNoun, peerCount: peers.length, items, highlights } : null;
   }
 
   // --- Every answer compared: the table on the thank-you page ------------------
@@ -386,42 +371,6 @@
     return { trailName: name, trailCount: sameTrail ? sameTrail.length : null, allCount: others.length, rows };
   }
 
-  // --- Share text -------------------------------------------------------------
-
-
-  function hikeNoun(record) {
-    if (record.completionStatus === 'section_hike') return 'section hike';
-    if (record.completionStatus === 'quit_early') return 'hike';
-    return 'thru-hike';
-  }
-
-  /**
-   * The text shared with "Share Survey with Tramily": short, and written to
-   * sound like a person, not a bot (no emoji, hashtags or exclamation marks).
-   * Once there are enough peers it names the hiker's best three comparisons,
-   * like the card. The link is added separately.
-   */
-  function buildShareText(record, comparison) {
-    const trail = Schema.trailName(record.trail);
-    const hike = `my ${record.hikeYear} ${trail ? trail + ' ' : ''}${hikeNoun(record)}`;
-
-    const highlights = (comparison && comparison.highlights) || [];
-    if (highlights.length) {
-      // "a", "a and b", "a, b and c"
-      const phrases = highlights.map((item, i) => (i === 0 ? item.shareFirst : item.shareThen));
-      const facts = phrases.length === 1 ? phrases[0] : `${phrases.slice(0, -1).join(', ')} and ${phrases[phrases.length - 1]}`;
-      return `Just added ${hike} to Open Trail Science: ${facts}. How does yours compare?`;
-    }
-
-    // Enough peers but nothing the hiker answered to compare with: still about comparing.
-    if (comparison) {
-      return `Just added ${hike} to Open Trail Science and compared it with ${comparison.peerCount} other ${comparison.peerNoun}. How does yours compare?`;
-    }
-
-    return `Just added ${hike} to Open Trail Science. It's an open dataset for every long trail, open all year. Have you hiked one?`;
-  }
-
-
-  return { computeStats, compareToPeers, buildShareText, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, HIGHLIGHTS, MIN_TRAIL_PEERS, MIN_PEERS,
+  return { computeStats, compareToPeers, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, HIGHLIGHTS, MIN_TRAIL_PEERS, MIN_PEERS,
     compareAll, TABLE_ROWS, tableValueText, tableCellText };
 });
