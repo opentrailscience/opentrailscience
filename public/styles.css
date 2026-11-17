@@ -583,8 +583,6 @@
 
   /* ---------- Home page ---------- */
   .home-hero { position: relative; padding: 72px 0 56px; }
-  .hero-topo { position: absolute; top: 0; bottom: 0; left: 68%; right: calc(50% - 50vw); width: calc(32% + 50vw - 50%); height: 100%; object-fit: cover; object-position: left bottom; z-index: 0; pointer-events: none; }
-  @media (max-width: 760px) { .hero-topo { display: none !important; } }
   .home-hero .hero-text { position: relative; z-index: 1; max-width: 760px; }
   .home-hero h1 { margin: 0; font-size: clamp(36px, 5vw, 56px); font-weight: var(--heading-weight); line-height: 1.08; letter-spacing: -0.02em; }
   .home-hero .lead { margin: 22px 0 0; font-size: 19px; color: var(--text-secondary); }

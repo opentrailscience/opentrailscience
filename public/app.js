@@ -255,6 +255,17 @@
       .replace(/'/g, '&#39;');
   }
 
+  /**
+   * Copies text and says so. Where the browser refuses (no permission, an old
+   * browser, an embedded view), it says that too instead of doing nothing.
+   * Resolves to true when copied; `quiet` leaves the failure message to the caller.
+   */
+  function copyText(text, done, quiet) {
+    const failed = () => { if (!quiet) showToast("Couldn't copy here. Please select it and copy it by hand."); return false; };
+    if (!navigator.clipboard || !navigator.clipboard.writeText) return Promise.resolve(failed());
+    return navigator.clipboard.writeText(text).then(() => { if (done) showToast(done); return true; }, failed);
+  }
+
   function humanize(value) {
     return (value || '').replace(/_/g, ' ');
   }
@@ -1618,12 +1629,7 @@
         if (err && err.name === 'AbortError') return; // the hiker closed the share sheet
       }
     }
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(url);
-      showToast('Link copied.');
-    } else {
-      showToast('Link: ' + url);
-    }
+    if (!(await copyText(url, 'Link copied.', true))) showToast('Link: ' + url);
   }
 
   // --- PUBLIC DOWNLOAD VIEW / DATA PREVIEW TABLE ---
@@ -1781,13 +1787,11 @@
     document.querySelectorAll('.copy-code-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.parentElement.querySelector('code').textContent;
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(code).then(() => {
-            btn.textContent = 'Copied!';
-            setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-            showToast('Code copied to clipboard');
-          });
-        }
+        copyText(code, 'Code copied to clipboard').then(copied => {
+          if (!copied) return;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+        });
       });
     });
   }
@@ -2116,6 +2120,7 @@
   function initDatasetDocs() {
     const doc = Schema.describeSchema();
     const body = $('dictionary-body');
+    if ($('dictionary-count')) $('dictionary-count').textContent = String(doc.columns.length);
     if (body) {
       let group = null;
       doc.columns.forEach(col => {
@@ -2167,8 +2172,7 @@
       `Open Trail Science. (${now.getFullYear()}). ${doc.name} (Schema version ${doc.version}) [Data set]. ` +
       `Retrieved ${today}, from https://opentrailscience.org/#download`;
     $('btn-copy-citation').addEventListener('click', () => {
-      if (!navigator.clipboard) return;
-      navigator.clipboard.writeText($('citation-text').textContent).then(() => showToast('Citation copied'));
+      copyText($('citation-text').textContent, 'Citation copied');
     });
   }
 
@@ -2250,7 +2254,7 @@
 
     $('btn-copy-deletion-code').addEventListener('click', () => {
       const code = $('deletion-code-value').textContent;
-      if (navigator.clipboard && code) navigator.clipboard.writeText(code).then(() => showToast('Code copied'));
+      if (code) copyText(code, 'Code copied');
     });
 
     const result = $('deletion-result');

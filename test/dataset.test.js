@@ -126,7 +126,7 @@ test('sharing sends only the link (and card), never a ready-made text', () => {
   assert.ok(fn.length > 100, 'shareSurvey found');
   for (const [, value] of fn.matchAll(/\btext: ([^,}]+)/g)) assert.equal(value.trim(), 'url');
   assert.doesNotMatch(fn, /\btitle:/);
-  assert.match(fn, /writeText\(url\)/);
+  assert.match(fn, /copyText\(url,/, 'only the link is copied');
   assert.equal(require('../public/lib/survey-stats').buildShareText, undefined);
 });
 
