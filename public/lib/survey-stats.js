@@ -117,7 +117,7 @@
    * the field) and `better` says which end is the good one.
    *   smaller / larger  results-page sentence when the hiker is below / above most peers
    *   share             short phrase for the share text, before "75% of PCT hikers" or "67%"
-   *   card              caption under the percentage on the share card
+   *   card              label beside the percentage on the share card (the group is named once, above)
    * The results page is honest and shows every comparison in its real direction.
    * The share card and text show the hiker's best three (`highlights`), always
    * phrased the good way round, so the card is something people want to post.
@@ -129,55 +129,55 @@
       field: 'baseWeightLbs', better: 'smaller',
       smaller: (p, g) => `Your base weight was lighter than ${p}% of ${g}.`,
       larger: (p, g) => `Your base weight was heavier than ${p}% of ${g}.`,
-      card: g => `of ${g} carried a heavier pack`
+      card: 'carried a heavier pack'
     },
     {
       field: 'averageDailyMiles', better: 'larger', sameTrailOnly: true,
       smaller: (p, g) => `Your average pace was slower than ${p}% of ${g}.`,
       larger: (p, g) => `Your average pace was faster than ${p}% of ${g}.`,
-      card: g => `of ${g} hiked a slower pace`
+      card: 'hiked a slower pace'
     },
     {
       field: 'totalDistanceMiles', better: 'larger', sameTrailOnly: true,
       smaller: (p, g) => `You hiked fewer miles than ${p}% of ${g}.`,
       larger: (p, g) => `You hiked further than ${p}% of ${g}.`,
-      card: g => `of ${g} hiked fewer miles`
+      card: 'hiked fewer miles'
     },
     {
       field: 'zeroDayRate', value: zeroDayRate, better: 'smaller',
       smaller: (p, g) => `You took zero days less often than ${p}% of ${g}.`,
       larger: (p, g) => `You took zero days more often than ${p}% of ${g}.`,
-      card: g => `of ${g} took zero days more often`
+      card: 'took zero days more often'
     },
     {
       field: 'overallEnjoymentRating', better: 'larger',
       smaller: (p, g) => `You enjoyed your hike less than ${p}% of ${g}.`,
       larger: (p, g) => `You enjoyed your hike more than ${p}% of ${g}.`,
-      card: g => `of ${g} rated their hike lower`
+      card: 'rated their hike lower'
     },
     {
       field: 'hoursSleepPerNight', better: 'larger',
       smaller: (p, g) => `You slept less than ${p}% of ${g}.`,
       larger: (p, g) => `You slept more than ${p}% of ${g}.`,
-      card: g => `of ${g} slept less`
+      card: 'slept less'
     },
     {
       field: 'sleepQualityRating', better: 'larger',
       smaller: (p, g) => `You rated your sleep worse than ${p}% of ${g}.`,
       larger: (p, g) => `You rated your sleep better than ${p}% of ${g}.`,
-      card: g => `of ${g} rated their sleep lower`
+      card: 'rated their sleep lower'
     },
     {
       field: 'spendingPerDay', value: spendingPerDay, better: 'smaller',
       smaller: (p, g) => `You spent less per day than ${p}% of ${g}.`,
       larger: (p, g) => `You spent more per day than ${p}% of ${g}.`,
-      card: g => `of ${g} spent more per day`
+      card: 'spent more per day'
     },
     {
       field: 'consideredQuitting', value: quittingLevel, better: 'smaller',
       smaller: (p, g) => `You thought about quitting less often than ${p}% of ${g}.`,
       larger: (p, g) => `You thought about quitting more often than ${p}% of ${g}.`,
-      card: g => `of ${g} thought about quitting more often`
+      card: 'thought about quitting more often'
     }
   ];
 
@@ -198,7 +198,7 @@
    * `items` (results page): every comparison in its real direction, strongest
    * first, each with `text`. `highlights` (share card and text): the hiker's
    * best HIGHLIGHTS categories by the share of peers they did better than
-   * (any share above 0), each with `percent` and `cardLine`.
+   * (any share above 0), each with `percent` and `cardLine` ("carried a heavier pack").
    * Peers with the same value count for neither side.
    *
    * @returns {{ group, peerNoun, peerCount, items: object[], highlights: object[] } | null}
@@ -242,7 +242,7 @@
       candidates.push({
         field: c.field,
         percent: p,
-        cardLine: c.card(group)
+        cardLine: c.card
       });
     });
 

@@ -182,6 +182,15 @@ test('Open Graph tags use absolute URLs and the image is the 512x512 icon, shown
   assert.equal(meta('twitter:card'), 'summary');
 });
 
+test('the home page example card is an image drawn by the real card code', () => {
+  const tag = (html.match(/<img class="card-image" src="img\/example-card\.webp"[^>]*>/) || [])[0];
+  assert.ok(tag, 'example card image');
+  assert.ok(fs.existsSync(path.join(__dirname, '../public/img/example-card.webp')));
+  assert.match(tag, /width="720" height="900"/);
+  assert.match(tag, /alt="Example share card: [^"]+"/);
+  assert.doesNotMatch(html, /class="card-face"/, 'no hand-made copy of the card');
+});
+
 test('the trail check is on the start page, between the consent box and the start button', () => {
   const gate = html.slice(html.indexOf('id="consent-gate"'), html.indexOf('id="survey-body"'));
   const box = gate.indexOf('id="consent-checkbox"');

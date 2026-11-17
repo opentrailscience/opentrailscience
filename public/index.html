@@ -160,16 +160,9 @@
             <p>Tell me about your hike. Don't remember something? Pick "Don't know" and continue, the rest you do know is still really valuable. You'll get a fun card showing how you compare on your trail, to share with others. All survey entries are completely open, with identifying details blurred before anything is saved. <a href="#privacy">How I handle your data</a></p>
           </div>
           <figure class="example-card">
-            <!-- Like the real card (share-card.js): the hiker's three best comparisons -->
-            <div class="card-face" role="img" aria-label="Example share card: 86% of PCT hikers carried a heavier pack, 74% hiked a slower pace, 68% slept less, compared with 112 other PCT hikers">
-              <div class="card-brand"><img src="img/cairn-logo.svg" alt="" width="28" height="28">OPEN TRAIL SCIENCE</div>
-              <p class="card-title">My 2025 PCT<br><span>thru-hike</span></p>
-              <div class="card-row"><p class="card-big terra">86%</p><p class="card-small">of PCT hikers carried a heavier pack</p></div>
-              <div class="card-row"><p class="card-big blue">74%</p><p class="card-small">of PCT hikers hiked a slower pace</p></div>
-              <div class="card-row"><p class="card-big sage">68%</p><p class="card-small">of PCT hikers slept less</p></div>
-              <p class="card-compared">Compared with 112 other PCT hikers</p>
-              <p class="card-url">opentrailscience.org</p>
-            </div>
+            <!-- Drawn by the real card code (ShareCard.render in share-card.js) with these example numbers,
+                 saved at 720x900 as WebP; make it again whenever the card's design changes. -->
+            <img class="card-image" src="img/example-card.webp" width="720" height="900" alt="Example share card: My 2025 PCT thru-hike, out of 112 other PCT hikers. A cairn of three stones: 86% carried a heavier pack, 74% hiked a slower pace, 68% slept less. opentrailscience.org">
             <figcaption>Example card. Yours shows your own results.</figcaption>
           </figure>
         </section>
@@ -1767,7 +1760,7 @@
         <!-- Personal share card, drawn in the browser by share-card.js -->
         <div id="share-card-container" class="hidden mt-8">
           <div class="text-[11px] text-slate-400 uppercase font-mono mb-3">Your Share Card</div>
-          <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="w-full max-w-[260px] h-auto mx-auto rounded-2xl border border-slate-800 shadow-xl shadow-pine-950/50">
+          <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="card-image w-full max-w-[320px] h-auto mx-auto">
           <a id="btn-download-card" href="#" download="open-trail-science.png" class="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-pine-400 hover:text-pine-300 transition">
             Download card
           </a>

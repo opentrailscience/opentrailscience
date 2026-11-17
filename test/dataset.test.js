@@ -80,7 +80,7 @@ test('the results page is honest; the card highlights the best, phrased the good
   const result = compareToPeers({ trail: 'PCT', baseWeightLbs: 18.5, overallEnjoymentRating: 3 }, peers(10));
   assert.deepEqual(result.items.map(i => i.text),
     ['You enjoyed your hike less than 100% of PCT hikers.', 'Your base weight was heavier than 90% of PCT hikers.']);
-  assert.deepEqual(result.highlights.map(h => [h.percent, h.cardLine]), [[10, 'of PCT hikers carried a heavier pack']],
+  assert.deepEqual(result.highlights.map(h => [h.percent, h.cardLine]), [[10, 'carried a heavier pack']],
     'beating nobody ("0% of PCT hikers rated their hike lower") is never shown');
 });
 

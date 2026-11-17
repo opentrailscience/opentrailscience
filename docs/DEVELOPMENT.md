@@ -12,7 +12,8 @@ public/                     The website (Netlify's publish directory)
   index.html                All views: home, survey, thank-you, insights, dataset, privacy, about
   app.js                    Routing, the survey wizard and its saved draft, the dataset page
   insights.js               Charts on the Insights page
-  share-card.js             The personal share card, drawn in the browser
+  share-card.js             The personal share card, drawn in the browser (img/example-card.webp on the
+                            home page is drawn by it too; make it again when the card changes)
   theme.js                  Sets light or dark mode before the page is drawn
   styles.css                Styles on top of Tailwind
   lib/survey-schema.js      Every question, allowed answer and blurring rule
