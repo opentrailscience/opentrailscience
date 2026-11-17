@@ -328,7 +328,7 @@ test('the survey duration is stored only as a rough band', () => {
 });
 
 test('every asked question is documented with its wording', () => {
-  for (const f of Schema.FIELDS.filter(f => f.step && !f.derived)) assert.ok(f.question, f.name);
+  for (const f of Schema.FIELDS.filter(f => f.step && !f.derived && !f.notAsked)) assert.ok(f.question, f.name);
 });
 
 test('"didn\'t train at all" is its own answer, and trainingFocus then does not apply', () => {

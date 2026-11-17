@@ -743,6 +743,7 @@
                     <option value="female">Female</option>
                     <option value="prefer_not_to_say">Prefer not to say</option>
                   </select>
+                  <span class="text-xs text-slate-400 mt-1 block">Asked for comparisons that depend on the body, like weight change.</span>
                 </div>
               </div>
 
@@ -1003,18 +1004,12 @@
                 </label>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="pack-radios">
                   <div class="choice-card rounded-xl p-4" data-name="backpackType" data-value="framed">
-                    <div class="flex items-center justify-between">
-                      <div class="text-sm font-bold text-white">Framed backpack</div>
-                      <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-pine-300 rounded-sm">Load transfer</span>
-                    </div>
-                    <p class="text-xs text-slate-300 mt-1">A frame or stays move the weight onto the hip belt (e.g. Osprey Exos, ULA Circuit, Hyperlite Southwest, Granite Gear).</p>
+                    <div class="text-sm font-bold text-white">Framed backpack</div>
+                    <p class="text-xs text-slate-300 mt-1">A frame or stays carry the weight to the hip belt (e.g. Osprey Exos, Deuter Aircontact).</p>
                   </div>
                   <div class="choice-card rounded-xl p-4" data-name="backpackType" data-value="frameless">
-                    <div class="flex items-center justify-between">
-                      <div class="text-sm font-bold text-white">Frameless backpack</div>
-                      <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-amber-300 rounded-sm">Ultralight</span>
-                    </div>
-                    <p class="text-xs text-slate-300 mt-1">No frame; the weight sits on your shoulders and back (e.g. Mountain Laurel Designs Burn, Palante V2, Zpacks Nero).</p>
+                    <div class="text-sm font-bold text-white">Frameless backpack</div>
+                    <p class="text-xs text-slate-300 mt-1">No frame, the weight sits on your shoulders and back (e.g. Zpacks Nero, Mountain Laurel Designs Burn).</p>
                   </div>
                 </div>
                 <input type="hidden" id="field-backpackType" name="backpackType" value="">
@@ -1093,10 +1088,6 @@
                   <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="chemical_drops">
                     <div class="text-xs font-bold text-white">Chemical drops or tablets</div>
                     <div class="text-[11px] text-slate-400 mt-0.5">Aquamira, chlorine dioxide tablets, iodine</div>
-                  </div>
-                  <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="uv_purifier">
-                    <div class="text-xs font-bold text-white">UV light</div>
-                    <div class="text-[11px] text-slate-400 mt-0.5">SteriPEN or a similar UV purifier</div>
                   </div>
                   <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="boil_only">
                     <div class="text-xs font-bold text-white">Boiled it</div>
@@ -1216,7 +1207,7 @@
                   </div>
                   <div class="choice-card rounded-xl p-3.5" data-name="sleepLocation" data-value="huts_refuges">
                     <div class="text-sm font-bold text-white">Huts, refuges or shelters</div>
-                    <p class="text-xs text-slate-300 mt-1">Alpine huts, mountain refuges, trail shelters or dorms</p>
+                    <p class="text-xs text-slate-300 mt-1">Alpine huts, mountain refuges or dorms</p>
                   </div>
                 </div>
                 <input type="hidden" id="field-sleepLocation" name="sleepLocation" value="">
@@ -1231,25 +1222,16 @@
                   </label>
                   <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="shelter-radios">
                     <div class="choice-card rounded-xl p-4" data-name="shelterType" data-value="tent">
-                      <div class="flex items-center justify-between">
-                        <div class="text-sm font-bold text-white">Tent</div>
-                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-pine-300 rounded-sm">Enclosed</span>
-                      </div>
-                      <p class="text-xs text-slate-300 mt-1">Freestanding or trekking-pole tent with a floor and bug netting (e.g. Durston X-Mid, Zpacks Duplex, Big Agnes Copper Spur).</p>
+                      <div class="text-sm font-bold text-white">Tent</div>
+                      <p class="text-xs text-slate-300 mt-1">Freestanding or trekking-pole tent with a floor and bug netting (e.g. Durston X-Mid, MSR Hubba Hubba).</p>
                     </div>
                     <div class="choice-card rounded-xl p-4" data-name="shelterType" data-value="tarp">
-                      <div class="flex items-center justify-between">
-                        <div class="text-sm font-bold text-white">Tarp or bivy</div>
-                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-amber-300 rounded-sm">Ultralight</span>
-                      </div>
-                      <p class="text-xs text-slate-300 mt-1">Flat or shaped tarp, with or without a bivy or bug net, or a bivy on its own (e.g. MLD Grace Tarp, Borah bivy).</p>
+                      <div class="text-sm font-bold text-white">Tarp or bivy</div>
+                      <p class="text-xs text-slate-300 mt-1">A tarp, with or without a bivy or bug net, or a bivy on its own.</p>
                     </div>
                     <div class="choice-card rounded-xl p-4" data-name="shelterType" data-value="hammock">
-                      <div class="flex items-center justify-between">
-                        <div class="text-sm font-bold text-white">Hammock</div>
-                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-sky-300 rounded-sm">Suspended</span>
-                      </div>
-                      <p class="text-xs text-slate-300 mt-1">Hammock with a rain fly, slept off the ground between trees (e.g. Warbonnet Blackbird, Hennessy).</p>
+                      <div class="text-sm font-bold text-white">Hammock</div>
+                      <p class="text-xs text-slate-300 mt-1">Hammock with a rain fly, slept off the ground between trees.</p>
                     </div>
                   </div>
                   <input type="hidden" id="field-shelterType" name="shelterType" value="">
@@ -1262,18 +1244,12 @@
                   </label>
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="insulation-radios">
                     <div class="choice-card rounded-xl p-4" data-name="sleepInsulation" data-value="quilt">
-                      <div class="flex items-center justify-between">
-                        <div class="text-sm font-bold text-white">Quilt</div>
-                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-amber-300 rounded-sm">Ultralight</span>
-                      </div>
-                      <p class="text-xs text-slate-300 mt-1">Open-backed top quilt; your pad insulates underneath (e.g. Enlightened Equipment Revelation, Hammock Gear Burrow).</p>
+                      <div class="text-sm font-bold text-white">Quilt</div>
+                      <p class="text-xs text-slate-300 mt-1">Open at the back; your pad insulates underneath (e.g. Enlightened Equipment Revelation).</p>
                     </div>
                     <div class="choice-card rounded-xl p-4" data-name="sleepInsulation" data-value="sleeping_bag">
-                      <div class="flex items-center justify-between">
-                        <div class="text-sm font-bold text-white">Sleeping bag</div>
-                        <span class="text-[11px] uppercase font-mono px-2 py-0.5 bg-slate-800 text-pine-300 rounded-sm">Classic</span>
-                      </div>
-                      <p class="text-xs text-slate-300 mt-1">Fully enclosed mummy bag with a hood and zip (e.g. Western Mountaineering UltraLite, Feathered Friends, Sea to Summit Spark).</p>
+                      <div class="text-sm font-bold text-white">Sleeping bag</div>
+                      <p class="text-xs text-slate-300 mt-1">Fully enclosed, usually with a hood and zip (e.g. Sea to Summit Spark).</p>
                     </div>
                   </div>
                   <input type="hidden" id="field-sleepInsulation" name="sleepInsulation" value="">
@@ -1307,14 +1283,9 @@
                   </span>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-2 mb-3">
-                  <span class="text-xs font-semibold text-slate-300">How long was your hike?&nbsp;<span class="text-rose-400">*</span></span>
-                  <div class="grid grid-cols-2 min-[400px]:grid-cols-4 max-sm:w-full sm:inline-flex rounded-lg p-1 bg-slate-900 border border-slate-700" id="ramp-weeks-switch">
-                    <button type="button" data-weeks="4" class="ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap bg-brand text-white transition">4+ weeks</button>
-                    <button type="button" data-weeks="3" class="ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap text-slate-400 hover:text-white transition">3 weeks</button>
-                    <button type="button" data-weeks="2" class="ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap text-slate-400 hover:text-white transition">2 weeks</button>
-                    <button type="button" data-weeks="1" class="ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap text-slate-400 hover:text-white transition">1 week</button>
-                  </div>
+                <!-- Weeks with mileage boxes: worked out from the dates in step 1 (app.js syncRampWeeksWithDates), not asked -->
+                <p id="ramp-weeks-note" class="text-xs text-slate-400 mb-3">Your dates cover four weeks or more, so all four weeks are asked.</p>
+                <div class="hidden">
                   <input type="hidden" id="field-rampWeeksHiked" name="rampWeeksHiked" value="4">
                 </div>
 
@@ -1769,13 +1740,25 @@
           </details>
         </div>
 
-        <!-- Personal share card, drawn in the browser by share-card.js -->
+        <!-- Personal share card, drawn in the browser by share-card.js; the share button right under it -->
         <div id="share-card-container" class="hidden mt-8">
-          <div class="text-[11px] text-slate-400 uppercase font-mono mb-3">Your Share Card</div>
           <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="card-image w-full max-w-[320px] h-auto mx-auto">
-          <a id="btn-download-card" href="#" download="open-trail-science.png" class="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-pine-400 hover:text-pine-300 transition">
-            Download card
-          </a>
+          <div class="mt-5 flex flex-col items-center gap-2">
+            <button type="button" id="btn-share-survey" class="btn btn-primary w-full max-w-[320px]">Share Survey with Tramily</button>
+            <a id="btn-download-card" href="#" download="open-trail-science.png" class="inline-flex items-center gap-1.5 text-xs font-semibold text-pine-400 hover:text-pine-300 transition">Download card</a>
+          </div>
+        </div>
+
+        <!-- Deletion code (shown once; only a hash is stored) -->
+        <div id="deletion-code-panel" class="hidden mt-8 max-w-xl mx-auto text-left p-5 rounded-2xl bg-slate-900/70 border border-pine-500/40">
+          <div class="text-[11px] text-pine-300 uppercase font-mono">Your personal code</div>
+          <h2 class="mt-1 font-bold text-white">Come back later and see how you compare</h2>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <code id="deletion-code-value" class="text-lg sm:text-xl font-mono font-bold tracking-wider text-white select-all"></code>
+            <button type="button" id="btn-copy-deletion-code" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">Copy</button>
+          </div>
+          <p class="text-sm text-slate-300 mt-2">Every new hike makes the comparison more accurate. Enter this code on the <a href="#insights" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">Insights page</a> anytime to see how your hike stacks up today, with a fresh share card.</p>
+          <p class="text-xs text-slate-400 mt-2">It's also the only way to delete your answer in case you change your mind later (on the <a href="#privacy-delete" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">privacy page</a>). I don't know who you are, so I can't look it up for you: please save it somewhere safe.</p>
         </div>
 
         <!-- Every answer compared with the same trail and with everyone (Stats.compareAll, renderCompareTable in app.js) -->
@@ -1798,31 +1781,6 @@
           <p id="compare-all-note" class="text-xs text-slate-400 mt-3"></p>
         </details>
 
-        <!-- Next Step Buttons -->
-        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center">
-          <a href="#download" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/60 transition flex items-center justify-center gap-2">
-            <span>Download Full Dataset</span>
-          </a>
-          <button type="button" id="btn-share-survey" class="w-full sm:w-auto px-5 py-3 rounded-xl font-semibold text-sm bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 transition flex items-center justify-center gap-2">
-            <span>Share Survey with Tramily</span>
-          </button>
-          <button type="button" id="btn-add-another-hike" class="w-full sm:w-auto px-5 py-3 rounded-xl font-medium text-sm text-slate-400 hover:text-white transition">
-            + Add another hike
-          </button>
-        </div>
-
-        <!-- Deletion code (shown once; only a hash is stored) -->
-        <div id="deletion-code-panel" class="hidden mt-8 max-w-xl mx-auto text-left p-5 rounded-2xl bg-slate-900/70 border border-pine-500/40">
-          <div class="text-[11px] text-pine-300 uppercase font-mono">Your personal code</div>
-          <h2 class="mt-1 font-bold text-white">Come back later and see how you compare</h2>
-          <div class="mt-2 flex flex-wrap items-center gap-3">
-            <code id="deletion-code-value" class="text-lg sm:text-xl font-mono font-bold tracking-wider text-white select-all"></code>
-            <button type="button" id="btn-copy-deletion-code" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">Copy</button>
-          </div>
-          <p class="text-sm text-slate-300 mt-2">Every new hike makes the comparison more accurate. Enter this code on the <a href="#insights" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">Insights page</a> anytime to see how your hike stacks up today, with a fresh share card.</p>
-          <p class="text-xs text-slate-400 mt-2">It's also the only way to delete your answer in case you change your mind later (on the <a href="#privacy-delete" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">privacy page</a>). I don't know who you are, so I can't look it up for you: please save it somewhere safe.</p>
-        </div>
-
         <!-- Feedback about the survey: sent separately (/api/feedback), never linked to the answers -->
         <div id="feedback-card" class="mt-8 max-w-xl mx-auto text-left p-5 rounded-2xl bg-slate-900/70 border border-slate-800">
           <label for="feedback-message" class="block font-bold text-white">How can I improve this survey?</label>
@@ -1833,6 +1791,12 @@
             <p id="feedback-result" role="status" class="text-xs text-slate-400"></p>
             <button type="button" id="btn-send-feedback" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition disabled:opacity-40 disabled:cursor-not-allowed">Send feedback</button>
           </div>
+        </div>
+
+        <!-- Less important ways on, as plain links -->
+        <div class="mt-8 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm">
+          <button type="button" id="btn-add-another-hike" class="font-semibold text-pine-400 hover:text-pine-300 underline underline-offset-2">Add another hike</button>
+          <a href="#download" class="inline-flex items-center min-h-11 font-semibold text-pine-400 hover:text-pine-300 underline underline-offset-2">Download the full dataset</a>
         </div>
 
       </div>

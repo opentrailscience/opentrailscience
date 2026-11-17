@@ -57,7 +57,7 @@ The first column is `schemaVersion`: the schema the record was collected under (
 | `averageCalories` | "Calories eaten per day (average)" | integer | 0 – 15000 | Continuous predictor | Required. Can be answered "Don't know" (null, listed in `unknownAnswers`). |
 | `resupplyStrategy` | "How did you resupply?" | string (category) | `bought_along_the_way`, `mostly_mail_drops`, `mix` | Categorical feature | Required. bought_along_the_way includes towns, trail stores and food bought at huts. |
 | `trailDiet` | "Did you eat vegetarian or vegan on trail?" | string (category) | `omnivore`, `vegetarian`, `vegan` | Categorical feature | Required. |
-| `rampWeeksHiked` | "How long was your hike?" | integer | 1 – 4 | Ramp-rate context | Required. 4 means four weeks or more. Week columns beyond this value are null. |
+| `rampWeeksHiked` |  | integer | 1 – 4 | Ramp-rate context | Required. Worked out from the start and end date in the form, not asked. 4 means four weeks or more. Week columns beyond this value are null. |
 | `week1DailyMiles` | "Week 1 (mi/day or km/day)" | number | 0 – 100 mi/day | Ramp-rate time series | Required. Can be answered "Don't know" (null, listed in `unknownAnswers`). |
 | `week2DailyMiles` | "Week 2 (mi/day or km/day)" | number | 0 – 100 mi/day | Ramp-rate time series | Required when it applies; null/empty when it does not. Can be answered "Don't know" (null, listed in `unknownAnswers`). |
 | `week3DailyMiles` | "Week 3 (mi/day or km/day)" | number | 0 – 100 mi/day | Ramp-rate time series | Required when it applies; null/empty when it does not. Can be answered "Don't know" (null, listed in `unknownAnswers`). |

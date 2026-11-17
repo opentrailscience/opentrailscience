@@ -170,8 +170,6 @@
       btn.setAttribute('aria-pressed', String(on));
     });
   }
-  const RAMP_BUTTON_ON = 'ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap bg-brand text-white transition';
-  const RAMP_BUTTON_OFF = 'ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap text-slate-400 hover:text-white transition';
 
   const $ = id => document.getElementById(id);
   // Smooth scrolling, unless the device asks for less motion.
@@ -218,9 +216,9 @@
     initHeightFeetInches();
     initDirectionCards();
     initRampCalculator();
-    initRampWeeks();
     initCodeSnippets();
     initWizardControls();
+    initStepHistory();
     initInvalidMarks();
     initPreviewTable();
     initTrailQuickCards();
@@ -320,7 +318,10 @@
     if (hash === 'survey' && !state.surveyStartedAt) {
       state.surveyStartedAt = Date.now();
     }
-    if (hash === 'survey') loadTurnstileIfOnLastStep();
+    if (hash === 'survey') {
+      loadTurnstileIfOnLastStep();
+      history.replaceState({ step: state.currentStep }, '', '#survey');
+    }
 
     if (hash === 'download') {
       fetchPreviewData();
@@ -911,9 +912,10 @@
   function setRampWeeks(weeks) {
     state.rampWeeks = weeks;
     $('field-rampWeeksHiked').value = String(weeks);
-    document.querySelectorAll('.ramp-weeks-btn').forEach(btn => {
-      btn.className = Number(btn.getAttribute('data-weeks')) === weeks ? RAMP_BUTTON_ON : RAMP_BUTTON_OFF;
-    });
+    const WORDS = ['', 'one week', 'two weeks', 'three weeks'];
+    $('ramp-weeks-note').textContent = weeks >= 4
+      ? 'Your dates cover four weeks or more, so all four weeks are asked.'
+      : `Your dates cover ${WORDS[weeks]}, so only ${weeks === 1 ? 'week 1 is' : `the first ${WORDS[weeks].replace(' weeks', '')} weeks are`} asked.`;
     for (let n = 1; n <= 4; n++) refreshInputState(`week${n}DailyMiles`);
 
     const first = document.querySelector('.ramp-calc');
@@ -945,13 +947,7 @@
     }
   }
 
-  function initRampWeeks() {
-    document.querySelectorAll('.ramp-weeks-btn').forEach(btn => {
-      btn.addEventListener('click', () => setRampWeeks(Number(btn.getAttribute('data-weeks'))));
-    });
-  }
-
-  /** Preselects the ramp-up week count that matches the trail dates from step 1. */
+  /** The number of weeks with mileage boxes follows the trail dates from step 1 (not asked). */
   function syncRampWeeksWithDates() {
     const days = Schema.daysOnTrail($('field-startDate').value, $('field-endDate').value);
     if (days !== null) setRampWeeks(Math.min(4, Math.ceil(days / 7)));
@@ -997,8 +993,23 @@
     if (!options || options.scroll !== false) window.scrollTo({ top: 100, behavior: scrollMode() });
   }
 
+  /**
+   * Each step is a browser history entry, so the phone's Back button goes to the
+   * previous step instead of leaving the survey. The on-page Back button uses the
+   * same history, so both stay in step.
+   */
   function handlePrevStep() {
-    if (state.currentStep > 1) renderWizardStep(state.currentStep - 1);
+    if (state.currentStep <= 1) return;
+    if (history.state && history.state.step === state.currentStep) history.back();
+    else renderWizardStep(state.currentStep - 1);
+  }
+
+  function initStepHistory() {
+    window.addEventListener('popstate', e => {
+      const step = e.state && e.state.step;
+      if (!step || state.currentView !== 'survey' || !state.consentGiven || step === state.currentStep) return;
+      renderWizardStep(Math.min(Math.max(step, 1), state.totalSteps));
+    });
   }
 
   async function handleNextStep() {
@@ -1011,6 +1022,7 @@
 
     if (state.currentStep < state.totalSteps) {
       renderWizardStep(state.currentStep + 1);
+      history.pushState({ step: state.currentStep }, '', '#survey');
     } else {
       await submitSurveyForm();
     }
@@ -1099,7 +1111,6 @@
     if (pills) return pills;
     const toggle = el && YES_NO_TOGGLES.find(t => t.field === el.id);
     if (toggle) return $(`btn-${toggle.name}-no`).parentElement;
-    if (name === 'rampWeeksHiked') return $('ramp-weeks-switch');
     return null;
   }
 
@@ -1287,7 +1298,6 @@
       rememberMySubmission(answers.trail, result.deletionCode, res.headers.get('Date'));
       insightsLoaded = false; // show the new count next time
       window.location.hash = '#success';
-      showToast('Survey submitted successfully! Thank you.');
       fetchStats();
 
       // The answers are stored; start fresh for a possible next hike.

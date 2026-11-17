@@ -185,6 +185,7 @@
    *   decimals    rounding when stored (number default 1, integer 0)
    *   check       function (value, data, ctx) => error message | null
    *   derived     function (data, ctx) => value, computed instead of asked
+   *   notAsked    filled in by the form itself (e.g. from the dates), so it has no question
    *   role        ML role, shown in the data dictionary
    */
   const FIELDS = [
@@ -379,8 +380,8 @@
 
     // --- Pillar 4: In-trail decisions & behaviour ---
     {
-      name: 'rampWeeksHiked', question: 'How long was your hike?', label: 'Weeks hiked (for the ramp-up)', type: 'integer', step: 4, input: 'field-rampWeeksHiked', min: 1, max: 4,
-      role: 'Ramp-rate context', description: '4 means four weeks or more. Week columns beyond this value are null.',
+      name: 'rampWeeksHiked', notAsked: true, label: 'Weeks hiked (for the ramp-up)', type: 'integer', step: 4, input: 'field-rampWeeksHiked', min: 1, max: 4,
+      role: 'Ramp-rate context', description: 'Worked out from the start and end date in the form, not asked. 4 means four weeks or more. Week columns beyond this value are null.',
       check: (value, d) => {
         const days = daysOnTrail(d.startDate, d.endDate);
         if (days === null) return null;
