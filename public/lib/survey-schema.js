@@ -354,7 +354,7 @@
       min: 1, max: 20, role: 'Gear wear feature', description: 'Including the pair the hiker started in. totalDistanceMiles / shoePairsUsed gives miles per pair.'
     },
     { name: 'trekkingPoleUsage', question: 'Trekking poles', label: 'Trekking pole usage', type: 'enum', step: 3, input: 'field-trekkingPoleUsage', values: ['two_poles', 'one_pole', 'no_poles'], role: 'Categorical feature' },
-    { name: 'waterFiltration', question: 'Water treatment: filter or chemicals', label: 'Water treatment', type: 'enum', step: 3, input: 'field-waterFiltration', values: ['water_filter', 'chemical_drops', 'uv_purifier', 'boil_only', 'none', 'combination'], role: 'Categorical feature' },
+    { name: 'waterFiltration', question: 'How did you treat your water?', label: 'Water treatment', type: 'enum', step: 3, input: 'field-waterFiltration', values: ['water_filter', 'chemical_drops', 'uv_purifier', 'boil_only', 'none', 'combination'], role: 'Categorical feature' },
     {
       name: 'urinationAids', question: 'Did you use a urination aid? (select all that apply)', label: 'Urination aids', type: 'enumArray', step: 3,
       values: ['urination_device', 'urine_cloth', 'none', 'prefer_not_to_say'], when: d => ['female', 'prefer_not_to_say'].includes(d.biologicalSex),

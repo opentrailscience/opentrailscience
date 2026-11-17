@@ -87,16 +87,34 @@ test('the web adapter passes bodies byte for byte and keeps the size limit', asy
   const { webHandler } = require('../netlify/functions/utils/http');
   const echo = webHandler(async event => ({ statusCode: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: event.body }));
   const text = JSON.stringify({ message: 'Crème brûlée at the hut 🥾 – ¡genial!' });
-  const res = await echo(new Request('https://opentrailscience.org/x', { method: 'POST', body: text }), {});
+  const JSON_TYPE = { 'Content-Type': 'application/json' };
+  const res = await echo(new Request('https://opentrailscience.org/x', { method: 'POST', headers: JSON_TYPE, body: text }), {});
   assert.equal(await res.text(), text);
 
   freshDb();
-  const big = await submit.default(new Request('https://opentrailscience.org/api/submit', { method: 'POST', body: 'x'.repeat(25 * 1024) }), { ip: '198.51.100.50' });
+  const big = await submit.default(new Request('https://opentrailscience.org/api/submit', { method: 'POST', headers: JSON_TYPE, body: 'x'.repeat(25 * 1024) }), { ip: '198.51.100.50' });
   assert.equal(big.status, 413);
-  const broken = await submit.default(new Request('https://opentrailscience.org/api/submit', { method: 'POST', body: '{"trail":' }), { ip: '198.51.100.51' });
+  const broken = await submit.default(new Request('https://opentrailscience.org/api/submit', { method: 'POST', headers: JSON_TYPE, body: '{"trail":' }), { ip: '198.51.100.51' });
   assert.equal(broken.status, 400);
   assert.equal(broken.headers.get('X-Content-Type-Options'), 'nosniff');
   assert.match(broken.headers.get('Content-Type'), /^application\/json/);
+});
+
+test('POSTs that only another website could send are refused before the handler runs', async () => {
+  const db = freshDb();
+  const send = (headers, body = JSON.stringify({ message: 'hello' })) =>
+    feedback.default(new Request('https://opentrailscience.org/api/feedback', { method: 'POST', headers, body }), { ip: '198.51.100.60' });
+  // A plain HTML form on another site can only send form or text bodies.
+  assert.equal((await send({ 'Content-Type': 'application/x-www-form-urlencoded' }, 'message=hello')).status, 415);
+  assert.equal((await send({ 'Content-Type': 'text/plain' })).status, 415);
+  // A browser marks requests from another site.
+  assert.equal((await send({ 'Content-Type': 'application/json', Origin: 'https://evil.example' })).status, 403);
+  assert.equal((await send({ 'Content-Type': 'application/json', 'Sec-Fetch-Site': 'cross-site' })).status, 403);
+  assert.equal(db.collection('feedback').docs.length, 0);
+  // The page itself: same origin.
+  assert.equal((await send({ 'Content-Type': 'application/json', Origin: 'https://opentrailscience.org', 'Sec-Fetch-Site': 'same-origin' })).status, 201);
+  // Scripts without browser headers go on to the normal checks.
+  assert.equal((await send({ 'Content-Type': 'application/json; charset=utf-8' })).status, 201);
 });
 
 test('feedback with accents and emoji arrives unchanged through the entry point', async () => {

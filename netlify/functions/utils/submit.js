@@ -8,7 +8,7 @@ const { validateSurvey, SCHEMA_VERSION } = require('../../../public/lib/survey-s
 const { getDb, COLLECTIONS } = require('./db');
 const { comparisonFor, addPeer } = require('./peers');
 const { json, methodNotAllowed, readJsonBody } = require('./http');
-const { isLikelySpam, passesHumanCheck, isThrottled, clientIp } = require('./spam');
+const { spamReason, humanCheckFailure, isThrottled, clientIp } = require('./spam');
 const { checkTurnstile } = require('./turnstile');
 const { createDeletionCode } = require('./deletion');
 const { notePublicChange } = require('./rebuild');
@@ -34,8 +34,11 @@ exports.handler = async (event) => {
 
   // Bots get the same success response as people so they don't adapt.
   // (Real browsers only send after the trail check and proof of work pass.)
-  if (isLikelySpam(body) || !passesHumanCheck(body)) {
-    console.log('Likely bot submission discarded.');
+  // The log names the check (nothing personal), so you can see whether real people are caught.
+  // The page treats a success without a deletion code as "not confirmed" and keeps the answers.
+  const botReason = spamReason(body) || humanCheckFailure(body);
+  if (botReason) {
+    console.log(`Likely bot submission discarded (${botReason}).`);
     return json(200, { success: true, message: THANK_YOU });
   }
 

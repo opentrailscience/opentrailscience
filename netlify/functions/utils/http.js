@@ -38,13 +38,40 @@ function header(event, name) {
 }
 
 /**
+ * Refuses POSTs that a browser could only send from another website: the page
+ * always sends JSON from this site, while a plain HTML form elsewhere can only
+ * send form or text bodies, and a browser marks cross-site requests with
+ * Origin / Sec-Fetch-Site. Requests without those headers (curl, scripts) are
+ * not a browser on another site, so they pass to the other checks.
+ * Returns a Lambda-style error response, or null when the request is fine.
+ */
+function crossSiteRefusal(req) {
+  if (req.method !== 'POST') return null;
+  const type = (req.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+  if (type !== 'application/json') return json(415, { success: false, error: 'Please send JSON.', errors: ['Please send JSON.'] });
+  const site = req.headers.get('sec-fetch-site');
+  const origin = req.headers.get('origin');
+  let sameOrigin = true;
+  if (origin) {
+    try { sameOrigin = new URL(origin).host === new URL(req.url).host; } catch (err) { sameOrigin = false; }
+  }
+  if ((site && !['same-origin', 'none'].includes(site)) || !sameOrigin) {
+    return json(403, { success: false, error: 'Requests from other websites are not accepted.', errors: ['Requests from other websites are not accepted.'] });
+  }
+  return null;
+}
+
+/**
  * Runs a Lambda-style handler as a function of Netlify's current API (web
  * Request in, Response out), which is what allows rate limits in `config`.
  * The client IP comes from Netlify's context, so the hourly limits in
- * spam.js keep working as before.
+ * spam.js keep working as before. POSTs from other websites are refused first
+ * (crossSiteRefusal).
  */
 function webHandler(handler) {
   return async (req, context) => {
+    const refused = crossSiteRefusal(req);
+    if (refused) return new Response(refused.body, { status: refused.statusCode, headers: refused.headers });
     const headers = Object.fromEntries(req.headers);
     if (context && context.ip) headers['x-nf-client-connection-ip'] = context.ip;
     const event = {
@@ -58,4 +85,4 @@ function webHandler(handler) {
   };
 }
 
-module.exports = { json, methodNotAllowed, readJsonBody, header, webHandler };
+module.exports = { json, methodNotAllowed, readJsonBody, header, webHandler, crossSiteRefusal };

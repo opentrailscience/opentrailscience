@@ -30,7 +30,7 @@ exports.handler = async (event) => {
   if (!parsed.body) return json(parsed.status, { success: false, error: parsed.message });
 
   // The hidden field only bots fill in: accept quietly, store nothing.
-  if (parsed.body.website_url) return json(201, { success: true });
+  if (parsed.body.hp_trail_notes || parsed.body.website_url) return json(201, { success: true });
 
   const trail = cleanTrail(parsed.body.trail);
   if (!trail) return json(400, { success: false, error: 'Please enter a trail first.' });

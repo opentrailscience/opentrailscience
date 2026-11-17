@@ -86,7 +86,7 @@ const TRAIL_CHECK_OK = { id: HumanCheck.TRAIL_CHECKS[0].id, choice: HumanCheck.T
 
 /** Body of a real form submission: answers, anti-spam fields and a solved human check. */
 function submission(overrides) {
-  const body = Object.assign(validAnswers(), { website_url: '', hiker_anti_spam: '', formElapsedSeconds: 300, trailCheck: TRAIL_CHECK_OK }, overrides);
+  const body = Object.assign(validAnswers(), { hp_trail_notes: '', hiker_anti_spam: '', formElapsedSeconds: 300, trailCheck: TRAIL_CHECK_OK }, overrides);
   if (!('powNonce' in (overrides || {}))) body.powNonce = solvePow(body);
   return body;
 }

@@ -126,23 +126,23 @@
     },
     {
       input: 'field-week1DailyMiles', label: 'label-week1',
-      imperial: { label: 'Week 1 (mi/day)', placeholder: '10.5', decimals: 1 },
-      metric: { label: 'Week 1 (km/day)', placeholder: '16.9', decimals: 1 }
+      imperial: { label: 'Week 1 (mi/day)', placeholder: '', decimals: 1 },
+      metric: { label: 'Week 1 (km/day)', placeholder: '', decimals: 1 }
     },
     {
       input: 'field-week2DailyMiles', label: 'label-week2',
-      imperial: { label: 'Week 2 (mi/day)', placeholder: '14.0', decimals: 1 },
-      metric: { label: 'Week 2 (km/day)', placeholder: '22.5', decimals: 1 }
+      imperial: { label: 'Week 2 (mi/day)', placeholder: '', decimals: 1 },
+      metric: { label: 'Week 2 (km/day)', placeholder: '', decimals: 1 }
     },
     {
       input: 'field-week3DailyMiles', label: 'label-week3',
-      imperial: { label: 'Week 3 (mi/day)', placeholder: '17.5', decimals: 1 },
-      metric: { label: 'Week 3 (km/day)', placeholder: '28.2', decimals: 1 }
+      imperial: { label: 'Week 3 (mi/day)', placeholder: '', decimals: 1 },
+      metric: { label: 'Week 3 (km/day)', placeholder: '', decimals: 1 }
     },
     {
       input: 'field-week4DailyMiles', label: 'label-week4',
-      imperial: { label: 'Week 4 (mi/day)', placeholder: '20.0', decimals: 1 },
-      metric: { label: 'Week 4 (km/day)', placeholder: '32.2', decimals: 1 }
+      imperial: { label: 'Week 4 (mi/day)', placeholder: '', decimals: 1 },
+      metric: { label: 'Week 4 (km/day)', placeholder: '', decimals: 1 }
     },
     {
       input: 'field-injuryMilestoneMiles', label: 'label-injuryMilestoneUnit',
@@ -161,10 +161,22 @@
   const TOGGLE_OFF = 'px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition';
   const UNIT_BUTTON_ON = 'px-3 py-1 rounded-md text-xs font-bold bg-brand text-white transition';
   const UNIT_BUTTON_OFF = 'px-3 py-1 rounded-md text-xs font-bold text-slate-400 hover:text-white transition';
+
+  /** Every unit switch on the page (survey progress bar, dataset preview) shows the current system. */
+  function renderUnitButtons() {
+    document.querySelectorAll('[data-unit-system]').forEach(btn => {
+      const on = btn.getAttribute('data-unit-system') === state.unitSystem;
+      btn.className = on ? UNIT_BUTTON_ON : UNIT_BUTTON_OFF;
+      btn.setAttribute('aria-pressed', String(on));
+    });
+  }
   const RAMP_BUTTON_ON = 'ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap bg-brand text-white transition';
   const RAMP_BUTTON_OFF = 'ramp-weeks-btn px-2 sm:px-3 py-1 rounded-md text-xs font-bold whitespace-nowrap text-slate-400 hover:text-white transition';
 
   const $ = id => document.getElementById(id);
+  // Smooth scrolling, unless the device asks for less motion.
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const scrollMode = () => (reducedMotion.matches ? 'auto' : 'smooth');
 
   // --- DOM REFERENCES ---
   const views = {
@@ -184,6 +196,11 @@
   };
 
   // --- INITIALIZATION ---
+  // Scrolling the page with the pointer over a focused number field would change its value.
+  document.addEventListener('wheel', e => {
+    if (e.target === document.activeElement && e.target.type === 'number') e.target.blur();
+  }, { passive: true });
+
   document.addEventListener('DOMContentLoaded', () => {
     // Both forms are handled in JS; pressing Enter must never submit them.
     document.querySelectorAll('form').forEach(form => form.addEventListener('submit', e => e.preventDefault()));
@@ -204,6 +221,7 @@
     initRampWeeks();
     initCodeSnippets();
     initWizardControls();
+    initInvalidMarks();
     initPreviewTable();
     initTrailQuickCards();
     initDontKnowToggles();
@@ -293,15 +311,16 @@
     });
 
     if (anchor) {
-      setTimeout(() => anchor.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      setTimeout(() => anchor.scrollIntoView({ behavior: scrollMode(), block: 'start' }), 50);
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: scrollMode() });
     }
 
     // The server uses the time spent on the form as a bot check.
     if (hash === 'survey' && !state.surveyStartedAt) {
       state.surveyStartedAt = Date.now();
     }
+    if (hash === 'survey') loadTurnstileIfOnLastStep();
 
     if (hash === 'download') {
       fetchPreviewData();
@@ -752,9 +771,6 @@
   function setUnitSystem(system) {
     if (state.unitSystem === system) return;
 
-    $('btn-unit-metric').className = system === 'metric' ? UNIT_BUTTON_ON : UNIT_BUTTON_OFF;
-    $('btn-unit-imperial').className = system === 'imperial' ? UNIT_BUTTON_ON : UNIT_BUTTON_OFF;
-
     UNIT_INPUTS.forEach(cfg => {
       const text = cfg[system];
       const input = $(cfg.input);
@@ -780,7 +796,9 @@
     });
 
     state.unitSystem = system;
+    renderUnitButtons();
     applyHeightMode();
+    if (state.previewRows) fetchPreviewData();
   }
 
   // --- HEIGHT: feet + inches in imperial mode ----------------------------------
@@ -837,16 +855,14 @@
   }
 
   function initUnitSwitcher() {
-    const btnImperial = $('btn-unit-imperial');
-    const btnMetric = $('btn-unit-metric');
-    if (!btnImperial || !btnMetric) return;
-
     const refreshRampBadge = () => {
       const first = document.querySelector('.ramp-calc');
       if (first) first.dispatchEvent(new Event('input'));
     };
-    btnImperial.addEventListener('click', () => { setUnitSystem('imperial'); refreshRampBadge(); });
-    btnMetric.addEventListener('click', () => { setUnitSystem('metric'); refreshRampBadge(); });
+    document.querySelectorAll('[data-unit-system]').forEach(btn => {
+      btn.addEventListener('click', () => { setUnitSystem(btn.getAttribute('data-unit-system')); refreshRampBadge(); });
+    });
+    renderUnitButtons();
   }
 
   // --- STARTING MILEAGE RAMP-UP CALCULATOR ---
@@ -960,7 +976,6 @@
 
     $('wizard-step-badge').textContent = meta.badge;
     $('wizard-step-title').textContent = meta.title;
-    $('wizard-progress-percent').textContent = meta.percent;
     $('wizard-progress-bar').style.width = meta.percent;
     $('wizard-milestone-title').textContent = meta.milestoneTitle;
     $('wizard-milestone-desc').textContent = meta.milestoneDesc;
@@ -976,10 +991,10 @@
     // The bot check sits on the last step; load it early so Submit doesn't wait for it.
     const lastStep = stepNumber === state.totalSteps;
     $('turnstile-box').classList.toggle('hidden', !lastStep);
-    if (lastStep) loadTurnstile().catch(() => {});
+    loadTurnstileIfOnLastStep();
 
     hideErrors();
-    if (!options || options.scroll !== false) window.scrollTo({ top: 100, behavior: 'smooth' });
+    if (!options || options.scroll !== false) window.scrollTo({ top: 100, behavior: scrollMode() });
   }
 
   function handlePrevStep() {
@@ -1050,12 +1065,12 @@
     const fields = Schema.fieldsForStep(step);
     const result = Schema.validateSurvey(collectAnswers(), { fields, unitSystem: state.unitSystem });
 
-    // Flag the inputs that need attention for screen readers.
+    // Mark what needs an answer, for the eye (styles.css) and for screen readers.
     fields.forEach(name => {
-      const el = Schema.FIELDS_BY_NAME[name].input && $(Schema.FIELDS_BY_NAME[name].input);
-      if (!el) return;
-      if (result.fieldErrors[name]) el.setAttribute('aria-invalid', 'true');
-      else el.removeAttribute('aria-invalid');
+      const target = invalidTarget(name);
+      if (!target) return;
+      if (result.fieldErrors[name]) target.setAttribute('aria-invalid', 'true');
+      else target.removeAttribute('aria-invalid');
     });
 
     // Sliders read better as an instruction than as "... is required".
@@ -1068,6 +1083,44 @@
       return result.fieldErrors[name];
     });
     return errors;
+  }
+
+  /**
+   * The element that shows a field's problem: the input itself, or for choice
+   * cards, pills and yes/no buttons their group.
+   */
+  function invalidTarget(name) {
+    const field = Schema.FIELDS_BY_NAME[name];
+    const el = field.input && $(field.input);
+    if (el && el.type !== 'hidden') return el;
+    const card = document.querySelector(`.choice-card[data-name="${attrValue(name)}"]`);
+    if (card) return card.parentElement;
+    const pills = document.querySelector(`.pill-group[data-field="${attrValue(name)}"]`);
+    if (pills) return pills;
+    const toggle = el && YES_NO_TOGGLES.find(t => t.field === el.id);
+    if (toggle) return $(`btn-${toggle.name}-no`).parentElement;
+    if (name === 'rampWeeksHiked') return $('ramp-weeks-switch');
+    return null;
+  }
+
+  /** Scrolls to the first marked answer on this step and puts the focus there. */
+  function focusFirstInvalid() {
+    const step = $(`step-${state.currentStep}`);
+    const first = step && Array.from(step.querySelectorAll('[aria-invalid="true"]')).find(el => el.offsetParent !== null);
+    if (!first) return false;
+    first.scrollIntoView({ behavior: scrollMode(), block: 'center' });
+    const focusable = first.matches('input, select, textarea, button') ? first : first.querySelector('input, select, button, [tabindex="0"]');
+    if (focusable) focusable.focus({ preventScroll: true });
+    return true;
+  }
+
+  /** An answer given clears its mark right away. */
+  function initInvalidMarks() {
+    const clear = e => {
+      const marked = e.target.closest && e.target.closest('[aria-invalid="true"]');
+      if (marked && !marked.classList.contains('wizard-step')) marked.removeAttribute('aria-invalid');
+    };
+    ['input', 'change', 'click'].forEach(type => $('survey-form').addEventListener(type, clear));
   }
 
   function showErrors(errors) {
@@ -1083,7 +1136,7 @@
     });
 
     box.classList.remove('hidden');
-    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (!focusFirstInvalid()) box.scrollIntoView({ behavior: scrollMode(), block: 'nearest' });
   }
 
   function hideErrors() {
@@ -1098,11 +1151,23 @@
   // Away from the real domain, Cloudflare's test key is used, which always passes.
   const TURNSTILE_SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
   const TURNSTILE_TEST_KEY = '1x00000000000000000000BB';
+  const TURNSTILE_TIMEOUT_MS = 20000;
+  const TURNSTILE_SLOW = "Cloudflare's bot check didn't answer in time. Please press Submit again. Your answers are saved.";
   const TURNSTILE_BLOCKED = "Cloudflare's bot check couldn't load. Please allow challenges.cloudflare.com (for example in your ad blocker) or try another browser. Your answers are saved.";
   const botCheck = { loading: null, widget: null, used: false, waiting: null };
 
   function turnstileSiteKey() {
     return location.hostname === 'opentrailscience.org' ? $('turnstile-box').dataset.sitekey : TURNSTILE_TEST_KEY;
+  }
+
+  /**
+   * Only while the hiker is actually on the last step: a draft restored on any
+   * page must not contact Cloudflare (the privacy page promises that).
+   */
+  function loadTurnstileIfOnLastStep() {
+    if (state.currentView === 'survey' && state.consentGiven && state.currentStep === state.totalSteps) {
+      loadTurnstile().catch(() => {});
+    }
   }
 
   /** Loads the script and renders the (invisible) widget once. */
@@ -1126,7 +1191,9 @@
         // The site's own light/dark choice, not the system's (Cloudflare's default).
         theme: document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark',
         callback: token => { if (botCheck.waiting) botCheck.waiting.resolve(token); },
-        'error-callback': () => { if (botCheck.waiting) botCheck.waiting.reject(new Error(TURNSTILE_BLOCKED)); }
+        'error-callback': () => { if (botCheck.waiting) botCheck.waiting.reject(new Error(TURNSTILE_BLOCKED)); },
+        'timeout-callback': () => { if (botCheck.waiting) botCheck.waiting.reject(new Error(TURNSTILE_SLOW)); },
+        'expired-callback': () => { if (botCheck.waiting) botCheck.waiting.reject(new Error(TURNSTILE_SLOW)); }
       });
     });
     // A failed load can be retried with the next press of Submit.
@@ -1143,12 +1210,17 @@
     }
     if (botCheck.used) window.turnstile.reset(botCheck.widget);
     botCheck.used = true;
-    const token = await new Promise((resolve, reject) => {
-      botCheck.waiting = { resolve, reject };
-      window.turnstile.execute(botCheck.widget);
-    });
-    botCheck.waiting = null;
-    return token;
+    let timer;
+    try {
+      return await new Promise((resolve, reject) => {
+        botCheck.waiting = { resolve, reject };
+        timer = setTimeout(() => reject(new Error(TURNSTILE_SLOW)), TURNSTILE_TIMEOUT_MS);
+        window.turnstile.execute(botCheck.widget);
+      });
+    } finally {
+      clearTimeout(timer);
+      botCheck.waiting = null;
+    }
   }
 
   // --- FORM SUBMISSION & BACKEND COMMUNICATION ---
@@ -1175,7 +1247,7 @@
       btnNextText.textContent = 'Sending your answers…';
 
       const payload = Object.assign({}, answers, {
-        website_url: $('website_url').value,
+        hp_trail_notes: $('hp_trail_notes').value,
         hiker_anti_spam: $('hiker_anti_spam').value,
         formElapsedSeconds: Math.round((Date.now() - (state.surveyStartedAt || Date.now())) / 1000),
         trailCheck: { id: state.trailCheck.round.id, choice: state.trailCheck.choice },
@@ -1193,6 +1265,11 @@
 
       if (!res.ok || !result.success) {
         throw new Error(errorText(res, result.errors && result.errors.join(', '), `Submission failed (HTTP ${res.status})`));
+      }
+      // A stored hike always comes with its personal code. Without one the server
+      // did not keep it (it looked automated): keep the answers and let the hiker retry.
+      if (!result.deletionCode) {
+        throw new Error("Your hike couldn't be confirmed. Your answers are still saved here: please press Submit again in a moment.");
       }
 
       // The server returns the stored record, including the derived pace.
@@ -1562,6 +1639,12 @@
   }
 
 
+  /** A stored (imperial) number in the preview table, in the unit system the hiker picked. */
+  function previewUnit(value, unit, imperialSuffix, metricSuffix) {
+    if (typeof value !== 'number' || state.unitSystem !== 'metric') return orDash(value, imperialSuffix);
+    return `${(value * Schema.UNITS[unit].factor).toFixed(1)}${metricSuffix}`;
+  }
+
   function renderPreviewRows(rows) {
     const tbody = $('preview-table-body');
     if (!tbody) return;
@@ -1584,8 +1667,8 @@
         <td class="py-3 px-4"><span class="trail-chip" data-trail="${escapeHtml(r.trail)}">${escapeHtml(r.trail)}</span></td>
         <td class="py-3 px-4">${escapeHtml(r.hikeYear)}</td>
         <td class="py-3 px-4">${escapeHtml(r.direction)}</td>
-        <td class="py-3 px-4 font-semibold text-white">${escapeHtml(orDash(r.baseWeightLbs, ' lbs'))}</td>
-        <td class="py-3 px-4">${escapeHtml(orDash(r.averageDailyMiles, ' mi/d'))}</td>
+        <td class="py-3 px-4 font-semibold text-white">${escapeHtml(previewUnit(r.baseWeightLbs, 'lb', ' lbs', ' kg'))}</td>
+        <td class="py-3 px-4">${escapeHtml(previewUnit(r.averageDailyMiles, 'mi/day', ' mi/d', ' km/d'))}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(r.backpackType)}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(r.cookSystem === 'huts_restaurants' ? 'huts / restaurants' : humanize(r.cookSystem))}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(humanize(r.sleepPadType))}</td>
@@ -1764,6 +1847,7 @@
         touchedSliders: Array.from(state.touchedSliders),
         unknownFields: Array.from(state.unknownFields),
         consent: state.consentGiven,
+        consentVersion: Schema.CONSENT_VERSION,
         trailCheck: state.trailCheck.passed ? { id: state.trailCheck.round.id, choice: state.trailCheck.choice } : null,
         pills: Object.fromEntries(Object.entries(state.pillSelections).map(([field, set]) => [field, Array.from(set)])),
         rampWeeks: state.rampWeeks
@@ -1811,8 +1895,10 @@
     });
     // Skip the start page only if both the consent and the trail check were done.
     if (draft.trailCheck && HumanCheck.isCorrectTrailCheck(draft.trailCheck)) newTrailCheck(draft.trailCheck.id, true);
-    if (draft.consent) $('consent-checkbox').checked = true;
-    if (draft.consent && state.trailCheck.passed) giveConsent();
+    // A consent given to an older consent text is asked again.
+    const consented = draft.consent && draft.consentVersion === Schema.CONSENT_VERSION;
+    if (consented) $('consent-checkbox').checked = true;
+    if (consented && state.trailCheck.passed) giveConsent();
     updateStartButton();
     (draft.unknownFields || []).forEach(name => {
       const box = Array.from(document.querySelectorAll('.dont-know-toggle'))
@@ -1846,6 +1932,7 @@
       }
       el.removeAttribute('aria-invalid');
     });
+    document.querySelectorAll('#survey-form [aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
     document.querySelectorAll('.choice-card.selected').forEach(c => setCardSelected(c, false));
     YES_NO_TOGGLES.forEach(t => {
       ['no', 'yes'].forEach(answer => {
@@ -1874,7 +1961,7 @@
     $('btn-start-over').addEventListener('click', () => {
       clearDraft();
       resetSurveyForm();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: scrollMode() });
       showToast('Cleared. Starting fresh.');
     });
     $('btn-add-another-hike').addEventListener('click', () => {
@@ -2030,6 +2117,7 @@
     $('consent-gate').classList.add('hidden');
     $('survey-body').classList.remove('hidden');
     $('survey-progress').classList.remove('hidden');
+    loadTurnstileIfOnLastStep();
   }
 
   /** Back to the consent step: a fresh survey (start over, another hike) asks again. */
@@ -2048,7 +2136,7 @@
     $('survey-body').classList.add('hidden');
     $('survey-progress').classList.add('hidden');
     updateStartButton();
-    $('trail-check').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('trail-check').scrollIntoView({ behavior: scrollMode(), block: 'center' });
     showToast('Please answer the quick trail check first.');
   }
 
@@ -2065,7 +2153,7 @@
       if (!box.checked || !state.trailCheck.passed) return;
       giveConsent();
       state.surveyStartedAt = state.surveyStartedAt || Date.now();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: scrollMode() });
     });
   }
 
@@ -2299,7 +2387,7 @@
           const res = await fetch('/api/trail-suggestion', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ trail, website_url: box.querySelector('.trail-suggest-trap').value })
+            body: JSON.stringify({ trail, hp_trail_notes: box.querySelector('.trail-suggest-trap').value })
           });
           const body = await res.json().catch(() => ({}));
           if (!res.ok || !body.success) throw new Error(errorText(res, body.error, `Sending failed (HTTP ${res.status}).`));

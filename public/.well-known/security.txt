@@ -1,0 +1,6 @@
+# Found a security problem on opentrailscience.org? Please write to this address.
+# The site's code is open source: https://github.com/opentrailscience/opentrailscience
+Contact: mailto:hello@opentrailscience.org
+Expires: 2027-11-17T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://opentrailscience.org/.well-known/security.txt

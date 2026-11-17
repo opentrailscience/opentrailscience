@@ -17,16 +17,28 @@ const HumanCheck = require('../../../public/lib/human-check');
 const { COLLECTIONS } = require('./db');
 const { header } = require('./http');
 
-const HONEYPOT_FIELDS = ['website_url', 'hiker_anti_spam'];
+// Hidden inputs only bots fill in. Named so browsers and password managers don't
+// autofill them (website_url was renamed for that; pages loaded before still send it).
+const HONEYPOT_FIELDS = ['hp_trail_notes', 'hiker_anti_spam', 'website_url'];
 const MIN_FILL_SECONDS = 20;
 const THROTTLE_MAX = 10;
 const THROTTLE_WINDOW_MS = 60 * 60 * 1000;
 
-/** True if the payload looks automated. Bots get a fake success response. */
-function isLikelySpam(body) {
-  if (HONEYPOT_FIELDS.some(name => body[name])) return true;
+/** Why the payload looks automated ('honeypot', 'too-fast'), or null. Bots get a fake success response. */
+function spamReason(body) {
+  if (HONEYPOT_FIELDS.some(name => body[name])) return 'honeypot';
   const elapsed = Number(body.formElapsedSeconds);
-  return !Number.isFinite(elapsed) || elapsed < MIN_FILL_SECONDS;
+  return !Number.isFinite(elapsed) || elapsed < MIN_FILL_SECONDS ? 'too-fast' : null;
+}
+
+function isLikelySpam(body) {
+  return spamReason(body) !== null;
+}
+
+/** Which human check failed ('trail-check', 'proof-of-work'), or null. */
+function humanCheckFailure(body) {
+  if (!HumanCheck.isCorrectTrailCheck(body.trailCheck)) return 'trail-check';
+  return passesHumanCheck(body) ? null : 'proof-of-work';
 }
 
 /** The trail question was answered correctly and the proof of work matches these answers. */
@@ -92,4 +104,4 @@ async function isThrottled(db, event, now, scope) {
   }
 }
 
-module.exports = { isLikelySpam, passesHumanCheck, isThrottled, networkOf, clientIp, MIN_FILL_SECONDS, THROTTLE_MAX, HONEYPOT_FIELDS };
+module.exports = { isLikelySpam, spamReason, humanCheckFailure, passesHumanCheck, isThrottled, networkOf, clientIp, MIN_FILL_SECONDS, THROTTLE_MAX, HONEYPOT_FIELDS };

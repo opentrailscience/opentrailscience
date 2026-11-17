@@ -48,7 +48,7 @@ test('submit rejects malformed JSON and wrong methods', async () => {
 
 test('honeypot and too-fast submissions are silently dropped', async () => {
   const db = freshDb();
-  for (const body of [submission({ website_url: 'http://spam' }), submission({ formElapsedSeconds: 3 }), submission({ formElapsedSeconds: undefined })]) {
+  for (const body of [submission({ website_url: 'http://spam' }), submission({ hp_trail_notes: 'http://spam' }), submission({ formElapsedSeconds: 3 }), submission({ formElapsedSeconds: undefined })]) {
     const res = await post(submit, body);
     assert.equal(res.statusCode, 200);
     assert.equal(JSON.parse(res.body).success, true);

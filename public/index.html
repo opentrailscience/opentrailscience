@@ -30,6 +30,8 @@
   <meta name="color-scheme" content="dark light">
   <!-- Sets data-theme before anything is drawn (light/dark switch, see theme.js). -->
   <script src="theme.js"></script>
+  <link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/ibm-plex-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
   <!-- Built from src/tailwind.css by `npm run build:css`. Loaded after styles.css,
        as the old Tailwind CDN script injected its styles last. -->
@@ -182,7 +184,7 @@
       <div class="max-w-2xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
         <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8">
           <div class="flex-1">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Hi, I'm the hiker behind this survey.</h2>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Hi, I'm the hiker behind this survey.</h1>
 
             <div class="flex flex-wrap gap-2 mt-5 text-xs font-mono">
               <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300">20 years old</span>
@@ -219,14 +221,14 @@
     <section id="view-privacy" class="app-view">
       <div class="max-w-3xl mx-auto px-4 sm:px-6 py-14 sm:py-20 space-y-10 text-sm sm:text-base text-slate-300 leading-relaxed sm:leading-6">
         <div>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">How I handle your data</h2>
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">How I handle your data</h1>
           <p class="mt-3">Open Trail Science publishes every survey answer as an open dataset. That only works if nobody can pick out the people who answered, so this page explains what I ask, what I store and why.</p>
           <p class="text-xs text-slate-500 mt-2 font-mono">Last updated 7 November 2026 • consent version <span id="privacy-consent-version">4</span></p>
         </div>
 
         <!-- Short version -->
         <div class="card-glow rounded-2xl p-6 sm:p-8">
-          <h3 class="text-lg font-bold text-white">The short version</h3>
+          <h2 class="text-lg font-bold text-white">The short version</h2>
           <ul class="mt-4 space-y-2.5">
             <li class="flex gap-3"><span class="text-pine-400">✓</span><span>No names, emails, accounts, cookies or tracking.</span></li>
             <li class="flex gap-3"><span class="text-pine-400">✓</span><span>Before anything is saved, I blur the details that could point to you: dates become weeks, your age becomes a range and you only submit a world region.</span></li>
@@ -240,7 +242,7 @@
 
         <!-- What you tell me vs. what I store -->
         <div>
-          <h3 class="text-xl font-bold text-white">What you tell me and what I store</h3>
+          <h2 class="text-xl font-bold text-white">What you tell me and what I store</h2>
           <p class="mt-2">Some questions need a precise answer for calculations (your pace, for example). The server works those out, then throws the precise answers away and only keeps the blurred version.</p>
           <div class="mt-4 overflow-x-auto rounded-xl border border-slate-800">
             <table class="w-full text-left text-xs sm:text-sm">
@@ -266,7 +268,7 @@
 
         <!-- Why blurring matters -->
         <div>
-          <h3 class="text-xl font-bold text-white">Why blurring matters</h3>
+          <h2 class="text-xl font-bold text-white">Why blurring matters</h2>
           <p class="mt-2">Imagine someone knows that you started a specific trail in the first days of July 2025, that you're 24 and that you're from the Netherlands. If the dataset listed exact dates, ages and countries, they might find your row and see your injuries, weight and budget. That's exactly what I want to avoid. With weeks, age ranges and regions, your row looks just like the rows of many other hikers, so it's hard to tell which one is yours.</p>
           <p class="mt-3">How much blurring is enough depends on how many people hike a trail:</p>
           <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -286,7 +288,7 @@
 
         <!-- What I never collect -->
         <div>
-          <h3 class="text-xl font-bold text-white">What I never collect</h3>
+          <h2 class="text-xl font-bold text-white">What I never collect</h2>
           <ul class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 list-disc list-inside">
             <li>Names, email addresses or phone numbers</li>
             <li>Your exact age or date of birth</li>
@@ -301,7 +303,7 @@
 
         <!-- Technical data -->
         <div>
-          <h3 class="text-xl font-bold text-white">Technical data while you visit</h3>
+          <h2 class="text-xl font-bold text-white">Technical data while you visit</h2>
           <dl class="mt-3 space-y-4">
             <div>
               <dt class="font-semibold text-white">Web hosting</dt>
@@ -328,19 +330,19 @@
 
         <!-- Feedback -->
         <div>
-          <h3 class="text-xl font-bold text-white">Feedback about the survey</h3>
+          <h2 class="text-xl font-bold text-white">Feedback about the survey</h2>
           <p class="mt-2">At the very end you can tell me how to improve the survey. Your feedback isn't connected to your survey entry and isn't part of the released dataset, it's saved on its own and only I read it. All feedback messages are deleted once a year, on 1 January.</p>
         </div>
 
         <!-- Trail suggestions -->
         <div>
-          <h3 class="text-xl font-bold text-white">Suggesting a trail</h3>
+          <h2 class="text-xl font-bold text-white">Suggesting a trail</h2>
           <p class="mt-2">On the home page, and in the survey when you pick one of the "Other" trails, you can suggest a trail that's missing from the list. Only the text you type is saved, on its own: it isn't connected to your survey entry and isn't part of the released dataset. I delete suggestions once I've looked at them, and all remaining ones on 1 January.</p>
         </div>
 
         <!-- Retention -->
         <div>
-          <h3 class="text-xl font-bold text-white">How long I keep your data</h3>
+          <h2 class="text-xl font-bold text-white">How long I keep your data</h2>
           <ul class="mt-3 space-y-1.5 list-disc list-inside">
             <li><strong class="text-white">Survey answers:</strong> I keep your answers for as long as the project and the open dataset exist, or until you delete them with your personal code.</li>
             <li><strong class="text-white">Feedback:</strong> Feedback messages are deleted after at most 12 months.</li>
@@ -354,7 +356,7 @@
 
         <!-- Where data is stored -->
         <div>
-          <h3 class="text-xl font-bold text-white">Where your data is stored</h3>
+          <h2 class="text-xl font-bold text-white">Where your data is stored</h2>
           <ul class="mt-3 space-y-2">
             <li><strong class="text-white">Netlify, Inc. (USA):</strong> hosts the website and runs the code that checks and saves your answers.</li>
             <li><strong class="text-white">MongoDB, Inc. (MongoDB Atlas, USA):</strong> stores the blurred answers and, separately, the feedback messages and trail suggestions.</li>
@@ -366,7 +368,7 @@
 
         <!-- Legal basis, in plain words -->
         <div>
-          <h3 class="text-xl font-bold text-white">My reasons for using your data</h3>
+          <h2 class="text-xl font-bold text-white">My reasons for using your data</h2>
           <p class="mt-2">Data protection rules say I need a good reason for everything I do with your data. These are mine:</p>
           <ul class="mt-3 space-y-1.5 list-disc list-inside">
             <li><strong class="text-white">Survey answers, including health information:</strong> only because you agree to it before the survey starts. Without your agreement nothing is stored.</li>
@@ -379,7 +381,7 @@
 
         <!-- Deletion -->
         <div id="privacy-delete" class="card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/25">
-          <h3 class="text-xl font-bold text-white">Deleting your answers</h3>
+          <h2 class="text-xl font-bold text-white">Deleting your answers</h2>
           <p class="mt-2">After submitting, you got a personal code like <span class="font-mono text-slate-200">7K3Q-M9XD-2WPA-HV4T</span>. Enter it here to delete your hike:</p>
           <form id="deletion-form" class="mt-4 flex flex-col sm:flex-row gap-3" novalidate autocomplete="off">
             <label for="deletion-code-input" class="sr-only">Personal code</label>
@@ -397,13 +399,13 @@
 
         <!-- Rights -->
         <div>
-          <h3 class="text-xl font-bold text-white">Your rights</h3>
+          <h2 class="text-xl font-bold text-white">Your rights</h2>
           <p class="mt-2">You can see your answers, correct them and delete them, and you can withdraw your consent at any time (withdrawing doesn't affect copies that were downloaded before). Seeing and deleting work with your personal code, to correct an answer, delete your hike and fill in the survey again, or write to me. Because the stored answers contain nothing like your name, I can't tell which record is yours, your personal code is how you can prove it.</p>
         </div>
 
         <!-- Contact -->
         <div>
-          <h3 class="text-xl font-bold text-white">Who is responsible</h3>
+          <h2 class="text-xl font-bold text-white">Who is responsible</h2>
           <p class="mt-2">Open Trail Science is a one-person, non-commercial project (that's me, see <a href="#about" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">About the creator</a>). For any privacy question or request, just write to:</p>
           <p class="mt-2"><a href="mailto:privacy@opentrailscience.org" class="font-mono text-pine-400 hover:text-pine-300">privacy@opentrailscience.org</a></p>
           <p class="mt-4">The whole site is open source, so you don't have to take my word for any of this: the code that checks, blurs, stores and publishes your answers is on <a href="https://github.com/opentrailscience/opentrailscience" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
@@ -421,14 +423,14 @@
     <section id="view-insights" class="app-view">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div class="text-center max-w-3xl mx-auto">
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">What the data says so far</h2>
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">What the data says so far</h1>
           <p class="text-sm sm:text-base text-slate-300 mt-2">A first look at the open dataset. These are self-reported answers, not a controlled study.</p>
           <p id="insights-meta" class="text-xs font-mono text-slate-500 mt-2"></p>
         </div>
 
         <!-- Shown below 50 hikers -->
         <div id="insights-locked" class="hidden card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/20 text-center max-w-2xl mx-auto mt-10">
-          <h3 class="text-xl sm:text-2xl font-extrabold text-white">Charts unlock at 50 hikers</h3>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white">Charts unlock at 50 hikers</h2>
           <p class="text-sm text-slate-300 mt-2">With fewer hikes, any chart would mostly show noise. Help get it there.</p>
           <div class="mt-5 max-w-[520px] mx-auto">
             <div id="insights-locked-bar" class="stones" aria-hidden="true"></div>
@@ -443,7 +445,7 @@
         <!-- Correlations computed from the dataset (insights.json, see utils/insights.js) -->
         <div id="insights-together" class="hidden mt-16">
           <div class="text-center max-w-2xl mx-auto">
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">Some things that go together</h3>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">Some things that go together</h2>
             <p id="insights-together-note" class="text-sm text-slate-400 mt-2"></p>
           </div>
           <div id="insights-together-cards" class="flex flex-wrap justify-center gap-6 mt-8"></div>
@@ -451,7 +453,7 @@
 
         <!-- Look up your own hike with the deletion code (/api/my-hike) -->
         <div class="mt-10 max-w-xl mx-auto card-glow rounded-2xl p-6 max-[399px]:p-4">
-          <h3 class="font-bold text-white">Shared your hike already?</h3>
+          <h2 class="font-bold text-white">Shared your hike already?</h2>
           <p class="text-sm text-slate-400 mt-1">Enter your personal code from the thank-you page to see how your hike compares today, with everyone who has answered since.</p>
           <form id="my-hike-form" class="mt-4 flex flex-col sm:flex-row gap-3" novalidate autocomplete="off">
             <label for="my-hike-code" class="sr-only">Your code</label>
@@ -463,7 +465,7 @@
 
         <!-- Another hiker survey (Halfway Anywhere) -->
         <div class="mt-10 max-w-xl mx-auto border-t border-slate-800 pt-6">
-          <h3 class="text-base font-semibold text-slate-200">Another hiker survey</h3>
+          <h2 class="text-base font-semibold text-slate-200">Another hiker survey</h2>
           <p class="text-sm text-slate-400 mt-1">Halfway Anywhere has run detailed yearly hiker surveys for over a decade. If you hiked one of these trails, consider sharing your hike there too.</p>
           <ul class="mt-3 space-y-1.5 text-sm text-slate-400">
             <li><strong class="font-semibold text-slate-200">Halfway Anywhere:</strong> yearly PCT, CDT and JMT hiker surveys. <a href="https://www.halfwayanywhere.com/go/pct-survey-all-posts/" target="_blank" rel="noopener" class="text-pine-400 hover:text-pine-300 underline underline-offset-2 whitespace-nowrap">PCT survey</a> · <a href="https://www.halfwayanywhere.com/continental-divide-trail-survey-all" target="_blank" rel="noopener" class="text-pine-400 hover:text-pine-300 underline underline-offset-2 whitespace-nowrap">CDT survey</a></li>
@@ -474,6 +476,7 @@
 
     <!-- Survey -->
     <section id="view-survey" class="app-view">
+      <h1 class="sr-only">Share your hike</h1>
       
       <!-- Sticky Progress Bar Header (hidden until consent) -->
       <div id="survey-progress" class="hidden sticky-progress py-3 px-4 sm:px-8 shadow-md">
@@ -483,8 +486,10 @@
               <span id="wizard-step-badge" class="px-2 py-0.5 rounded-sm bg-pine-800 text-pine-200 text-xs font-mono">Step 1 of 5</span>
               <span id="wizard-step-title" class="text-white hidden sm:inline">Your hike</span>
             </div>
-            <div class="text-slate-300 font-mono text-xs flex items-center gap-1.5">
-              <span id="wizard-progress-percent">20%</span> Complete
+            <!-- Units for the whole survey (the dataset preview has the same switch) -->
+            <div class="unit-switch inline-flex rounded-lg p-1 bg-slate-900 border border-slate-700" role="group" aria-label="Units">
+              <button type="button" id="btn-unit-imperial" data-unit-system="imperial" aria-pressed="true" class="px-3 py-1 rounded-md text-xs font-bold bg-brand text-white transition">mi · lb</button>
+              <button type="button" id="btn-unit-metric" data-unit-system="metric" aria-pressed="false" class="px-3 py-1 rounded-md text-xs font-bold text-slate-400 hover:text-white transition">km · kg</button>
             </div>
           </div>
           <!-- Bar -->
@@ -546,8 +551,8 @@
           
           <!-- Honeypot fields: hidden from people, bots fill them in -->
           <div class="anti-spam-trap" aria-hidden="true">
-            <label for="website_url">Leave this empty</label>
-            <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+            <label for="hp_trail_notes">Leave this empty</label>
+            <input type="text" id="hp_trail_notes" name="hp_trail_notes" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
             <label for="hiker_anti_spam">Do not fill</label>
             <input type="text" id="hiker_anti_spam" name="hiker_anti_spam" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
           </div>
@@ -558,15 +563,10 @@
               
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                  <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
                     <span>1. Your hike</span>
-                  </h3>
+                  </h2>
                   <p class="text-xs sm:text-sm text-slate-400 mt-1">Which trail, which way, and when.</p>
-                </div>
-                <!-- Unit Switcher -->
-                <div class="inline-flex rounded-lg p-1 bg-slate-900 border border-slate-700 self-start sm:self-auto">
-                  <button type="button" id="btn-unit-imperial" class="px-3 py-1 rounded-md text-xs font-bold bg-brand text-white transition">Imperial (mi/ft)</button>
-                  <button type="button" id="btn-unit-metric" class="px-3 py-1 rounded-md text-xs font-bold text-slate-400 hover:text-white transition">Metric (km/m)</button>
                 </div>
               </div>
 
@@ -699,7 +699,7 @@
                   <label for="field-totalDistance" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     <span id="label-totalDistance">Total distance hiked (miles)</span>&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <input type="number" step="0.1" id="field-totalDistance" name="totalDistance" min="0" placeholder="e.g. 2650" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="decimal" step="0.1" id="field-totalDistance" name="totalDistance" min="0" placeholder="e.g. 2650" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span id="totalDistance-helper" class="text-xs text-slate-400 mt-1 block">Total miles actually hiked on trail</span>
                 </div>
 
@@ -707,7 +707,7 @@
                   <label for="field-totalElevationGain" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     <span id="label-totalElevationGain">Total elevation gain (feet)</span>&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <input type="number" step="100" id="field-totalElevationGain" name="totalElevationGain" min="0" placeholder="e.g. 420880" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="numeric" step="100" id="field-totalElevationGain" name="totalElevationGain" min="0" placeholder="e.g. 420880" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span id="totalElevationGain-helper" class="text-xs text-slate-400 mt-1 block">Total climbing over the whole hike (your watch or app may show it)</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="totalElevationGainFt"> Don't know</label>
                 </div>
@@ -720,7 +720,7 @@
             <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
               
               <div class="border-b border-slate-800 pb-4">
-                <h3 class="text-xl sm:text-2xl font-bold text-white">2. About you</h3>
+                <h2 class="text-xl sm:text-2xl font-bold text-white">2. About you</h2>
                 <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Where you started from, before day one on the trail.</p>
               </div>
 
@@ -730,7 +730,7 @@
                   <label for="field-age" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     How old were you when you started this hike?&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <input type="number" id="field-age" name="age" min="5" max="99" placeholder="e.g. 28" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="numeric" id="field-age" name="age" min="5" max="99" placeholder="e.g. 28" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-slate-400 mt-1 block">Your age on day one of this hike, not today. Only an age range is stored (everyone 20 or younger shares one).</span>
                 </div>
 
@@ -757,16 +757,16 @@
                   <div id="height-feet-inches" class="grid grid-cols-2 gap-2">
                     <div class="relative">
                       <label for="height-feet" class="sr-only">Height, feet</label>
-                      <input type="number" id="height-feet" min="3" max="7" step="1" placeholder="5" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-4 pr-10 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                      <input type="number" inputmode="numeric" id="height-feet" min="3" max="7" step="1" placeholder="" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-4 pr-10 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                       <span class="absolute right-4 top-3 text-slate-400 text-sm" aria-hidden="true">ft</span>
                     </div>
                     <div class="relative">
                       <label for="height-inches" class="sr-only">Height, inches</label>
-                      <input type="number" id="height-inches" min="0" max="11.5" step="0.5" placeholder="10" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-4 pr-10 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                      <input type="number" inputmode="decimal" id="height-inches" min="0" max="11.5" step="0.5" placeholder="" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-4 pr-10 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                       <span class="absolute right-4 top-3 text-slate-400 text-sm" aria-hidden="true">in</span>
                     </div>
                   </div>
-                  <input type="number" step="0.5" id="field-height" name="height" placeholder="e.g. 178" class="hidden w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="decimal" step="0.5" id="field-height" name="height" placeholder="e.g. 178" class="hidden w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span id="height-helper" class="text-xs text-slate-400 mt-1 block">e.g. 5 ft 10 in (~178 cm)</span>
                 </div>
 
@@ -774,7 +774,7 @@
                   <label for="field-weight" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     <span id="label-weight">Body weight before the hike (lbs)</span>&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <input type="number" step="0.5" id="field-weight" name="weight" placeholder="e.g. 165 lbs" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="decimal" step="0.5" id="field-weight" name="weight" placeholder="e.g. 165 lbs" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span id="weight-helper" class="text-xs text-slate-400 mt-1 block">e.g. 165 lbs (~75 kg)</span>
                 </div>
               </div>
@@ -906,13 +906,13 @@
                   </div>
                   <div>
                     <label for="field-trailSpending" class="block text-xs font-semibold text-slate-300 mb-1.5">How much did you spend on and during the trail?&nbsp;<span class="text-rose-400">*</span></label>
-                    <input type="number" id="field-trailSpending" name="trailSpending" min="0" max="100000" step="10" placeholder="e.g. 5000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="number" inputmode="numeric" id="field-trailSpending" name="trailSpending" min="0" max="100000" step="10" placeholder="e.g. 5000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                     <span class="text-xs text-slate-400 mt-1 block"><strong class="font-semibold text-slate-200">Travel to the trail and back home is not included.</strong> Count permits, food and resupply, town stays, restaurants, shuttles and other costs along the way. Your gear is the next question.</span>
                     <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="trailSpending"> Don't know</label>
                   </div>
                   <div>
                     <label for="field-gearCost" class="block text-xs font-semibold text-slate-300 mb-1.5">How much did your gear cost?&nbsp;<span class="text-rose-400">*</span></label>
-                    <input type="number" id="field-gearCost" name="gearCost" min="0" max="100000" step="10" placeholder="e.g. 2500" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="number" inputmode="numeric" id="field-gearCost" name="gearCost" min="0" max="100000" step="10" placeholder="e.g. 2500" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                     <span class="text-xs text-slate-400 mt-1 block">Roughly what all the gear you hiked with cost, including things you already owned.</span>
                     <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="gearCost"> Don't know</label>
                   </div>
@@ -973,7 +973,7 @@
             <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
               
               <div>
-                <h3 class="text-xl sm:text-2xl font-bold text-white">3. Your gear</h3>
+                <h2 class="text-xl sm:text-2xl font-bold text-white">3. Your gear</h2>
                 <p class="text-xs sm:text-sm text-slate-400 mt-1">Pack weight and the classic ultralight debates, settled with data.</p>
               </div>
 
@@ -983,7 +983,7 @@
                   <label for="field-baseWeight" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     <span id="label-baseweight">Base weight (lbs)</span>&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <input type="number" step="0.1" id="field-baseWeight" name="baseWeight" placeholder="e.g. 13.5 lbs" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="decimal" step="0.1" id="field-baseWeight" name="baseWeight" placeholder="e.g. 13.5 lbs" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-slate-400 mt-1 block">Dry weight: pack + gear, excluding consumables (food, water, fuel).</span>
                 </div>
 
@@ -991,7 +991,7 @@
                   <label for="field-maxHeavyLoad" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     <span id="label-heavyweight">Heaviest pack weight (lbs)</span>&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <input type="number" step="0.5" id="field-maxHeavyLoad" name="maxHeavyLoad" placeholder="e.g. 32.0 lbs" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="decimal" step="0.5" id="field-maxHeavyLoad" name="maxHeavyLoad" placeholder="e.g. 32.0 lbs" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-slate-400 mt-1 block">Your heaviest full pack, e.g. on a long food carry or a dry desert stretch.</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="maxHeavyLoadLbs"> Don't know</label>
                 </div>
@@ -1073,6 +1073,10 @@
                     <div class="text-sm font-bold text-white">Hammock underquilt / other</div>
                     <p class="text-xs text-slate-300 mt-1">A hammock setup without a ground pad.</p>
                   </div>
+                  <div class="choice-card rounded-xl p-3.5" data-name="sleepPadType" data-value="none">
+                    <div class="text-sm font-bold text-white">No pad</div>
+                    <p class="text-xs text-slate-300 mt-1">Didn't carry one, e.g. slept indoors in huts, hostels or albergues.</p>
+                  </div>
                 </div>
                 <input type="hidden" id="field-sleepPadType" name="sleepPadType" value="">
               </div>
@@ -1080,9 +1084,9 @@
               <!-- Water Filter vs Chemical Drops -->
               <div class="pt-2">
                 <label class="block text-sm font-semibold text-slate-200 mb-2">
-                  Water treatment: filter or chemicals&nbsp;<span class="text-rose-400">*</span>
+                  How did you treat your water?&nbsp;<span class="text-rose-400">*</span>
                 </label>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="water-radios">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="water-radios">
                   <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="water_filter">
                     <div class="text-xs font-bold text-white">Squeeze or gravity filter</div>
                     <div class="text-[11px] text-slate-400 mt-0.5">Sawyer Squeeze, BeFree, Platypus QuickDraw</div>
@@ -1090,6 +1094,14 @@
                   <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="chemical_drops">
                     <div class="text-xs font-bold text-white">Chemical drops or tablets</div>
                     <div class="text-[11px] text-slate-400 mt-0.5">Aquamira, chlorine dioxide tablets, iodine</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="uv_purifier">
+                    <div class="text-xs font-bold text-white">UV light</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">SteriPEN or a similar UV purifier</div>
+                  </div>
+                  <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="boil_only">
+                    <div class="text-xs font-bold text-white">Boiled it</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Boiling only, no filter or chemicals</div>
                   </div>
                   <div class="choice-card rounded-xl p-3" data-name="waterFiltration" data-value="combination">
                     <div class="text-xs font-bold text-white">Combination</div>
@@ -1151,7 +1163,7 @@
                 <label for="field-shoePairsUsed" class="block text-sm font-semibold text-slate-200 mb-1.5">
                   How many pairs of shoes did you go through?&nbsp;<span class="text-rose-400">*</span>
                 </label>
-                <input type="number" id="field-shoePairsUsed" name="shoePairsUsed" min="1" max="20" step="1" placeholder="e.g. 4" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <input type="number" inputmode="numeric" id="field-shoePairsUsed" name="shoePairsUsed" min="1" max="20" step="1" placeholder="e.g. 4" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <span class="text-xs text-slate-400 mt-1 block">Including the pair you started in.</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="shoePairsUsed"> Don't know</label>
               </div>
@@ -1161,7 +1173,7 @@
                 <label for="field-averageCalories" class="block text-sm font-semibold text-slate-200 mb-1.5">
                   Calories eaten per day (average)&nbsp;<span class="text-rose-400">*</span>
                 </label>
-                <input type="number" id="field-averageCalories" name="averageCalories" min="0" max="10000" step="100" placeholder="e.g. 3500" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <input type="number" inputmode="numeric" id="field-averageCalories" name="averageCalories" min="0" max="10000" step="100" placeholder="e.g. 3500" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <span class="text-xs text-slate-400 mt-1 block">Food and snacks together. A rough estimate is fine.</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="averageCalories"> Don't know</label>
               </div>
@@ -1277,7 +1289,7 @@
             <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
               
               <div>
-                <h3 class="text-xl sm:text-2xl font-bold text-white">4. On the trail</h3>
+                <h2 class="text-xl sm:text-2xl font-bold text-white">4. On the trail</h2>
                 <p class="text-xs sm:text-sm text-slate-400 mt-1">How you built up mileage, rested and slept.</p>
               </div>
 
@@ -1285,10 +1297,10 @@
               <div class="p-5 max-[399px]:p-3 rounded-xl bg-slate-900/60 border border-pine-500/30 space-y-4">
                 <div class="flex items-center justify-between max-sm:flex-col max-sm:items-start max-sm:gap-2">
                   <div>
-                    <h4 class="text-sm font-bold text-white flex items-center gap-1.5 max-sm:block">
+                    <h3 class="text-sm font-bold text-white flex items-center gap-1.5 max-sm:block">
                       <span class="w-2 h-2 shrink-0 rounded-full bg-emerald-400 max-sm:inline-block max-sm:mr-1 max-sm:align-middle"></span>
                       How fast did you build up your daily distance?&nbsp;<span class="text-rose-400">*</span>
-                    </h4>
+                    </h3>
                     <p class="text-xs text-slate-400 mt-0.5">This helps show whether ramping up fast leads to more injuries.</p>
                   </div>
                   <span id="ramp-gradient-badge" class="px-2.5 py-1 rounded-sm text-xs font-mono font-semibold bg-slate-800 text-pine-300">
@@ -1310,21 +1322,22 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div>
                     <label for="field-week1DailyMiles" class="block text-xs font-semibold text-slate-300 mb-1" id="label-week1">Week 1 (mi/day)</label>
-                    <input type="number" step="0.5" id="field-week1DailyMiles" name="week1DailyMiles" min="0" max="60" placeholder="10.5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="number" inputmode="decimal" step="0.5" id="field-week1DailyMiles" name="week1DailyMiles" min="0" max="60" placeholder="" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   </div>
                   <div>
                     <label for="field-week2DailyMiles" class="block text-xs font-semibold text-slate-300 mb-1" id="label-week2">Week 2 (mi/day)</label>
-                    <input type="number" step="0.5" id="field-week2DailyMiles" name="week2DailyMiles" min="0" max="60" placeholder="14.0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="number" inputmode="decimal" step="0.5" id="field-week2DailyMiles" name="week2DailyMiles" min="0" max="60" placeholder="" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   </div>
                   <div>
                     <label for="field-week3DailyMiles" class="block text-xs font-semibold text-slate-300 mb-1" id="label-week3">Week 3 (mi/day)</label>
-                    <input type="number" step="0.5" id="field-week3DailyMiles" name="week3DailyMiles" min="0" max="60" placeholder="17.5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="number" inputmode="decimal" step="0.5" id="field-week3DailyMiles" name="week3DailyMiles" min="0" max="60" placeholder="" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   </div>
                   <div>
                     <label for="field-week4DailyMiles" class="block text-xs font-semibold text-slate-300 mb-1" id="label-week4">Week 4 (mi/day)</label>
-                    <input type="number" step="0.5" id="field-week4DailyMiles" name="week4DailyMiles" min="0" max="60" placeholder="20.0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="number" inputmode="decimal" step="0.5" id="field-week4DailyMiles" name="week4DailyMiles" min="0" max="60" placeholder="" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-sm focus:outline-hidden focus:border-pine-500 ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   </div>
                 </div>
+                <span class="text-xs text-slate-400 block">Your average distance per day in each of the first weeks.</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="week1DailyMiles,week2DailyMiles,week3DailyMiles,week4DailyMiles"> I don't remember my weekly mileage</label>
               </div>
 
@@ -1334,7 +1347,7 @@
                   <label for="field-totalZeroDays" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     Zero days (full rest days)&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <input type="number" id="field-totalZeroDays" name="totalZeroDays" min="0" max="150" placeholder="e.g. 18" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="numeric" id="field-totalZeroDays" name="totalZeroDays" min="0" max="150" placeholder="e.g. 18" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-slate-400 mt-1 block">Days you didn't hike any trail miles at all.</span>
                 </div>
 
@@ -1342,7 +1355,7 @@
                   <label for="field-totalNeroDays" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     Nero days (short hiking days)&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <input type="number" id="field-totalNeroDays" name="totalNeroDays" min="0" max="150" placeholder="e.g. 14" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="numeric" id="field-totalNeroDays" name="totalNeroDays" min="0" max="150" placeholder="e.g. 14" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-slate-400 mt-1 block">Days you hiked only a little, roughly under 10 mi (16 km), e.g. into or out of town. Don't count your zero days here too.</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="totalNeroDays"> Don't know</label>
                 </div>
@@ -1355,7 +1368,7 @@
                   <label for="field-hoursSleepPerNight" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     Hours of sleep per night (average)&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <input type="number" step="0.5" id="field-hoursSleepPerNight" name="hoursSleepPerNight" min="3" max="16" placeholder="e.g. 8.0" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="number" inputmode="decimal" step="0.5" id="field-hoursSleepPerNight" name="hoursSleepPerNight" min="3" max="16" placeholder="e.g. 8.0" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="hoursSleepPerNight"> Don't know</label>
                 </div>
 
@@ -1445,9 +1458,9 @@
             <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8 space-y-6">
               
               <div>
-                <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
                   <span>5. How it ended</span>
-                </h3>
+                </h2>
                 <p class="text-xs sm:text-sm text-slate-400 mt-1">How it ended and how it felt. These are the answers the research is built around.</p>
               </div>
 
@@ -1574,7 +1587,7 @@
                     <label for="field-injuryMilestoneMiles" class="block text-xs font-semibold text-slate-300 mb-1">
                       After how many <span id="label-injuryMilestoneUnit">miles</span> into the hike did the injury happen?&nbsp;<span class="text-rose-400">*</span>
                     </label>
-                    <input type="number" step="0.1" id="field-injuryMilestoneMiles" name="injuryMilestoneMiles" min="0" placeholder="e.g. 450" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-xs focus:outline-hidden focus:border-pine-500" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="number" inputmode="decimal" step="0.1" id="field-injuryMilestoneMiles" name="injuryMilestoneMiles" min="0" placeholder="e.g. 450" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white text-base sm:text-xs focus:outline-hidden focus:border-pine-500" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle accent-emerald-500" data-fields="injuryMilestoneMiles"> Don't know</label>
                   </div>
 
@@ -1630,7 +1643,7 @@
                 <label for="field-postTrailWeight" class="block text-sm font-semibold text-slate-200 mb-1.5">
                   <span id="label-postTrailWeight">Body weight after the hike (lbs)</span>&nbsp;<span class="text-rose-400">*</span>
                 </label>
-                <input type="number" step="0.5" id="field-postTrailWeight" name="postTrailWeight" min="0" placeholder="e.g. 155" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <input type="number" inputmode="decimal" step="0.5" id="field-postTrailWeight" name="postTrailWeight" min="0" placeholder="e.g. 155" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <span class="text-xs text-slate-400 mt-1 block">Right after the hike, to see how much weight hikers lose or gain.</span>
               </div>
 
@@ -1701,9 +1714,9 @@
           Hike Recorded
         </span>
 
-        <h2 id="success-title" class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
+        <h1 id="success-title" class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
           Thank You for Advancing Trail Science!
-        </h2>
+        </h1>
 
         <p id="success-intro" class="text-base text-slate-300 mt-3 max-w-xl mx-auto">
           Your hike is now part of the open dataset, thank you! Every single answer makes the picture of thru-hiking a little clearer, for future hikers and for anyone researching it.
@@ -1802,7 +1815,7 @@
         <!-- Deletion code (shown once; only a hash is stored) -->
         <div id="deletion-code-panel" class="hidden mt-8 max-w-xl mx-auto text-left p-5 rounded-2xl bg-slate-900/70 border border-pine-500/40">
           <div class="text-[11px] text-pine-300 uppercase font-mono">Your personal code</div>
-          <h3 class="mt-1 font-bold text-white">Come back later and see how you compare</h3>
+          <h2 class="mt-1 font-bold text-white">Come back later and see how you compare</h2>
           <div class="mt-2 flex flex-wrap items-center gap-3">
             <code id="deletion-code-value" class="text-lg sm:text-xl font-mono font-bold tracking-wider text-white select-all"></code>
             <button type="button" id="btn-copy-deletion-code" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">Copy</button>
@@ -1832,9 +1845,9 @@
         
         <!-- Header -->
         <div class="text-center max-w-3xl mx-auto">
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
             Open Thru-Hiker Survey Dataset
-          </h2>
+          </h1>
           <p class="text-sm sm:text-base text-slate-300 mt-2">
             Every answer from the survey, checked, documented and with identifying details blurred. Free to use for statistics, machine learning or just playing around with the numbers.
           </p>
@@ -1851,7 +1864,7 @@
                 <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-emerald-950 text-emerald-300 border border-emerald-700/60">CSV FORMAT</span>
                 <span class="text-xs text-slate-400 font-mono">For spreadsheets</span>
               </div>
-              <h3 class="text-xl font-bold text-white mt-3">Full Dataset (.CSV)</h3>
+              <h2 class="text-xl font-bold text-white mt-3">Full Dataset (.CSV)</h2>
               <p class="text-xs sm:text-sm text-slate-300 mt-1">
                 A flat table that opens in Excel, Google Sheets, <strong>R</strong> or <strong>pandas</strong>: one row per hike, one column per field.
               </p>
@@ -1876,7 +1889,7 @@
                 <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-amber-950 text-amber-300 border border-amber-700/60">JSON FORMAT</span>
                 <span class="text-xs text-slate-400 font-mono">For code</span>
               </div>
-              <h3 class="text-xl font-bold text-white mt-3">Full Dataset (.JSON)</h3>
+              <h2 class="text-xl font-bold text-white mt-3">Full Dataset (.JSON)</h2>
               <p class="text-xs sm:text-sm text-slate-300 mt-1">
                 The same hikes and fields as the CSV, with types kept: numbers, true/false and real lists. Easiest to use from <strong>JavaScript</strong> or <strong>Python</strong>.
               </p>
@@ -1924,6 +1937,10 @@
                 <option value="quit_early">Ended early</option>
               </select>
 
+              <div class="unit-switch inline-flex rounded-lg p-1 bg-slate-900 border border-slate-700" role="group" aria-label="Units">
+                <button type="button" data-unit-system="imperial" aria-pressed="true" class="px-3 py-1 rounded-md text-xs font-bold bg-brand text-white transition">mi · lb</button>
+                <button type="button" data-unit-system="metric" aria-pressed="false" class="px-3 py-1 rounded-md text-xs font-bold text-slate-400 hover:text-white transition">km · kg</button>
+              </div>
               <button type="button" id="btn-refresh-preview" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 transition" title="Refresh Table">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
               </button>
@@ -1931,7 +1948,7 @@
           </div>
 
           <!-- Table Container with Horizontal Scroll -->
-          <div class="overflow-x-auto rounded-xl border border-slate-800">
+          <div class="overflow-x-auto rounded-xl border border-slate-800" tabindex="0" role="region" aria-label="Data preview table">
             <table class="keep-mono w-full text-left text-xs whitespace-nowrap">
               <thead class="bg-slate-950 text-slate-400 font-mono uppercase text-xs border-b border-slate-800">
                 <tr>
@@ -1997,7 +2014,7 @@
           <!-- Python snippet -->
           <div id="snippet-python" class="snippet-block">
             <div class="relative">
-              <pre class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="python">from pathlib import Path
+              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="python">from pathlib import Path
 from urllib.request import urlretrieve
 
 import pandas as pd
@@ -2034,7 +2051,7 @@ print(model.summary())</code></pre>
           <!-- R snippet -->
           <div id="snippet-r" class="snippet-block hidden">
             <div class="relative">
-              <pre class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="r">library(readr)
+              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="r">library(readr)
 library(dplyr)
 library(tidyr)
 
@@ -2065,7 +2082,7 @@ summary(model)</code></pre>
           <!-- JS snippet -->
           <div id="snippet-js" class="snippet-block hidden">
             <div class="relative">
-              <pre class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="javascript">// Save as quickstart.mjs and run: node quickstart.mjs (Node 18 or newer)
+              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="javascript">// Save as quickstart.mjs and run: node quickstart.mjs (Node 18 or newer)
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 
@@ -2110,7 +2127,7 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
             <li>Derived columns are computed on the server and never asked.</li>
           </ul>
 
-          <div class="overflow-x-auto rounded-xl border border-slate-800">
+          <div class="overflow-x-auto rounded-xl border border-slate-800" tabindex="0" role="region" aria-label="Data dictionary">
             <table class="keep-mono w-full text-left text-xs">
               <thead class="bg-slate-950 text-slate-400 font-mono uppercase text-xs border-b border-slate-800">
                 <tr>

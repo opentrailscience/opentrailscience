@@ -168,7 +168,7 @@
     container.replaceChildren();
     CHARTS.forEach(chart => {
       const card = el('div', 'card-glow rounded-2xl p-6 relative flex flex-col');
-      card.append(el('h3', 'font-bold text-white', chart.title), el('p', 'text-xs text-slate-400 mt-1', chart.subtitle));
+      card.append(el('h2', 'font-bold text-white', chart.title), el('p', 'text-xs text-slate-400 mt-1', chart.subtitle));
       const rows = insights.charts[chart.id] || [];
       if (rows.length < 2) {
         card.appendChild(el('p', 'mt-6 text-sm text-slate-500', 'Not enough answers for this chart yet.'));
@@ -209,7 +209,7 @@
     const head = el('div', 'relative flex items-start gap-3');
     const badge = el('div', 'corr-emoji w-12 h-12 shrink-0 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-2xl', item.emoji || '📈');
     badge.setAttribute('aria-hidden', 'true');
-    head.append(badge, el('h4', 'text-lg font-extrabold text-white leading-snug pt-1', item.headline));
+    head.append(badge, el('h3', 'text-lg font-extrabold text-white leading-snug pt-1', item.headline));
 
     // The two groups on one shared scale, with their real values.
     const bars = el('div', 'relative mt-5 space-y-3');

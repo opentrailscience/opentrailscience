@@ -46,7 +46,7 @@ The first column is `schemaVersion`: the schema the record was collected under (
 | `footwearCategory` | "Main footwear" | string (category) | `trail_runners`, `hiking_shoes`, `boots`, `sandals_minimalist`, `other` | Categorical feature | Required. |
 | `shoePairsUsed` | "How many pairs of shoes did you go through?" | integer | 1 – 20 | Gear wear feature | Required. Can be answered "Don't know" (null, listed in `unknownAnswers`). Including the pair the hiker started in. totalDistanceMiles / shoePairsUsed gives miles per pair. |
 | `trekkingPoleUsage` | "Trekking poles" | string (category) | `two_poles`, `one_pole`, `no_poles` | Categorical feature | Required. |
-| `waterFiltration` | "Water treatment: filter or chemicals" | string (category) | `water_filter`, `chemical_drops`, `uv_purifier`, `boil_only`, `none`, `combination` | Categorical feature | Required. |
+| `waterFiltration` | "How did you treat your water?" | string (category) | `water_filter`, `chemical_drops`, `uv_purifier`, `boil_only`, `none`, `combination` | Categorical feature | Required. |
 | `urinationAids` | "Did you use a urination aid? (select all that apply)" | string[] (categories) | `urination_device`, `urine_cloth`, `none`, `prefer_not_to_say` | Multi-label category | Required when it applies; null/empty when it does not. Urination device (e.g. pStyle) or reusable urine cloth (e.g. Kula Cloth). Asked when biologicalSex is female or prefer_not_to_say; [] otherwise. |
 | `backpackType` | "Backpack: framed or frameless" | string (category) | `framed`, `frameless` | Binary category | Required. |
 | `cookSystem` | "How did you eat on most days?" | string (category) | `stove_cooked`, `cold_soaking`, `no_cook_packaged`, `huts_restaurants`, `hybrid` | Categorical feature | Required. |

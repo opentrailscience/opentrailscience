@@ -36,6 +36,7 @@ test('empty, too long or non-text suggestions are rejected; the bot trap stores 
   }
   assert.equal((await post(suggestion, 'not json')).statusCode, 400);
   assert.equal((await get(suggestion)).statusCode, 405);
+  assert.equal((await post(suggestion, { trail: 'Spam Trail', hp_trail_notes: 'filled by a bot' })).statusCode, 201);
   assert.equal((await post(suggestion, { trail: 'Spam Trail', website_url: 'http://spam.example' })).statusCode, 201, 'looks fine to the bot');
   assert.equal(stored(db).length, 0);
 });

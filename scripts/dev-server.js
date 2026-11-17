@@ -129,8 +129,12 @@ function serveStatic(pathname, res) {
   }
 
   fs.stat(filePath, (err, stats) => {
-    // SPA fallback for client-side routes.
-    if (err || !stats.isFile()) filePath = path.join(PUBLIC_DIR, 'index.html');
+    // As on Netlify: an unknown address gets public/404.html with a 404 status.
+    let status = 200;
+    if (err || !stats.isFile()) {
+      filePath = path.join(PUBLIC_DIR, '404.html');
+      status = 404;
+    }
 
     fs.readFile(filePath, (readErr, content) => {
       if (readErr) {
@@ -142,7 +146,7 @@ function serveStatic(pathname, res) {
       if (filePath.includes(`${path.sep}data${path.sep}`)) {
         headers['Content-Disposition'] = `attachment; filename="${path.basename(filePath)}"`;
       }
-      res.writeHead(200, headers);
+      res.writeHead(status, headers);
       res.end(content);
     });
   });

@@ -9,13 +9,6 @@
 }
 @font-face {
   font-family: 'IBM Plex Sans';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('fonts/ibm-plex-sans-latin-400-italic.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'IBM Plex Sans';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
@@ -489,8 +482,9 @@
     --heading-weight: 700; --word-accent: #8fb4ea; --card-border: #4f555c; --progress: #8fb4ea;
     --face-border: #000; --face-radius: 8px; --face-tilt: 0deg; --face-shadow: 4px 4px 0 #000;
     --stone-line: 1.5px; --stone-radius: 6px; --stone-tint: 24%; --cairn-step: 6%;
+    --invalid: #e39387; /* answers that still need attention: 3:1 or more on the cards */
   }
-  :root[data-theme='light'] { --word-accent: #1f4f8f; --card-border: #181b1f; --progress: #1f4f8f; --face-border: #181b1f; --face-shadow: 4px 4px 0 #181b1f; --stone-tint: 36%; }
+  :root[data-theme='light'] { --word-accent: #1f4f8f; --card-border: #181b1f; --progress: #1f4f8f; --face-border: #181b1f; --face-shadow: 4px 4px 0 #181b1f; --stone-tint: 36%; --invalid: #b05044; }
 }
 
 /*
@@ -551,7 +545,7 @@
   /* Cards: an ink outline, no shadow. Inner boxes lose their frame, except in the survey. */
   .card-glow, .ui-card { background: var(--surface); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); box-shadow: none; transition: none; }
   .card-glow:hover { border-color: var(--strong-border); }
-  .card-glow:not(#view-survey *) :is(.border, [class*="border-slate-"], [class*="border-pine-"]):not(input, select, textarea, button, .choice-card, .select-pill, .chart-bar, .chart-swatch, .card-glow, table, th, td, tr, hr, [class*="border-t"], [class*="border-b"], [class*="border-l"], [class*="divide-"] *) { border-color: transparent; }
+  .card-glow:not(#view-survey *) :is(.border, [class*="border-slate-"], [class*="border-pine-"]):not(input, select, textarea, button, .choice-card, .select-pill, .unit-switch, .chart-bar, .chart-swatch, .card-glow, table, th, td, tr, hr, [class*="border-t"], [class*="border-b"], [class*="border-l"], [class*="divide-"] *) { border-color: transparent; }
 
   /* Buttons. Primary: solid blue; secondary: outline; both weight 600, no icons, no shadow. */
   .bg-brand { border: 1.5px solid var(--color-brand); font-weight: 600; border-radius: var(--control-radius); box-shadow: none; }
@@ -644,7 +638,7 @@
   /* After the first-50 card (or the numbers from 50 hikers on). */
   .home-card + .home-dnf { margin-top: 24px; }
   .home-dnf .label { margin: 0; font-weight: 700; font-size: 15px; color: var(--callout-label); }
-  .home-dnf h2 { margin: 4px 0 0; font-size: 26px; font-weight: var(--heading-weight); }
+  .home-dnf h2 { margin: 4px 0 0; font-size: 26px; font-weight: var(--heading-weight); line-height: 1.15; }
   .home-dnf p:not(.label) { margin: 8px 0 0; color: var(--text-secondary); }
 
   .home-trails { padding: 80px 0 72px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; }
@@ -681,7 +675,7 @@
   .cairn .ground { width: 100%; border-top: 2px solid var(--text-muted); margin-top: 8px; }
 
   .home-why { padding: 24px 0 80px; max-width: 720px; }
-  .home-why h2 { font-size: 30px; }
+  .home-why h2 { font-size: 30px; line-height: 1.15; }
   .home-why p { margin: 10px 0 0; color: var(--text-secondary); }
   .home-why .why-answer { margin-top: 28px; }
   .home-why .why-answer strong { color: var(--page-text); }
@@ -731,5 +725,19 @@
     .cairn .stone a { flex-direction: column; align-items: flex-start; justify-content: center; gap: 0; min-height: 44px; padding: 4px 12px; }
     .cairn .stone .name { font-size: 14px; line-height: 1.2; }
     .cairn .stone .meta { font-size: 11px; line-height: 1.2; }
+  }
+
+  /* Answers that still need attention after pressing Next (app.js validateStep):
+     a red border on inputs, a red outline around groups of cards, pills or yes/no buttons. */
+  #survey-form :is(input, select, textarea)[aria-invalid="true"] { border-color: var(--invalid); box-shadow: inset 0 0 0 1px var(--invalid); }
+  #survey-form div[aria-invalid="true"] { outline: 2px solid var(--invalid); outline-offset: 4px; border-radius: var(--control-radius); }
+  #survey-form input[type="range"][aria-invalid="true"] { box-shadow: none; outline: 2px solid var(--invalid); outline-offset: 4px; }
+
+  /* The unit switch in the survey's progress bar and above the dataset preview. */
+  .unit-switch button { white-space: nowrap; }
+
+  /* Less motion when the device asks for it. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
   }
 }

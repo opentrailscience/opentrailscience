@@ -61,7 +61,7 @@ test('every multi-select question has a pill group matching the schema', () => {
 test('there are no free-text inputs apart from the hidden honeypots and the trail suggestion', () => {
   const survey = html.slice(html.indexOf('id="view-survey"'), html.indexOf('id="view-success"'));
   const textInputs = Array.from(survey.matchAll(/<input type="text" id="([^"]+)"/g), m => m[1]);
-  assert.deepEqual(textInputs, ['website_url', 'hiker_anti_spam', 'trail-suggest-survey']);
+  assert.deepEqual(textInputs, ['hp_trail_notes', 'hiker_anti_spam', 'trail-suggest-survey']);
   assert.doesNotMatch(survey, /<textarea/);
   // The suggestion is sent on its own (/api/trail-suggestion): no name, no schema field, never an answer.
   assert.doesNotMatch(survey.match(/<input type="text" id="trail-suggest-survey"[^>]*>/)[0], /\bname=/);
@@ -148,8 +148,10 @@ test('every unit-switched input has a unit in the schema and a label in the page
   });
 });
 
-test('the page has exactly one h1 (all four views share one document)', () => {
-  assert.equal((html.match(/<h1[\s>]/g) || []).length, 1);
+test('every view has exactly one h1 (only one view is visible at a time)', () => {
+  const views = [...html.matchAll(/<section id="view-([a-z]+)" class="app-view[^"]*">([\s\S]*?)(?=<section id="view-|<\/main>)/g)];
+  assert.ok(views.length >= 7, 'all views found');
+  views.forEach(([, name, body]) => assert.equal((body.match(/<h1[\s>]/g) || []).length, 1, `#view-${name}`));
 });
 
 test('honeypot fields are hidden from screen readers and keyboard users', () => {

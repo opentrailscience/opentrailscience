@@ -38,8 +38,5 @@
   to = "/data/thru_hiker_survey_dataset.json"
   status = 200
 
-# SPA routing fallback (serves index.html for client-side navigation)
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# No catch-all to index.html: the site's views are #hash links, which never reach the
+# server, so an unknown address gets public/404.html with a real 404 status.
