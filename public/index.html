@@ -206,7 +206,7 @@
         <div class="mt-6 space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed sm:leading-6">
           <p>I'm 20, and currently working part time as an EMT. I recently hiked the Tour du Mont Blanc, which was a really cool experience. If all goes well, I'll be attempting a thru-hike of the PCT in 2027.</p>
           <p>While planning for the PCT I of course watched all the mandatory indie-folk-infused journey videos, but I also really enjoyed looking at different statistics and surveys. These are great for answering how popular a specific trend is. I, however, also wanted to check for interesting correlations or try to model some predictions, and I could not find any large datasets to use.</p>
-          <p>So I built opentrailscience.org, which aims to provide datasets for any long-distance trail. I never ask for your name or an annoying sign-up, and I blur the data a bit to prevent pinpointing a specific hiker, then publish every answer as an open dataset that anyone can download and play around with.</p>
+          <p>So I built opentrailscience.org, which aims to provide datasets for any long-distance trail. I never ask for your name or an annoying sign-up, and I blur the data a bit to make it harder to pinpoint a specific hiker, then publish every answer as an open dataset that anyone can download and play around with.</p>
           <p>This is a one-person project, not a company. If you have any suggestions or questions, don't hesitate! <a href="mailto:hello@opentrailscience.org" class="font-mono text-pine-400 hover:text-pine-300">hello@opentrailscience.org</a></p>
         </div>
 
@@ -222,8 +222,8 @@
       <div class="max-w-3xl mx-auto px-4 sm:px-6 py-14 sm:py-20 space-y-10 text-sm sm:text-base text-slate-300 leading-relaxed sm:leading-6">
         <div>
           <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">How I handle your data</h1>
-          <p class="mt-3">Open Trail Science publishes every survey answer as an open dataset. That only works if nobody can pick out the people who answered, so this page explains what I ask, what I store and why.</p>
-          <p class="text-xs text-slate-500 mt-2 font-mono">Last updated 7 November 2026 • consent version <span id="privacy-consent-version">4</span></p>
+          <p class="mt-3">Open Trail Science publishes every survey answer as an open dataset. That only works if the people who answered are hard to pick out, so this page explains what I ask, what I store and why.</p>
+          <p class="text-xs text-slate-500 mt-2 font-mono">Last updated 17 November 2026 • consent version <span id="privacy-consent-version">4</span></p>
         </div>
 
         <!-- Short version -->
@@ -258,7 +258,6 @@
                 <tr><td class="py-2.5 px-3">Height, weight, what you spent on the trail and on gear (in USD or EUR), visa, gear, food, painkillers, mileage, zero days, ratings</td><td class="py-2.5 px-3">As you entered them</td><td class="py-2.5 px-3">These are what the research is about, and on their own they don't reveal who you are.</td></tr>
                 <tr><td class="py-2.5 px-3">"Don't know"</td><td class="py-2.5 px-3">An empty value and a note that you didn't know</td><td class="py-2.5 px-3">So researchers can tell "didn't know" from "didn't apply".</td></tr>
                 <tr><td class="py-2.5 px-3">How long the survey took you</td><td class="py-2.5 px-3">A rough range<br><span class="text-slate-500">10–20 minutes</span></td><td class="py-2.5 px-3">Helps researchers spot rushed answers. It's a duration, not a date or time.</td></tr>
-                <tr><td class="py-2.5 px-3">When you submitted</td><td class="py-2.5 px-3">Not stored</td><td class="py-2.5 px-3">Nobody needs it, and a timestamp is just another clue.</td></tr>
                 <tr><td class="py-2.5 px-3">Feedback (optional, after submitting)</td><td class="py-2.5 px-3">Your message only, <strong class="text-white">not part of the dataset</strong></td><td class="py-2.5 px-3">It only helps me improve the survey, so it isn't connected to your survey entry. Deleted after at most 12 months. See below.</td></tr>
                 <tr><td class="py-2.5 px-3">Trail suggestion (optional, anytime)</td><td class="py-2.5 px-3">The trail you type only, <strong class="text-white">not part of the dataset</strong></td><td class="py-2.5 px-3">So I can add missing trails. It isn't connected to any survey entry. Deleted once I've reviewed it, at the latest after 12 months. See below.</td></tr>
               </tbody>
@@ -269,12 +268,12 @@
         <!-- Why blurring matters -->
         <div>
           <h2 class="text-xl font-bold text-white">Why blurring matters</h2>
-          <p class="mt-2">Imagine someone knows that you started a specific trail in the first days of July 2025, that you're 24 and that you're from the Netherlands. If the dataset listed exact dates, ages and countries, they might find your row and see your injuries, weight and budget. That's exactly what I want to avoid. With weeks, age ranges and regions, your row looks just like the rows of many other hikers, so it's hard to tell which one is yours.</p>
+          <p class="mt-2">Imagine someone knows that you started a specific trail in the first days of July 2025, that you're 24 and that you're from the Netherlands. If the dataset listed exact dates, ages and countries, they might find your row and see your injuries, weight and budget. That's exactly what I want to avoid. With weeks, age ranges and regions, your row looks like the rows of other hikers on the same trail, so it's harder to tell which one is yours. The more hikers answer, the better that works.</p>
           <p class="mt-3">How much blurring is enough depends on how many people hike a trail:</p>
           <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
               <div class="font-semibold text-white">Popular trails: weeks</div>
-              <p class="text-xs text-slate-400 mt-1">The busiest trails in the survey, where most hikers start in the same few weeks of the season, so a start week is usually shared with many others.</p>
+              <p class="text-xs text-slate-400 mt-1">The busiest trails in the survey, where most hikers start in the same few weeks of the season, so with enough answers a start week is shared with many others.</p>
               <p id="privacy-popular-trails" class="text-xs font-mono text-pine-300 mt-2"></p>
             </div>
             <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
@@ -283,7 +282,7 @@
               <p id="privacy-small-trails" class="text-xs font-mono text-amber-300 mt-2"></p>
             </div>
           </div>
-          <p class="mt-3 text-xs text-slate-400">No method is perfect: someone who already knows a lot about your hike might still guess which row is yours. Blurring makes that guess unreliable, and that's also why I ask for your consent before you start.</p>
+          <p class="mt-3 text-xs text-slate-400">No method is perfect: someone who knows enough about you or your hike might still find your row, and a small dataset makes that easier. That's also why I ask for your consent before you start.</p>
         </div>
 
         <!-- What I never collect -->
@@ -506,7 +505,7 @@
           <ul class="mt-5 space-y-3 text-sm text-slate-300">
             <li class="flex gap-3"><span class="text-pine-400 font-bold">1</span><span>The survey takes <strong class="text-white">about 10 minutes</strong>. I never ask for your name, email or an account.</span></li>
             <li class="flex gap-3"><span class="text-pine-400 font-bold">2</span><span>Your answers are <strong class="text-white">published as an open dataset</strong> that anyone can download. That's the whole point of the project: free data for hikers and researchers.</span></li>
-            <li class="flex gap-3"><span class="text-pine-400 font-bold">3</span><span>Before anything is saved, I <strong class="text-white">blur the details that could point to you</strong>: dates become calendar weeks (months on small trails), your age becomes a 5-year range (everyone 20 or younger shares one) and you only enter a world region. There are no free-text answers. That makes your row hard to pick out, but it's blurred, not anonymous.</span></li>
+            <li class="flex gap-3"><span class="text-pine-400 font-bold">3</span><span>Before anything is saved, I <strong class="text-white">blur the details that could point to you</strong>: dates become calendar weeks (months on small trails), your age becomes a 5-year range (everyone 20 or younger shares one) and you only enter a world region. There are no free-text answers. That makes your row harder to pick out, but it's blurred, not anonymous, and a small dataset limits the effectiveness of blurring.</span></li>
             <li class="flex gap-3"><span class="text-pine-400 font-bold">4</span><span>Some answers are <strong class="text-white">health information</strong> (injuries, illness, painkiller use, body weight). Please only take part if you're comfortable with them being published this way.</span></li>
             <li class="flex gap-3"><span class="text-pine-400 font-bold">5</span><span>After submitting you get a <strong class="text-white">personal code</strong>: come back with it to see how your hike compares as more hikers join, or to remove your answers from the dataset in case you change your mind later. Copies that others already downloaded can't be recalled, though.</span></li>
           </ul>
@@ -2166,7 +2165,7 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
             </div>
             <div>
               <dt class="font-semibold text-white">Privacy protection</dt>
-              <dd class="text-slate-400 mt-1">Anything that could help identify someone (quasi-identifiers) is generalised before it's stored, so the database is exactly the public file: ISO weeks instead of dates (months, 10-mi distances and whole-week durations on small trails, see <code class="text-slate-300">datePrecision</code>), 5-year age bands (one band for 20 and under) for the age at the start of the hike, world regions instead of countries, no submission timestamp and no free text. Derived values are computed from the exact answers first, then the exact answers are discarded. Rows are ordered by trail, year and start month (random within a group), never by submission order.</dd>
+              <dd class="text-slate-400 mt-1">Anything that could help identify someone (quasi-identifiers) is generalised before it's stored, so the database is exactly the public file: ISO weeks instead of dates (months, 10-mi distances and whole-week durations on small trails, see <code class="text-slate-300">datePrecision</code>), 5-year age bands (one band for 20 and under) for the age at the start of the hike, world regions instead of countries, no submission timestamp and no free text. Derived values are computed from the exact answers first, then the exact answers are discarded. Rows are ordered by trail, year and start month (random within a group), never by submission order. In a small dataset blurring protects less.</dd>
             </div>
             <div>
               <dt class="font-semibold text-white">Spam and test data</dt>

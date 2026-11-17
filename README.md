@@ -4,7 +4,7 @@
 
 Which trail sends the most hikers home early, and why? What pack weight makes for the happiest hike? Everyone on trail has an answer, but hardly anyone has exact numbers.
 
-[opentrailscience.org](https://opentrailscience.org) is a survey for anyone who has hiked a long-distance trail, finished or not. I never ask for your name or an annoying sign-up, and I blur the data a bit to prevent pinpointing a specific hiker, then publish every answer as an open dataset that anyone can download and play around with. Every hike gets us one step closer to some real answers!
+[opentrailscience.org](https://opentrailscience.org) is a survey for anyone who has hiked a long-distance trail, finished or not. I never ask for your name or an annoying sign-up, and I blur the data a bit to make it harder to pinpoint a specific hiker, then publish every answer as an open dataset that anyone can download and play around with. Every hike gets us one step closer to some real answers!
 
 ## Why I built this
 
