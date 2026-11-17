@@ -86,3 +86,10 @@ test('helper sanity: solvePow is deterministic', () => {
   const body = submission();
   assert.equal(solvePow(body), body.powNonce);
 });
+
+test('a trail check answered on a page that still showed emoji counts', () => {
+  assert.equal(HumanCheck.isCorrectTrailCheck({ id: 'skillet', choice: '🍳 Cast-iron skillet' }), true);
+  assert.equal(HumanCheck.isCorrectTrailCheck({ id: 'skillet', choice: '🔦 Headlamp' }), false);
+  assert.equal(HumanCheck.isCorrectTrailCheck({ id: 'skillet', choice: { toString: () => 'Cast-iron skillet' } }), false);
+  HumanCheck.TRAIL_CHECKS.forEach(round => assert.doesNotMatch(round.gear.concat(round.odd).join(' '), /\p{Extended_Pictographic}/u, round.id));
+});

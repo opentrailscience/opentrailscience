@@ -25,6 +25,47 @@
   <meta name="twitter:description" content="Gear, pace, costs and how the hike went, in about 10 minutes. The answers are published as an open dataset.">
   <meta name="twitter:image" content="https://opentrailscience.org/og-image.png">
   <link rel="icon" type="image/svg+xml" href="img/cairn-icon.svg">
+  <!-- Describes the dataset for Google Dataset Search and similar tools. A data block, not a
+       script: browsers never run it, so the Content-Security-Policy is unaffected. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Open Thru-Hiker Survey Dataset",
+    "description": "Survey answers from long-distance hikers on any trail and in any year, finished or not: gear, pace, rest days, sleep, costs, injuries, illness and how the hike ended. One row per hike, with dates, ages and home countries blurred before storage. Updated as new answers come in.",
+    "url": "https://opentrailscience.org/#download",
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "isAccessibleForFree": true,
+    "creator": {
+      "@type": "Organization",
+      "name": "Open Trail Science",
+      "url": "https://opentrailscience.org/"
+    },
+    "keywords": [
+      "thru-hiking",
+      "long-distance hiking",
+      "backpacking",
+      "Pacific Crest Trail",
+      "Appalachian Trail",
+      "Camino de Santiago",
+      "base weight",
+      "hiking injuries",
+      "survey"
+    ],
+    "distribution": [
+      {
+        "@type": "DataDownload",
+        "encodingFormat": "text/csv",
+        "contentUrl": "https://opentrailscience.org/data/thru_hiker_survey_dataset.csv"
+      },
+      {
+        "@type": "DataDownload",
+        "encodingFormat": "application/json",
+        "contentUrl": "https://opentrailscience.org/data/thru_hiker_survey_dataset.json"
+      }
+    ]
+  }
+  </script>
   
   <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="dark light">
@@ -144,6 +185,7 @@
           <div><div class="stat-label">Median base weight</div><div id="stat-median-baseweight" class="stat-counter">-- lbs</div><div class="stat-note">Dry pack loadout</div></div>
           <div><div class="stat-label">Average daily miles</div><div id="stat-avg-miles" class="stat-counter">-- mi</div><div class="stat-note">Sustained trail pace</div></div>
         </section>
+        <p id="stats-bias-note" class="hidden home-stats-note">Hikers choose for themselves whether to take part, so this isn't a random sample: finishers are probably over-represented. <a href="#download">More about the data</a></p>
 
         <!-- People who did not finish -->
         <section class="home-dnf">
@@ -518,7 +560,7 @@
           <!-- Human check (public/lib/human-check.js): options are filled in by app.js -->
           <div id="trail-check" class="mt-4 p-4 rounded-xl bg-slate-900/50 border border-amber-500/30 space-y-3">
             <div>
-              <span class="text-sm font-semibold text-slate-200">Quick trail check 🥾&nbsp;<span class="text-rose-400">*</span></span>
+              <span class="text-sm font-semibold text-slate-200">Quick trail check&nbsp;<span class="text-rose-400">*</span></span>
               <p class="text-xs text-slate-400 mt-0.5">So I know you're a hiker and not a bot: which of these would a thru-hiker leave at home?</p>
             </div>
             <div id="trail-check-options" class="grid grid-cols-2 sm:grid-cols-4 gap-2" role="group" aria-label="Trail check options"></div>
@@ -1687,15 +1729,15 @@
         </div>
 
         <span id="success-badge" class="sr-only px-3 py-1 rounded-full bg-pine-950 border border-pine-700/60 text-pine-300 font-mono text-xs font-semibold uppercase tracking-wider">
-          Hike Recorded
+          Hike saved
         </span>
 
         <h1 id="success-title" class="text-3xl sm:text-4xl font-extrabold text-white mt-3">
-          Thank You for Advancing Trail Science!
+          Thanks for sharing your hike
         </h1>
 
         <p id="success-intro" class="text-base text-slate-300 mt-3 max-w-xl mx-auto">
-          Your hike is now part of the open dataset, thank you! Every single answer makes the picture of thru-hiking a little clearer, for future hikers and for anyone researching it.
+          Your hike is now part of the open dataset. Every answer makes the picture of long-distance hiking a little clearer, for future hikers and for anyone researching it.
         </p>
 
         <!-- Hike Summary Card -->
@@ -1830,7 +1872,7 @@
           <div class="card-glow rounded-2xl p-6 sm:p-7 border border-emerald-500/30 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
-                <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-emerald-950 text-emerald-300 border border-emerald-700/60">CSV FORMAT</span>
+                <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-emerald-950 text-emerald-300 border border-emerald-700/60">CSV Format</span>
                 <span class="text-xs text-slate-400 font-mono">For spreadsheets</span>
               </div>
               <h2 class="text-xl font-bold text-white mt-3">Full Dataset (.CSV)</h2>
@@ -1855,7 +1897,7 @@
           <div class="card-glow rounded-2xl p-6 sm:p-7 border border-amber-500/30 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
-                <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-amber-950 text-amber-300 border border-amber-700/60">JSON FORMAT</span>
+                <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-amber-950 text-amber-300 border border-amber-700/60">JSON Format</span>
                 <span class="text-xs text-slate-400 font-mono">For code</span>
               </div>
               <h2 class="text-xl font-bold text-white mt-3">Full Dataset (.JSON)</h2>
@@ -1910,7 +1952,7 @@
                 <button type="button" data-unit-system="imperial" aria-pressed="true" class="px-3 py-1 rounded-md text-xs font-bold bg-brand text-white transition">mi · lb</button>
                 <button type="button" data-unit-system="metric" aria-pressed="false" class="px-3 py-1 rounded-md text-xs font-bold text-slate-400 hover:text-white transition">km · kg</button>
               </div>
-              <button type="button" id="btn-refresh-preview" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 transition" title="Refresh Table">
+              <button type="button" id="btn-refresh-preview" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 transition" title="Refresh Table" aria-label="Refresh Table">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
               </button>
             </div>

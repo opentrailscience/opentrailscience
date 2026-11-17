@@ -16,7 +16,7 @@ const { notePublicChange } = require('./rebuild');
 // A complete survey is about 3 KB of JSON; anything far larger isn't a survey.
 const MAX_BODY_BYTES = 20 * 1024;
 
-const THANK_YOU = 'Survey successfully submitted! Thank you for contributing your trail journey to research.';
+const THANK_YOU = 'Thanks, your hike is saved.';
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return methodNotAllowed('POST');

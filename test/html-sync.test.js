@@ -148,6 +148,16 @@ test('every unit-switched input has a unit in the schema and a label in the page
   });
 });
 
+test('the dataset description for search engines is valid JSON and points at the real files', () => {
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  assert.equal(blocks.length, 1);
+  const ld = JSON.parse(blocks[0][1]);
+  assert.equal(ld['@type'], 'Dataset');
+  assert.equal(ld.license, 'https://creativecommons.org/publicdomain/zero/1.0/');
+  assert.deepEqual(ld.distribution.map(d => d.contentUrl.replace('https://opentrailscience.org/', '')),
+    ['data/thru_hiker_survey_dataset.csv', 'data/thru_hiker_survey_dataset.json']);
+});
+
 test('every view has exactly one h1 (only one view is visible at a time)', () => {
   const views = [...html.matchAll(/<section id="view-([a-z]+)" class="app-view[^"]*">([\s\S]*?)(?=<section id="view-|<\/main>)/g)];
   assert.ok(views.length >= 7, 'all views found');

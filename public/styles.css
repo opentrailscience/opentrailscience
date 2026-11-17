@@ -621,6 +621,7 @@
   .home-stats .stat-label { font-size: 15px; font-weight: 600; color: var(--text-secondary); }
   .home-stats .stat-counter { font-size: 32px; line-height: 1.2; margin-top: 2px; }
   .home-stats .stat-note { font-size: 14px; color: var(--text-muted); }
+  .home-stats-note { margin: 10px 0 0; font-size: 14px; color: var(--text-muted); }
 
   .home-how { padding: 80px 0 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px; }
   .home-how > div { flex: 1 1 520px; min-width: 0; }
@@ -635,7 +636,7 @@
   .home-dnf { background: var(--callout-bg); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; }
   .home-dnf > div { flex: 1 1 520px; min-width: 0; }
   /* After the first-50 card (or the numbers from 50 hikers on). */
-  .home-card + .home-dnf { margin-top: 24px; }
+  .home-card + .home-dnf, .home-stats-note + .home-dnf { margin-top: 24px; }
   .home-dnf .label { margin: 0; font-weight: 700; font-size: 15px; color: var(--callout-label); }
   .home-dnf h2 { margin: 4px 0 0; font-size: 26px; font-weight: var(--heading-weight); line-height: 1.15; }
   .home-dnf p:not(.label) { margin: 8px 0 0; color: var(--text-secondary); }

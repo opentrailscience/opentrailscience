@@ -393,6 +393,7 @@
     // Until there are enough hikes, invite people instead of showing thin numbers.
     $('stats-first50').classList.toggle('hidden', !early);
     $('stats-tiles').classList.toggle('hidden', early);
+    $('stats-bias-note').classList.toggle('hidden', early);
     if (early) {
       renderFirstHikersProgress($('first50-bar'), $('first50-count'), total, mine.length > 0);
       $('first50-progress').setAttribute('aria-valuenow', String(total));
@@ -1316,7 +1317,7 @@
       btnNextText.textContent = 'Quick bot check…';
       const botCheckToken = await getBotCheckToken();
       // Proof of work for these exact answers (see lib/human-check.js), about a second.
-      btnNextText.textContent = 'Checking trail permit… 🥾';
+      btnNextText.textContent = 'Checking…';
       const powNonce = await HumanCheck.solveProofOfWork(answers);
       btnNextText.textContent = 'Sending your answers…';
 
@@ -1401,7 +1402,7 @@
       if (el) el.textContent = text;
     };
     set('summary-trail-badge', data.trail);
-    set('summary-hike-year', `${data.hikeYear} Hike`);
+    set('summary-hike-year', `${data.hikeYear} hike`);
     set('summary-status', STATUS_LABELS[data.completionStatus] || data.completionStatus);
     $('summary-status').className = statusBadgeClass(data.completionStatus);
     // In the units the hiker used in the survey.
@@ -2318,9 +2319,9 @@
   // The thank-you page shows either a fresh submission or a looked-up hike.
   const SUCCESS_TEXT = {
     submitted: {
-      badge: 'Hike Recorded',
-      title: 'Thank You for Advancing Trail Science!',
-      intro: 'Your hike is now part of the open dataset, thank you! Every single answer makes the picture of thru-hiking a little clearer, for future hikers and for anyone researching it.'
+      badge: 'Hike saved',
+      title: 'Thanks for sharing your hike',
+      intro: 'Your hike is now part of the open dataset. Every answer makes the picture of long-distance hiking a little clearer, for future hikers and for anyone researching it.'
     },
     revisit: {
       badge: 'Your hike',
@@ -2530,7 +2531,7 @@
         btn.setAttribute('aria-pressed', 'true');
         container.querySelectorAll('button').forEach(b => { if (b !== btn) b.disabled = true; });
         feedback.className = 'text-xs text-pine-300 font-semibold';
-        feedback.textContent = "Correct, that one stays home. You're clearly a hiker. ✓";
+        feedback.textContent = "Right, you're clearly a great hiker!";
       };
       btn.addEventListener('click', () => {
         if (state.trailCheck.passed) return;

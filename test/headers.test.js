@@ -27,7 +27,8 @@ test('fonts are cached as immutable, pages are not', () => {
 });
 
 test('the page has nothing inline that the policy would block', () => {
-  assert.doesNotMatch(html, /<script(?![^>]*\ssrc=)[^>]*>/, 'inline <script>');
+  // The one exception is the JSON-LD data block, which browsers never run.
+  assert.doesNotMatch(html, /<script(?![^>]*\ssrc=)(?![^>]*type="application\/ld\+json")[^>]*>/, 'inline <script>');
   assert.doesNotMatch(html, /<style[\s>]/, 'inline <style>');
   assert.doesNotMatch(html, /\sstyle="/, 'style attribute');
   assert.doesNotMatch(html, /\son[a-z]+="/, 'inline event handler');

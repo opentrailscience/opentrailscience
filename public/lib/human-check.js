@@ -32,22 +32,25 @@
   const POW_PREFIX = 'ots-trail-check-v1|';
 
   const TRAIL_CHECKS = [
-    { id: 'skillet', gear: ['🔦 Headlamp', '💧 Water filter', '🧥 Rain jacket'], odd: '🍳 Cast-iron skillet' },
-    { id: 'bowling', gear: ['🥢 Trekking poles', '⛺ Tent stakes', '🧴 Sunscreen'], odd: '🎳 Bowling ball' },
-    { id: 'piano', gear: ['🥄 Long spoon', '🛏️ Sleeping pad', '🩹 First-aid kit'], odd: '🎹 Grand piano' },
-    { id: 'flamingo', gear: ['🗺️ Map', '🔥 Lighter', '🧦 Spare socks'], odd: '🦩 Inflatable pool flamingo' },
-    { id: 'ironing', gear: ['🪥 Toothbrush', '🍫 Snacks', '🧭 Compass'], odd: '👔 Ironing board' },
-    { id: 'sink', gear: ['🧢 Sun hat', '🧂 Electrolytes', '🎒 Rain cover'], odd: '🚰 The kitchen sink' },
-    { id: 'chair', gear: ['🧻 Trowel & TP', '🩴 Camp shoes', '🔋 Battery pack'], odd: '🪑 Office chair' }
+    { id: 'skillet', gear: ['Headlamp', 'Water filter', 'Rain jacket'], odd: 'Cast-iron skillet' },
+    { id: 'bowling', gear: ['Trekking poles', 'Tent stakes', 'Sunscreen'], odd: 'Bowling ball' },
+    { id: 'piano', gear: ['Long spoon', 'Sleeping pad', 'First-aid kit'], odd: 'Grand piano' },
+    { id: 'flamingo', gear: ['Map', 'Lighter', 'Spare socks'], odd: 'Inflatable pool flamingo' },
+    { id: 'ironing', gear: ['Toothbrush', 'Snacks', 'Compass'], odd: 'Ironing board' },
+    { id: 'sink', gear: ['Sun hat', 'Electrolytes', 'Rain cover'], odd: 'The kitchen sink' },
+    { id: 'chair', gear: ['Trowel & TP', 'Camp shoes', 'Battery pack'], odd: 'Office chair' }
   ];
 
   const CHECKS_BY_ID = Object.fromEntries(TRAIL_CHECKS.map(c => [c.id, c]));
 
+  /** Letters only, so an answer from a page that still showed emoji ("🍳 Cast-iron skillet") counts too. */
+  const plain = text => String(text).replace(/[^\p{L}\p{N} &-]/gu, '').trim();
+
   /** True if `choice` is the item that doesn't belong in round `id`. */
   function isCorrectTrailCheck(answer) {
-    if (!answer || typeof answer !== 'object') return false;
+    if (!answer || typeof answer !== 'object' || typeof answer.choice !== 'string') return false;
     const round = CHECKS_BY_ID[answer.id];
-    return Boolean(round && answer.choice === round.odd);
+    return Boolean(round && plain(answer.choice) === round.odd);
   }
 
   /** The answers in a fixed order, identical in the browser and on the server. */
