@@ -430,9 +430,8 @@
    * then the handle is hidden, so its starting position can't nudge the answer:
    * the hiker taps the track where their answer is.
    */
-  .slider-untouched {
-    opacity: 0.55;
-  }
+  /* No opacity change: an untouched slider is shown at full strength (with a scale
+     of numbers under the rating sliders, app.js addSliderScales), just without a handle. */
 
   /* Small text controls get a bigger invisible tap area (at least 24px) without
      changing the layout: "Don't know" checkboxes, "Download card". */
@@ -740,4 +739,13 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
   }
+
+  /* The numbers under the rating sliders, centred where the 22px handle lands. */
+  .slider-scale { display: flex; justify-content: space-between; padding: 0 11px; margin-top: -4px; }
+  .slider-scale span { width: 0; display: flex; flex-direction: column; align-items: center; font-family: var(--font-mono); font-size: 12px; line-height: 1; color: var(--text-muted); cursor: pointer; user-select: none; }
+  .slider-scale span::before { content: ''; width: 1.5px; height: 6px; margin-bottom: 4px; background: var(--range-track); }
+
+  /* Anything the survey scrolls to (the Cloudflare banner, the first missing answer) or that
+     the browser scrolls to for a tap stays clear of the sticky progress bar. */
+  #view-survey * { scroll-margin-top: 140px; }
 }

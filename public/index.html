@@ -314,7 +314,7 @@
             </div>
             <div id="privacy-bot-check">
               <dt class="font-semibold text-white">Bot check by Cloudflare</dt>
-              <dd class="mt-1">When you press Submit, Cloudflare Turnstile checks that you're a person and not a bot. For that, Cloudflare (a US company) sees your IP address and technical details of your browser, like its user agent. According to Cloudflare, these are only used for this check and not to identify or track you (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">Turnstile privacy addendum</a>). I don't receive any of it, only whether the check passed. The check only loads on the last page of the survey, so just visiting this website doesn't contact Cloudflare.</dd>
+              <dd class="mt-1">When you press Submit, Cloudflare Turnstile checks that you're a person and not a bot. For that, Cloudflare (a US company) sees your IP address and technical details of your browser, like its user agent. According to Cloudflare, these are only used for this check and not to identify or track you (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">Turnstile privacy addendum</a>). I don't receive any of it, only whether the check passed. The check only loads on the first page, after you start the survey, and runs when you press Submit, so just visiting this website doesn't contact Cloudflare.</dd>
             </div>
             <div>
               <dt class="font-semibold text-white">Your browser</dt>
@@ -542,6 +542,12 @@
 
       <!-- Survey Form Body -->
       <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <!-- Shown when Cloudflare's script can't load (app.js loadTurnstileIfStarted): the survey can't be submitted without it -->
+        <div id="bot-check-banner" role="alert" class="hidden mb-4 p-4 rounded-xl bg-rose-950/80 border border-rose-600/50 text-rose-200 text-sm">
+          <p class="font-bold">Sorry, this survey can't be submitted from this browser right now.</p>
+          <p class="mt-1">The last step uses Cloudflare's bot check, and something is blocking it (often an ad blocker or strict privacy settings). Please allow challenges.cloudflare.com for this site or use another browser, then try again. The survey stays locked until it works, so you don't fill it in for nothing.</p>
+          <button type="button" id="btn-bot-check-retry" class="btn btn-secondary mt-3">Try again</button>
+        </div>
         <div id="draft-notice" class="hidden mb-4 px-4 py-3 rounded-xl bg-slate-900/70 border border-slate-700 text-xs sm:text-sm text-slate-300 flex flex-wrap items-center justify-between gap-2">
           <span>Welcome back! Your answers from last time are still here.</span>
           <button type="button" id="btn-start-over" class="text-xs font-semibold text-slate-400 hover:text-white underline underline-offset-2">Start over</button>
@@ -824,14 +830,14 @@
                     Fitness before the hike (1 to 10)&nbsp;<span class="text-rose-400">*</span>
                   </label>
                   <span id="fitness-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
-                    Move the slider
+                    Tap where it fits
                   </span>
                 </div>
                 <input type="range" id="field-preTrailFitnessRating" name="preTrailFitnessRating" min="1" max="10" value="6" class="slider-untouched w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <div class="grid grid-cols-3 gap-2 sm:flex sm:justify-between text-xs text-slate-400 mt-1">
-                  <span>1 (Couch to trail)</span>
-                  <span class="max-sm:text-center">5 (Gym or 5K runner)</span>
-                  <span class="max-sm:text-right">10 (Elite mountain athlete)</span>
+                  <span>Couch to trail</span>
+                  <span class="max-sm:text-center">Gym or 5K runner</span>
+                  <span class="max-sm:text-right">Elite mountain athlete</span>
                 </div>
               </div>
 
@@ -948,7 +954,7 @@
                     How did you train before the hike?&nbsp;<span class="text-rose-400">*</span>
                   </label>
                   <span id="training-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
-                    Move the slider
+                    Tap where it fits
                   </span>
                 </div>
                 <input type="range" id="field-trainingFocus" name="trainingFocus" min="0" max="1" step="0.01" value="0.5" class="slider-untouched w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
@@ -1348,13 +1354,13 @@
                       Sleep quality (0 to 10)&nbsp;<span class="text-rose-400">*</span>
                     </label>
                     <span id="sleep-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
-                    Move the slider
+                    Tap where it fits
                   </span>
                   </div>
                   <input type="range" id="field-sleepQualityRating" name="sleepQualityRating" min="0" max="10" value="7" class="slider-untouched w-full mt-2" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <div class="grid grid-cols-2 gap-2 sm:flex sm:justify-between text-xs text-slate-400 mt-1">
-                    <span>0 (Tossing and freezing)</span>
-                    <span class="max-sm:text-right">10 (Deep, restful sleep)</span>
+                    <span>Tossing and freezing</span>
+                    <span class="max-sm:text-right">Deep, restful sleep</span>
                   </div>
                 </div>
               </div>
@@ -1380,7 +1386,7 @@
                     How much of the time did you hike alone?&nbsp;<span class="text-rose-400">*</span>
                   </label>
                   <span id="alone-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
-                    Move the slider
+                    Tap where it fits
                   </span>
                 </div>
                 <input type="range" id="field-percentHikingAlone" name="percentHikingAlone" min="0" max="100" value="50" class="slider-untouched w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
@@ -1624,14 +1630,14 @@
                     How much did you enjoy the hike overall? (1 to 10)&nbsp;<span class="text-rose-400">*</span>
                   </label>
                   <span id="enjoyment-label" class="font-mono text-xs font-bold text-amber-400 bg-amber-950 px-2 py-0.5 rounded-sm border border-amber-800">
-                    Move the slider
+                    Tap where it fits
                   </span>
                 </div>
                 <input type="range" id="field-overallEnjoymentRating" name="overallEnjoymentRating" min="1" max="10" value="9" class="slider-untouched w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <div class="grid grid-cols-3 gap-2 sm:flex sm:justify-between text-xs text-slate-400 mt-1">
-                  <span>1 (Miserable sufferfest)</span>
-                  <span class="max-sm:text-center">5 (Bittersweet, mixed)</span>
-                  <span class="max-sm:text-right">10 (Best thing I ever did)</span>
+                  <span>Miserable sufferfest</span>
+                  <span class="max-sm:text-center">Bittersweet, mixed</span>
+                  <span class="max-sm:text-right">Best thing I ever did</span>
                 </div>
               </div>
 

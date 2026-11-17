@@ -218,6 +218,7 @@
     initRampCalculator();
     initCodeSnippets();
     initWizardControls();
+    initBotCheckBanner();
     initStepHistory();
     initInvalidMarks();
     initPreviewTable();
@@ -319,7 +320,7 @@
       state.surveyStartedAt = Date.now();
     }
     if (hash === 'survey') {
-      loadTurnstileIfOnLastStep();
+      loadTurnstileIfStarted();
       history.replaceState({ step: state.currentStep }, '', '#survey');
     }
 
@@ -573,10 +574,39 @@
     state.touchedSliders.delete(inputId);
     slider.value = slider.defaultValue;
     slider.classList.add('slider-untouched');
-    $(SLIDER_LABELS[inputId]).textContent = 'Move the slider';
+    $(SLIDER_LABELS[inputId]).textContent = 'Tap where it fits';
+  }
+
+  /**
+   * A scale of numbers under the rating sliders (1 to 10, 0 to 10), lined up with
+   * where the handle lands, so an untouched slider reads as a scale to tap on
+   * rather than a disabled bar. Tapping a number answers it too.
+   */
+  const SCALED_SLIDERS = ['field-preTrailFitnessRating', 'field-sleepQualityRating', 'field-overallEnjoymentRating'];
+
+  function addSliderScales() {
+    SCALED_SLIDERS.forEach(id => {
+      const slider = $(id);
+      if (!slider) return;
+      const scale = document.createElement('div');
+      scale.className = 'slider-scale';
+      scale.setAttribute('aria-hidden', 'true'); // the slider itself is what screen readers use
+      for (let v = Number(slider.min); v <= Number(slider.max); v++) {
+        const mark = document.createElement('span');
+        mark.textContent = String(v);
+        mark.addEventListener('click', () => {
+          slider.value = String(v);
+          slider.dispatchEvent(new Event('input', { bubbles: true }));
+          slider.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        scale.appendChild(mark);
+      }
+      slider.after(scale);
+    });
   }
 
   function initSliders() {
+    addSliderScales();
     bindSlider('field-preTrailFitnessRating', 'fitness-label', v => {
       let desc = 'Elite mountain athlete';
       if (v <= 2) desc = 'Couch to trail';
@@ -624,7 +654,7 @@
     slider.disabled = noTraining;
     slider.classList.toggle('opacity-30', noTraining);
     if (noTraining) $('training-label').textContent = "Didn't train";
-    else if (!state.touchedSliders.has('field-trainingFocus')) $('training-label').textContent = 'Move the slider';
+    else if (!state.touchedSliders.has('field-trainingFocus')) $('training-label').textContent = 'Tap where it fits';
   }
 
   function initNoTraining() {
@@ -987,7 +1017,7 @@
     // The bot check sits on the last step; load it early so Submit doesn't wait for it.
     const lastStep = stepNumber === state.totalSteps;
     $('turnstile-box').classList.toggle('hidden', !lastStep);
-    loadTurnstileIfOnLastStep();
+    loadTurnstileIfStarted();
 
     hideErrors();
     if (!options || options.scroll !== false) window.scrollTo({ top: 100, behavior: scrollMode() });
@@ -1090,7 +1120,7 @@
       const field = Schema.FIELDS_BY_NAME[name];
       const el = field.input && $(field.input);
       if (el && el.type === 'range' && !state.touchedSliders.has(el.id)) {
-        return `Please move the slider for: ${(field.question || field.label).split(' (')[0]}`;
+        return `Please tap the slider for: ${(field.question || field.label).split(' (')[0]}`;
       }
       return result.fieldErrors[name];
     });
@@ -1165,33 +1195,56 @@
   const TURNSTILE_TIMEOUT_MS = 20000;
   const TURNSTILE_SLOW = "Cloudflare's bot check didn't answer in time. Please press Submit again. Your answers are saved.";
   const TURNSTILE_BLOCKED = "Cloudflare's bot check couldn't load. Please allow challenges.cloudflare.com (for example in your ad blocker) or try another browser. Your answers are saved.";
-  const botCheck = { loading: null, widget: null, used: false, waiting: null };
+  const botCheck = { script: null, loading: null, widget: null, used: false, waiting: null };
 
   function turnstileSiteKey() {
     return location.hostname === 'opentrailscience.org' ? $('turnstile-box').dataset.sitekey : TURNSTILE_TEST_KEY;
   }
 
   /**
-   * Only while the hiker is actually on the last step: a draft restored on any
-   * page must not contact Cloudflare (the privacy page promises that).
+   * Cloudflare's script is downloaded as soon as the hiker starts the survey (only
+   * on the survey page, never just from visiting the site), so a browser that
+   * blocks it gets a banner on the first step instead of a dead end after ten
+   * minutes. The widget is drawn and the check runs only on the last step.
    */
-  function loadTurnstileIfOnLastStep() {
-    if (state.currentView === 'survey' && state.consentGiven && state.currentStep === state.totalSteps) {
-      loadTurnstile().catch(() => {});
-    }
+  function loadTurnstileIfStarted() {
+    if (state.currentView !== 'survey' || !state.consentGiven) return;
+    loadTurnstileScript().then(() => setBotCheckBanner(false), () => setBotCheckBanner(true));
+    if (state.currentStep === state.totalSteps) loadTurnstile().catch(() => {});
   }
 
-  /** Loads the script and renders the (invisible) widget once. */
-  function loadTurnstile() {
-    if (botCheck.loading) return botCheck.loading;
-    botCheck.loading = new Promise((resolve, reject) => {
+  /**
+   * Blocked: the banner shows and the form is locked (inert: no typing, tapping or
+   * focus), so nobody fills in ten minutes of answers that can't be sent.
+   */
+  function setBotCheckBanner(blocked) {
+    const banner = $('bot-check-banner');
+    const wasHidden = banner.classList.contains('hidden');
+    banner.classList.toggle('hidden', !blocked);
+    $('survey-form').inert = blocked;
+    $('survey-form').classList.toggle('opacity-40', blocked);
+    if (blocked && wasHidden) banner.scrollIntoView({ behavior: scrollMode(), block: 'center' });
+  }
+
+  /** Downloads Cloudflare's script once; a failed download can be retried. */
+  function loadTurnstileScript() {
+    if (botCheck.script) return botCheck.script;
+    botCheck.script = new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = TURNSTILE_SCRIPT;
       script.async = true;
       script.onload = () => (window.turnstile ? resolve() : reject(new Error('Turnstile missing')));
-      script.onerror = () => reject(new Error('Turnstile blocked'));
+      script.onerror = () => { script.remove(); reject(new Error('Turnstile blocked')); };
       document.head.appendChild(script);
-    }).then(() => {
+    });
+    botCheck.script.catch(() => { botCheck.script = null; });
+    return botCheck.script;
+  }
+
+  /** The script plus the (invisible) widget, drawn once on the last step. */
+  function loadTurnstile() {
+    if (botCheck.loading) return botCheck.loading;
+    botCheck.loading = loadTurnstileScript().then(() => {
       botCheck.widget = window.turnstile.render('#turnstile-widget', {
         sitekey: turnstileSiteKey(),
         action: 'submit',
@@ -1210,6 +1263,16 @@
     // A failed load can be retried with the next press of Submit.
     botCheck.loading.catch(() => { botCheck.loading = null; });
     return botCheck.loading;
+  }
+
+  function initBotCheckBanner() {
+    $('btn-bot-check-retry').addEventListener('click', () => {
+      $('btn-bot-check-retry').disabled = true;
+      loadTurnstileScript()
+        .then(() => { setBotCheckBanner(false); showToast('Cloudflare loaded. You can submit at the end.'); },
+          () => setBotCheckBanner(true))
+        .finally(() => { $('btn-bot-check-retry').disabled = false; });
+    });
   }
 
   /** A fresh token for one submission: tokens are single-use and valid for 5 minutes. */
@@ -2127,7 +2190,7 @@
     $('consent-gate').classList.add('hidden');
     $('survey-body').classList.remove('hidden');
     $('survey-progress').classList.remove('hidden');
-    loadTurnstileIfOnLastStep();
+    loadTurnstileIfStarted();
   }
 
   /** Back to the consent step: a fresh survey (start over, another hike) asks again. */
