@@ -178,7 +178,7 @@ test('page views need no function: the old live endpoints are gone', () => {
   const path = require('path');
   assert.equal(fs.existsSync(path.join(__dirname, '../netlify/functions/data.js')), false);
   assert.equal(fs.existsSync(path.join(__dirname, '../netlify/functions/stats.js')), false);
-  const app = fs.readFileSync(path.join(__dirname, '../public/app.js'), 'utf-8');
+  const app = require('../scripts/build-js').appSources();
   assert.doesNotMatch(app, /\/api\/(data|stats|export)/, 'the browser only reads /data/* files');
 });
 

@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
-const { buildBrowserBundle, BROWSER_SCRIPTS, BUNDLE } = require('../scripts/build-js');
+const { buildBrowserBundle, BROWSER_SCRIPTS, BUNDLE, APP_ENTRY } = require('../scripts/build-js');
 
 const PUBLIC_DIR = path.join(__dirname, '../public');
 // Loaded on its own in <head>, before anything is drawn: sets the light/dark theme.
@@ -15,6 +15,15 @@ test('the bundle includes every browser script', () => {
     .map(f => f.replace(/^\.\//, ''))
     .filter(f => f !== EARLY_SCRIPT);
   assert.deepEqual(sources.sort(), BROWSER_SCRIPTS.slice().sort());
+});
+
+test('the app is ES modules in src/app, reached from main.js, with nothing left in public/app.js', async () => {
+  assert.equal(fs.existsSync(path.join(PUBLIC_DIR, 'app.js')), false, 'the app now lives in src/app');
+  const esbuild = require('esbuild');
+  const result = await esbuild.build({ entryPoints: [APP_ENTRY], bundle: true, write: false, metafile: true, format: 'iife' });
+  const bundled = Object.keys(result.metafile.inputs).map(f => path.basename(f)).sort();
+  const files = fs.readdirSync(path.dirname(APP_ENTRY)).filter(f => f.endsWith('.js')).sort();
+  assert.deepEqual(bundled, files, 'every module in src/app is used');
 });
 
 test('the page loads the theme script in <head>, then only the deferred bundle', () => {

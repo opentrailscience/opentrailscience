@@ -4,6 +4,7 @@
  */
 @import 'tailwindcss' source(none);
 @source '../public/**/*.{html,js}';
+@source './app/*.js';
 
 /* light:… classes apply in the light theme only (e.g. the theme button icons). */
 @custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));

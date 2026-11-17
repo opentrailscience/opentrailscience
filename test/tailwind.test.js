@@ -5,7 +5,7 @@ const path = require('path');
 
 const read = file => fs.readFileSync(path.join(__dirname, '..', file), 'utf-8');
 const css = read('src/tailwind.css');
-const markup = ['public/index.html', 'public/app.js', 'public/insights.js'].map(read).join('\n');
+const markup = ['public/index.html', 'public/insights.js'].map(read).join('\n') + '\n' + require('../scripts/build-js').appSources();
 
 test('every space-x/space-y class has a Tailwind 3 compatibility rule', () => {
   const used = new Set(markup.match(/(?<![\w-])(?:(?:sm|md|lg|xl):)?space-[xy]-[\d.]+(?![\w.-])/g));

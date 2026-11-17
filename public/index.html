@@ -110,7 +110,7 @@
   <!-- Toast messages -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
 
-  <!-- Views (shown one at a time, see the router in app.js) -->
+  <!-- Views (shown one at a time, see src/app/router.js) -->
   <main class="grow">
 
     <!-- Home -->
@@ -125,7 +125,7 @@
             <p class="fine">About 10 minutes. No names, emails or accounts, and your answers save on your device as you go. <a href="#privacy">Privacy</a> · <a href="#about">Who's behind this?</a></p>
           </div>
           <div class="hero-more">
-            <!-- "Suggest a trail", no survey needed: sent on its own (initTrailSuggestions in app.js, /api/trail-suggestion) -->
+            <!-- "Suggest a trail", no survey needed: sent on its own (src/app/suggestions.js, /api/trail-suggestion) -->
             <details class="trail-suggest mt-4">
               <summary>Don't see your trail? Suggest it</summary>
               <div class="mt-3">
@@ -166,7 +166,7 @@
           </div>
         </section>
 
-        <!-- Shown until 50 hikers have taken part (see app.js FIRST_HIKERS_GOAL): one stone per hike -->
+        <!-- Shown until 50 hikers have taken part (FIRST_HIKERS_GOAL in src/app/core.js): one stone per hike -->
         <section id="stats-first50" class="hidden home-card first50" aria-labelledby="first50-title">
           <div>
             <h2 id="first50-title">Be part of the first 50</h2>
@@ -540,7 +540,7 @@
         </div>
       </div>
 
-      <!-- Consent: shown before the survey starts (see app.js initConsent) -->
+      <!-- Consent: shown before the survey starts (src/app/consent.js) -->
       <div id="consent-gate" class="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         <div class="card-glow rounded-2xl p-6 max-[399px]:p-4 sm:p-8">
           <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">What happens with your answers</h2>
@@ -557,7 +557,7 @@
             <input type="checkbox" id="consent-checkbox" class="mt-0.5 w-4 h-4 accent-emerald-500 shrink-0">
             <span class="text-sm text-slate-200">I am <strong>18 or older</strong> and I agree that my answers, including health information, are stored and published as an open dataset as described above and on the privacy page.</span>
           </label>
-          <!-- Human check (public/lib/human-check.js): options are filled in by app.js -->
+          <!-- Human check (public/lib/human-check.js): options are filled in by src/app/consent.js -->
           <div id="trail-check" class="mt-4 p-4 rounded-xl bg-slate-900/50 border border-amber-500/30 space-y-3">
             <div>
               <span class="text-sm font-semibold text-slate-200">Quick trail check&nbsp;<span class="text-rose-400">*</span></span>
@@ -584,7 +584,7 @@
 
       <!-- Survey Form Body -->
       <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <!-- Shown when Cloudflare's script can't load (app.js loadTurnstileIfStarted): the survey can't be submitted without it -->
+        <!-- Shown when Cloudflare's script can't load (src/app/botcheck.js): the survey can't be submitted without it -->
         <div id="bot-check-banner" role="alert" class="hidden mb-4 p-4 rounded-xl bg-rose-950/80 border border-rose-600/50 text-rose-200 text-sm">
           <p class="font-bold">Sorry, this survey can't be submitted from this browser right now.</p>
           <p class="mt-1">The last step uses Cloudflare's bot check, and something is blocking it (often an ad blocker or strict privacy settings). Please allow challenges.cloudflare.com for this site or use another browser, then try again. The survey stays locked until it works, so you don't fill it in for nothing.</p>
@@ -683,7 +683,7 @@
                     Year of the hike&nbsp;<span class="text-rose-400">*</span>
                   </label>
                   <select id="field-hikeYear" name="hikeYear" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-hidden focus:border-pine-500 transition text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
-                    <!-- Filled by app.js -->
+                    <!-- Filled by src/app/controls.js -->
                   </select>
                 </div>
 
@@ -801,7 +801,7 @@
                   <label for="field-height" class="block text-sm font-semibold text-slate-200 mb-1.5">
                     <span id="label-height">Height (feet and inches)</span>&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <!-- Imperial: feet + inches, kept in sync with field-height (inches), see app.js initHeightFeetInches. -->
+                  <!-- Imperial: feet + inches, kept in sync with field-height (inches), see src/app/units.js. -->
                   <div id="height-feet-inches" class="grid grid-cols-2 gap-2">
                     <div class="relative">
                       <label for="height-feet" class="sr-only">Height, feet</label>
@@ -1331,7 +1331,7 @@
                   </span>
                 </div>
 
-                <!-- Weeks with mileage boxes: worked out from the dates in step 1 (app.js syncRampWeeksWithDates), not asked -->
+                <!-- Weeks with mileage boxes: worked out from the dates in step 1 (src/app/units.js), not asked -->
                 <p id="ramp-weeks-note" class="text-xs text-slate-400 mb-3">Your dates cover four weeks or more, so all four weeks are asked.</p>
                 <div class="hidden">
                   <input type="hidden" id="field-rampWeeksHiked" name="rampWeeksHiked" value="4">
@@ -1695,7 +1695,7 @@
             <ul id="survey-error-list" class="list-disc list-inside space-y-0.5 pl-1"></ul>
           </div>
 
-          <!-- Cloudflare Turnstile, only on the last step (see app.js). The site key is public. -->
+          <!-- Cloudflare Turnstile, only on the last step (src/app/botcheck.js). The site key is public. -->
           <div id="turnstile-box" class="hidden mt-6" data-sitekey="0x4AAAAAAFlz-4qpgfPjSnU2">
             <div id="turnstile-widget"></div>
             <p class="text-xs text-slate-400 mt-2">When you submit, Cloudflare quickly checks that you're a person and not a bot. <a href="#privacy-bot-check" class="underline underline-offset-2 hover:text-slate-200">What that means for your data</a></p>
@@ -1776,7 +1776,7 @@
             <p id="summary-comparison-note" class="text-xs text-slate-500 mt-2"></p>
           </div>
 
-          <!-- Every stored answer of this hike, filled by app.js (renderAllAnswers) -->
+          <!-- Every stored answer of this hike, filled by src/app/results.js -->
           <details id="all-answers" class="border-t border-slate-800 pt-4">
             <summary class="cursor-pointer text-sm font-semibold text-pine-400 hover:text-pine-300">Show all my answers</summary>
             <p class="text-xs text-slate-400 mt-2">Exactly what is stored and published for this hike, after blurring.</p>
@@ -1809,7 +1809,7 @@
           <p class="text-xs text-slate-400 mt-2">It's also the only way to delete your answer in case you change your mind later (on the <a href="#privacy-delete" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">privacy page</a>). I don't know who you are, so I can't look it up for you: please save it somewhere safe.</p>
         </div>
 
-        <!-- Every answer compared with the same trail and with everyone (Stats.compareAll, renderCompareTable in app.js) -->
+        <!-- Every answer compared with the same trail and with everyone (Stats.compareAll, renderCompareTable in src/app/results.js) -->
         <details id="compare-all" class="hidden mt-8 max-w-xl mx-auto text-left card-glow rounded-2xl p-5">
           <summary class="cursor-pointer text-sm font-semibold text-pine-400 hover:text-pine-300">How you compare on every answer</summary>
           <p class="text-xs text-slate-400 mt-2">Each number is the share of hikers you're above or below. Hikers with the same answer count for neither side, so the two don't always add up to 100%.</p>
@@ -1977,7 +1977,7 @@
                 </tr>
               </thead>
               <tbody id="preview-table-body" class="divide-y divide-slate-800/60 font-mono text-slate-300">
-                <!-- Filled by app.js -->
+                <!-- Filled by src/app/dataset.js -->
                 <tr>
                   <td colspan="11" class="py-8 text-center text-slate-500">Loading dataset preview...</td>
                 </tr>
@@ -2123,7 +2123,7 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
           </div>
         </div>
 
-        <!-- Data Dictionary (rendered from lib/survey-schema.js by app.js) -->
+        <!-- Data Dictionary (rendered from lib/survey-schema.js by src/app/dataset.js) -->
         <div class="card-glow rounded-2xl p-6 sm:p-8 space-y-4">
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div>
@@ -2138,7 +2138,7 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
             <li>Derived columns are computed on the server and never asked.</li>
           </ul>
 
-          <!-- Folded: the table is most of the page's length on a phone. The column count is filled in by app.js. -->
+          <!-- Folded: the table is most of the page's length on a phone. The column count is filled in by src/app/dataset.js. -->
           <details id="dictionary-details">
             <summary class="cursor-pointer text-sm font-semibold text-pine-400 hover:text-pine-300">Show all <span id="dictionary-count">the</span> columns</summary>
           <div class="mt-3 overflow-x-auto rounded-xl border border-slate-800" tabindex="0" role="region" aria-label="Data dictionary">
@@ -2223,8 +2223,8 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
   </footer>
 
   <!-- Application Logic -->
-  <!-- lib/survey-schema.js, lib/survey-stats.js, lib/human-check.js, share-card.js, insights.js
-       and app.js, joined and minified by scripts/build-js.js -->
+  <!-- lib/survey-schema.js, lib/survey-stats.js, lib/human-check.js, share-card.js and insights.js,
+       then the app modules in src/app/, bundled and minified by scripts/build-js.js -->
   <script src="js/app.bundle.js" defer></script>
 </body>
 </html>

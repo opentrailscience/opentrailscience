@@ -10,7 +10,6 @@ A single-page site without a framework, a few Netlify Functions and a MongoDB da
 ```
 public/                     The website (Netlify's publish directory)
   index.html                All views: home, survey, thank-you, insights, dataset, privacy, about
-  app.js                    Routing, the survey wizard and its saved draft, the dataset page
   insights.js               Charts on the Insights page
   share-card.js             The personal share card, drawn in the browser (img/example-card.webp on the
                             home page is drawn by it too; make it again when the card changes)
@@ -25,6 +24,9 @@ netlify/functions/          submit, hike-code (look up and delete), feedback, tr
   utils/                    The request handlers, database, public dataset, insights, spam checks, rebuilds
 scripts/                    Dev server, dataset export, database scripts, data dictionary
 src/                        Tailwind theme, and the source of the link preview image
+  app/                      The browser app as ES modules (bundled from main.js by scripts/build-js.js):
+                            core (state, helpers), router, home, consent, controls, units, wizard,
+                            botcheck, draft, results, dataset, privacy, insights-page, suggestions, theme-switch
 test/                       npm test
 ```
 
@@ -39,7 +41,7 @@ server to validate and store, and the scripts to write the CSV columns, the synt
 the data dictionary.
 
 To add a question: add it to `FIELDS` in the schema, add the input to `index.html` (and to
-`UNIT_INPUTS` in `app.js` if it has a unit), then run `npm run docs` and `npm test`.
+`UNIT_INPUTS` in `src/app/units.js` if it has a unit), then run `npm run docs` and `npm test`.
 `test/html-sync.test.js` fails if the form and the schema disagree.
 
 ## What is stored
@@ -89,8 +91,9 @@ Before any of that, Netlify itself turns a network away after 5 submissions a mi
 `netlify/functions/submit.js` and `hike-code.js`; the free plan allows two such rules per site).
 The functions are only reachable at their `/api/…` paths.
 
-Cloudflare Turnstile runs when the hiker presses Submit (`public/app.js`); its script is only
-loaded on the last survey step, and the CSP allows `challenges.cloudflare.com` for it and nothing
+Cloudflare Turnstile runs when the hiker presses Submit (`src/app/botcheck.js`). Its script is
+loaded when the hiker starts the survey (never just from visiting the site), so a browser that
+blocks it gets a banner and a locked form on step 1 instead of failing at the end. The CSP allows `challenges.cloudflare.com` for it and nothing
 else. The server checks the token (`netlify/functions/utils/turnstile.js`) and refuses a missing
 or invalid one; if Cloudflare can't be reached, the other checks decide. Without
 `TURNSTILE_SECRET_KEY` the check is skipped, and away from opentrailscience.org the page uses

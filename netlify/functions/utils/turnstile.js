@@ -1,6 +1,6 @@
 /**
  * Cloudflare Turnstile: checks the token the survey page gets from Cloudflare
- * right before submitting (see "Cloudflare Turnstile" in public/app.js).
+ * right before submitting (see src/app/botcheck.js).
  *
  * Results:
  *   ok          the token is valid

@@ -121,8 +121,9 @@ test('comparison falls back to all hikers, and needs enough peers', () => {
 });
 
 test('sharing sends only the link (and card), never a ready-made text', () => {
-  const app = require('fs').readFileSync(require('path').join(__dirname, '../public/app.js'), 'utf8');
-  const fn = app.slice(app.indexOf('async function shareSurvey()'), app.indexOf('// --- PUBLIC DOWNLOAD VIEW'));
+  const app = require('../scripts/build-js').appSources();
+  const start = app.indexOf('async function shareSurvey()');
+  const fn = app.slice(start, app.indexOf('\n}\n', start)); // the function ends at the first unindented brace
   assert.ok(fn.length > 100, 'shareSurvey found');
   for (const [, value] of fn.matchAll(/\btext: ([^,}]+)/g)) assert.equal(value.trim(), 'url');
   assert.doesNotMatch(fn, /\btitle:/);

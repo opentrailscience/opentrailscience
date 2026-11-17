@@ -10,7 +10,7 @@ const path = require('path');
 const Schema = require('../public/lib/survey-schema');
 
 const html = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf-8');
-const app = fs.readFileSync(path.join(__dirname, '../public/app.js'), 'utf-8');
+const app = require('../scripts/build-js').appSources();
 
 function selectOptions(id) {
   const match = html.match(new RegExp(`<select[^>]*id="${id}"[^>]*>([\\s\\S]*?)</select>`));
@@ -231,7 +231,7 @@ test('the documented question wording matches the form', () => {
 
 test('every element the scripts look up by id exists in the page', () => {
   const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]));
-  const scripts = ['app.js', 'insights.js'].map(f => fs.readFileSync(path.join(__dirname, '../public', f), 'utf-8')).join('\n');
+  const scripts = app + '\n' + fs.readFileSync(path.join(__dirname, '../public/insights.js'), 'utf-8');
   const used = new Set([...scripts.matchAll(/\$\('([a-z0-9-]+)'\)/g)].map(m => m[1]));
   const missing = [...used].filter(id => !ids.has(id));
   assert.deepEqual(missing, [], `index.html lacks: ${missing.join(', ')}`);
