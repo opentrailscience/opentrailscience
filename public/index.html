@@ -1744,26 +1744,26 @@
         <div id="success-summary-card" class="card-glow rounded-2xl p-6 mt-8 max-w-xl mx-auto text-left space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
             <div class="whitespace-nowrap">
-              <span id="summary-trail-badge" class="px-2.5 py-1 rounded-sm text-xs font-bold bg-pine-900 text-pine-300 border border-pine-700">PCT</span>
+              <span id="summary-trail-badge" class="px-2.5 py-1 rounded-sm text-xs font-bold bg-pine-900 text-pine-300 border border-transparent">PCT</span>
               <span id="summary-hike-year" class="ml-2 font-bold text-white text-base">2024 Hike</span>
             </div>
             <span id="summary-status" class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-emerald-950 text-emerald-300">Continuous hike</span>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-transparent">
               <div class="text-[11px] text-slate-400">Base Weight</div>
               <div id="summary-base-weight" class="text-sm font-bold text-white mt-0.5">14.0 lbs</div>
             </div>
-            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-transparent">
               <div class="text-[11px] text-slate-400">Daily Pace</div>
               <div id="summary-daily-miles" class="text-sm font-bold text-white mt-0.5">19.5 mi/day</div>
             </div>
-            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-transparent">
               <div class="text-[11px] text-slate-400">Zero Days</div>
               <div id="summary-zero-days" class="text-sm font-bold text-white mt-0.5">16 days</div>
             </div>
-            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+            <div class="bg-slate-900/60 p-2.5 rounded-xl border border-transparent">
               <div class="text-[11px] text-slate-400">Enjoyment</div>
               <div id="summary-enjoyment" class="text-sm font-bold text-amber-400 mt-0.5">9 / 10</div>
             </div>
@@ -1872,14 +1872,14 @@
           <div class="card-glow rounded-2xl p-6 sm:p-7 border border-emerald-500/30 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
-                <span class="px-3 py-1 rounded-md text-xs font-bold bg-emerald-950 text-emerald-300 border border-emerald-700/60">CSV Format</span>
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-emerald-950 text-emerald-300 border border-transparent">CSV Format</span>
                 <span class="text-xs text-slate-400">For spreadsheets</span>
               </div>
               <h2 class="text-xl font-bold text-white mt-3">Full Dataset (.CSV)</h2>
               <p class="text-xs sm:text-sm text-slate-300 mt-1">
                 A flat table that opens in Excel, Google Sheets, <strong>R</strong> or <strong>pandas</strong>: one row per hike, one column per field.
               </p>
-              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-400 space-y-1">
+              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-transparent text-xs text-slate-400 space-y-1">
                 <div>File: <span class="text-slate-200">thru_hiker_survey_dataset.csv</span></div>
                 <div>Format: <span class="text-slate-200">UTF-8, comma-separated (RFC 4180)</span></div>
                 <div>Lists: <span class="text-slate-200">one cell, split by <code>;</code></span></div>
@@ -1897,14 +1897,14 @@
           <div class="card-glow rounded-2xl p-6 sm:p-7 border border-amber-500/30 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
-                <span class="px-3 py-1 rounded-md text-xs font-bold bg-amber-950 text-amber-300 border border-amber-700/60">JSON Format</span>
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-amber-950 text-amber-300 border border-transparent">JSON Format</span>
                 <span class="text-xs text-slate-400">For code</span>
               </div>
               <h2 class="text-xl font-bold text-white mt-3">Full Dataset (.JSON)</h2>
               <p class="text-xs sm:text-sm text-slate-300 mt-1">
                 The same hikes and fields as the CSV, with types kept: numbers, true/false and real lists. Easiest to use from <strong>JavaScript</strong> or <strong>Python</strong>.
               </p>
-              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-400 space-y-1">
+              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-transparent text-xs text-slate-400 space-y-1">
                 <div>File: <span class="text-slate-200">thru_hiker_survey_dataset.json</span></div>
                 <div>Format: <span class="text-slate-200">UTF-8, an array with one object per hike</span></div>
                 <div>Lists: <span class="text-slate-200">JSON arrays</span></div>
@@ -1912,7 +1912,7 @@
             </div>
 
             <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
-              <a href="/data/thru_hiker_survey_dataset.json" download="thru_hiker_survey_dataset.json" id="btn-download-json" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 transition flex items-center justify-center gap-2">
+              <a href="/data/thru_hiker_survey_dataset.json" download="thru_hiker_survey_dataset.json" id="btn-download-json" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-slate-800 hover:bg-slate-700 text-white border border-transparent transition flex items-center justify-center gap-2">
                 <span>Download JSON</span>
               </a>
             </div>
@@ -1959,7 +1959,7 @@
           </div>
 
           <!-- Table Container with Horizontal Scroll -->
-          <div class="overflow-x-auto rounded-xl border border-slate-800" tabindex="0" role="region" aria-label="Data preview table">
+          <div class="overflow-x-auto rounded-xl border border-transparent" tabindex="0" role="region" aria-label="Data preview table">
             <table class="keep-mono w-full text-left text-xs whitespace-nowrap">
               <thead class="bg-slate-950 text-slate-400 font-mono text-xs border-b border-slate-800">
                 <tr>
@@ -2004,7 +2004,7 @@
             </div>
             <button type="button" id="btn-copy-citation" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">Copy</button>
           </div>
-          <pre class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 whitespace-pre-wrap wrap-break-word"><code id="citation-text">Open Trail Science. (2026). Open Thru-Hiker Survey Dataset [Data set]. https://opentrailscience.org/#download</code></pre>
+          <pre class="mt-4 p-4 rounded-xl bg-slate-950 border border-transparent text-xs text-slate-300 whitespace-pre-wrap wrap-break-word"><code id="citation-text">Open Trail Science. (2026). Open Thru-Hiker Survey Dataset [Data set]. https://opentrailscience.org/#download</code></pre>
         </div>
 
         <!-- Quickstart Code Snippets -->
@@ -2015,7 +2015,7 @@
               <p class="text-xs text-slate-400 mt-0.5">Copy, run, and you've got a first model. The script downloads the data once, then reads it from disk, and handles missing values the right way.</p>
             </div>
             <!-- Code Tab Selector -->
-            <div class="flex gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs">
+            <div class="flex gap-1 bg-slate-900 p-1 rounded-lg border border-transparent text-xs">
               <button type="button" class="snippet-tab active px-3 py-1 rounded-sm bg-brand text-white font-semibold" data-target="snippet-python">Python</button>
               <button type="button" class="snippet-tab px-3 py-1 rounded-sm text-slate-400 hover:text-white" data-target="snippet-r">R</button>
               <button type="button" class="snippet-tab px-3 py-1 rounded-sm text-slate-400 hover:text-white" data-target="snippet-js">JavaScript</button>
@@ -2025,7 +2025,7 @@
           <!-- Python snippet -->
           <div id="snippet-python" class="snippet-block">
             <div class="relative">
-              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="python">from pathlib import Path
+              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-transparent text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="python">from pathlib import Path
 from urllib.request import urlretrieve
 
 import pandas as pd
@@ -2062,7 +2062,7 @@ print(model.summary())</code></pre>
           <!-- R snippet -->
           <div id="snippet-r" class="snippet-block hidden">
             <div class="relative">
-              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="r">library(readr)
+              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-transparent text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="r">library(readr)
 library(dplyr)
 library(tidyr)
 
@@ -2093,7 +2093,7 @@ summary(model)</code></pre>
           <!-- JS snippet -->
           <div id="snippet-js" class="snippet-block hidden">
             <div class="relative">
-              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="javascript">// Save as quickstart.mjs and run: node quickstart.mjs (Node 18 or newer)
+              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-slate-950 border border-transparent text-xs text-slate-300 overflow-x-auto"><code class="code-snippet" data-lang="javascript">// Save as quickstart.mjs and run: node quickstart.mjs (Node 18 or newer)
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 
@@ -2141,7 +2141,7 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
           <!-- Folded: the table is most of the page's length on a phone. The column count is filled in by src/app/dataset.js. -->
           <details id="dictionary-details">
             <summary class="cursor-pointer text-sm font-semibold text-pine-400 hover:text-pine-300">Show all <span id="dictionary-count">the</span> columns</summary>
-          <div class="mt-3 overflow-x-auto rounded-xl border border-slate-800" tabindex="0" role="region" aria-label="Data dictionary">
+          <div class="mt-3 overflow-x-auto rounded-xl border border-transparent" tabindex="0" role="region" aria-label="Data dictionary">
             <table class="keep-mono w-full text-left text-xs">
               <thead class="bg-slate-950 text-slate-400 font-mono text-xs border-b border-slate-800">
                 <tr>
