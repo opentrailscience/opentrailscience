@@ -167,7 +167,7 @@
   function render(container, insights) {
     container.replaceChildren();
     CHARTS.forEach(chart => {
-      const card = el('div', 'card-glow rounded-2xl p-6 relative flex flex-col');
+      const card = el('div', 'card p-6 relative flex flex-col');
       card.append(el('h2', 'font-bold text-white', chart.title), el('p', 'text-xs text-slate-400 mt-1', chart.subtitle));
       const rows = insights.charts[chart.id] || [];
       if (rows.length < 2) {
@@ -200,7 +200,7 @@
 
   function togetherCard(item, i) {
     const accent = TOGETHER_ACCENTS[i % TOGETHER_ACCENTS.length];
-    const card = el('article', 'card-glow rounded-2xl p-6 pt-7 relative overflow-hidden flex flex-col w-full md:w-[calc((100%-3rem)/3)]');
+    const card = el('article', 'card p-6 pt-7 relative overflow-hidden flex flex-col w-full md:w-[calc((100%-3rem)/3)]');
     const stripe = el('div', 'absolute inset-x-0 top-0 h-1');
     stripe.style.backgroundColor = accent;
 

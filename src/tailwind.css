@@ -163,6 +163,19 @@
 }
 
 /*
+ * Components: one class instead of the same chain of utilities on every element.
+ * Their look (background, border, radius, colours, focus ring) is in the design
+ * layer of public/styles.css; these set the size. Utilities after them still win
+ * (e.g. `field w-32`, `field sm:text-xs`).
+ */
+@layer components {
+  /* Text inputs, number inputs, date inputs, selects and textareas. 16px text on phones (no zoom on iOS). */
+  .field { @apply px-4 py-3 text-base sm:text-sm transition; }
+  /* Smaller fields: the weekly mileage, the injury distance and the dataset filters. */
+  .field-compact { @apply px-3 py-2; }
+}
+
+/*
  * Tailwind 3 defaults that v4 changed: gray-200 borders, gray-400
  * placeholders and the pointer cursor on buttons.
  */

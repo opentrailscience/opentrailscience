@@ -204,7 +204,7 @@
    * Parts of cards, choice cards and pills that sit below Tailwind's classes
    * (their look is in the design layer at the end of this file).
    */
-  .card-glow { position: relative; }
+  .card { position: relative; }
   .choice-card { cursor: pointer; }
   .select-pill { cursor: pointer; transition: all 0.15s ease; background: var(--pill-bg); color: var(--pill-text); }
   .select-pill:hover { color: var(--pill-hover-text); }
@@ -443,8 +443,8 @@
   .site-footer ul a { color: var(--page-text); display: inline-block; padding: 6px 0; }
 
   /* Cards: an ink outline, no shadow. Boxes inside them have no frame of their own (border-transparent in the markup). */
-  .card-glow { background: var(--surface); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); box-shadow: none; transition: none; }
-  .card-glow:hover { border-color: var(--strong-border); }
+  .card { background: var(--surface); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); box-shadow: none; transition: none; }
+  .card:hover { border-color: var(--strong-border); }
 
   /* Buttons. Primary: solid blue; secondary: outline; both weight 600, no icons, no shadow. */
   .bg-brand { border: 1.5px solid var(--color-brand); font-weight: 600; border-radius: var(--control-radius); box-shadow: none; }
