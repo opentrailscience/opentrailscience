@@ -1,8 +1,8 @@
 /**
  * Sets the color theme before the page is drawn, so it never flashes the
  * wrong one: the choice saved by the header button, otherwise light.
- * Loaded in <head> without defer, so it stays tiny; app.js handles
- * the button. The colors are in src/tailwind.css and public/styles.css.
+ * Loaded in <head> without defer, so it stays tiny; src/app/theme-switch.js
+ * handles the button. The colors for both themes are in public/styles.css.
  */
 (function () {
   var theme = null;

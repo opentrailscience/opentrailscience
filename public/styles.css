@@ -460,7 +460,7 @@
   p a, li a, dd a, figcaption a { color: var(--link); text-decoration: underline; }
   p a:hover, li a:hover, dd a:hover { color: var(--link-hover); }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .mono, .keep-mono { font-family: var(--font-mono); }
+  .keep-mono { font-family: var(--font-mono); }
   .stat-counter { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 500; }
   input[type="checkbox"], input[type="radio"] { accent-color: var(--color-brand); }
   .dark-only { display: none; }
@@ -539,7 +539,6 @@
   .home-hero .hero-text { position: relative; z-index: 1; max-width: 760px; }
   .home-hero h1 { margin: 0; font-size: clamp(36px, 5vw, 56px); font-weight: var(--heading-weight); line-height: 1.08; letter-spacing: -0.02em; }
   .home-hero .lead { margin: 22px 0 0; font-size: 19px; color: var(--text-secondary); }
-  .home-hero .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
   .home-hero .fine { margin: 18px 0 0; font-size: 15px; color: var(--text-muted); }
 
   .home-card { background: var(--surface); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); }
@@ -592,10 +591,6 @@
   .home-dnf h2 { margin: 4px 0 0; font-size: 26px; font-weight: var(--heading-weight); line-height: 1.15; }
   .home-dnf p:not(.label) { margin: 8px 0 0; color: var(--text-secondary); }
 
-  .home-trails { padding: 80px 0 72px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; }
-  .home-trails > div { flex: 1 1 280px; min-width: 0; align-self: flex-start; }
-  .home-trails h2 { margin: 0; font-size: 28px; font-weight: var(--heading-weight); }
-  .home-trails > div p { margin: 6px 0 0; color: var(--text-muted); max-width: 340px; }
   .home-news { margin-top: 28px; max-width: 340px; }
   .home-news h3 { margin: 0; font-size: 16px; font-weight: var(--heading-weight); }
   .home-news ul { margin: 8px 0 0; padding: 0; list-style: none; }

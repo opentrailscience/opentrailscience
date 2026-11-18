@@ -246,7 +246,7 @@ test('class attributes contain only class names', () => {
 test('every required question shows a red * in the form', () => {
   // trainedBeforeHike is the "I didn't train at all" tick box, not a question of its own.
   const missing = Schema.FIELDS.filter(f => f.step && !f.optional && f.question && f.name !== 'trainedBeforeHike')
-    .filter(f => html.includes(f.question)) // unit-dependent labels are written by app.js
+    .filter(f => html.includes(f.question)) // unit-dependent labels are written by src/app/units.js
     .filter(f => {
       const q = f.question.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       // &nbsp; keeps the star on the line of the question's last word.
