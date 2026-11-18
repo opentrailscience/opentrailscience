@@ -16,9 +16,6 @@ export function initPreviewTable() {
   if (filterTrail) filterTrail.addEventListener('change', resetAndFetch);
   if (filterStatus) filterStatus.addEventListener('change', resetAndFetch);
 
-  const btnRefresh = $('btn-refresh-preview');
-  if (btnRefresh) btnRefresh.addEventListener('click', () => fetchPreviewData(true));
-
   const btnPrev = $('btn-preview-prev');
   if (btnPrev) {
     btnPrev.addEventListener('click', () => {
@@ -52,8 +49,8 @@ function addTrailFilterOptions(rows) {
 }
 
 /** Filters and pages the prebuilt preview.json in the browser (fetched once per visit). */
-async function loadPreviewPage(trail, status, reload) {
-  if (!state.previewRows || reload) {
+async function loadPreviewPage(trail, status) {
+  if (!state.previewRows) {
     const res = await fetch(STATIC_PREVIEW_URL);
     if (!res.ok) throw new Error('preview.json returned ' + res.status);
     state.previewRows = (await res.json()).data || [];
@@ -65,7 +62,7 @@ async function loadPreviewPage(trail, status, reload) {
   return { rows: list.slice(offset, offset + state.previewLimit), total: list.length, note: '' };
 }
 
-export async function fetchPreviewData(reload) {
+export async function fetchPreviewData() {
   const tbody = $('preview-table-body');
   const pageInfo = $('preview-pagination-info');
   const btnPrev = $('btn-preview-prev');
@@ -76,7 +73,7 @@ export async function fetchPreviewData(reload) {
   if (tbody) tbody.innerHTML = '<tr><td colspan="11" class="py-6 text-center text-slate-500">Loading dataset...</td></tr>';
 
   try {
-    const page = await loadPreviewPage(trail, status, reload === true);
+    const page = await loadPreviewPage(trail, status);
     renderPreviewRows(page.rows);
 
     const start = (state.previewPage - 1) * state.previewLimit + 1;
