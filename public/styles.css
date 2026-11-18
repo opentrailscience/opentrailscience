@@ -1,4 +1,16 @@
-/* Custom styling for Open Trail Science */
+/*
+ * Styles for Open Trail Science. How the pieces fit together (order of the layers below):
+ *
+ *   theme / base   Tailwind's variables and reset (src/tailwind.css: colours, the light theme swap)
+ *   site           this file, first part: per-theme colour variables, sliders, views, scrollbars
+ *   components     src/tailwind.css: .field and .field-compact (the size of form fields)
+ *   utilities      Tailwind classes in the markup (spacing, layout, text sizes, colours)
+ *   design         this file, last part: the site's look (cards, buttons, fields, choice cards,
+ *                  pills, header, footer, home page), which wins over the classes in the markup
+ *
+ * Components to reuse: .card (an outlined box), .field (inputs, selects, textareas), .btn with
+ * .btn-primary / .btn-secondary / .btn-callout, .choice-card, .select-pill.
+ */
 /* Fonts are self-hosted (public/fonts, SIL Open Font License) so no visitor data goes to a font CDN. */
 @font-face {
   font-family: 'IBM Plex Sans';

@@ -33,6 +33,24 @@ test/                       npm test
 Generated and not in the repository: `public/css/`, `public/js/` (all browser scripts in one
 bundle) and `public/data/` (the dataset files).
 
+## Styles
+
+Tailwind v4 (`src/tailwind.css`, built to `public/css/tailwind.css`) plus `public/styles.css`.
+The layer order is set once at the top of `styles.css`:
+
+1. `theme` and `base`: Tailwind's variables and reset. The colour classes are written for the dark
+   design; the light theme swaps their values (`src/tailwind.css`).
+2. `site`: per-theme colour variables (`--page-bg`, `--surface`, …), sliders, views, scrollbars.
+3. `components`: `.field` and `.field-compact`, the size of form fields (`@apply` in `src/tailwind.css`).
+4. `utilities`: the Tailwind classes in the markup.
+5. `design`: the look of the site (cards, buttons, fields, choice cards, pills, header, footer,
+   home page), last so it wins over the classes in the markup.
+
+Reuse the components instead of long class lists: `.card` for an outlined box, `.field` for an
+input, select or textarea (plus a width like `w-full`), `.btn` with `.btn-primary`,
+`.btn-secondary` or `.btn-callout`, `.choice-card` and `.select-pill`. Boxes inside a card have no
+frame of their own: give them `border-transparent` if they have a `border`.
+
 ## The schema
 
 `public/lib/survey-schema.js` defines every field once: type, unit, limits, allowed values, the
