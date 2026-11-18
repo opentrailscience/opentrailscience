@@ -83,8 +83,8 @@
   function showTooltip(tooltip, card, anchor, chart, row) {
     const text = describeRow(chart, row);
     tooltip.replaceChildren(
-      el('div', 'text-sm font-bold text-white', text.value),
-      el('div', 'text-xs text-slate-400', `${row.label} · ${text.n}`)
+      el('div', 'text-sm font-bold', text.value),
+      el('div', 'text-xs text-muted', `${row.label} · ${text.n}`)
     );
     tooltip.classList.remove('hidden');
     const cardBox = card.getBoundingClientRect();
@@ -95,26 +95,26 @@
 
   function renderBars(card, chart, rows) {
     const max = chart.max || Math.max(...rows.map(r => r.value)) * 1.15;
-    const tooltip = el('div', 'hidden absolute z-10 pointer-events-none px-3 py-2 rounded-lg bg-slate-950 border border-transparent');
+    const tooltip = el('div', 'hidden absolute z-10 pointer-events-none px-3 py-2 rounded-lg bg-sunken border border-transparent');
     const list = el('div', 'mt-5 space-y-1.5');
     list.setAttribute('role', 'list');
 
     rows.forEach(row => {
       const text = describeRow(chart, row);
-      const item = el('div', 'grid grid-cols-1 sm:grid-cols-[10rem_1fr] sm:items-center gap-x-3 gap-y-1 py-1 rounded-md outline-hidden focus-visible:ring-2 focus-visible:ring-pine-500 cursor-default');
+      const item = el('div', 'grid grid-cols-1 sm:grid-cols-[10rem_1fr] sm:items-center gap-x-3 gap-y-1 py-1 rounded-md outline-hidden focus-visible:ring-2 focus-visible:ring-blue-mid cursor-default');
       item.setAttribute('role', 'listitem');
       item.tabIndex = 0;
       item.setAttribute('aria-label', `${row.label}: ${text.value}, ${text.n}`);
 
-      const label = el('div', 'text-xs text-slate-300 sm:text-right truncate', row.label);
+      const label = el('div', 'text-xs text-secondary sm:text-right truncate', row.label);
       label.title = row.label;
 
       // Bar area: hairline baseline on the left, value at the bar's tip.
-      const track = el('div', 'flex items-center gap-2 border-l border-slate-700 min-h-[24px]');
+      const track = el('div', 'flex items-center gap-2 border-l border-line min-h-[24px]');
       const bar = el('div', 'chart-bar h-[18px] rounded-r transition');
       bar.style.width = `${Math.max(0.5, (row.value / max) * 85)}%`;
       bar.style.backgroundColor = chart.color(row);
-      const value = el('span', 'text-xs font-semibold text-slate-200 whitespace-nowrap', text.value);
+      const value = el('span', 'text-xs font-semibold text-ink-soft whitespace-nowrap', text.value);
       track.append(bar, value);
       item.append(label, track);
 
@@ -134,7 +134,7 @@
 
   /** Color key for charts whose colors mean something beyond the bar labels. */
   function renderLegend(entries) {
-    const legend = el('div', 'mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-slate-400');
+    const legend = el('div', 'mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-muted');
     entries.forEach(entry => {
       const item = el('span', 'inline-flex items-center gap-1.5');
       const swatch = el('span', 'chart-swatch inline-block w-2.5 h-2.5 rounded-sm');
@@ -148,14 +148,14 @@
   function renderTable(chart, rows) {
     // mt-auto: 'Show table' sits at the bottom of every card, at the same height in a row.
     const details = el('details', 'mt-auto pt-4 text-xs');
-    details.appendChild(el('summary', 'cursor-pointer text-slate-400 hover:text-slate-200', 'Show table'));
+    details.appendChild(el('summary', 'cursor-pointer text-muted hover:text-ink-soft', 'Show table'));
     const table = el('table', 'mt-2 w-full text-left');
-    const head = el('tr', 'text-slate-400 border-b border-slate-800');
+    const head = el('tr', 'text-muted border-b border-subtle');
     ['Group', 'Value', 'Hikers'].forEach(h => head.appendChild(el('th', 'py-1.5 pr-3 font-medium', h)));
     table.appendChild(head);
     rows.forEach(row => {
       const text = describeRow(chart, row);
-      const tr = el('tr', 'border-b border-slate-800/60 text-slate-300');
+      const tr = el('tr', 'border-b border-subtle/60 text-secondary');
       tr.append(el('td', 'py-1.5 pr-3', row.label), el('td', 'py-1.5 pr-3 tabular-nums', text.value), el('td', 'py-1.5 tabular-nums', text.n));
       table.appendChild(tr);
     });
@@ -168,10 +168,10 @@
     container.replaceChildren();
     CHARTS.forEach(chart => {
       const card = el('div', 'card p-6 relative flex flex-col');
-      card.append(el('h2', 'font-bold text-white', chart.title), el('p', 'text-xs text-slate-400 mt-1', chart.subtitle));
+      card.append(el('h2', 'font-bold', chart.title), el('p', 'text-xs text-muted mt-1', chart.subtitle));
       const rows = insights.charts[chart.id] || [];
       if (rows.length < 2) {
-        card.appendChild(el('p', 'mt-6 text-sm text-slate-500', 'Not enough answers for this chart yet.'));
+        card.appendChild(el('p', 'mt-6 text-sm text-muted', 'Not enough answers for this chart yet.'));
       } else {
         renderBars(card, chart, rows);
       }
@@ -191,7 +191,7 @@
       'hints, not findings: going together doesn\u2019t mean one causes the other.';
     cards.replaceChildren();
     if (!list.length) {
-      const empty = el('p', 'text-center text-sm text-slate-500', 'Nothing stands out clearly yet.');
+      const empty = el('p', 'text-center text-sm text-muted', 'Nothing stands out clearly yet.');
       cards.appendChild(empty);
     }
     list.forEach((item, i) => cards.appendChild(togetherCard(item, i)));
@@ -205,7 +205,7 @@
     stripe.style.backgroundColor = accent;
 
     const head = el('div', 'relative flex items-start gap-3');
-    head.append(el('h3', 'text-lg font-extrabold text-white leading-snug pt-1', item.headline));
+    head.append(el('h3', 'text-lg font-extrabold leading-snug pt-1', item.headline));
 
     // The two groups on one shared scale, with their real values.
     const bars = el('div', 'relative mt-5 space-y-3');
@@ -213,8 +213,8 @@
     item.groups.forEach((group, g) => {
       const row = el('div');
       const top = el('div', 'flex items-baseline justify-between gap-3 text-xs');
-      top.append(el('span', 'text-slate-300', `${group.label} (${group.n})`), el('span', 'font-bold text-white tabular-nums whitespace-nowrap', group.display));
-      const track = el('div', 'mt-1 h-2.5 rounded-full bg-slate-800 overflow-hidden');
+      top.append(el('span', 'text-secondary', `${group.label} (${group.n})`), el('span', 'font-bold tabular-nums whitespace-nowrap', group.display));
+      const track = el('div', 'mt-1 h-2.5 rounded-full bg-subtle overflow-hidden');
       const fill = el('div', 'chart-fill h-full rounded-full');
       fill.style.width = `${Math.max(3, (group.value / max) * 100)}%`;
       fill.style.backgroundColor = accent;
@@ -224,10 +224,10 @@
       bars.appendChild(row);
     });
 
-    const text = el('p', 'relative text-sm text-slate-400 mt-4', item.text);
+    const text = el('p', 'relative text-sm text-muted mt-4', item.text);
 
     const [strengthLabel, dots] = STRENGTH[item.strength] || STRENGTH.weak;
-    const footer = el('div', 'relative mt-auto pt-5 flex items-center gap-2 text-xs text-slate-500');
+    const footer = el('div', 'relative mt-auto pt-5 flex items-center gap-2 text-xs text-muted');
     const meter = el('span', 'inline-flex gap-1');
     meter.setAttribute('aria-hidden', 'true');
     for (let d = 0; d < 5; d++) {

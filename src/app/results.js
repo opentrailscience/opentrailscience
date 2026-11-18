@@ -10,11 +10,11 @@ import { populateDeletionCode } from './privacy.js';
 // tags on the survey cards (index.html), in the colors the charts use for outcomes.
 const STATUS_BADGE_BASE = 'inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap ';
 const STATUS_BADGE_COLORS = {
-  continuous_purist: 'bg-emerald-950 text-emerald-300',
-  flip_flop: 'bg-amber-950 text-amber-300',
-  skipped_sections: 'bg-sky-950 text-sky-300',
-  section_hike: 'bg-slate-800 text-slate-300',
-  quit_early: 'bg-orange-950 text-orange-300'
+  continuous_purist: 'bg-green-tint text-green-strong',
+  flip_flop: 'bg-yellow-tint text-yellow-strong',
+  skipped_sections: 'bg-blue-tint text-blue-strong',
+  section_hike: 'bg-subtle text-secondary',
+  quit_early: 'bg-orange-tint text-orange-strong'
 };
 const STATUS_LABELS = Schema.COMPLETION_LABELS;
 
@@ -103,23 +103,23 @@ function renderAllAnswers(data) {
       const head = document.createElement('tr');
       const th = document.createElement('th');
       th.colSpan = 2;
-      th.className = 'pt-3 pb-1 text-[11px] text-slate-400';
+      th.className = 'pt-3 pb-1 text-[11px] text-muted';
       th.textContent = group;
       head.appendChild(th);
       body.appendChild(head);
     }
     const [text, other] = formatAnswer(col, data[col.name], data);
     const row = document.createElement('tr');
-    row.className = 'border-t border-slate-800/60 align-top';
+    row.className = 'border-t border-subtle/60 align-top';
     const label = document.createElement('td');
-    label.className = 'py-1.5 pr-3 text-slate-400';
+    label.className = 'py-1.5 pr-3 text-muted';
     label.textContent = col.label;
     const answer = document.createElement('td');
-    answer.className = 'py-1.5 text-slate-200';
+    answer.className = 'py-1.5 text-ink-soft';
     answer.textContent = text;
     if (other) {
       const muted = document.createElement('span');
-      muted.className = 'text-slate-500';
+      muted.className = 'text-muted';
       muted.textContent = ` (${other})`;
       answer.appendChild(muted);
     }
@@ -144,14 +144,14 @@ export function populateComparison(comparison) {
     const li = document.createElement('li');
     li.className = 'flex gap-2';
     const icon = document.createElement('span');
-    icon.className = 'text-pine-400 font-bold';
+    icon.className = 'text-blue font-bold';
     icon.setAttribute('aria-hidden', 'true');
     icon.textContent = '•'; // neutral: the lines can be flattering or not
     const text = document.createElement('span');
     const marker = `${item.percent}%`;
     const [before, after] = item.text.split(marker);
     const strong = document.createElement('strong');
-    strong.className = 'text-pine-300';
+    strong.className = 'text-blue-strong';
     strong.textContent = marker;
     text.append(before, strong, after || '');
     li.append(icon, text);
@@ -190,10 +190,10 @@ export function renderCompareTable(record, table) {
       Stats.tableCellText(def, r.all, record)
     ];
     const tr = document.createElement('tr');
-    tr.className = 'border-t border-slate-800/60 align-top';
+    tr.className = 'border-t border-subtle/60 align-top';
     cells.forEach((text, i) => {
       const td = document.createElement('td');
-      td.className = `py-1.5 ${i < 3 ? 'pr-3 ' : ''}${i === 0 ? 'text-slate-400' : 'text-slate-200'}`;
+      td.className = `py-1.5 ${i < 3 ? 'pr-3 ' : ''}${i === 0 ? 'text-muted' : 'text-ink-soft'}`;
       td.textContent = text;
       tr.appendChild(td);
     });
@@ -286,12 +286,12 @@ export function initMyHike() {
   const lookUp = async () => {
     const code = input.value.trim();
     if (!code) {
-      result.className = 'mt-3 text-sm text-amber-300';
+      result.className = 'mt-3 text-sm text-yellow-strong';
       result.textContent = 'Please enter your code.';
       return;
     }
     button.disabled = true;
-    result.className = 'mt-3 text-sm text-slate-400';
+    result.className = 'mt-3 text-sm text-muted';
     result.textContent = 'Looking up your hike…';
     try {
       const res = await fetch('/api/my-hike', {
@@ -310,7 +310,7 @@ export function initMyHike() {
       result.textContent = '';
       window.location.hash = '#success';
     } catch (err) {
-      result.className = 'mt-3 text-sm text-rose-300';
+      result.className = 'mt-3 text-sm text-red-strong';
       result.textContent = err.message === 'Failed to fetch' ? 'Network error. Please try again.' : err.message;
     } finally {
       button.disabled = false;
@@ -325,7 +325,7 @@ export function resetFeedback() {
   $('feedback-message').value = '';
   $('feedback-message').disabled = false;
   $('btn-send-feedback').disabled = false;
-  $('feedback-result').className = 'text-xs text-slate-400';
+  $('feedback-result').className = 'text-xs text-muted';
   $('feedback-result').textContent = '';
 }
 
@@ -336,12 +336,12 @@ export function initFeedback() {
   button.addEventListener('click', async () => {
     const message = box.value.trim();
     if (!message) {
-      result.className = 'text-xs text-amber-300';
+      result.className = 'text-xs text-yellow-strong';
       result.textContent = 'Please write something first.';
       return;
     }
     button.disabled = true;
-    result.className = 'text-xs text-slate-400';
+    result.className = 'text-xs text-muted';
     result.textContent = 'Sending…';
     try {
       const res = await fetch('/api/feedback', {
@@ -352,11 +352,11 @@ export function initFeedback() {
       const body = await res.json().catch(() => ({}));
       if (!res.ok || !body.success) throw new Error(errorText(res, body.error, `Sending failed (HTTP ${res.status}).`));
       box.disabled = true;
-      result.className = 'text-xs text-pine-300 font-semibold';
+      result.className = 'text-xs text-blue-strong font-semibold';
       result.textContent = 'Thank you! I read every single message.';
     } catch (err) {
       button.disabled = false;
-      result.className = 'text-xs text-rose-300';
+      result.className = 'text-xs text-red-strong';
       result.textContent = err.message === 'Failed to fetch' ? 'Network error. Please try again.' : err.message;
     }
   });

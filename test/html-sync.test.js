@@ -108,7 +108,7 @@ test('nothing is answered by default: the hiker has to interact with every quest
   assert.doesNotMatch(html, /class="choice-card selected/, 'no preselected choice card');
   // ...no "No" button looks selected...
   (html.match(/<button type="button" id="btn-[a-z-]+-no" class="[^"]*"/g) || []).forEach(btn => {
-    assert.doesNotMatch(btn, /bg-pine-600/, btn);
+    assert.doesNotMatch(btn, /bg-brand/, btn);
   });
   // ...sliders start untouched, and free-text inputs have no prefilled value.
   (html.match(/<input type="range"[^>]*>/g) || []).forEach(r => assert.match(r, /slider-untouched/, r));
@@ -250,7 +250,7 @@ test('every required question shows a red * in the form', () => {
     .filter(f => {
       const q = f.question.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       // &nbsp; keeps the star on the line of the question's last word.
-      return !new RegExp(`${q}(?:\\s|&nbsp;)*(?:<[^>]+>(?:\\s|&nbsp;)*)?<span class="text-rose-400">\\*</span>`).test(html);
+      return !new RegExp(`${q}(?:\\s|&nbsp;)*(?:<[^>]+>(?:\\s|&nbsp;)*)?<span class="text-red">\\*</span>`).test(html);
     })
     .map(f => f.name);
   assert.deepEqual(missing, []);

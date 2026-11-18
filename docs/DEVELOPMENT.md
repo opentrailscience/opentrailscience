@@ -38,9 +38,8 @@ bundle) and `public/data/` (the dataset files).
 Tailwind v4 (`src/tailwind.css`, built to `public/css/tailwind.css`) plus `public/styles.css`.
 The layer order is set once at the top of `styles.css`:
 
-1. `theme` and `base`: Tailwind's variables and reset. The colour classes are written for the dark
-   design; the light theme swaps their values (`src/tailwind.css`).
-2. `site`: per-theme colour variables (`--page-bg`, `--surface`, …), sliders, views, scrollbars.
+1. `theme` and `base`: Tailwind's variables and reset.
+2. `site`: every colour, for both themes (`--page-bg`, `--surface`, …), sliders, views, scrollbars.
 3. `components`: `.field` and `.field-compact`, the size of form fields (`@apply` in `src/tailwind.css`).
 4. `utilities`: the Tailwind classes in the markup.
 5. `design`: the look of the site (cards, buttons, fields, choice cards, pills, header, footer,
@@ -50,6 +49,13 @@ Reuse the components instead of long class lists: `.card` for an outlined box, `
 input, select or textarea (plus a width like `w-full`), `.btn` with `.btn-primary`,
 `.btn-secondary` or `.btn-callout`, `.choice-card` and `.select-pill`. Boxes inside a card have no
 frame of their own: give them `border-transparent` if they have a `border`.
+
+Colour classes use names that mean the same in both themes: `text-ink`, `text-muted`,
+`bg-surface`, `bg-sunken`, `border-line`, `bg-brand`, `text-on-color` (on brand and red buttons),
+and for each hue (blue, green, yellow, orange, red) a `-tint` background, an `-edge` border and
+text in the plain name or `-strong`. `src/tailwind.css` lists the names; their values for both
+themes are the `--color-*` variables at the top of `styles.css`. To add one, add it in both places
+(`test/tailwind.test.js` checks this).
 
 ## The schema
 

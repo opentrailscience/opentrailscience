@@ -33,12 +33,12 @@ export function initPrivacyPage() {
   const submitDeletion = async () => {
     const code = $('deletion-code-input').value.trim();
     if (!code) {
-      result.className = 'mt-3 text-sm text-amber-300';
+      result.className = 'mt-3 text-sm text-yellow-strong';
       result.textContent = 'Please enter your personal code.';
       return;
     }
     button.disabled = true;
-    result.className = 'mt-3 text-sm text-slate-400';
+    result.className = 'mt-3 text-sm text-muted';
     result.textContent = 'Deleting…';
     try {
       const res = await fetch('/api/delete', {
@@ -48,18 +48,18 @@ export function initPrivacyPage() {
       });
       const body = await res.json().catch(() => ({}));
       if (res.ok && body.success) {
-        result.className = 'mt-3 text-sm text-pine-300';
+        result.className = 'mt-3 text-sm text-blue-strong';
         result.textContent = 'Done. Your answers have been deleted from the database. They will be gone from the website and download files with the next dataset update (usually within a day).';
         $('deletion-code-input').value = '';
         forgetMySubmission(code);
         if (state.stats) renderStats(state.stats);
         markInsightsStale();
       } else {
-        result.className = 'mt-3 text-sm text-rose-300';
+        result.className = 'mt-3 text-sm text-red-strong';
         result.textContent = errorText(res, body.error, `Deletion failed (HTTP ${res.status}).`);
       }
     } catch (err) {
-      result.className = 'mt-3 text-sm text-rose-300';
+      result.className = 'mt-3 text-sm text-red-strong';
       result.textContent = 'Network error. Please try again.';
     } finally {
       button.disabled = false;

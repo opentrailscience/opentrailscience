@@ -15,7 +15,7 @@ export function resetTrailSuggestion(box) {
   input.disabled = false;
   box.querySelector('.trail-suggest-send').disabled = false;
   const result = box.querySelector('.trail-suggest-result');
-  result.className = 'trail-suggest-result text-xs text-slate-400 mt-2';
+  result.className = 'trail-suggest-result text-xs text-muted mt-2';
   result.textContent = TRAIL_SUGGEST_NOTE[input.id];
 }
 
@@ -28,12 +28,12 @@ export function initTrailSuggestions() {
     const send = async () => {
       const trail = input.value.trim();
       if (!trail) {
-        result.className = 'trail-suggest-result text-xs mt-2 text-amber-300';
+        result.className = 'trail-suggest-result text-xs mt-2 text-yellow-strong';
         result.textContent = 'Please enter a trail first.';
         return;
       }
       button.disabled = true;
-      result.className = 'trail-suggest-result text-xs mt-2 text-slate-400';
+      result.className = 'trail-suggest-result text-xs mt-2 text-muted';
       result.textContent = 'Sending…';
       try {
         const res = await fetch('/api/trail-suggestion', {
@@ -44,11 +44,11 @@ export function initTrailSuggestions() {
         const body = await res.json().catch(() => ({}));
         if (!res.ok || !body.success) throw new Error(errorText(res, body.error, `Sending failed (HTTP ${res.status}).`));
         input.disabled = true;
-        result.className = 'trail-suggest-result text-xs mt-2 text-pine-300 font-semibold';
+        result.className = 'trail-suggest-result text-xs mt-2 text-blue-strong font-semibold';
         result.textContent = "Thanks! I'll add trails that several hikers ask for.";
       } catch (err) {
         button.disabled = false;
-        result.className = 'trail-suggest-result text-xs mt-2 text-rose-300';
+        result.className = 'trail-suggest-result text-xs mt-2 text-red-strong';
         result.textContent = err.message === 'Failed to fetch' ? 'Network error. Please try again.' : err.message;
       }
     };

@@ -54,10 +54,10 @@ export function initConsent() {
 }
 
 // --- TRAIL CHECK (human check, see lib/human-check.js) ----------------------------
-const TRAIL_CHECK_BASE = 'trail-check-option px-3 py-3 rounded-xl text-sm font-semibold text-white border transition text-left';
-const TRAIL_CHECK_IDLE = `${TRAIL_CHECK_BASE} border-slate-700 bg-slate-900/60 hover:border-pine-500`;
-const TRAIL_CHECK_RIGHT = `${TRAIL_CHECK_BASE} border-pine-500 bg-pine-950/60`;
-const TRAIL_CHECK_WRONG = `${TRAIL_CHECK_BASE} border-rose-600 bg-rose-950/40`;
+const TRAIL_CHECK_BASE = 'trail-check-option px-3 py-3 rounded-xl text-sm font-semibold border transition text-left';
+const TRAIL_CHECK_IDLE = `${TRAIL_CHECK_BASE} border-line bg-surface/60 hover:border-blue-mid`;
+const TRAIL_CHECK_RIGHT = `${TRAIL_CHECK_BASE} border-blue-mid bg-blue-tint/60`;
+const TRAIL_CHECK_WRONG = `${TRAIL_CHECK_BASE} border-red-mid bg-red-tint/40`;
 const WRONG_REPLIES = [
   "Nope, you'd miss that one by day three. Try again.",
   'Your future self in the rain disagrees. Pick another one.',
@@ -82,7 +82,7 @@ export function newTrailCheck(id, passed) {
   const container = $('trail-check-options');
   const feedback = $('trail-check-feedback');
   container.replaceChildren();
-  feedback.className = 'text-xs text-slate-400';
+  feedback.className = 'text-xs text-muted';
   feedback.textContent = '';
   let wrongCount = 0;
 
@@ -97,7 +97,7 @@ export function newTrailCheck(id, passed) {
       btn.className = TRAIL_CHECK_RIGHT;
       btn.setAttribute('aria-pressed', 'true');
       container.querySelectorAll('button').forEach(b => { if (b !== btn) b.disabled = true; });
-      feedback.className = 'text-xs text-pine-300 font-semibold';
+      feedback.className = 'text-xs text-blue-strong font-semibold';
       feedback.textContent = "Right, you're clearly a great hiker!";
     };
     btn.addEventListener('click', () => {
@@ -108,7 +108,7 @@ export function newTrailCheck(id, passed) {
         saveDraftSoon();
       } else {
         btn.className = TRAIL_CHECK_WRONG;
-        feedback.className = 'text-xs text-rose-300';
+        feedback.className = 'text-xs text-red-strong';
         feedback.textContent = WRONG_REPLIES[wrongCount++ % WRONG_REPLIES.length];
       }
     });

@@ -74,11 +74,11 @@ const UNIT_INPUTS = [
   }
 ];
 
-const TOGGLE_ON = 'px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-brand text-white transition';
-const TOGGLE_ON_WARNING = 'px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-rose-600 text-white transition';
-export const TOGGLE_OFF = 'px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition';
-const UNIT_BUTTON_ON = 'px-3 py-1 rounded-md text-xs font-bold bg-brand text-white transition';
-const UNIT_BUTTON_OFF = 'px-3 py-1 rounded-md text-xs font-bold text-slate-400 hover:text-white transition';
+const TOGGLE_ON = 'px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-brand text-on-color transition';
+const TOGGLE_ON_WARNING = 'px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-red-mid text-on-color transition';
+export const TOGGLE_OFF = 'px-3.5 py-1.5 max-sm:px-5 max-sm:py-2.5 rounded-lg text-xs font-bold bg-subtle text-secondary hover:text-ink transition';
+const UNIT_BUTTON_ON = 'px-3 py-1 rounded-md text-xs font-bold bg-brand text-on-color transition';
+const UNIT_BUTTON_OFF = 'px-3 py-1 rounded-md text-xs font-bold text-muted hover:text-ink transition';
 
 /** Every unit switch on the page (survey progress bar, dataset preview) shows the current system. */
 function renderUnitButtons() {
@@ -272,16 +272,16 @@ export function initRampCalculator() {
     const deltaMiles = state.unitSystem === 'metric' ? delta / unitFactorFor('field-week1DailyMiles') : delta;
     if (deltaMiles > 10) {
       badge.textContent = `Fast ramp-up (+${delta.toFixed(1)} ${unit})`;
-      badge.className = badgeBase + 'bg-rose-950 text-rose-300 border border-rose-800';
+      badge.className = badgeBase + 'bg-red-tint text-red-strong border border-red-edge';
     } else if (deltaMiles >= 4) {
       badge.textContent = `Gradual ramp-up (+${delta.toFixed(1)} ${unit})`;
-      badge.className = badgeBase + 'bg-pine-950 text-pine-300 border border-pine-800';
+      badge.className = badgeBase + 'bg-blue-tint text-blue-strong border border-blue-edge';
     } else if (delta < 0) {
       badge.textContent = `Slowed down (${delta.toFixed(1)} ${unit})`;
-      badge.className = badgeBase + 'bg-amber-950 text-amber-300 border border-amber-800';
+      badge.className = badgeBase + 'bg-yellow-tint text-yellow-strong border border-yellow-edge';
     } else {
       badge.textContent = `Steady pace (+${delta.toFixed(1)} ${unit})`;
-      badge.className = badgeBase + 'bg-slate-800 text-slate-300 border border-slate-700';
+      badge.className = badgeBase + 'bg-subtle text-secondary border border-line';
     }
   }
 

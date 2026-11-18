@@ -1,8 +1,9 @@
 /*
  * Styles for Open Trail Science. How the pieces fit together (order of the layers below):
  *
- *   theme / base   Tailwind's variables and reset (src/tailwind.css: colours, the light theme swap)
- *   site           this file, first part: per-theme colour variables, sliders, views, scrollbars
+ *   theme / base   Tailwind's variables and reset (src/tailwind.css)
+ *   site           this file, first part: every colour for both themes (also those of the Tailwind
+ *                  classes: --color-*), sliders, views, scrollbars
  *   components     src/tailwind.css: .field and .field-compact (the size of form fields)
  *   utilities      Tailwind classes in the markup (spacing, layout, text sizes, colours)
  *   design         this file, last part: the site's look (cards, buttons, fields, choice cards,
@@ -157,6 +158,34 @@
     --code-string: #8db89c;
     --code-number: #e5c77a;
     --code-function: #93b4d6;
+
+    /*
+     * Colours of the Tailwind classes in the markup (bg-surface, text-muted, border-line, …;
+     * src/tailwind.css lists the names). The neutrals reuse the variables above. Each hue has
+     * the same steps in both themes: -tint (a background close to the page), -edge (a border on
+     * a tint), -mid and -deep (the same in both themes), the plain name (text), -strong and
+     * -strongest (text with more contrast, e.g. on a tint).
+     */
+    --color-ink: var(--page-text);
+    --color-ink-soft: #d6d9dd;
+    --color-secondary: var(--text-secondary);
+    --color-muted: var(--text-muted);
+    --color-line: var(--soft-border);
+    --color-subtle: var(--subtle);
+    --color-surface: var(--surface);
+    --color-sunken: #171a1d;
+    --color-on-color: #ffffff; /* text on brand and red buttons */
+    --color-brand: #255aa0;
+    --color-brand-hover: #2f6ab6;
+    --color-blue-tint: #00224f; --color-blue-tint-strong: #03336d; --color-blue-edge: #164685;
+    --color-blue-deep: #1f4f8f; --color-blue-mid: #638eca;
+    --color-blue: #85ade7; --color-blue-strong: #8fb4ea; --color-blue-strongest: #c5ddff;
+    --color-green-tint: #012c1b; --color-green: #8ab79b; --color-green-strong: #8db89c;
+    --color-yellow-tint: #312100; --color-yellow-edge: #5d4304; --color-yellow-mid: #a78840;
+    --color-yellow: #c6a75d; --color-yellow-strong: #e5c77a;
+    --color-orange-tint: #401500; --color-orange-strong: #e39a72;
+    --color-red-tint: #4a0201; --color-red-edge: #831a12; --color-red-deep: #a33a2e; --color-red-mid: #b05044;
+    --color-red: #e39387; --color-red-strong: #eba59b; --color-red-strongest: #ffcdc6;
   }
 
   :root[data-theme='light'] {
@@ -203,6 +232,18 @@
     --code-string: #3e6f57;
     --code-number: #7a5a12;
     --code-function: #2f5f86;
+    --color-ink-soft: #2a2e34;
+    --color-sunken: #ffffff;
+    --color-brand: #1f4f8f;
+    --color-brand-hover: #183e70;
+    --color-blue-tint: #f2f7ff; --color-blue-tint-strong: #e3eefe; --color-blue-edge: #c5ddff;
+    --color-blue: #1f4f8f; --color-blue-strong: #164685; --color-blue-strongest: #164685;
+    --color-green-tint: #f0f9f3; --color-green: #3e6f57; --color-green-strong: #21533c;
+    --color-yellow-tint: #fdf6e7; --color-yellow-edge: #f4d892;
+    --color-yellow: #7a5a12; --color-yellow-strong: #5d4304;
+    --color-orange-tint: #fff4ef; --color-orange-strong: #8a4422;
+    --color-red-tint: #fff4f2; --color-red-edge: #ffcdc6;
+    --color-red: #a33a2e; --color-red-strong: #831a12; --color-red-strongest: #831a12;
   }
 
   body {

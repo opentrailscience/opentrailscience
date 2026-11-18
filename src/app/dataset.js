@@ -70,7 +70,7 @@ export async function fetchPreviewData() {
   const trail = ($('preview-filter-trail') || {}).value || 'ALL';
   const status = ($('preview-filter-status') || {}).value || 'ALL';
 
-  if (tbody) tbody.innerHTML = '<tr><td colspan="11" class="py-6 text-center text-slate-500">Loading dataset...</td></tr>';
+  if (tbody) tbody.innerHTML = '<tr><td colspan="11" class="py-6 text-center text-muted">Loading dataset...</td></tr>';
 
   try {
     const page = await loadPreviewPage(trail, status);
@@ -84,7 +84,7 @@ export async function fetchPreviewData() {
     if (btnPrev) btnPrev.disabled = state.previewPage <= 1;
     if (btnNext) btnNext.disabled = state.previewPage * state.previewLimit >= page.total;
   } catch (e) {
-    if (tbody) tbody.innerHTML = '<tr><td colspan="11" class="py-6 text-center text-rose-400">Failed loading preview data.</td></tr>';
+    if (tbody) tbody.innerHTML = '<tr><td colspan="11" class="py-6 text-center text-red">Failed loading preview data.</td></tr>';
   }
 }
 
@@ -100,31 +100,31 @@ function renderPreviewRows(rows) {
   if (!tbody) return;
 
   if (!rows || rows.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="11" class="py-6 text-center text-slate-400">No records found matching current filters.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="11" class="py-6 text-center text-muted">No records found matching current filters.</td></tr>';
     return;
   }
 
   tbody.innerHTML = '';
   rows.forEach(r => {
     const tr = document.createElement('tr');
-    tr.className = 'hover:bg-slate-800/40 transition';
+    tr.className = 'hover:bg-subtle/40 transition';
 
     const injuryBadge = r.severeInjuryOccurred
-      ? '<span class="text-rose-400 font-bold">Yes</span>'
-      : '<span class="text-slate-500">None</span>';
+      ? '<span class="text-red font-bold">Yes</span>'
+      : '<span class="text-muted">None</span>';
 
     tr.innerHTML = `
         <td class="py-3 px-4"><span class="trail-chip" data-trail="${escapeHtml(r.trail)}">${escapeHtml(r.trail)}</span></td>
         <td class="py-3 px-4">${escapeHtml(r.hikeYear)}</td>
         <td class="py-3 px-4">${escapeHtml(r.direction)}</td>
-        <td class="py-3 px-4 font-semibold text-white">${escapeHtml(previewUnit(r.baseWeightLbs, 'lb', ' lbs', ' kg'))}</td>
+        <td class="py-3 px-4 font-semibold text-ink">${escapeHtml(previewUnit(r.baseWeightLbs, 'lb', ' lbs', ' kg'))}</td>
         <td class="py-3 px-4">${escapeHtml(previewUnit(r.averageDailyMiles, 'mi/day', ' mi/d', ' km/d'))}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(r.backpackType)}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(r.cookSystem === 'huts_restaurants' ? 'huts / restaurants' : humanize(r.cookSystem))}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(humanize(r.sleepPadType))}</td>
         <td class="py-3 px-4">${statusBadge(r.completionStatus)}</td>
         <td class="py-3 px-4">${injuryBadge}</td>
-        <td class="py-3 px-4 text-center text-amber-400 font-bold">${escapeHtml(orDash(r.overallEnjoymentRating, '/10'))}</td>
+        <td class="py-3 px-4 text-center text-yellow font-bold">${escapeHtml(orDash(r.overallEnjoymentRating, '/10'))}</td>
       `;
     tbody.appendChild(tr);
   });
@@ -142,11 +142,11 @@ export function initCodeSnippets() {
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => {
-        t.classList.remove('active', 'bg-brand', 'text-white', 'font-semibold');
-        t.classList.add('text-slate-400');
+        t.classList.remove('active', 'bg-brand', 'text-on-color', 'font-semibold');
+        t.classList.add('text-muted');
       });
-      tab.classList.add('active', 'bg-brand', 'text-white', 'font-semibold');
-      tab.classList.remove('text-slate-400');
+      tab.classList.add('active', 'bg-brand', 'text-on-color', 'font-semibold');
+      tab.classList.remove('text-muted');
 
       document.querySelectorAll('.snippet-block').forEach(b => b.classList.add('hidden'));
       const targetBlock = $(tab.getAttribute('data-target'));
@@ -246,17 +246,17 @@ export function initDatasetDocs() {
         const head = document.createElement('tr');
         const th = document.createElement('th');
         th.colSpan = 5;
-        th.className = 'py-2 px-3 text-left bg-slate-950/60 text-slate-400 font-sans font-semibold text-xs';
+        th.className = 'py-2 px-3 text-left bg-sunken/60 text-muted font-sans font-semibold text-xs';
         th.textContent = group;
         head.appendChild(th);
         body.appendChild(head);
       }
       const row = document.createElement('tr');
-      cell(row, col.name, 'text-pine-400 whitespace-nowrap');
+      cell(row, col.name, 'text-blue whitespace-nowrap');
       cell(row, TYPE_LABELS[col.type] || col.type, 'whitespace-nowrap');
       cell(row, describeValues(col), 'wrap-break-word max-w-xs');
-      cell(row, col.role || '—', 'text-slate-400');
-      cell(row, describeNotes(col), 'font-sans text-slate-400 min-w-56');
+      cell(row, col.role || '—', 'text-muted');
+      cell(row, describeNotes(col), 'font-sans text-muted min-w-56');
       body.appendChild(row);
     });
   }
@@ -266,7 +266,7 @@ export function initDatasetDocs() {
     doc.changelog.forEach(entry => {
       const li = document.createElement('li');
       const title = document.createElement('div');
-      title.className = 'text-slate-300';
+      title.className = 'text-secondary';
       title.textContent = `v${entry.version} · ${entry.date}`;
       const list = document.createElement('ul');
       list.className = 'list-disc list-inside mt-1 space-y-0.5';

@@ -35,7 +35,7 @@ export function initChoiceCards() {
       const label = group.parentElement.querySelector('label') || group.previousElementSibling;
       if (label) {
         const text = label.cloneNode(true);
-        text.querySelectorAll('button, .text-rose-400').forEach(el => el.remove()); // info button, required star
+        text.querySelectorAll('button, .text-red').forEach(el => el.remove()); // info button, required star
         const name = text.textContent.replace(/\s+/g, ' ').trim();
         if (name) group.setAttribute('aria-label', name);
       }
@@ -95,7 +95,7 @@ export function initOptionHints() {
   selects.forEach(select => {
     const hint = document.createElement('span');
     hint.id = `${select.id}-hint`;
-    hint.className = 'hidden text-xs text-slate-400 mt-1 block';
+    hint.className = 'hidden text-xs text-muted mt-1 block';
     hint.setAttribute('aria-live', 'polite');
     select.after(hint);
     select.setAttribute('data-has-hints', '');

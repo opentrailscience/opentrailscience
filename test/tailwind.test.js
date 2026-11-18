@@ -15,13 +15,20 @@ test('every space-x/space-y class has a Tailwind 3 compatibility rule', () => {
   }
 });
 
-test('every color class uses a color defined in the theme', () => {
-  const defined = new Set([...css.matchAll(/--color-([a-z]+)-?(\d*):/g)].map(m => m[1] + (m[2] ? `-${m[2]}` : '')));
-  const families = 'slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|pine';
-  const pattern = new RegExp(`(?<![\\w-])(?:[a-z0-9-]+:)*(?:bg|text|border|from|via|to|ring|shadow|fill|stroke|accent|outline|divide|decoration|caret|placeholder)-((?:${families})-\\d+)`, 'g');
+test('every color class uses a color named in the theme, with values for both themes', () => {
+  const styles = read('public/styles.css');
+  const names = new Set([...css.slice(css.indexOf('@theme inline reference')).matchAll(/--color-([a-z-]+): var\(--color-\1\);/g)].map(m => m[1]));
+  assert.ok(names.size > 10, 'the color names are listed in src/tailwind.css');
+  for (const name of names) assert.match(styles, new RegExp(`--color-${name}:`), `--color-${name} needs a value in public/styles.css`);
+  // Values that differ in the light theme are set again there; the rest are the same in both.
+  const pattern = /(?<![\w-])(?:[a-z0-9-]+:)*(?:bg|text|border|ring|divide|accent|from|via|to|fill|stroke|outline|decoration|caret|placeholder)-([a-z]+(?:-[a-z]+)*)(?:\/\d+)?(?![\w-])/g;
+  const notColors = /^(?:transparent|current|inherit|none|hidden|solid|dashed|dotted|left|right|center|justify|start|end|top|bottom|wrap|nowrap|balance|pretty|clip|ellipsis|base|xs|sm|md|lg|xl|[234]xl|t|b|l|r|x|y|s|e|collapse|separate|offset|inset|auto|fixed|scroll|cover|contain|repeat|no-repeat|linear|radial|conic|blend|clip-text|origin|linecap|linejoin|width|opacity|miterlimit|dasharray|dashoffset)(?:-|$)/;
   for (const [, color] of markup.matchAll(pattern)) {
-    assert.ok(defined.has(color), `${color} is used but not defined in @theme (src/tailwind.css)`);
+    if (notColors.test(color)) continue;
+    assert.ok(names.has(color), `${color} is used but has no name in @theme (src/tailwind.css)`);
   }
+  // Tailwind's own palettes are not used (their names mean dark shades, which the light theme would have to swap).
+  assert.doesNotMatch(markup, /(?<![\w-])(?:[a-z-]+:)*(?:bg|text|border|ring|divide|accent)-(?:slate|gray|pine|sky|emerald|amber|orange|rose|teal|purple|white|black)(?:-\d+)?(?![\w-])/);
 });
 
 test('.field keeps 16px text on phones and 14px from the sm breakpoint on', () => {

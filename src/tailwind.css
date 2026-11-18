@@ -10,61 +10,44 @@
 @custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
 
 /*
- * Colors: only the families the site uses, as fixed hex values. Add a family
- * here before using it. The classes in the markup are written for the dark
- * theme; the light theme below swaps the shades. Neutrals are the design's warm
- * greys; the accents are the design's sage, terracotta, dusty blue and soft
- * yellow (emerald, orange, sky/pine, amber), with pine as the link blue.
+ * Colors: the names of the color classes (bg-surface, text-muted, border-line, text-red, …).
+ * Their values, for both themes, are the --color-* variables at the top of
+ * public/styles.css; `reference` keeps Tailwind from defining them a second time.
+ * Add a name here and its two values there before using it.
  */
+/* No Tailwind default colors: only the names below. */
 @theme {
   --color-*: initial;
-  --color-white: #e9eaec;
-  --color-black: #000;
+}
+@theme inline reference {
+  --color-ink: var(--color-ink);            /* text */
+  --color-ink-soft: var(--color-ink-soft);  /* text a little softer than ink (answers, notes) */
+  --color-secondary: var(--color-secondary);
+  --color-muted: var(--color-muted);        /* small print, labels */
+  --color-line: var(--color-line);          /* borders */
+  --color-subtle: var(--color-subtle);      /* quiet buttons, dividers */
+  --color-surface: var(--color-surface);    /* boxes */
+  --color-sunken: var(--color-sunken);      /* code blocks, table heads */
+  --color-on-color: var(--color-on-color);  /* text on brand and red buttons */
+  --color-brand: var(--color-brand);        /* primary buttons */
+  --color-brand-hover: var(--color-brand-hover);
+  --color-blue-tint: var(--color-blue-tint); --color-blue-tint-strong: var(--color-blue-tint-strong);
+  --color-blue-edge: var(--color-blue-edge); --color-blue-deep: var(--color-blue-deep);
+  --color-blue-mid: var(--color-blue-mid); --color-blue: var(--color-blue);
+  --color-blue-strong: var(--color-blue-strong); --color-blue-strongest: var(--color-blue-strongest);
+  --color-green-tint: var(--color-green-tint); --color-green: var(--color-green);
+  --color-green-strong: var(--color-green-strong);
+  --color-yellow-tint: var(--color-yellow-tint); --color-yellow-edge: var(--color-yellow-edge);
+  --color-yellow-mid: var(--color-yellow-mid); --color-yellow: var(--color-yellow);
+  --color-yellow-strong: var(--color-yellow-strong);
+  --color-orange-tint: var(--color-orange-tint); --color-orange-strong: var(--color-orange-strong);
+  --color-red-tint: var(--color-red-tint); --color-red-edge: var(--color-red-edge);
+  --color-red-deep: var(--color-red-deep); --color-red-mid: var(--color-red-mid);
+  --color-red: var(--color-red); --color-red-strong: var(--color-red-strong);
+  --color-red-strongest: var(--color-red-strongest);
+}
 
-  /* slate: warm neutrals (gray is the same) */
-  --color-slate-50: #e9eaec; --color-slate-100: #e9eaec; --color-slate-200: #d6d9dd; --color-slate-300: #c4c8ce;
-  --color-slate-400: #9ea5ae; --color-slate-500: #9ea5ae; --color-slate-600: #5f666e; --color-slate-700: #343941;
-  --color-slate-800: #272b30; --color-slate-850: #212429; --color-slate-900: #1b1e22; --color-slate-950: #171a1d;
-  --color-gray-50: #e9eaec; --color-gray-100: #e9eaec; --color-gray-200: #d6d9dd; --color-gray-300: #c4c8ce;
-  --color-gray-400: #9ea5ae; --color-gray-500: #9ea5ae; --color-gray-600: #5f666e; --color-gray-700: #343941;
-  --color-gray-800: #272b30; --color-gray-850: #212429; --color-gray-900: #1b1e22; --color-gray-950: #171a1d;
-  /* pine */
-  --color-pine-50: #f2f7ff; --color-pine-100: #e3eefe; --color-pine-200: #c5ddff; --color-pine-300: #8fb4ea;
-  --color-pine-400: #85ade7; --color-pine-500: #638eca; --color-pine-600: #4572b1; --color-pine-700: #1f4f8f;
-  --color-pine-800: #164685; --color-pine-900: #03336d; --color-pine-950: #00224f;
-  /* sky */
-  --color-sky-50: #f2f7ff; --color-sky-100: #e3eefe; --color-sky-200: #c5ddff; --color-sky-300: #8fb4ea;
-  --color-sky-400: #85ade7; --color-sky-500: #638eca; --color-sky-600: #4572b1; --color-sky-700: #1f4f8f;
-  --color-sky-800: #164685; --color-sky-900: #03336d; --color-sky-950: #00224f;
-  /* emerald */
-  --color-emerald-50: #f0f9f3; --color-emerald-100: #dff3e5; --color-emerald-200: #bee6cc; --color-emerald-300: #8db89c;
-  --color-emerald-400: #8ab79b; --color-emerald-500: #6a987e; --color-emerald-600: #4e7e64; --color-emerald-700: #3e6f57;
-  --color-emerald-800: #21533c; --color-emerald-900: #0a402a; --color-emerald-950: #012c1b;
-  /* amber */
-  --color-amber-50: #fdf6e7; --color-amber-100: #faecca; --color-amber-200: #f4d892; --color-amber-300: #e5c77a;
-  --color-amber-400: #c6a75d; --color-amber-500: #a78840; --color-amber-600: #8c6c26; --color-amber-700: #7a5a12;
-  --color-amber-800: #5d4304; --color-amber-900: #463103; --color-amber-950: #312100;
-  /* orange */
-  --color-orange-50: #fff4ef; --color-orange-100: #fee8dc; --color-orange-200: #fecfb7; --color-orange-300: #e39a72;
-  --color-orange-400: #e5946b; --color-orange-500: #c97248; --color-orange-600: #b4572d; --color-orange-700: #904018;
-  --color-orange-800: #8a4422; --color-orange-900: #5a2203; --color-orange-950: #401500;
-  /* rose */
-  --color-rose-50: #fff4f2; --color-rose-100: #ffe6e3; --color-rose-200: #ffcdc6; --color-rose-300: #eba59b;
-  --color-rose-400: #e39387; --color-rose-500: #c87064; --color-rose-600: #b05044; --color-rose-700: #a33a2e;
-  --color-rose-800: #831a12; --color-rose-900: #6a0100; --color-rose-950: #4a0201;
-  /* teal */
-  --color-teal-50: #eff9f8; --color-teal-100: #dbf3ef; --color-teal-200: #b7e6e0; --color-teal-300: #8fc2bc;
-  --color-teal-400: #82b7b1; --color-teal-500: #619892; --color-teal-600: #457d78; --color-teal-700: #2f6b66;
-  --color-teal-800: #12524e; --color-teal-900: #013f3b; --color-teal-950: #022b28;
-  /* purple */
-  --color-purple-50: #f8f5ff; --color-purple-100: #f1e8fe; --color-purple-200: #e3d2fd; --color-purple-300: #bba9d6;
-  --color-purple-400: #b3a0d2; --color-purple-500: #9481b7; --color-purple-600: #79659f; --color-purple-700: #5e4a86;
-  --color-purple-800: #4e3a75; --color-purple-900: #3c2760; --color-purple-950: #2b144c;
-
-  /* Primary buttons: trail green, white text on it (light theme value below). */
-  --color-brand: #255aa0;
-  --color-brand-hover: #2f6ab6;
-
+@theme {
   /* Self-hosted in public/fonts (see public/styles.css). */
   --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
   --font-heading: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
@@ -100,69 +83,6 @@
 }
 
 /*
- * Light theme (the default): the same classes, with the colors swapped.
- * public/theme.js sets data-theme on <html> before the page is drawn (the
- * choice saved by the header button, otherwise light). Light backgrounds become the
- * dark shades and the other way round; 300/400 (used for colored text) become
- * the darker 800/700 so they stay readable on white and light grey. 500-700 stay as they are:
- * they are button and accent colors that carry white text.
- */
-@layer theme {
-  :root[data-theme='light'] {
-    --color-white: #181b1f;
-    --color-brand: #1f4f8f;
-    --color-brand-hover: #183e70;
-    /* slate: warm neutrals (gray is the same) */
-    --color-slate-50: #181b1f; --color-slate-100: #181b1f; --color-slate-200: #2a2e34; --color-slate-300: #3c4248;
-    --color-slate-400: #555c63; --color-slate-500: #555c63; --color-slate-600: #9aa1aa; --color-slate-700: #cdd0d4;
-    --color-slate-800: #e5e6e3; --color-slate-850: #f2f2f1; --color-slate-900: #ffffff; --color-slate-950: #ffffff;
-    --color-gray-50: #181b1f; --color-gray-100: #181b1f; --color-gray-200: #2a2e34; --color-gray-300: #3c4248;
-    --color-gray-400: #555c63; --color-gray-500: #555c63; --color-gray-600: #9aa1aa; --color-gray-700: #cdd0d4;
-    --color-gray-800: #e5e6e3; --color-gray-850: #f2f2f1; --color-gray-900: #ffffff; --color-gray-950: #ffffff;
-    /* pine */
-    --color-pine-50: #00224f; --color-pine-100: #03336d; --color-pine-200: #164685; --color-pine-300: #164685;
-    --color-pine-400: #1f4f8f; --color-pine-500: #638eca; --color-pine-600: #4572b1; --color-pine-700: #1f4f8f;
-    --color-pine-800: #c5ddff; --color-pine-900: #e3eefe; --color-pine-950: #f2f7ff;
-    /* sky */
-    --color-sky-50: #00224f; --color-sky-100: #03336d; --color-sky-200: #164685; --color-sky-300: #164685;
-    --color-sky-400: #1f4f8f; --color-sky-500: #638eca; --color-sky-600: #4572b1; --color-sky-700: #1f4f8f;
-    --color-sky-800: #c5ddff; --color-sky-900: #e3eefe; --color-sky-950: #f2f7ff;
-    /* emerald */
-    --color-emerald-50: #012c1b; --color-emerald-100: #0a402a; --color-emerald-200: #21533c; --color-emerald-300: #21533c;
-    --color-emerald-400: #3e6f57; --color-emerald-500: #6a987e; --color-emerald-600: #4e7e64; --color-emerald-700: #3e6f57;
-    --color-emerald-800: #bee6cc; --color-emerald-900: #dff3e5; --color-emerald-950: #f0f9f3;
-    /* amber */
-    --color-amber-50: #312100; --color-amber-100: #463103; --color-amber-200: #5d4304; --color-amber-300: #5d4304;
-    --color-amber-400: #7a5a12; --color-amber-500: #a78840; --color-amber-600: #8c6c26; --color-amber-700: #7a5a12;
-    --color-amber-800: #f4d892; --color-amber-900: #faecca; --color-amber-950: #fdf6e7;
-    /* orange */
-    --color-orange-50: #401500; --color-orange-100: #5a2203; --color-orange-200: #8a4422; --color-orange-300: #8a4422;
-    --color-orange-400: #904018; --color-orange-500: #c97248; --color-orange-600: #b4572d; --color-orange-700: #904018;
-    --color-orange-800: #fecfb7; --color-orange-900: #fee8dc; --color-orange-950: #fff4ef;
-    /* rose */
-    --color-rose-50: #4a0201; --color-rose-100: #6a0100; --color-rose-200: #831a12; --color-rose-300: #831a12;
-    --color-rose-400: #a33a2e; --color-rose-500: #c87064; --color-rose-600: #b05044; --color-rose-700: #a33a2e;
-    --color-rose-800: #ffcdc6; --color-rose-900: #ffe6e3; --color-rose-950: #fff4f2;
-    /* teal */
-    --color-teal-50: #022b28; --color-teal-100: #013f3b; --color-teal-200: #12524e; --color-teal-300: #12524e;
-    --color-teal-400: #2f6b66; --color-teal-500: #619892; --color-teal-600: #457d78; --color-teal-700: #2f6b66;
-    --color-teal-800: #b7e6e0; --color-teal-900: #dbf3ef; --color-teal-950: #eff9f8;
-    /* purple */
-    --color-purple-50: #2b144c; --color-purple-100: #3c2760; --color-purple-200: #4e3a75; --color-purple-300: #4e3a75;
-    --color-purple-400: #5e4a86; --color-purple-500: #9481b7; --color-purple-600: #79659f; --color-purple-700: #5e4a86;
-    --color-purple-800: #e3d2fd; --color-purple-900: #f1e8fe; --color-purple-950: #f8f5ff;
-  }
-
-  /* White text stays pure white on colored buttons and badges, in both themes. */
-  :root :is(
-    [class~='bg-brand'], [class~='bg-pine-600'], [class~='bg-pine-700'],
-    [class~='bg-rose-600'], [class~='bg-rose-700'], [class~='from-pine-600'], [class~='from-pine-700']
-  ) {
-    --color-white: #ffffff;
-  }
-}
-
-/*
  * Components: one class instead of the same chain of utilities on every element.
  * Their look (background, border, radius, colours, focus ring) is in the design
  * layer of public/styles.css; these set the size. Utilities after them still win
@@ -176,8 +96,9 @@
 }
 
 /*
- * Tailwind 3 defaults that v4 changed: gray-200 borders, gray-400
- * placeholders and the pointer cursor on buttons.
+ * Tailwind 3 defaults that v4 changed: a grey border color (its gray-200, here
+ * ink-soft) and grey placeholders (its gray-400, here muted), and the pointer
+ * cursor on buttons.
  */
 @layer base {
   *,
@@ -185,12 +106,12 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--color-ink-soft, currentcolor);
   }
 
   input::placeholder,
   textarea::placeholder {
-    color: var(--color-gray-400);
+    color: var(--color-muted);
   }
 
   button:not(:disabled),
