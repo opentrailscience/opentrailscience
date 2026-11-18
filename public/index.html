@@ -228,7 +228,7 @@
           <div class="flex-1">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Hi, I'm the hiker behind this survey.</h1>
 
-            <div class="flex flex-wrap gap-2 mt-5 text-xs font-mono">
+            <div class="flex flex-wrap gap-2 mt-5 text-xs">
               <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300">20 years old</span>
               <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300">EMT</span>
               <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300">&lt;3 Computers</span>
@@ -240,7 +240,7 @@
           <figure class="sm:w-72 shrink-0">
             <img src="img/about-photo-1100.webp" srcset="img/about-photo-640.webp 640w, img/about-photo-1100.webp 1100w" sizes="(min-width: 640px) 288px, calc(100vw - 32px)" width="1100" height="1100" loading="lazy" decoding="async"
               alt="Me sitting on the rocks beside a mountain trail, smiling, with my backpack, trekking poles and sun hat"
-              class="w-full h-auto rounded-2xl border border-slate-800 shadow-2xl shadow-pine-950/60 sm:rotate-2">
+              class="w-full h-auto rounded-2xl border border-slate-800 sm:rotate-2">
             <figcaption class="text-xs text-slate-500 mt-3 text-center">A quick break on the trail</figcaption>
           </figure>
         </div>
@@ -249,7 +249,7 @@
           <p>I'm 20, and currently working part time as an EMT. I recently hiked the Tour du Mont Blanc, which was a really cool experience. If all goes well, I'll be attempting a thru-hike of the PCT in 2027.</p>
           <p>While planning for the PCT I of course watched all the mandatory indie-folk-infused journey videos, but I also really enjoyed looking at different statistics and surveys. These are great for answering how popular a specific trend is. I, however, also wanted to check for interesting correlations or try to model some predictions, and I could not find any large datasets to use.</p>
           <p>So I built opentrailscience.org, which aims to provide datasets for any long-distance trail. I never ask for your name or an annoying sign-up, and I blur the data a bit to make it harder to pinpoint a specific hiker, then publish every answer as an open dataset that anyone can download and play around with.</p>
-          <p>This is a one-person project, not a company. If you have any suggestions or questions, don't hesitate! <a href="mailto:hello@opentrailscience.org" class="font-mono text-pine-400 hover:text-pine-300">hello@opentrailscience.org</a></p>
+          <p>This is a one-person project, not a company. If you have any suggestions or questions, don't hesitate! <a href="mailto:hello@opentrailscience.org" class="text-pine-400 hover:text-pine-300">hello@opentrailscience.org</a></p>
         </div>
 
         <div class="mt-8 flex flex-col sm:flex-row gap-3">
@@ -265,7 +265,7 @@
         <div>
           <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-4">How I handle your data</h1>
           <p class="mt-3">Open Trail Science publishes every survey answer as an open dataset. That only works if the people who answered are hard to pick out, so this page explains what I ask, what I store and why.</p>
-          <p class="text-xs text-slate-500 mt-2 font-mono">Last updated 17 November 2026 • consent version <span id="privacy-consent-version">4</span></p>
+          <p class="text-xs text-slate-500 mt-2">Last updated 17 November 2026 • consent version <span id="privacy-consent-version">4</span></p>
         </div>
 
         <!-- Short version -->
@@ -288,7 +288,7 @@
           <p class="mt-2">Some questions need a precise answer for calculations (your pace, for example). The server works those out, then throws the precise answers away and only keeps the blurred version.</p>
           <div class="mt-4 overflow-x-auto rounded-xl border border-slate-800">
             <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-slate-950 text-slate-400 text-xs uppercase font-mono border-b border-slate-800">
+              <thead class="bg-slate-950 text-slate-400 text-xs border-b border-slate-800">
                 <tr><th class="py-2.5 px-3">You answer</th><th class="py-2.5 px-3">I store and publish</th><th class="py-2.5 px-3">Why</th></tr>
               </thead>
               <tbody class="divide-y divide-slate-800/60 align-top">
@@ -316,12 +316,12 @@
             <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
               <div class="font-semibold text-white">Popular trails: weeks</div>
               <p class="text-xs text-slate-400 mt-1">The busiest trails in the survey, where most hikers start in the same few weeks of the season, so with enough answers a start week is shared with many others.</p>
-              <p id="privacy-popular-trails" class="text-xs font-mono text-pine-300 mt-2"></p>
+              <p id="privacy-popular-trails" class="text-xs text-pine-300 mt-2"></p>
             </div>
             <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
               <div class="font-semibold text-white">Small trails: months</div>
               <p class="text-xs text-slate-400 mt-1">Fewer hikers, so I use months and round the distance to 10 mi and the days to whole weeks.</p>
-              <p id="privacy-small-trails" class="text-xs font-mono text-amber-300 mt-2"></p>
+              <p id="privacy-small-trails" class="text-xs text-amber-300 mt-2"></p>
             </div>
           </div>
           <p class="mt-3 text-xs text-slate-400">No method is perfect: someone who knows enough about you or your hike might still find your row, and a small dataset makes that easier. That's also why I ask for your consent before you start.</p>
@@ -423,10 +423,10 @@
         <!-- Deletion -->
         <div id="privacy-delete" class="card-glow rounded-2xl p-6 sm:p-8 border border-amber-500/25">
           <h2 class="text-xl font-bold text-white">Deleting your answers</h2>
-          <p class="mt-2">After submitting, you got a personal code like <span class="font-mono text-slate-200">7K3Q-M9XD-2WPA-HV4T</span>. Enter it here to delete your hike:</p>
+          <p class="mt-2">After submitting, you got a personal code like <span class="text-slate-200">7K3Q-M9XD-2WPA-HV4T</span>. Enter it here to delete your hike:</p>
           <form id="deletion-form" class="mt-4 flex flex-col sm:flex-row gap-3" novalidate autocomplete="off">
             <label for="deletion-code-input" class="sr-only">Personal code</label>
-            <input type="text" id="deletion-code-input" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-mono uppercase tracking-wider focus:outline-hidden focus:border-pine-500 text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+            <input type="text" id="deletion-code-input" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-mono uppercase focus:outline-hidden focus:border-pine-500 text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
             <button type="button" id="btn-delete-answers" class="px-5 py-3 rounded-xl font-bold text-sm bg-rose-700 hover:bg-rose-600 text-white transition">Delete my answers</button>
           </form>
           <p id="deletion-result" role="status" class="mt-3 text-sm"></p>
@@ -448,7 +448,7 @@
         <div>
           <h2 class="text-xl font-bold text-white">Who is responsible</h2>
           <p class="mt-2">Open Trail Science is a one-person, non-commercial project (that's me, see <a href="#about" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">About the creator</a>). For any privacy question or request, just write to:</p>
-          <p class="mt-2"><a href="mailto:privacy@opentrailscience.org" class="font-mono text-pine-400 hover:text-pine-300">privacy@opentrailscience.org</a></p>
+          <p class="mt-2"><a href="mailto:privacy@opentrailscience.org" class="text-pine-400 hover:text-pine-300">privacy@opentrailscience.org</a></p>
           <p class="mt-4">The whole site is open source, so you don't have to take my word for any of this: the code that checks, blurs, stores and publishes your answers is on <a href="https://github.com/opentrailscience/opentrailscience" class="text-pine-400 hover:text-pine-300 underline underline-offset-2" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
           <p class="mt-4 text-xs text-slate-500">If this page ever changes in a way that affects how answers are stored, the consent version above changes too, and every record keeps the version its author agreed to.</p>
         </div>
@@ -466,7 +466,7 @@
         <div class="text-center max-w-3xl mx-auto">
           <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">What the data says so far</h1>
           <p class="text-sm sm:text-base text-slate-300 mt-2">A first look at the open dataset. These are self-reported answers, not a controlled study.</p>
-          <p id="insights-meta" class="text-xs font-mono text-slate-500 mt-2"></p>
+          <p id="insights-meta" class="text-xs text-slate-500 mt-2"></p>
         </div>
 
         <!-- Shown below 50 hikers -->
@@ -498,7 +498,7 @@
           <p class="text-sm text-slate-400 mt-1">Enter your personal code from the thank-you page to see how your hike compares today, with everyone who has answered since.</p>
           <form id="my-hike-form" class="mt-4 flex flex-col sm:flex-row gap-3" novalidate autocomplete="off">
             <label for="my-hike-code" class="sr-only">Your code</label>
-            <input type="text" id="my-hike-code" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-mono uppercase tracking-wider focus:outline-hidden focus:border-pine-500 text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+            <input type="text" id="my-hike-code" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-mono uppercase focus:outline-hidden focus:border-pine-500 text-base sm:text-sm" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
             <button type="button" id="btn-my-hike" class="px-5 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white transition disabled:opacity-40">Show my comparison</button>
           </form>
           <p id="my-hike-result" role="status" class="mt-3 text-sm"></p>
@@ -520,11 +520,11 @@
       <h1 class="sr-only">Share your hike</h1>
       
       <!-- Sticky Progress Bar Header (hidden until consent) -->
-      <div id="survey-progress" class="hidden sticky-progress py-3 px-4 sm:px-8 shadow-md">
+      <div id="survey-progress" class="hidden sticky-progress py-3 px-4 sm:px-8">
         <div class="max-w-4xl mx-auto">
           <div class="flex items-center justify-between text-xs sm:text-sm font-semibold mb-2">
             <div class="flex items-center gap-2">
-              <span id="wizard-step-badge" class="px-2 py-0.5 rounded-sm bg-pine-800 text-pine-200 text-xs font-mono">Step 1 of 5</span>
+              <span id="wizard-step-badge" class="px-2 py-0.5 rounded-sm bg-pine-800 text-pine-200 text-xs">Step 1 of 5</span>
               <span id="wizard-step-title" class="text-white hidden sm:inline">Your hike</span>
             </div>
             <!-- Units for the whole survey (the dataset preview has the same switch) -->
@@ -535,7 +535,7 @@
           </div>
           <!-- Bar -->
           <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-            <div id="wizard-progress-bar" class="bg-linear-to-r/srgb from-pine-500 to-emerald-400 h-2 rounded-full progress-fill w-1/5"></div>
+            <div id="wizard-progress-bar" class="h-2 rounded-full progress-fill w-1/5"></div>
           </div>
         </div>
       </div>
@@ -573,10 +573,10 @@
       <div id="survey-body" class="hidden">
       <!-- Milestone banner (changes with the step) -->
       <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-6">
-        <div id="wizard-milestone-banner" class="milestone-badge p-4 rounded-xl flex items-start gap-3 text-slate-200 shadow-xs">
+        <div id="wizard-milestone-banner" class="milestone-badge p-4 rounded-xl flex items-start gap-3 text-slate-200">
           <svg class="w-5 h-5 text-pine-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           <div>
-            <div id="wizard-milestone-title" class="text-xs font-mono font-bold uppercase tracking-wider text-pine-300">Mood: Unreasonably optimistic</div>
+            <div id="wizard-milestone-title" class="text-xs font-bold text-pine-300">Mood: Unreasonably optimistic</div>
             <div id="wizard-milestone-desc" class="text-xs sm:text-sm text-slate-300 mt-0.5">Fresh legs, clean socks, and a survey that surely can't be that long. Let's start with where and when you hiked.</div>
           </div>
         </div>
@@ -871,7 +871,7 @@
                   <label for="field-preTrailFitnessRating" class="text-sm font-semibold text-slate-200">
                     Fitness before the hike (1 to 10)&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <span id="fitness-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
+                  <span id="fitness-label" class="text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
                     Tap where it fits
                   </span>
                 </div>
@@ -995,7 +995,7 @@
                   <label for="field-trainingFocus" class="text-sm font-semibold text-slate-200">
                     How did you train before the hike?&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <span id="training-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
+                  <span id="training-label" class="text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
                     Tap where it fits
                   </span>
                 </div>
@@ -1326,7 +1326,7 @@
                     </h3>
                     <p class="text-xs text-slate-400 mt-0.5">This helps show whether ramping up fast leads to more injuries.</p>
                   </div>
-                  <span id="ramp-gradient-badge" class="px-2.5 py-1 rounded-sm text-xs font-mono font-semibold bg-slate-800 text-pine-300">
+                  <span id="ramp-gradient-badge" class="px-2.5 py-1 rounded-sm text-xs font-semibold bg-slate-800 text-pine-300">
                     Your ramp-up
                   </span>
                 </div>
@@ -1395,7 +1395,7 @@
                     <label for="field-sleepQualityRating" class="text-sm font-semibold text-slate-200">
                       Sleep quality (0 to 10)&nbsp;<span class="text-rose-400">*</span>
                     </label>
-                    <span id="sleep-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
+                    <span id="sleep-label" class="text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
                     Tap where it fits
                   </span>
                   </div>
@@ -1427,7 +1427,7 @@
                   <label for="field-percentHikingAlone" class="text-sm font-semibold text-slate-200">
                     How much of the time did you hike alone?&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <span id="alone-label" class="font-mono text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
+                  <span id="alone-label" class="text-xs font-bold text-pine-400 bg-pine-950 px-2 py-0.5 rounded-sm border border-pine-800">
                     Tap where it fits
                   </span>
                 </div>
@@ -1671,7 +1671,7 @@
                   <label for="field-overallEnjoymentRating" class="text-sm font-semibold text-slate-200">
                     How much did you enjoy the hike overall? (1 to 10)&nbsp;<span class="text-rose-400">*</span>
                   </label>
-                  <span id="enjoyment-label" class="font-mono text-xs font-bold text-amber-400 bg-amber-950 px-2 py-0.5 rounded-sm border border-amber-800">
+                  <span id="enjoyment-label" class="text-xs font-bold text-amber-400 bg-amber-950 px-2 py-0.5 rounded-sm border border-amber-800">
                     Tap where it fits
                   </span>
                 </div>
@@ -1707,7 +1707,7 @@
               <span>Back</span>
             </button>
 
-            <button type="button" id="btn-wizard-next" class="px-7 max-[379px]:px-5 py-3 rounded-xl whitespace-nowrap font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/50 transition flex items-center gap-2">
+            <button type="button" id="btn-wizard-next" class="px-7 max-[379px]:px-5 py-3 rounded-xl whitespace-nowrap font-bold text-sm bg-brand hover:bg-brand-hover text-white transition flex items-center gap-2">
               <span id="btn-wizard-next-text">Next: About you</span>
             </button>
           </div>
@@ -1728,7 +1728,7 @@
           </svg>
         </div>
 
-        <span id="success-badge" class="sr-only px-3 py-1 rounded-full bg-pine-950 border border-pine-700/60 text-pine-300 font-mono text-xs font-semibold uppercase tracking-wider">
+        <span id="success-badge" class="sr-only px-3 py-1 rounded-full bg-pine-950 border border-pine-700/60 text-pine-300 text-xs font-semibold">
           Hike saved
         </span>
 
@@ -1744,7 +1744,7 @@
         <div id="success-summary-card" class="card-glow rounded-2xl p-6 mt-8 max-w-xl mx-auto text-left space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
             <div class="whitespace-nowrap">
-              <span id="summary-trail-badge" class="px-2.5 py-1 rounded-sm text-xs font-bold font-mono bg-pine-900 text-pine-300 border border-pine-700">PCT</span>
+              <span id="summary-trail-badge" class="px-2.5 py-1 rounded-sm text-xs font-bold bg-pine-900 text-pine-300 border border-pine-700">PCT</span>
               <span id="summary-hike-year" class="ml-2 font-bold text-white text-base">2024 Hike</span>
             </div>
             <span id="summary-status" class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-emerald-950 text-emerald-300">Continuous hike</span>
@@ -1752,26 +1752,26 @@
 
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
             <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-              <div class="text-[11px] text-slate-400 uppercase font-mono">Base Weight</div>
+              <div class="text-[11px] text-slate-400">Base Weight</div>
               <div id="summary-base-weight" class="text-sm font-bold text-white mt-0.5">14.0 lbs</div>
             </div>
             <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-              <div class="text-[11px] text-slate-400 uppercase font-mono">Daily Pace</div>
+              <div class="text-[11px] text-slate-400">Daily Pace</div>
               <div id="summary-daily-miles" class="text-sm font-bold text-white mt-0.5">19.5 mi/day</div>
             </div>
             <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-              <div class="text-[11px] text-slate-400 uppercase font-mono">Zero Days</div>
+              <div class="text-[11px] text-slate-400">Zero Days</div>
               <div id="summary-zero-days" class="text-sm font-bold text-white mt-0.5">16 days</div>
             </div>
             <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-              <div class="text-[11px] text-slate-400 uppercase font-mono">Enjoyment</div>
+              <div class="text-[11px] text-slate-400">Enjoyment</div>
               <div id="summary-enjoyment" class="text-sm font-bold text-amber-400 mt-0.5">9 / 10</div>
             </div>
           </div>
 
           <!-- Personal comparison, filled from the submit response -->
           <div id="summary-comparison" class="hidden border-t border-slate-800 pt-4">
-            <div class="text-[11px] text-slate-400 uppercase font-mono mb-2">How You Compare</div>
+            <div class="text-[11px] text-slate-400 mb-2">How You Compare</div>
             <ul id="summary-comparison-list" class="space-y-1.5 text-sm text-slate-200"></ul>
             <p id="summary-comparison-note" class="text-xs text-slate-500 mt-2"></p>
           </div>
@@ -1799,10 +1799,10 @@
 
         <!-- Deletion code (shown once; only a hash is stored) -->
         <div id="deletion-code-panel" class="hidden mt-8 max-w-xl mx-auto text-left p-5 rounded-2xl bg-slate-900/70 border border-pine-500/40">
-          <div class="text-[11px] text-pine-300 uppercase font-mono">Your personal code</div>
+          <div class="text-[11px] text-pine-300">Your personal code</div>
           <h2 class="mt-1 font-bold text-white">Come back later and see how you compare</h2>
           <div class="mt-2 flex flex-wrap items-center gap-3">
-            <code id="deletion-code-value" class="text-lg sm:text-xl font-mono font-bold tracking-wider text-white select-all"></code>
+            <code id="deletion-code-value" class="text-lg sm:text-xl font-mono font-bold text-white select-all"></code>
             <button type="button" id="btn-copy-deletion-code" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">Copy</button>
           </div>
           <p class="text-sm text-slate-300 mt-2">Every new hike makes the comparison more accurate. Enter this code on the <a href="#insights" class="text-pine-400 hover:text-pine-300 underline underline-offset-2">Insights page</a> anytime to see how your hike stacks up today, with a fresh share card.</p>
@@ -1816,7 +1816,7 @@
           <div class="mt-3 overflow-x-auto">
             <table class="w-full text-left text-xs">
               <thead>
-                <tr class="text-[11px] uppercase font-mono tracking-wider text-slate-400">
+                <tr class="text-[11px] text-slate-400">
                   <th class="pb-2 pr-3 font-normal">Answer</th>
                   <th class="pb-2 pr-3 font-normal">You</th>
                   <th id="compare-all-trail-head" class="pb-2 pr-3 font-normal">Same trail</th>
@@ -1862,7 +1862,7 @@
           <p class="text-sm sm:text-base text-slate-300 mt-2">
             Every answer from the survey, checked, documented and with identifying details blurred. Free to use for statistics, machine learning or just playing around with the numbers.
           </p>
-          <p id="dataset-meta" class="text-xs font-mono text-slate-500 mt-3">CC0 public domain • schema documented below</p>
+          <p id="dataset-meta" class="text-xs text-slate-500 mt-3">CC0 public domain • schema documented below</p>
         </div>
 
         <!-- Download cards -->
@@ -1872,14 +1872,14 @@
           <div class="card-glow rounded-2xl p-6 sm:p-7 border border-emerald-500/30 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
-                <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-emerald-950 text-emerald-300 border border-emerald-700/60">CSV Format</span>
-                <span class="text-xs text-slate-400 font-mono">For spreadsheets</span>
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-emerald-950 text-emerald-300 border border-emerald-700/60">CSV Format</span>
+                <span class="text-xs text-slate-400">For spreadsheets</span>
               </div>
               <h2 class="text-xl font-bold text-white mt-3">Full Dataset (.CSV)</h2>
               <p class="text-xs sm:text-sm text-slate-300 mt-1">
                 A flat table that opens in Excel, Google Sheets, <strong>R</strong> or <strong>pandas</strong>: one row per hike, one column per field.
               </p>
-              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-mono text-slate-400 space-y-1">
+              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-400 space-y-1">
                 <div>File: <span class="text-slate-200">thru_hiker_survey_dataset.csv</span></div>
                 <div>Format: <span class="text-slate-200">UTF-8, comma-separated (RFC 4180)</span></div>
                 <div>Lists: <span class="text-slate-200">one cell, split by <code>;</code></span></div>
@@ -1887,7 +1887,7 @@
             </div>
 
             <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
-              <a href="/data/thru_hiker_survey_dataset.csv" download="thru_hiker_survey_dataset.csv" id="btn-download-csv" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white shadow-lg shadow-pine-950/50 transition flex items-center justify-center gap-2">
+              <a href="/data/thru_hiker_survey_dataset.csv" download="thru_hiker_survey_dataset.csv" id="btn-download-csv" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-white transition flex items-center justify-center gap-2">
                 <span>Download CSV</span>
               </a>
             </div>
@@ -1897,14 +1897,14 @@
           <div class="card-glow rounded-2xl p-6 sm:p-7 border border-amber-500/30 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
-                <span class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-amber-950 text-amber-300 border border-amber-700/60">JSON Format</span>
-                <span class="text-xs text-slate-400 font-mono">For code</span>
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-amber-950 text-amber-300 border border-amber-700/60">JSON Format</span>
+                <span class="text-xs text-slate-400">For code</span>
               </div>
               <h2 class="text-xl font-bold text-white mt-3">Full Dataset (.JSON)</h2>
               <p class="text-xs sm:text-sm text-slate-300 mt-1">
                 The same hikes and fields as the CSV, with types kept: numbers, true/false and real lists. Easiest to use from <strong>JavaScript</strong> or <strong>Python</strong>.
               </p>
-              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-mono text-slate-400 space-y-1">
+              <div class="mt-4 p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-400 space-y-1">
                 <div>File: <span class="text-slate-200">thru_hiker_survey_dataset.json</span></div>
                 <div>Format: <span class="text-slate-200">UTF-8, an array with one object per hike</span></div>
                 <div>Lists: <span class="text-slate-200">JSON arrays</span></div>
@@ -1961,7 +1961,7 @@
           <!-- Table Container with Horizontal Scroll -->
           <div class="overflow-x-auto rounded-xl border border-slate-800" tabindex="0" role="region" aria-label="Data preview table">
             <table class="keep-mono w-full text-left text-xs whitespace-nowrap">
-              <thead class="bg-slate-950 text-slate-400 font-mono uppercase text-xs border-b border-slate-800">
+              <thead class="bg-slate-950 text-slate-400 font-mono text-xs border-b border-slate-800">
                 <tr>
                   <th class="py-3 px-4">Trail</th>
                   <th class="py-3 px-4">Year</th>
@@ -1986,7 +1986,7 @@
           </div>
 
           <!-- Pagination Footer -->
-          <div class="flex items-center justify-between text-xs text-slate-400 font-mono pt-2">
+          <div class="flex items-center justify-between text-xs text-slate-400 pt-2">
             <span id="preview-pagination-info">Showing rows 1 - 10 of --</span>
             <div class="flex items-center gap-2">
               <button type="button" id="btn-preview-prev" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed">Previous</button>
@@ -2015,7 +2015,7 @@
               <p class="text-xs text-slate-400 mt-0.5">Copy, run, and you've got a first model. The script downloads the data once, then reads it from disk, and handles missing values the right way.</p>
             </div>
             <!-- Code Tab Selector -->
-            <div class="flex gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs font-mono">
+            <div class="flex gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs">
               <button type="button" class="snippet-tab active px-3 py-1 rounded-sm bg-brand text-white font-semibold" data-target="snippet-python">Python</button>
               <button type="button" class="snippet-tab px-3 py-1 rounded-sm text-slate-400 hover:text-white" data-target="snippet-r">R</button>
               <button type="button" class="snippet-tab px-3 py-1 rounded-sm text-slate-400 hover:text-white" data-target="snippet-js">JavaScript</button>
@@ -2130,7 +2130,7 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
               <h2 class="text-xl font-bold text-white">Data Dictionary</h2>
               <p class="text-xs text-slate-400 mt-0.5">Every column in file order, generated from the same schema that checks each submission.</p>
             </div>
-            <a href="/data/schema.json" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition font-mono">schema.json &darr;</a>
+            <a href="/data/schema.json" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">schema.json &darr;</a>
           </div>
           <ul class="text-xs text-slate-400 space-y-1 list-disc list-inside">
             <li>Numbers are stored in imperial units; columns ending in <code class="text-slate-300">Kg</code>, <code class="text-slate-300">Cm</code>, <code class="text-slate-300">Km</code> or <code class="text-slate-300">M</code> repeat them in metric.</li>
@@ -2143,7 +2143,7 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
             <summary class="cursor-pointer text-sm font-semibold text-pine-400 hover:text-pine-300">Show all <span id="dictionary-count">the</span> columns</summary>
           <div class="mt-3 overflow-x-auto rounded-xl border border-slate-800" tabindex="0" role="region" aria-label="Data dictionary">
             <table class="keep-mono w-full text-left text-xs">
-              <thead class="bg-slate-950 text-slate-400 font-mono uppercase text-xs border-b border-slate-800">
+              <thead class="bg-slate-950 text-slate-400 font-mono text-xs border-b border-slate-800">
                 <tr>
                   <th class="py-2.5 px-3">Column</th>
                   <th class="py-2.5 px-3">Type</th>

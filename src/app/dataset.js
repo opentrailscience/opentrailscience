@@ -249,7 +249,7 @@ export function initDatasetDocs() {
         const head = document.createElement('tr');
         const th = document.createElement('th');
         th.colSpan = 5;
-        th.className = 'py-2 px-3 text-left bg-slate-950/60 text-slate-400 font-sans font-semibold text-xs uppercase tracking-wider';
+        th.className = 'py-2 px-3 text-left bg-slate-950/60 text-slate-400 font-sans font-semibold text-xs';
         th.textContent = group;
         head.appendChild(th);
         body.appendChild(head);
@@ -269,7 +269,7 @@ export function initDatasetDocs() {
     doc.changelog.forEach(entry => {
       const li = document.createElement('li');
       const title = document.createElement('div');
-      title.className = 'font-mono text-slate-300';
+      title.className = 'text-slate-300';
       title.textContent = `v${entry.version} · ${entry.date}`;
       const list = document.createElement('ul');
       list.className = 'list-disc list-inside mt-1 space-y-0.5';

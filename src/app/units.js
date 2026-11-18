@@ -254,7 +254,7 @@ export function initUnitSwitcher() {
 // --- STARTING MILEAGE RAMP-UP CALCULATOR ---
 export function initRampCalculator() {
   const badge = $('ramp-gradient-badge');
-  const badgeBase = 'px-2.5 py-1 rounded-sm text-xs font-mono font-semibold ';
+  const badgeBase = 'px-2.5 py-1 rounded-sm text-xs font-semibold ';
 
   function updateRamp() {
     const lastWeek = rampWeeks();

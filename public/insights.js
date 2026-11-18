@@ -95,7 +95,7 @@
 
   function renderBars(card, chart, rows) {
     const max = chart.max || Math.max(...rows.map(r => r.value)) * 1.15;
-    const tooltip = el('div', 'hidden absolute z-10 pointer-events-none px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 shadow-xl');
+    const tooltip = el('div', 'hidden absolute z-10 pointer-events-none px-3 py-2 rounded-lg bg-slate-950 border border-transparent');
     const list = el('div', 'mt-5 space-y-1.5');
     list.setAttribute('role', 'list');
 
@@ -203,13 +203,9 @@
     const card = el('article', 'card-glow rounded-2xl p-6 pt-7 relative overflow-hidden flex flex-col w-full md:w-[calc((100%-3rem)/3)]');
     const stripe = el('div', 'absolute inset-x-0 top-0 h-1');
     stripe.style.backgroundColor = accent;
-    const rank = el('div', 'corr-rank absolute -right-1 -top-3 text-7xl font-extrabold text-slate-800/70 select-none pointer-events-none', String(i + 1).padStart(2, '0'));
-    rank.setAttribute('aria-hidden', 'true');
 
     const head = el('div', 'relative flex items-start gap-3');
-    const badge = el('div', 'corr-emoji w-12 h-12 shrink-0 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-2xl', item.emoji || '📈');
-    badge.setAttribute('aria-hidden', 'true');
-    head.append(badge, el('h3', 'text-lg font-extrabold text-white leading-snug pt-1', item.headline));
+    head.append(el('h3', 'text-lg font-extrabold text-white leading-snug pt-1', item.headline));
 
     // The two groups on one shared scale, with their real values.
     const bars = el('div', 'relative mt-5 space-y-3');
@@ -231,7 +227,7 @@
     const text = el('p', 'relative text-sm text-slate-400 mt-4', item.text);
 
     const [strengthLabel, dots] = STRENGTH[item.strength] || STRENGTH.weak;
-    const footer = el('div', 'relative mt-auto pt-5 flex items-center gap-2 text-xs font-mono text-slate-500');
+    const footer = el('div', 'relative mt-auto pt-5 flex items-center gap-2 text-xs text-slate-500');
     const meter = el('span', 'inline-flex gap-1');
     meter.setAttribute('aria-hidden', 'true');
     for (let d = 0; d < 5; d++) {
@@ -241,7 +237,7 @@
     }
     footer.append(meter, el('span', '', `${strengthLabel} · r = ${item.r} · ${item.n} hikes`));
 
-    card.append(stripe, rank, head, bars, text, footer);
+    card.append(stripe, head, bars, text, footer);
     return card;
   }
 

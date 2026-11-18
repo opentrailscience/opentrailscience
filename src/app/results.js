@@ -103,7 +103,7 @@ function renderAllAnswers(data) {
       const head = document.createElement('tr');
       const th = document.createElement('th');
       th.colSpan = 2;
-      th.className = 'pt-3 pb-1 text-[11px] uppercase font-mono tracking-wider text-slate-400';
+      th.className = 'pt-3 pb-1 text-[11px] text-slate-400';
       th.textContent = group;
       head.appendChild(th);
       body.appendChild(head);
