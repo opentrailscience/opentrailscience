@@ -170,7 +170,7 @@
  */
 @layer components {
   /* Text inputs, number inputs, date inputs, selects and textareas. 16px text on phones (no zoom on iOS). */
-  .field { @apply px-4 py-3 text-base sm:text-sm transition; }
+  .field { @apply px-4 py-3 text-base sm:text-sm; }
   /* Smaller fields: the weekly mileage, the injury distance and the dataset filters. */
   .field-compact { @apply px-3 py-2; }
 }
