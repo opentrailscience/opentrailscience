@@ -22,7 +22,7 @@ test('every color class uses a color named in the theme, with values for both th
   for (const name of names) assert.match(styles, new RegExp(`--color-${name}:`), `--color-${name} needs a value in public/styles.css`);
   // Values that differ in the light theme are set again there; the rest are the same in both.
   const pattern = /(?<![\w-])(?:[a-z0-9-]+:)*(?:bg|text|border|ring|divide|accent|from|via|to|fill|stroke|outline|decoration|caret|placeholder)-([a-z]+(?:-[a-z]+)*)(?:\/\d+)?(?![\w-])/g;
-  const notColors = /^(?:transparent|current|inherit|none|hidden|solid|dashed|dotted|left|right|center|justify|start|end|top|bottom|wrap|nowrap|balance|pretty|clip|ellipsis|base|xs|sm|md|lg|xl|[234]xl|t|b|l|r|x|y|s|e|collapse|separate|offset|inset|auto|fixed|scroll|cover|contain|repeat|no-repeat|linear|radial|conic|blend|clip-text|origin|linecap|linejoin|width|opacity|miterlimit|dasharray|dashoffset)(?:-|$)/;
+  const notColors = /^(?:transparent|current|inherit|none|hidden|solid|dashed|dotted|left|right|center|justify|start|end|top|bottom|wrap|nowrap|balance|pretty|clip|ellipsis|base|xs|sm|md|lg|xl|[234]xl|t|b|l|r|x|y|s|e|collapse|separate|offset|inset|auto|fixed|scroll|cover|contain|repeat|no-repeat|linear|radial|conic|blend|clip-text|origin|linecap|linejoin|anchor|width|opacity|miterlimit|dasharray|dashoffset)(?:-|$)/;
   for (const [, color] of markup.matchAll(pattern)) {
     if (notColors.test(color)) continue;
     assert.ok(names.has(color), `${color} is used but has no name in @theme (src/tailwind.css)`);

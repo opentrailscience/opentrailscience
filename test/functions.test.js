@@ -123,12 +123,14 @@ test('the snapshot has compact JSON and precomputed Insights charts', async () =
   const insights = JSON.parse(files['insights.json']);
   assert.equal(insights.total, 12);
   assert.equal(insights.generatedAt, '2026-10-15T03:00:00.000Z');
-  assert.deepEqual(Object.keys(insights.charts), ['baseWeightByOutcome', 'finishRateByTrail', 'commonInjuries', 'injuryRateByFirstWeek']);
+  assert.deepEqual(Object.keys(insights.charts), ['baseWeightByOutcome', 'finishRateByTrail', 'injuryRateByFirstWeek']);
+  assert.deepEqual(Object.keys(insights.describe), ['longTrailMiles', 'sample', 'gear', 'spread', 'rampUp', 'health', 'endings']);
+  assert.equal(insights.describe.sample.trail.answered, 12, 'only public records');
   for (const rows of Object.values(insights.charts)) {
     for (const row of rows) {
       assert.equal(typeof row.label, 'string');
       assert.equal(typeof row.value, 'number');
-      assert.ok(row.of || row.n >= 5, `small group in ${row.label}`);
+      assert.ok(row.n >= 30, `small group in ${row.label}`);
     }
   }
 });

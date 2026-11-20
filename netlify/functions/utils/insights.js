@@ -1,14 +1,25 @@
 /**
- * The numbers behind the Insights page charts, computed when the snapshot is
- * built (public/data/insights.json), so the page doesn't have to download
- * the whole dataset. public/insights.js draws them.
+ * The numbers behind the Insights page, computed when the snapshot is built
+ * (public/data/insights.json), so the page doesn't have to download the whole
+ * dataset. public/insights.js draws them.
  *
- * Each chart is a list of rows { key, label, value, n } (plus `of` for shares of
- * a group); `key` is the category's code, which the page uses for its color. Groups smaller than MIN_GROUP hikers are left out.
+ * With a few dozen hikes from many different trails, only descriptions hold up:
+ * who answered, what they carried, every hike as a dot, the first four weeks,
+ * injuries and illness, how hikes ended (`describe`). They count and list; they
+ * don't compare groups. The comparisons (`charts`) need MIN_GROUP hikes in each
+ * group, and "things that go together" needs MIN_HIKES_FOR_LINKS hikes, so both
+ * appear on their own once the dataset is big enough.
+ *
+ * A comparison chart is a list of rows { key, label, value, n } (plus `of` for
+ * shares of a group); `key` is the category's code, which the page uses for its color.
  */
 const Schema = require('../../../public/lib/survey-schema');
 
-const MIN_GROUP = 5;
+const MIN_GROUP = 30;
+const MIN_HIKES_FOR_LINKS = 300;
+// Hikes of at least this distance count as long trails (the PCT, the AT, the GR10, …);
+// shorter ones (the TMB, the GR20, the JMT, …) are shown apart so the two don't mix.
+const LONG_TRAIL_MILES = 300;
 
 function numbers(list, key) {
   return list.map(r => r[key]).filter(v => typeof v === 'number' && Number.isFinite(v));
@@ -45,16 +56,6 @@ function finishRateByTrail(records) {
     .sort((a, b) => b.value - a.value);
 }
 
-function commonInjuries(records) {
-  const injured = records.filter(r => r.severeInjuryOccurred === true);
-  if (injured.length < MIN_GROUP) return [];
-  const counts = {};
-  injured.forEach(r => (r.injuryLocations || []).forEach(loc => { counts[loc] = (counts[loc] || 0) + 1; }));
-  return Object.entries(counts)
-    .map(([loc, count]) => ({ key: loc, label: Schema.INJURY_LABELS[loc] || loc, value: pct(count, injured.length), n: count, of: injured.length }))
-    .sort((a, b) => b.value - a.value);
-}
-
 function injuryRateByFirstWeek(records) {
   const bins = [
     { label: 'Under 10 mi/day', test: v => v < 10 },
@@ -74,7 +75,7 @@ function injuryRateByFirstWeek(records) {
   });
 }
 
-const CHARTS = { baseWeightByOutcome, finishRateByTrail, commonInjuries, injuryRateByFirstWeek };
+const CHARTS = { baseWeightByOutcome, finishRateByTrail, injuryRateByFirstWeek };
 
 // --- Things that go together ---------------------------------------------------
 // A fixed list of pairs worth telling (some surprising, some obvious). Each is
@@ -206,15 +207,94 @@ function computeCorrelations(records) {
     .slice(0, TOP_CORRELATIONS);
 }
 
-/** { total, charts: { id: rows } } with small groups removed, at most 8 rows per chart. */
+// --- Descriptions: what works with few hikes -----------------------------------
+
+/** How many hikes gave each answer, most common first ({ key, n }), and how many answered. */
+function counts(records, field, order) {
+  const answered = records.filter(r => r[field] !== null && r[field] !== undefined && r[field] !== '');
+  const byKey = {};
+  answered.forEach(r => [].concat(r[field]).forEach(v => { byKey[v] = (byKey[v] || 0) + 1; }));
+  const rows = Object.entries(byKey).map(([key, n]) => ({ key, n }));
+  if (order) rows.sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key) || String(a.key).localeCompare(String(b.key)));
+  else rows.sort((a, b) => b.n - a.n || String(a.key).localeCompare(String(b.key)));
+  return { answered: answered.length, rows };
+}
+
+const isLong = r => isNum(r.totalDistanceMiles) && r.totalDistanceMiles >= LONG_TRAIL_MILES;
+const values = (list, read) => list.map(read).filter(isNum).sort((a, b) => a - b);
+
+/** Every hike's value, long and short trails apart (sorted, so the order says nothing about who). */
+function spread(records, read) {
+  return { long: values(records.filter(isLong), read), short: values(records.filter(r => !isLong(r)), read) };
+}
+
+/** Each hike's daily distance in the weeks it was on trail, for the hikes with at least two known weeks. */
+function rampUp(records) {
+  const weeks = ['week1DailyMiles', 'week2DailyMiles', 'week3DailyMiles', 'week4DailyMiles'];
+  return records
+    .map(r => ({ long: isLong(r), miles: weeks.map(w => (isNum(r[w]) ? r[w] : null)) }))
+    .filter(h => h.miles.filter(isNum).length >= 2)
+    .sort((a, b) => (a.miles[0] ?? 0) - (b.miles[0] ?? 0) || (a.miles[3] ?? 0) - (b.miles[3] ?? 0));
+}
+
+const endedBeforeTheEnd = r => r.completionStatus && !Schema.COMPLETED_STATUSES.includes(r.completionStatus) && r.completionStatus !== 'section_hike';
+
+function describe(records) {
+  const injured = records.filter(r => r.severeInjuryOccurred === true);
+  const sick = records.filter(r => r.gotSick === true);
+  const finishers = records.filter(r => Schema.COMPLETED_STATUSES.includes(r.completionStatus));
+  return {
+    longTrailMiles: LONG_TRAIL_MILES,
+    sample: {
+      trail: counts(records, 'trail'),
+      hikeYear: counts(records, 'hikeYear', [...new Set(records.map(r => r.hikeYear))].sort()),
+      homeRegion: counts(records, 'homeRegion'),
+      ageBand: counts(records, 'ageBand', Schema.FIELDS_BY_NAME.ageBand.values)
+    },
+    gear: Object.fromEntries(['shelterType', 'backpackType', 'footwearCategory', 'trekkingPoleUsage', 'waterFiltration', 'cookSystem', 'sleepPadType']
+      .map(field => [field, counts(records, field)])),
+    spread: {
+      baseWeightLbs: spread(records, r => r.baseWeightLbs),
+      averageDailyMiles: spread(records, r => r.averageDailyMiles),
+      daysOnTrail: spread(records, r => r.daysOnTrail),
+      weightChangeLbs: spread(records, weightChange),
+      overallEnjoymentRating: spread(records, r => r.overallEnjoymentRating)
+    },
+    rampUp: rampUp(records),
+    health: {
+      injury: { answered: records.filter(r => typeof r.severeInjuryOccurred === 'boolean').length, yes: injured.length,
+        locations: counts(injured, 'injuryLocations'), miles: values(injured, r => r.injuryMilestoneMiles) },
+      illness: { answered: records.filter(r => typeof r.gotSick === 'boolean').length, yes: sick.length, types: counts(sick, 'illnessTypes') }
+    },
+    endings: {
+      outcome: counts(records, 'completionStatus', Object.keys(Schema.COMPLETION_LABELS)),
+      quitReason: counts(records.filter(r => r.quitReason && r.quitReason !== 'not_applicable_completed'), 'quitReason'),
+      consideredQuittingFinished: counts(finishers, 'consideredQuitting', Schema.FIELDS_BY_NAME.consideredQuitting.values),
+      consideredQuittingEndedEarly: counts(records.filter(endedBeforeTheEnd), 'consideredQuitting', Schema.FIELDS_BY_NAME.consideredQuitting.values)
+    }
+  };
+}
+
+/**
+ * { total, describe, charts: { id: rows }, correlations }: the descriptions always; the
+ * comparisons without groups smaller than MIN_GROUP (at most 8 rows per chart); the
+ * correlations only from MIN_HIKES_FOR_LINKS hikes on.
+ */
 function computeInsights(records) {
   const charts = {};
   for (const [id, rowsOf] of Object.entries(CHARTS)) {
     charts[id] = rowsOf(records)
-      .filter(r => r.value !== null && r.n >= (r.of ? 1 : MIN_GROUP))
+      .filter(r => r.value !== null && r.n >= MIN_GROUP)
       .slice(0, 8);
   }
-  return { total: records.length, charts, correlations: computeCorrelations(records), comparisonsTried: CANDIDATES.length };
+  const links = records.length >= MIN_HIKES_FOR_LINKS;
+  return {
+    total: records.length,
+    describe: describe(records),
+    charts,
+    correlations: links ? computeCorrelations(records) : [],
+    comparisonsTried: links ? CANDIDATES.length : 0
+  };
 }
 
-module.exports = { computeInsights, computeCorrelations, scoreAllPairs, MIN_GROUP, MIN_PAIRS, MIN_SPLIT_GROUP, MIN_STRENGTH };
+module.exports = { computeInsights, computeCorrelations, scoreAllPairs, MIN_GROUP, MIN_HIKES_FOR_LINKS, LONG_TRAIL_MILES, MIN_PAIRS, MIN_SPLIT_GROUP, MIN_STRENGTH };

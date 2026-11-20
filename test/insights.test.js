@@ -22,16 +22,38 @@ test('charts leave out groups smaller than MIN_GROUP', () => {
   assert.deepEqual(charts.baseWeightByOutcome.map(r => r.label), ['Continuous hike']);
 });
 
-test('injury shares are of injured hikers and use the short labels', () => {
+test('injuries are counted among the injured hikers, most common first', () => {
   const records = Array.from({ length: 10 }, (_, i) => hiker({
     severeInjuryOccurred: i < 6,
-    injuryLocations: i < 6 ? (i < 3 ? ['hip_flexor', 'ankle_sprain'] : ['hip_flexor']) : null
+    injuryLocations: i < 6 ? (i < 3 ? ['hip_flexor', 'ankle_sprain'] : ['hip_flexor']) : null,
+    injuryMilestoneMiles: i < 6 ? 600 - i * 100 : null
   }));
-  const rows = computeInsights(records).charts.commonInjuries;
-  assert.deepEqual(rows, [
-    { key: 'hip_flexor', label: 'Hip / hip flexor', value: 100, n: 6, of: 6 },
-    { key: 'ankle_sprain', label: 'Ankle sprain', value: 50, n: 3, of: 6 }
-  ]);
+  const { injury } = computeInsights(records).describe.health;
+  assert.deepEqual([injury.yes, injury.answered], [6, 10]);
+  assert.deepEqual(injury.locations, { answered: 6, rows: [{ key: 'hip_flexor', n: 6 }, { key: 'ankle_sprain', n: 3 }] });
+  assert.deepEqual(injury.miles, [100, 200, 300, 400, 500, 600], 'sorted, so the order says nothing about who');
+});
+
+test('the descriptions count every answer and keep long and short trails apart', () => {
+  const records = [
+    hiker({ totalDistanceMiles: 2650, baseWeightLbs: 14, backpackType: 'frameless', week1DailyMiles: 12, week2DailyMiles: 15 }),
+    hiker({ trail: 'TMB', totalDistanceMiles: 106, baseWeightLbs: 22, backpackType: 'framed', week1DailyMiles: 9, week2DailyMiles: null }),
+    hiker({ totalDistanceMiles: 2650, baseWeightLbs: 10, backpackType: 'frameless', week1DailyMiles: 18, week2DailyMiles: 20, week3DailyMiles: 22 })
+  ];
+  const { describe } = computeInsights(records);
+  assert.deepEqual(describe.sample.trail.rows, [{ key: 'PCT', n: 2 }, { key: 'TMB', n: 1 }]);
+  assert.deepEqual(describe.gear.backpackType, { answered: 3, rows: [{ key: 'frameless', n: 2 }, { key: 'framed', n: 1 }] });
+  assert.deepEqual(describe.spread.baseWeightLbs, { long: [10, 14], short: [22] });
+  // Only hikes with at least two known weeks; the TMB hike has one.
+  assert.deepEqual(describe.rampUp.map(h => h.miles), [[12, 15, null, null], [18, 20, 22, null]]);
+});
+
+test('comparisons and "things that go together" wait for enough hikes', async () => {
+  const { MIN_HIKES_FOR_LINKS } = require('../netlify/functions/utils/insights');
+  const records = Array.from({ length: 60 }, (_, i) => hiker({ sleepQualityRating: i % 10, overallEnjoymentRating: 1 + (i % 10) }));
+  assert.ok(computeCorrelations(records).length > 0, 'a strong link exists in these hikes');
+  assert.deepEqual(computeInsights(records).correlations, [], `not shown below ${MIN_HIKES_FOR_LINKS} hikes`);
+  assert.ok(MIN_GROUP >= 30);
 });
 
 const { computeCorrelations, MIN_PAIRS } = require('../netlify/functions/utils/insights');

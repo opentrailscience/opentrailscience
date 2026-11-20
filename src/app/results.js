@@ -50,8 +50,10 @@ export function populateSuccessCard(data) {
 const ANSWER_SUFFIXES = { preTrailFitnessRating: ' / 10', sleepQualityRating: ' / 10', overallEnjoymentRating: ' / 10', percentHikingAlone: '%' };
 
 /** A stored value in the form's own words: the label of its option, card or pill. */
-function answerText(name, value) {
+/** A stored answer in the words of the survey (the form's own labels where it has them). */
+export function answerText(name, value) {
   if (name === 'trail') return Schema.trailName(value) || value;
+  if (name === 'ageBand') return value === '20-and-under' ? '20 and under' : String(value).replace('-', '–');
   if (name === 'direction') return (Schema.DIRECTION_LABELS[value] || [value])[0];
   if (name === 'injuryLocations') return Schema.INJURY_LABELS[value] || humanize(value);
   if (name === 'trailDiet' && value === 'omnivore') return 'Neither vegetarian nor vegan';

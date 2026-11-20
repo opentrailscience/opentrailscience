@@ -4,6 +4,7 @@
  */
 import { $, FIRST_HIKERS_GOAL, STATIC_INSIGHTS_URL } from './core.js';
 import { mySubmissionsAfter, renderFirstHikersProgress } from './home.js';
+import { answerText } from './results.js';
 
 // --- INSIGHTS --------------------------------------------------------------------
 let insightsLoaded = false;
@@ -36,7 +37,7 @@ export async function loadInsights() {
   if (early) {
     renderFirstHikersProgress($('insights-locked-bar'), $('insights-locked-count'), total, mine.length > 0);
   } else {
-    window.Insights.render($('insights-charts'), insights);
+    window.Insights.render($('insights-charts'), insights, { label: answerText });
     window.Insights.renderTogether($('insights-together'), $('insights-together-note'), $('insights-together-cards'), insights);
   }
 }

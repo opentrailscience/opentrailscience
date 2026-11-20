@@ -407,7 +407,7 @@
     <!-- Insights (charts from the public dataset, see insights.js) -->
     <section id="view-insights" class="app-view">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-        <div class="text-center max-w-3xl mx-auto">
+        <div class="max-w-3xl">
           <h1 class="text-3xl sm:text-4xl font-extrabold mt-3">What the data says so far</h1>
           <p class="text-sm sm:text-base text-secondary mt-2">A first look at the open dataset. These are self-reported answers, not a controlled study.</p>
           <p id="insights-meta" class="text-xs text-muted mt-2"></p>
@@ -424,10 +424,10 @@
           <a href="#survey" class="btn btn-primary mt-6">Add your hike</a>
         </div>
 
-        <div id="insights-charts" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10"></div>
-        <p id="insights-footnote" class="hidden text-xs text-muted mt-4 text-center">Groups with fewer than 5 hikers are left out. Every chart has a table view for exact numbers.</p>
+        <div id="insights-charts" class="hidden mt-10 space-y-14"></div>
+        <p id="insights-footnote" class="hidden text-xs text-muted mt-6">Every chart has a table view with the exact numbers. Comparisons between groups appear once each group has 30 hikes.</p>
 
-        <!-- Correlations computed from the dataset (insights.json, see utils/insights.js) -->
+        <!-- Correlations computed from the dataset (insights.json, see utils/insights.js), from 300 hikes on -->
         <div id="insights-together" class="hidden mt-16">
           <div class="text-center max-w-2xl mx-auto">
             <h2 class="text-2xl sm:text-3xl font-extrabold mt-2">Some things that go together</h2>
