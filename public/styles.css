@@ -677,4 +677,9 @@
   /* Anything the survey scrolls to (the Cloudflare banner, the first missing answer) or that
      the browser scrolls to for a tap stays clear of the sticky progress bar. */
   #view-survey * { scroll-margin-top: 140px; }
+
+  /* Tables (.data-table): on the light page the quiet row lines and the white header almost
+     disappear, so the light theme uses the stronger border grey and a grey header. */
+  :root[data-theme='light'] .data-table :is(thead, tr) { border-color: var(--soft-border); }
+  :root[data-theme='light'] .data-table thead { background-color: var(--subtle); color: var(--text-secondary); }
 }
