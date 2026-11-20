@@ -66,6 +66,9 @@ function handleRoute() {
   });
 
   if (anchor) {
+    // A folded section (the details on the privacy page) opens so the link lands on its text.
+    const fold = anchor.closest('details');
+    if (fold) fold.open = true;
     setTimeout(() => anchor.scrollIntoView({ behavior: scrollMode(), block: 'start' }), 50);
   } else {
     window.scrollTo({ top: 0, behavior: scrollMode() });

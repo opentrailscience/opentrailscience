@@ -265,20 +265,20 @@
         <div>
           <h1 class="text-3xl sm:text-4xl font-extrabold text-ink mt-4">How I handle your data</h1>
           <p class="mt-3">Open Trail Science publishes every survey answer as an open dataset. That only works if the people who answered are hard to pick out, so this page explains what I ask, what I store and why.</p>
-          <p class="text-xs text-muted mt-2">Last updated 17 November 2026 • consent version <span id="privacy-consent-version">4</span></p>
+          <p class="text-xs text-muted mt-2">Last updated 20 November 2026 • consent version <span id="privacy-consent-version">4</span></p>
         </div>
 
         <!-- Short version -->
-        <div class="card p-6 sm:p-8">
-          <h2 class="text-lg font-bold text-ink">The short version</h2>
-          <ul class="mt-4 space-y-2.5">
-            <li class="flex gap-3"><span class="text-blue">✓</span><span>No names, emails, accounts, cookies or tracking.</span></li>
-            <li class="flex gap-3"><span class="text-blue">✓</span><span>Before anything is saved, I blur the details that could point to you: dates become weeks, your age becomes a range and you only submit a world region.</span></li>
-            <li class="flex gap-3"><span class="text-blue">✓</span><span>What I store about your hike is exactly what I publish. There is no hidden, more detailed copy, so there is nothing that could be leaked.</span></li>
-            <li class="flex gap-3"><span class="text-blue">✓</span><span>The optional feedback box at the end isn't connected to your survey entry and isn't part of the released dataset.</span></li>
-            <li class="flex gap-3"><span class="text-blue">✓</span><span>Some answers are health information, so I ask for your consent before the survey, and only adults (18+) can take part.</span></li>
-            <li class="flex gap-3"><span class="text-blue">✓</span><span>You get a personal code to see how your hike compares with everyone who shares theirs later, or to delete your answer if you change your mind.</span></li>
-            <li class="flex gap-3"><span class="text-yellow">!</span><span>The website and database are hosted in the USA, and the open dataset can be downloaded by anyone, anywhere.</span></li>
+        <div>
+          <h2 class="text-xl font-bold text-ink">The short version</h2>
+          <ul class="mt-3 space-y-1.5 list-disc list-inside">
+            <li>No names, emails, accounts, cookies, tracking or submission times.</li>
+            <li>Before anything is saved, I blur the details that could point to you: dates become weeks, your age becomes a range and you only submit a world region.</li>
+            <li>What I store about your hike is exactly what I publish. There is no more detailed copy.</li>
+            <li>Feedback and trail suggestions aren't linked to your survey entry and aren't part of the released dataset.</li>
+            <li>Some answers are health information, so I ask for your consent before the survey, and only adults (18+) can take part.</li>
+            <li>You get a personal code to see how your hike compares with everyone who shares theirs later, or to delete your answer if you change your mind.</li>
+            <li>The website and database are hosted in the USA, and the open dataset can be downloaded by anyone, anywhere.</li>
           </ul>
         </div>
 
@@ -286,8 +286,8 @@
         <div>
           <h2 class="text-xl font-bold text-ink">What you tell me and what I store</h2>
           <p class="mt-2">Some questions need a precise answer for calculations (your pace, for example). The server works those out, then throws the precise answers away and only keeps the blurred version.</p>
-          <div class="mt-4 overflow-x-auto rounded-xl border border-subtle">
-            <table class="w-full text-left text-xs sm:text-sm">
+          <div class="mt-4 overflow-x-auto rounded-xl border border-subtle light:border-line">
+            <table class="data-table w-full text-left text-xs sm:text-sm">
               <thead class="bg-sunken text-muted text-xs border-b border-subtle">
                 <tr><th class="py-2.5 px-3">You answer</th><th class="py-2.5 px-3">I store and publish</th><th class="py-2.5 px-3">Why</th></tr>
               </thead>
@@ -295,129 +295,106 @@
                 <tr><td class="py-2.5 px-3">Start and end date<br><span class="text-muted">18 Apr – 22 Sep 2025</span></td><td class="py-2.5 px-3">Calendar weeks and months, number of days<br><span class="text-muted">2025-W16 to 2025-W39, 158 days</span></td><td class="py-2.5 px-3">Exact dates are the easiest way to recognise someone. Weeks still show the season.</td></tr>
                 <tr><td class="py-2.5 px-3">Dates and distance on a small trail</td><td class="py-2.5 px-3">Months only, distance to the nearest 10 mi, days rounded to whole weeks</td><td class="py-2.5 px-3">Few people hike these trails, so even a week could point to you.</td></tr>
                 <tr><td class="py-2.5 px-3">Age at the start of the hike<br><span class="text-muted">29</span></td><td class="py-2.5 px-3">5-year range (everyone 20 or younger shares one)<br><span class="text-muted">25–29</span></td><td class="py-2.5 px-3">An exact age plus dates narrows things down a lot.</td></tr>
-                <tr><td class="py-2.5 px-3">Where you live</td><td class="py-2.5 px-3">A world region<br><span class="text-muted">Western Europe</span></td><td class="py-2.5 px-3">I never ask for your country, only a region.</td></tr>
+                <tr><td class="py-2.5 px-3">Where you live</td><td class="py-2.5 px-3">A world region<br><span class="text-muted">Western Europe</span></td><td class="py-2.5 px-3">On a trail few people hike, a country can be enough to tell who someone is.</td></tr>
                 <tr><td class="py-2.5 px-3">Injuries, illness, prior injuries, deadline, urination aids</td><td class="py-2.5 px-3">The categories you picked from a list</td><td class="py-2.5 px-3">Free text can accidentally contain names, places or other people's details, so there is none.</td></tr>
                 <tr><td class="py-2.5 px-3">Height, weight, what you spent on the trail and on gear (in USD or EUR), visa, gear, food, painkillers, mileage, zero days, ratings</td><td class="py-2.5 px-3">As you entered them</td><td class="py-2.5 px-3">These are what the research is about, and on their own they don't reveal who you are.</td></tr>
                 <tr><td class="py-2.5 px-3">"Don't know"</td><td class="py-2.5 px-3">An empty value and a note that you didn't know</td><td class="py-2.5 px-3">So researchers can tell "didn't know" from "didn't apply".</td></tr>
                 <tr><td class="py-2.5 px-3">How long the survey took you</td><td class="py-2.5 px-3">A rough range<br><span class="text-muted">10–20 minutes</span></td><td class="py-2.5 px-3">Helps researchers spot rushed answers. It's a duration, not a date or time.</td></tr>
-                <tr><td class="py-2.5 px-3">Feedback (optional, after submitting)</td><td class="py-2.5 px-3">Your message only, <strong class="text-ink">not part of the dataset</strong></td><td class="py-2.5 px-3">It only helps me improve the survey, so it isn't connected to your survey entry. Deleted after at most 12 months. See below.</td></tr>
-                <tr><td class="py-2.5 px-3">Trail suggestion (optional, anytime)</td><td class="py-2.5 px-3">The trail you type only, <strong class="text-ink">not part of the dataset</strong></td><td class="py-2.5 px-3">So I can add missing trails. It isn't connected to any survey entry. Deleted once I've reviewed it, at the latest after 12 months. See below.</td></tr>
+                <tr><td class="py-2.5 px-3">Feedback after submitting, and trail suggestions (home page, or the "Other" trails in the survey)</td><td class="py-2.5 px-3">The text you send, on its own, <strong class="text-ink">not part of the dataset</strong></td><td class="py-2.5 px-3">Only I read them, to improve the survey and the list of trails.</td></tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- Why blurring matters -->
-        <div>
-          <h2 class="text-xl font-bold text-ink">Why blurring matters</h2>
-          <p class="mt-2">Imagine someone knows that you started a specific trail in the first days of July 2025, that you're 24 and that you're from the Netherlands. If the dataset listed exact dates, ages and countries, they might find your row and see your injuries, weight and budget. That's exactly what I want to avoid. With weeks, age ranges and regions, your row looks like the rows of other hikers on the same trail, so it's harder to tell which one is yours. The more hikers answer, the better that works.</p>
-          <p class="mt-3">How much blurring is enough depends on how many people hike a trail:</p>
-          <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="p-4 rounded-xl bg-surface/60 border border-subtle">
-              <div class="font-semibold text-ink">Popular trails: weeks</div>
-              <p class="text-xs text-muted mt-1">The busiest trails in the survey, where most hikers start in the same few weeks of the season, so with enough answers a start week is shared with many others.</p>
-              <p id="privacy-popular-trails" class="text-xs text-blue-strong mt-2"></p>
+        <!-- The details, folded: the short version, the table and the deletion form stay open -->
+        <div class="border-y border-subtle light:border-line divide-y divide-subtle light:divide-line">
+          <details class="privacy-fold">
+            <summary class="cursor-pointer py-3"><h2 class="inline text-lg font-bold text-ink">Why blurring matters</h2></summary>
+            <div class="pb-6">
+          <p>Imagine someone knows that you started a specific trail in the first days of July 2025, that you're 24 and that you're from the Netherlands. If the dataset listed exact dates, ages and countries, they might find your row and see your injuries, weight and budget. With weeks, age ranges and regions, your row looks like the rows of other hikers on the same trail, so it's harder to tell which one is yours.</p>
+          <p class="mt-3"><strong class="font-semibold text-ink">Weeks</strong> on the popular trails, where most hikers start within the same few weeks: <span id="privacy-popular-trails" class="text-muted"></span>.</p>
+          <p class="mt-2"><strong class="font-semibold text-ink">Months</strong> on all others: <span id="privacy-small-trails" class="text-muted"></span>.</p>
+          <p class="mt-3">No method is perfect: someone who knows enough about you or your hike might still find your row, and a small dataset makes that easier.</p>
             </div>
-            <div class="p-4 rounded-xl bg-surface/60 border border-subtle">
-              <div class="font-semibold text-ink">Small trails: months</div>
-              <p class="text-xs text-muted mt-1">Fewer hikers, so I use months and round the distance to 10 mi and the days to whole weeks.</p>
-              <p id="privacy-small-trails" class="text-xs text-yellow-strong mt-2"></p>
-            </div>
-          </div>
-          <p class="mt-3 text-xs text-muted">No method is perfect: someone who knows enough about you or your hike might still find your row, and a small dataset makes that easier. That's also why I ask for your consent before you start.</p>
-        </div>
-
-        <!-- What I never collect -->
-        <div>
-          <h2 class="text-xl font-bold text-ink">What I never collect</h2>
-          <ul class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 list-disc list-inside">
-            <li>Names, email addresses or phone numbers</li>
-            <li>Your exact age or date of birth</li>
-            <li>Your country or city</li>
-            <li>Free-text answers</li>
-            <li>Accounts or passwords</li>
-            <li>Cookies, analytics or advertising trackers</li>
-            <li>IP addresses in survey records</li>
-            <li>Exact dates or submission times</li>
-          </ul>
-        </div>
-
-        <!-- Technical data -->
-        <div>
-          <h2 class="text-xl font-bold text-ink">Technical data while you visit</h2>
-          <dl class="mt-3 space-y-4">
+          </details>
+          <details class="privacy-fold">
+            <summary class="cursor-pointer py-3"><h2 class="inline text-lg font-bold text-ink">Technical data while you visit</h2></summary>
+            <div class="pb-6">
+          <dl class="space-y-4">
             <div>
               <dt class="font-semibold text-ink">Web hosting</dt>
-              <dd class="mt-1">Like every website, my host (Netlify) needs your IP address to deliver the pages to your browser and keeps it in its server logs. According to <a href="https://www.netlify.com/pdf/netlify-dpa.pdf" class="underline underline-offset-2" target="_blank" rel="noopener noreferrer">Netlify's data processing agreement</a>, it keeps its logs online for 90 days and offline for one year. I don't use these logs for anything.</dd>
+              <dd class="mt-1">My host, Netlify, needs your IP address to deliver the pages to your browser and keeps it in its server logs. I don't use these logs.</dd>
             </div>
             <div>
               <dt class="font-semibold text-ink">Spam protection</dt>
-              <dd class="mt-1">To keep out bots and spam, I keep a scrambled version of your IP address (hashed) for one hour when you submit. That allows at most 10 submissions per hour. It is deleted automatically after the hour and never linked to your answers. The same applies to deletion attempts, code lookups and feedback messages. On top of that, you answer a small trail question before the survey starts, and when you submit, your browser solves a short calculation (about a second). Both only prove that you're not a bot, run without any third party and aren't stored.</dd>
+              <dd class="mt-1">When you submit the survey, look up or delete a hike, send feedback or suggest a trail, I store a hashed form of your IP address, never linked to your answers, to allow at most 10 of each per hour from one network. You also answer a short trail question before the survey, and your browser solves a small calculation (about a second) when you submit. Neither involves a third party or is stored.</dd>
             </div>
             <div id="privacy-bot-check">
               <dt class="font-semibold text-ink">Bot check by Cloudflare</dt>
-              <dd class="mt-1">When you press Submit, Cloudflare Turnstile checks that you're a person and not a bot. For that, Cloudflare (a US company) sees your IP address and technical details of your browser, like its user agent. According to Cloudflare, these are only used for this check and not to identify or track you (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" class="underline underline-offset-2" target="_blank" rel="noopener noreferrer">Turnstile privacy addendum</a>). I don't receive any of it, only whether the check passed. The check only loads on the first page, after you start the survey, and runs when you press Submit, so just visiting this website doesn't contact Cloudflare.</dd>
+              <dd class="mt-1">Cloudflare Turnstile's script loads when you start the survey, and its check runs when you press Submit. Cloudflare receives your IP address and browser details such as the user agent and, according to its <a href="https://www.cloudflare.com/turnstile-privacy-policy/" class="underline underline-offset-2" target="_blank" rel="noopener noreferrer">Turnstile privacy addendum</a>, uses them only to tell people from bots and to improve that detection. I only learn whether the check passed. Visiting the site without starting the survey doesn't contact Cloudflare.</dd>
             </div>
             <div>
               <dt class="font-semibold text-ink">Your browser</dt>
-              <dd class="mt-1">While you fill in the survey, your answers are saved in your own browser (only local storage), so a reload doesn't lose them. They stay on your device and are only sent when you submit. The draft is deleted when you submit, when you press "Start over" or after 14 days. If you switch between light and dark mode, your browser also remembers that choice. You can of course clear all of this in your browser's site data settings. None of it is a cookie, and none of it is sent anywhere or used for tracking.</dd>
+              <dd class="mt-1">Your answers are saved in your browser's local storage while you fill in the survey, so a reload doesn't lose them, and are only sent when you submit. Your browser also remembers whether you chose light or dark mode.</dd>
             </div>
             <div>
               <dt class="font-semibold text-ink">Fonts</dt>
               <dd class="mt-1">The fonts come straight from this website, not from a third party like Google Fonts.</dd>
             </div>
           </dl>
-        </div>
-
-        <!-- Feedback -->
-        <div>
-          <h2 class="text-xl font-bold text-ink">Feedback about the survey</h2>
-          <p class="mt-2">At the very end you can tell me how to improve the survey. Your feedback isn't connected to your survey entry and isn't part of the released dataset, it's saved on its own and only I read it. All feedback messages are deleted once a year, on 1 January.</p>
-        </div>
-
-        <!-- Trail suggestions -->
-        <div>
-          <h2 class="text-xl font-bold text-ink">Suggesting a trail</h2>
-          <p class="mt-2">On the home page, and in the survey when you pick one of the "Other" trails, you can suggest a trail that's missing from the list. Only the text you type is saved, on its own: it isn't connected to your survey entry and isn't part of the released dataset. I delete suggestions once I've looked at them, and all remaining ones on 1 January.</p>
-        </div>
-
-        <!-- Retention -->
-        <div>
-          <h2 class="text-xl font-bold text-ink">How long I keep your data</h2>
-          <ul class="mt-3 space-y-1.5 list-disc list-inside">
-            <li><strong class="text-ink">Survey answers:</strong> I keep your answers for as long as the project and the open dataset exist, or until you delete them with your personal code.</li>
-            <li><strong class="text-ink">Feedback:</strong> Feedback messages are deleted after at most 12 months.</li>
-            <li><strong class="text-ink">Trail suggestions:</strong> deleted once I've reviewed them, and after at most 12 months.</li>
-            <li><strong class="text-ink">Server logs:</strong> Netlify keeps its logs online for 90 days and offline for one year (<a href="https://www.netlify.com/pdf/netlify-dpa.pdf" class="underline underline-offset-2" target="_blank" rel="noopener noreferrer">Netlify's data processing agreement</a>).</li>
-            <li><strong class="text-ink">Spam protection:</strong> the scrambled IP address is deleted after one hour.</li>
-            <li><strong class="text-ink">Bot check:</strong> Cloudflare handles that data itself; I don't receive or keep any of it.</li>
-            <li><strong class="text-ink">Your draft:</strong> stays in your own browser and is deleted when you submit, press "Start over" or after 14 days.</li>
-          </ul>
-        </div>
-
-        <!-- Where data is stored -->
-        <div>
-          <h2 class="text-xl font-bold text-ink">Where your data is stored</h2>
-          <ul class="mt-3 space-y-2">
-            <li><strong class="text-ink">Netlify, Inc. (USA):</strong> hosts the website and runs the code that checks and saves your answers.</li>
-            <li><strong class="text-ink">MongoDB, Inc. (MongoDB Atlas, USA):</strong> stores the blurred answers and, separately, the feedback messages and trail suggestions.</li>
-            <li><strong class="text-ink">Cloudflare, Inc. (USA):</strong> runs the bot check when you submit. It doesn't receive your answers.</li>
-            <li><strong class="text-ink">The open dataset:</strong> the same blurred answers, downloadable by anyone worldwide under the CC0 public domain dedication.</li>
-          </ul>
-          <p class="mt-3">All three providers are US companies, and I have data processing agreements with all of them. The stored survey answers, including health information, are blurred but not anonymous, and they are stored in the USA.</p>
-        </div>
-
-        <!-- Legal basis, in plain words -->
-        <div>
-          <h2 class="text-xl font-bold text-ink">My reasons for using your data</h2>
-          <p class="mt-2">Data protection rules say I need a good reason for everything I do with your data. These are mine:</p>
-          <ul class="mt-3 space-y-1.5 list-disc list-inside">
-            <li><strong class="text-ink">Survey answers, including health information:</strong> only because you agree to it before the survey starts. Without your agreement nothing is stored.</li>
-            <li><strong class="text-ink">Feedback:</strong> only if you decide to send a message.</li>
-            <li><strong class="text-ink">Trail suggestions:</strong> only if you decide to send one.</li>
-            <li><strong class="text-ink">Server logs and the spam check:</strong> the website can't run safely or keep bots out without them.</li>
-            <li><strong class="text-ink">The draft and the light/dark setting in your browser:</strong> they only exist so these features work for you.</li>
-          </ul>
+            </div>
+          </details>
+          <details class="privacy-fold">
+            <summary class="cursor-pointer py-3"><h2 class="inline text-lg font-bold text-ink">Where your data is kept and for how long</h2></summary>
+            <div class="pb-6">
+          <div class="overflow-x-auto rounded-xl border border-subtle light:border-line">
+            <table class="data-table w-full text-left text-xs sm:text-sm">
+              <thead class="bg-sunken text-muted text-xs border-b border-subtle">
+                <tr><th class="py-2.5 px-3">What</th><th class="py-2.5 px-3">Where</th><th class="py-2.5 px-3">How long</th></tr>
+              </thead>
+              <tbody class="divide-y divide-subtle/60 align-top">
+                <tr><td class="py-2.5 px-3">Survey answers</td><td class="py-2.5 px-3">MongoDB Atlas (USA), and the public dataset, downloadable worldwide under CC0</td><td class="py-2.5 px-3">Until you delete them with your personal code, or as long as the project exists</td></tr>
+                <tr><td class="py-2.5 px-3">Feedback and trail suggestions</td><td class="py-2.5 px-3">MongoDB Atlas (USA), apart from the answers</td><td class="py-2.5 px-3">Trail suggestions until I've looked at them; everything until 1 January each year</td></tr>
+                <tr><td class="py-2.5 px-3">Server logs with your IP address</td><td class="py-2.5 px-3">Netlify (USA)</td><td class="py-2.5 px-3">90 days online and one year offline (<a href="https://www.netlify.com/pdf/netlify-dpa.pdf" class="underline underline-offset-2" target="_blank" rel="noopener noreferrer">Netlify’s data processing agreement</a>)</td></tr>
+                <tr><td class="py-2.5 px-3">Hashed IP address (spam protection)</td><td class="py-2.5 px-3">MongoDB Atlas (USA)</td><td class="py-2.5 px-3">About an hour</td></tr>
+                <tr><td class="py-2.5 px-3">Bot check data</td><td class="py-2.5 px-3">Cloudflare (USA)</td><td class="py-2.5 px-3">Up to Cloudflare; I only learn whether the check passed</td></tr>
+                <tr><td class="py-2.5 px-3">Your draft and the light/dark setting</td><td class="py-2.5 px-3">Your browser</td><td class="py-2.5 px-3">The draft until you submit, press "Start over" or 14 days pass; the setting until you clear it</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-3">Netlify, Inc. hosts the website and runs the code that checks and saves your answers, MongoDB, Inc. runs the database, and Cloudflare, Inc. the bot check. I have a data processing agreement with each of them.</p>
+            </div>
+          </details>
+          <details class="privacy-fold">
+            <summary class="cursor-pointer py-3"><h2 class="inline text-lg font-bold text-ink">What allows me to use your data</h2></summary>
+            <div class="pb-6">
+          <p class="mt-2">Data protection rules only allow me to use your data on certain grounds. These are the ones I rely on:</p>
+          <dl class="mt-3 space-y-4">
+            <div>
+              <dt class="font-semibold text-ink">Survey answers, including health information</dt>
+              <dd class="mt-1">Your consent, which you give before the survey starts. Without it nothing is stored.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-ink">Feedback and trail suggestions</dt>
+              <dd class="mt-1">Your consent: you choose to send them.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-ink">Server logs and the spam check</dt>
+              <dd class="mt-1">My legitimate interest in keeping the website running and safe from bots.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-ink">The draft and the light/dark setting in your browser</dt>
+              <dd class="mt-1">They're needed for features you use, and they're kept only in your browser.</dd>
+            </div>
+          </dl>
+            </div>
+          </details>
+          <details class="privacy-fold">
+            <summary class="cursor-pointer py-3"><h2 class="inline text-lg font-bold text-ink">Your rights</h2></summary>
+            <div class="pb-6">
+          <p class="mt-2">You can see, correct and delete your answers, and you can withdraw your consent at any time by deleting your hike. Seeing and deleting work with your personal code. To correct an answer, delete your hike and fill in the survey again. For anything else, write to me. The stored answers contain nothing like your name, so your personal code is the only way to show which record is yours.</p>
+            </div>
+          </details>
         </div>
 
         <!-- Deletion -->
@@ -432,31 +409,21 @@
           <p id="deletion-result" role="status" class="mt-3 text-sm"></p>
           <ul class="mt-4 space-y-1.5 text-xs text-muted list-disc list-inside">
             <li>Your answers are deleted from the database immediately and disappear from the website and the download files with the next dataset update (usually within a day).</li>
-            <li>Copies that someone already downloaded can't be recalled. That's simply the nature of open data, and exactly why I blur everything before it's saved.</li>
-            <li>Lost your code? Then I can't find your answers, because I don't know who you are. That's by design.</li>
+            <li>Copies that someone already downloaded can't be recalled.</li>
+            <li>Without your code I can't find your answers, because nothing in them says who you are.</li>
             <li>The same code also shows your hike and how it compares today (on the Insights page). Keep it to yourself: anyone with the code can delete your answers.</li>
           </ul>
-        </div>
-
-        <!-- Rights -->
-        <div>
-          <h2 class="text-xl font-bold text-ink">Your rights</h2>
-          <p class="mt-2">You can see your answers, correct them and delete them, and you can withdraw your consent at any time (withdrawing doesn't affect copies that were downloaded before). Seeing and deleting work with your personal code, to correct an answer, delete your hike and fill in the survey again, or write to me. Because the stored answers contain nothing like your name, I can't tell which record is yours, your personal code is how you can prove it.</p>
         </div>
 
         <!-- Contact -->
         <div>
           <h2 class="text-xl font-bold text-ink">Who is responsible</h2>
-          <p class="mt-2">Open Trail Science is a one-person, non-commercial project (that's me, see <a href="#about" class="underline underline-offset-2">About the creator</a>). For any privacy question or request, just write to:</p>
+          <p class="mt-2">Open Trail Science is a one-person, non-commercial project (that's me, see <a href="#about" class="underline underline-offset-2">About the creator</a>). For any privacy question or request, write to:</p>
           <p class="mt-2"><a href="mailto:privacy@opentrailscience.org">privacy@opentrailscience.org</a></p>
-          <p class="mt-4">The whole site is open source, so you don't have to take my word for any of this: the code that checks, blurs, stores and publishes your answers is on <a href="https://github.com/opentrailscience/opentrailscience" class="underline underline-offset-2" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+          <p class="mt-4">The whole site is open source: the code that checks, blurs, stores and publishes your answers is on <a href="https://github.com/opentrailscience/opentrailscience" class="underline underline-offset-2" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
           <p class="mt-4 text-xs text-muted">If this page ever changes in a way that affects how answers are stored, the consent version above changes too, and every record keeps the version its author agreed to.</p>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3">
-          <a href="#survey" class="px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-on-color text-center transition">Share your hike</a>
-          <a href="#home" class="px-5 py-3 rounded-xl font-medium text-sm text-muted hover:text-ink text-center transition">Back to home</a>
-        </div>
       </div>
     </section>
 

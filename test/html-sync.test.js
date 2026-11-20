@@ -79,8 +79,8 @@ test('consent is asked before the survey, and only adults (today) can answer', (
 
 test('the privacy page explains storage, rights, deletion and contact', () => {
   const page = html.slice(html.indexOf('id="view-privacy"'), html.indexOf('<!-- VIEW: INSIGHTS'));
-  for (const heading of ['The short version', 'What you tell me and what I store', 'Why blurring matters', 'What I never collect',
-    'Technical data while you visit', 'Where your data is stored', 'My reasons for using your data', 'Deleting your answers', 'Your rights', 'Who is responsible']) {
+  for (const heading of ['The short version', 'What you tell me and what I store', 'Why blurring matters',
+    'Technical data while you visit', 'Where your data is kept and for how long', 'What allows me to use your data', 'Deleting your answers', 'Your rights', 'Who is responsible']) {
     assert.ok(page.includes(heading), heading);
   }
   assert.match(page, /id="deletion-code-input"/);
