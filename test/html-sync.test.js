@@ -128,10 +128,8 @@ test('shelter and insulation choice cards match the schema', () => {
   });
 });
 
-test('preview filters only offer valid values', () => {
+test('the preview trail filter only offers valid trails', () => {
   selectOptions('preview-filter-trail').filter(v => v !== 'ALL').forEach(v => assert.ok(Schema.TRAILS.includes(v), v));
-  selectOptions('preview-filter-status').filter(v => v !== 'ALL')
-    .forEach(v => assert.ok(Schema.FIELDS_BY_NAME.completionStatus.values.includes(v), v));
 });
 
 test('every unit-switched input has a unit in the schema and a label in the page', () => {

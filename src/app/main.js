@@ -5,7 +5,7 @@
 import { initBotCheckBanner } from './botcheck.js';
 import { initConsent, initTrailCheck } from './consent.js';
 import { initChoiceCards, initHikeYears, initOptionHints, initPillGroups, initSliders, initUrinationAids } from './controls.js';
-import { initCodeSnippets, initDatasetDocs, initPreviewTable } from './dataset.js';
+import { initDatasetDocs, initPreviewTable } from './dataset.js';
 import { initDraftAutosave, initSurveyReset, restoreDraft } from './draft.js';
 import { fetchStats, initTrailQuickCards } from './home.js';
 import { initPrivacyPage } from './privacy.js';
@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeightFeetInches();
   initDirectionCards();
   initRampCalculator();
-  initCodeSnippets();
   initWizardControls();
   initBotCheckBanner();
   initStepHistory();

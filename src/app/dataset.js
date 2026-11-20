@@ -1,8 +1,8 @@
 /**
- * Dataset page: the preview table, code snippets, data dictionary, changelog and citation.
+ * Dataset page: the preview table, data dictionary and changelog.
  * Part of the browser app (src/app/, bundled by scripts/build-js.js into public/js/app.bundle.js).
  */
-import { $, STATIC_PREVIEW_URL, Schema, copyText, escapeHtml, humanize, orDash, state } from './core.js';
+import { $, STATIC_PREVIEW_URL, Schema, escapeHtml, humanize, orDash, state } from './core.js';
 import { shareSurvey, statusBadge } from './results.js';
 
 // --- PUBLIC DOWNLOAD VIEW / DATA PREVIEW TABLE ---
@@ -12,9 +12,7 @@ export function initPreviewTable() {
     fetchPreviewData();
   };
   const filterTrail = $('preview-filter-trail');
-  const filterStatus = $('preview-filter-status');
   if (filterTrail) filterTrail.addEventListener('change', resetAndFetch);
-  if (filterStatus) filterStatus.addEventListener('change', resetAndFetch);
 
   const btnPrev = $('btn-preview-prev');
   if (btnPrev) {
@@ -49,15 +47,14 @@ function addTrailFilterOptions(rows) {
 }
 
 /** Filters and pages the prebuilt preview.json in the browser (fetched once per visit). */
-async function loadPreviewPage(trail, status) {
+async function loadPreviewPage(trail) {
   if (!state.previewRows) {
     const res = await fetch(STATIC_PREVIEW_URL);
     if (!res.ok) throw new Error('preview.json returned ' + res.status);
     state.previewRows = (await res.json()).data || [];
     addTrailFilterOptions(state.previewRows);
   }
-  const list = state.previewRows.filter(d =>
-    (trail === 'ALL' || d.trail === trail) && (status === 'ALL' || d.completionStatus === status));
+  const list = state.previewRows.filter(d => trail === 'ALL' || d.trail === trail);
   const offset = (state.previewPage - 1) * state.previewLimit;
   return { rows: list.slice(offset, offset + state.previewLimit), total: list.length, note: '' };
 }
@@ -68,12 +65,11 @@ export async function fetchPreviewData() {
   const btnPrev = $('btn-preview-prev');
   const btnNext = $('btn-preview-next');
   const trail = ($('preview-filter-trail') || {}).value || 'ALL';
-  const status = ($('preview-filter-status') || {}).value || 'ALL';
 
   if (tbody) tbody.innerHTML = '<tr><td colspan="11" class="py-6 text-center text-muted">Loading dataset...</td></tr>';
 
   try {
-    const page = await loadPreviewPage(trail, status);
+    const page = await loadPreviewPage(trail);
     renderPreviewRows(page.rows);
 
     const start = (state.previewPage - 1) * state.previewLimit + 1;
@@ -130,74 +126,7 @@ function renderPreviewRows(rows) {
   });
 }
 
-// --- CODE SNIPPET TABS & COPY ---
-export function initCodeSnippets() {
-  // Point the example URLs at wherever the site is actually hosted (previews, local dev).
-  document.querySelectorAll('.snippet-block code').forEach(code => {
-    code.textContent = code.textContent.split('https://opentrailscience.org').join(window.location.origin);
-    highlightCode(code);
-  });
-
-  const tabs = document.querySelectorAll('.snippet-tab');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => {
-        t.classList.remove('active', 'bg-brand', 'text-on-color', 'font-semibold');
-        t.classList.add('text-muted');
-      });
-      tab.classList.add('active', 'bg-brand', 'text-on-color', 'font-semibold');
-      tab.classList.remove('text-muted');
-
-      document.querySelectorAll('.snippet-block').forEach(b => b.classList.add('hidden'));
-      const targetBlock = $(tab.getAttribute('data-target'));
-      if (targetBlock) targetBlock.classList.remove('hidden');
-    });
-  });
-
-  document.querySelectorAll('.copy-code-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const code = btn.parentElement.querySelector('code').textContent;
-      copyText(code, 'Code copied to clipboard').then(copied => {
-        if (!copied) return;
-        btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-      });
-    });
-  });
-}
-
-// Colors the Quickstart snippets: a tiny tokenizer instead of a highlighting
-// library, which the CSP would not allow. Colors are the --code-* variables.
-const CODE_KEYWORDS = {
-  python: 'from import as def return if else elif not in and or for lambda with True False None',
-  r: 'library function if else for in while return TRUE FALSE NULL NA Inf',
-  javascript: 'import from const let async await function return if else new throw of true false null',
-};
-
-function highlightCode(code) {
-  const lang = code.dataset.lang;
-  if (!CODE_KEYWORDS[lang]) return;
-  const name = lang === 'r' ? '[A-Za-z.][\\w.]*' : '[A-Za-z_$][\\w$]*';
-  const tokens = new RegExp([
-    `(${lang === 'javascript' ? '//' : '#'}[^\n]*)`,
-    '("(?:\\\\.|[^"\\\\\n])*"|\'(?:\\\\.|[^\'\\\\\n])*\'|`[^`]*`)',
-    '\\b(\\d+(?:\\.\\d+)?)\\b',
-    `\\b(${CODE_KEYWORDS[lang].split(' ').join('|')})\\b|(<-|\\|>|=>)`,
-    `(${name})(?=\\()`,
-  ].join('|'), 'g');
-  const kinds = ['comment', 'string', 'number', 'keyword', 'keyword', 'function'];
-  const text = code.textContent;
-  let html = '';
-  let last = 0;
-  for (const match of text.matchAll(tokens)) {
-    const kind = kinds[match.slice(1).findIndex(group => group !== undefined)];
-    html += escapeHtml(text.slice(last, match.index)) + `<span class="tok-${kind}">${escapeHtml(match[0])}</span>`;
-    last = match.index + match[0].length;
-  }
-  code.innerHTML = html + escapeHtml(text.slice(last));
-}
-
-// --- DATASET PAGE: dictionary, changelog, citation -----------------------------
+// --- DATASET PAGE: dictionary and changelog ------------------------------------
 const TYPE_LABELS = {
   string: 'string', datetime: 'datetime', enum: 'category', enumArray: 'list of categories',
   number: 'number', integer: 'integer', boolean: 'boolean', date: 'date'
@@ -245,7 +174,7 @@ export function initDatasetDocs() {
         group = colGroup;
         const head = document.createElement('tr');
         const th = document.createElement('th');
-        th.colSpan = 5;
+        th.colSpan = 4;
         th.className = 'py-2 px-3 text-left bg-sunken/60 text-muted font-sans font-semibold text-xs';
         th.textContent = group;
         head.appendChild(th);
@@ -255,7 +184,6 @@ export function initDatasetDocs() {
       cell(row, col.name, 'text-blue whitespace-nowrap');
       cell(row, TYPE_LABELS[col.type] || col.type, 'whitespace-nowrap');
       cell(row, describeValues(col), 'wrap-break-word max-w-xs');
-      cell(row, col.role || '—', 'text-muted');
       cell(row, describeNotes(col), 'font-sans text-muted min-w-56');
       body.appendChild(row);
     });
@@ -279,17 +207,6 @@ export function initDatasetDocs() {
       log.appendChild(li);
     });
   }
-
-  // APA style for a dataset that keeps changing: version and retrieval date. Always
-  // the real address, also on previews and local dev.
-  const now = new Date();
-  const today = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  $('citation-text').textContent =
-    `Open Trail Science. (${now.getFullYear()}). ${doc.name} (Schema version ${doc.version}) [Data set]. ` +
-    `Retrieved ${today}, from https://opentrailscience.org/#download`;
-  $('btn-copy-citation').addEventListener('click', () => {
-    copyText($('citation-text').textContent, 'Citation copied');
-  });
 }
 
 export function renderDatasetMeta() {

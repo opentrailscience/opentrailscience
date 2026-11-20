@@ -1855,73 +1855,18 @@
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-10">
         
         <!-- Header -->
-        <div class="text-center max-w-3xl mx-auto">
+        <div class="max-w-3xl">
           <h1 class="text-3xl sm:text-4xl font-extrabold mt-3">
-            Open Thru-Hiker Survey Dataset
+            The Dataset
           </h1>
           <p class="text-sm sm:text-base text-secondary mt-2">
-            Every answer from the survey, checked, documented and with identifying details blurred. Free to use for statistics, machine learning or just playing around with the numbers.
+            Every answer from the survey, checked, documented and with identifying details blurred. Free to use for anything.
           </p>
           <p id="dataset-meta" class="text-xs text-muted mt-3">CC0 public domain • schema documented below</p>
         </div>
 
-        <!-- Download cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-          <!-- CSV Download Card -->
-          <div class="card p-6 sm:p-7 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="px-3 py-1 rounded-md text-xs font-bold bg-green-tint text-green-strong border border-transparent">CSV Format</span>
-                <span class="text-xs text-muted">For spreadsheets</span>
-              </div>
-              <h2 class="text-xl font-bold mt-3">Full Dataset (.CSV)</h2>
-              <p class="text-xs sm:text-sm text-secondary mt-1">
-                A flat table that opens in Excel, Google Sheets, <strong>R</strong> or <strong>pandas</strong>: one row per hike, one column per field.
-              </p>
-              <div class="mt-4 p-3 rounded-xl bg-sunken/80 border border-transparent text-xs text-muted space-y-1">
-                <div>File: <span class="text-ink-soft">thru_hiker_survey_dataset.csv</span></div>
-                <div>Format: <span class="text-ink-soft">UTF-8, comma-separated (RFC 4180)</span></div>
-                <div>Lists: <span class="text-ink-soft">one cell, split by <code>;</code></span></div>
-              </div>
-            </div>
-
-            <div class="mt-6 pt-4 border-t border-subtle flex items-center justify-between">
-              <a href="/data/thru_hiker_survey_dataset.csv" download="thru_hiker_survey_dataset.csv" id="btn-download-csv" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-brand hover:bg-brand-hover text-on-color transition flex items-center justify-center gap-2">
-                <span>Download CSV</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- JSON Download Card -->
-          <div class="card p-6 sm:p-7 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="px-3 py-1 rounded-md text-xs font-bold bg-yellow-tint text-yellow-strong border border-transparent">JSON Format</span>
-                <span class="text-xs text-muted">For code</span>
-              </div>
-              <h2 class="text-xl font-bold mt-3">Full Dataset (.JSON)</h2>
-              <p class="text-xs sm:text-sm text-secondary mt-1">
-                The same hikes and fields as the CSV, with types kept: numbers, true/false and real lists. Easiest to use from <strong>JavaScript</strong> or <strong>Python</strong>.
-              </p>
-              <div class="mt-4 p-3 rounded-xl bg-sunken/80 border border-transparent text-xs text-muted space-y-1">
-                <div>File: <span class="text-ink-soft">thru_hiker_survey_dataset.json</span></div>
-                <div>Format: <span class="text-ink-soft">UTF-8, an array with one object per hike</span></div>
-                <div>Lists: <span class="text-ink-soft">JSON arrays</span></div>
-              </div>
-            </div>
-
-            <div class="mt-6 pt-4 border-t border-subtle flex items-center justify-between">
-              <a href="/data/thru_hiker_survey_dataset.json" download="thru_hiker_survey_dataset.json" id="btn-download-json" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-subtle hover:bg-line border border-transparent transition flex items-center justify-center gap-2">
-                <span>Download JSON</span>
-              </a>
-            </div>
-          </div>
-
-        </div>
-
         <!-- Data table preview -->
-        <div class="card p-6 sm:p-8 space-y-5">
+        <div class="rounded-2xl border border-line p-3 sm:p-4 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h2 class="text-xl font-bold text-ink">Data Preview</h2>
@@ -1939,15 +1884,6 @@
                 <option value="AZT">AZT Only</option>
               </select>
 
-              <select id="preview-filter-status" aria-label="Filter by outcome" class="field field-compact sm:text-xs" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
-                <option value="ALL">All Outcomes</option>
-                <option value="continuous_purist">Continuous hike</option>
-                <option value="flip_flop">Flip-flop, every mile</option>
-                <option value="skipped_sections">Skipped parts</option>
-                <option value="section_hike">Section hike</option>
-                <option value="quit_early">Ended early</option>
-              </select>
-
               <div class="unit-switch inline-flex rounded-lg p-1 bg-surface border border-line" role="group" aria-label="Units">
                 <button type="button" data-unit-system="imperial" aria-pressed="true" class="px-3 py-1 rounded-md text-xs font-bold bg-brand text-on-color transition">mi · lb</button>
                 <button type="button" data-unit-system="metric" aria-pressed="false" class="px-3 py-1 rounded-md text-xs font-bold text-muted hover:text-ink transition">km · kg</button>
@@ -1957,7 +1893,7 @@
 
           <!-- Table Container with Horizontal Scroll -->
           <div class="overflow-x-auto rounded-xl border border-transparent" tabindex="0" role="region" aria-label="Data preview table">
-            <table class="keep-mono w-full text-left text-xs whitespace-nowrap">
+            <table class="data-table keep-mono w-full text-left text-xs whitespace-nowrap">
               <thead class="bg-sunken text-muted font-mono text-xs border-b border-subtle">
                 <tr>
                   <th class="py-3 px-4">Trail</th>
@@ -1992,142 +1928,20 @@
           </div>
         </div>
 
-        <!-- Citation -->
-        <div class="card p-6 sm:p-8">
-          <div class="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <h2 class="text-xl font-bold text-ink">Cite this dataset</h2>
-              <p class="text-xs text-muted mt-0.5">It's public domain (CC0), so you don't need my permission, but a citation really helps others find the data. The dataset keeps growing, so the citation names the schema version and the date you got the files. It shows today's date, so change it if you downloaded them earlier.</p>
-            </div>
-            <button type="button" id="btn-copy-citation" class="text-xs px-3 py-1.5 rounded-lg bg-subtle hover:bg-line text-ink-soft transition">Copy</button>
-          </div>
-          <pre class="mt-4 p-4 rounded-xl bg-sunken border border-transparent text-xs text-secondary whitespace-pre-wrap wrap-break-word"><code id="citation-text">Open Trail Science. (2026). Open Thru-Hiker Survey Dataset [Data set]. https://opentrailscience.org/#download</code></pre>
-        </div>
-
-        <!-- Quickstart Code Snippets -->
-        <div class="card p-6 sm:p-8 space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 class="text-xl font-bold text-ink">Quickstart for Researchers</h2>
-              <p class="text-xs text-muted mt-0.5">Copy, run, and you've got a first model. The script downloads the data once, then reads it from disk, and handles missing values the right way.</p>
-            </div>
-            <!-- Code Tab Selector -->
-            <div class="flex gap-1 bg-surface p-1 rounded-lg border border-transparent text-xs">
-              <button type="button" class="snippet-tab active px-3 py-1 rounded-sm bg-brand text-on-color font-semibold" data-target="snippet-python">Python</button>
-              <button type="button" class="snippet-tab px-3 py-1 rounded-sm text-muted hover:text-ink" data-target="snippet-r">R</button>
-              <button type="button" class="snippet-tab px-3 py-1 rounded-sm text-muted hover:text-ink" data-target="snippet-js">JavaScript</button>
-            </div>
-          </div>
-
-          <!-- Python snippet -->
-          <div id="snippet-python" class="snippet-block">
-            <div class="relative">
-              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-sunken border border-transparent text-xs text-secondary overflow-x-auto"><code class="code-snippet" data-lang="python">from pathlib import Path
-from urllib.request import urlretrieve
-
-import pandas as pd
-import statsmodels.formula.api as smf
-
-# Downloaded once, then read from disk. Delete the file to get the newest data.
-DATA = Path("thru_hiker_survey_dataset.csv")
-if not DATA.exists():
-    urlretrieve("https://opentrailscience.org/data/thru_hiker_survey_dataset.csv", DATA)
-df = pd.read_csv(DATA)
-print(len(df), "hikes")
-
-# Lists are ';'-separated. A null value listed in unknownAnswers means
-# "Don't know"; a null that is not listed means the question did not apply.
-for col in ["injuryLocations", "illnessTypes", "priorInjuryAreas", "deadlineReasons", "unknownAnswers"]:
-    df[col] = df[col].fillna("").str.split(";").apply(lambda xs: [x for x in xs if x])
-
-# Dates are coarsened: startMonth for every hike, startWeek on popular trails.
-df["startMonth"] = pd.PeriodIndex(df["startMonth"], freq="M")
-
-# Finished = every mile hiked (continuous or flip-flop). Section hikes are left out.
-hikes = df[df["completionStatus"] != "section_hike"].copy()
-hikes["finished"] = hikes["completionStatus"].isin(["continuous_purist", "flip_flop"]).astype(int)
-
-model = smf.logit(
-    "finished ~ baseWeightLbs + week1DailyMiles + preTrailFitnessRating + C(priorExperience)",
-    data=hikes.dropna(subset=["baseWeightLbs", "week1DailyMiles", "preTrailFitnessRating"]),
-).fit()
-print(model.summary())</code></pre>
-              <button type="button" class="copy-code-btn absolute top-3 right-3 text-[11px] px-2 py-1 rounded-sm bg-subtle hover:bg-line text-secondary">Copy</button>
-            </div>
-          </div>
-
-          <!-- R snippet -->
-          <div id="snippet-r" class="snippet-block hidden">
-            <div class="relative">
-              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-sunken border border-transparent text-xs text-secondary overflow-x-auto"><code class="code-snippet" data-lang="r">library(readr)
-library(dplyr)
-library(tidyr)
-
-# Downloaded once, then read from disk. Delete the file to get the newest data.
-path &lt;- "thru_hiker_survey_dataset.csv"
-if (!file.exists(path)) {
-  download.file("https://opentrailscience.org/data/thru_hiker_survey_dataset.csv", path, mode = "wb")
-}
-df &lt;- read_csv(path, guess_max = Inf, show_col_types = FALSE)
-cat(nrow(df), "hikes\n")
-
-# Most common injuries per trail (one row per reported injury)
-df |&gt;
-  filter(severeInjuryOccurred) |&gt;
-  separate_rows(injuryLocations, sep = ";") |&gt;
-  count(trail, injuryLocations, sort = TRUE) |&gt;
-  print(n = 10)
-
-# Injury risk vs. first-week mileage, adjusting for pack weight and experience.
-# glm drops rows where week1DailyMiles is null ("Don't know").
-model &lt;- glm(severeInjuryOccurred ~ week1DailyMiles + baseWeightLbs + priorExperience,
-             data = df, family = binomial())
-summary(model)</code></pre>
-              <button type="button" class="copy-code-btn absolute top-3 right-3 text-[11px] px-2 py-1 rounded-sm bg-subtle hover:bg-line text-secondary">Copy</button>
-            </div>
-          </div>
-
-          <!-- JS snippet -->
-          <div id="snippet-js" class="snippet-block hidden">
-            <div class="relative">
-              <pre tabindex="0" class="p-4 max-sm:pt-12 rounded-xl bg-sunken border border-transparent text-xs text-secondary overflow-x-auto"><code class="code-snippet" data-lang="javascript">// Save as quickstart.mjs and run: node quickstart.mjs (Node 18 or newer)
-import { existsSync } from 'node:fs';
-import { readFile, writeFile } from 'node:fs/promises';
-
-const base = 'https://opentrailscience.org/data';
-
-// Downloaded once, then read from disk. Delete the files to get the newest data.
-async function load(name) {
-  if (!existsSync(name)) {
-    const res = await fetch(`${base}/${name}`);
-    if (!res.ok) throw new Error(`${name}: HTTP ${res.status}`);
-    await writeFile(name, await res.text());
-  }
-  return JSON.parse(await readFile(name, 'utf8'));
-}
-
-const hikes = await load('thru_hiker_survey_dataset.json');
-const schema = await load('schema.json'); // machine-readable data dictionary
-console.log(`${hikes.length} hikes, schema ${schema.version}`);
-
-const finished = hikes.filter(h =&gt; ['continuous_purist', 'flip_flop'].includes(h.completionStatus));
-const weights = finished.map(h =&gt; h.baseWeightLbs).filter(w =&gt; w !== null).sort((a, b) =&gt; a - b);
-const mid = Math.floor(weights.length / 2);
-const median = weights.length % 2 ? weights[mid] : (weights[mid - 1] + weights[mid]) / 2;
-console.log('Median base weight of finishers (lb):', median);</code></pre>
-              <button type="button" class="copy-code-btn absolute top-3 right-3 text-[11px] px-2 py-1 rounded-sm bg-subtle hover:bg-line text-secondary">Copy</button>
-            </div>
-          </div>
+        <!-- Downloads -->
+        <div class="flex flex-wrap gap-3">
+          <a href="/data/thru_hiker_survey_dataset.csv" download="thru_hiker_survey_dataset.csv" id="btn-download-csv" class="btn btn-primary">Download CSV</a>
+          <a href="/data/thru_hiker_survey_dataset.json" download="thru_hiker_survey_dataset.json" id="btn-download-json" class="btn btn-secondary">Download JSON</a>
+          <a href="/data/schema.json" download="schema.json" class="btn btn-secondary">schema.json</a>
         </div>
 
         <!-- Data Dictionary (rendered from lib/survey-schema.js by src/app/dataset.js) -->
-        <div class="card p-6 sm:p-8 space-y-4">
+        <div class="space-y-4">
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div>
               <h2 class="text-xl font-bold text-ink">Data Dictionary</h2>
               <p class="text-xs text-muted mt-0.5">Every column in file order, generated from the same schema that checks each submission.</p>
             </div>
-            <a href="/data/schema.json" class="text-xs px-3 py-1.5 rounded-lg bg-subtle hover:bg-line text-ink-soft transition">schema.json &darr;</a>
           </div>
           <ul class="text-xs text-muted space-y-1 list-disc list-inside">
             <li>Numbers are stored in imperial units; columns ending in <code class="text-secondary">Kg</code>, <code class="text-secondary">Cm</code>, <code class="text-secondary">Km</code> or <code class="text-secondary">M</code> repeat them in metric.</li>
@@ -2139,13 +1953,12 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
           <details id="dictionary-details">
             <summary class="cursor-pointer text-sm font-semibold text-blue hover:text-blue-strong">Show all <span id="dictionary-count">the</span> columns</summary>
           <div class="mt-3 overflow-x-auto rounded-xl border border-transparent" tabindex="0" role="region" aria-label="Data dictionary">
-            <table class="keep-mono w-full text-left text-xs">
+            <table class="data-table keep-mono w-full text-left text-xs">
               <thead class="bg-sunken text-muted font-mono text-xs border-b border-subtle">
                 <tr>
                   <th class="py-2.5 px-3">Column</th>
                   <th class="py-2.5 px-3">Type</th>
                   <th class="py-2.5 px-3">Values / Units</th>
-                  <th class="py-2.5 px-3">Role</th>
                   <th class="py-2.5 px-3">Notes</th>
                 </tr>
               </thead>
@@ -2156,7 +1969,7 @@ console.log('Median base weight of finishers (lb):', median);</code></pre>
         </div>
 
         <!-- Datasheet -->
-        <div class="card p-6 sm:p-8">
+        <div>
           <h2 class="text-xl font-bold text-ink">About This Data</h2>
           <p class="text-xs text-muted mt-0.5">How the data was collected, and what to keep in mind when you analyse it.</p>
           <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5 mt-6 text-sm">

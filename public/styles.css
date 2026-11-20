@@ -152,12 +152,6 @@
     --chart-ramp-2: #5e9a72;
     --chart-ramp-3: #3e6f57;
 
-    /* Quickstart code colors (highlightCode in src/app/dataset.js), at least 4.5:1 on the code block. */
-    --code-comment: #a3aaa4;
-    --code-keyword: #bba9d6;
-    --code-string: #8db89c;
-    --code-number: #e5c77a;
-    --code-function: #93b4d6;
 
     /*
      * Colours of the Tailwind classes in the markup (bg-surface, text-muted, border-line, …;
@@ -227,11 +221,6 @@
     --chart-ramp-1: #8db89c;
     --chart-ramp-2: #5e9a72;
     --chart-ramp-3: #3e6f57;
-    --code-comment: #58625c;
-    --code-keyword: #5e4a86;
-    --code-string: #3e6f57;
-    --code-number: #7a5a12;
-    --code-function: #2f5f86;
     --color-ink-soft: #2a2e34;
     --color-sunken: #ffffff;
     --color-brand: #1f4f8f;
@@ -420,15 +409,8 @@
     opacity: 0;
   }
 
-  /* Show <- |> => !== as typed, not as font ligatures (arrows, ≢). */
-  .code-snippet { font-variant-ligatures: none; }
   /* Firefox ignores ::-webkit-scrollbar; scrollbar-color is inherited, so this covers every scroll box. */
   :root { scrollbar-color: var(--scroll-thumb) var(--scroll-track); }
-  .tok-comment { color: var(--code-comment); font-style: italic; }
-  .tok-keyword { color: var(--code-keyword); }
-  .tok-string { color: var(--code-string); }
-  .tok-number { color: var(--code-number); }
-  .tok-function { color: var(--code-function); }
 }
 
 
