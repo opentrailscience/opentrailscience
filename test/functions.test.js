@@ -139,16 +139,10 @@ test('INCLUDE_SYNTHETIC=true shows synthetic records (offline dev)', async () =>
   assert.equal(JSON.parse((await snapshot())['preview.json']).total, 32);
 });
 
-test('the stats snapshot aggregates public records only', async () => {
+test('the stats snapshot counts public records only, and nothing else', async () => {
   await seededDb();
   const stats = JSON.parse((await snapshot())['stats.json']);
-  assert.equal(stats.totalCount, 12);
-  assert.deepEqual(stats.trails, { PCT: 6, AT: 6 });
-  assert.equal(stats.avgDailyMiles, 16.8);
-  assert.equal(stats.completionRate, 100);
-  assert.equal(stats.breakdowns.cookSystem.stove_cooked, 100);
-  assert.equal(stats.breakdowns.cookSystem.hybrid, 0);
-  assert.equal(stats.lastUpdated, '2026-10-15T03:00:00.000Z');
+  assert.deepEqual(stats, { totalCount: 12, lastUpdated: '2026-10-15T03:00:00.000Z' });
 });
 
 test('the snapshot contains every file the site and researchers read', async () => {

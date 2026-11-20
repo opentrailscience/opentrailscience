@@ -7,7 +7,6 @@
  * which the CDN serves without any function call or database read.
  */
 const { PUBLIC_COLUMNS, TRAILS, describeSchema } = require('../../../public/lib/survey-schema');
-const { computeStats } = require('../../../public/lib/survey-stats');
 const { computeInsights } = require('./insights');
 const { getDb, COLLECTIONS } = require('./db');
 
@@ -99,7 +98,8 @@ function buildSnapshot(records, now) {
   const generatedAt = (now || new Date()).toISOString();
   const ordered = publicOrder(records);
   const preview = ordered.map(r => Object.fromEntries(PREVIEW_FIELDS.map(f => [f, r[f] === undefined ? null : r[f]])));
-  const stats = Object.assign(computeStats(ordered), { lastUpdated: generatedAt });
+  // The number of hikes (the first-50 card, the dataset page) and when the files were built.
+  const stats = { totalCount: ordered.length, lastUpdated: generatedAt };
   return {
     [`${DATASET_BASENAME}.json`]: JSON.stringify(ordered.map(toPublicRecord)) + '\n',
     [`${DATASET_BASENAME}.csv`]: toCSV(ordered),

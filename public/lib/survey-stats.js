@@ -1,10 +1,6 @@
 /**
- * Aggregate statistics over public survey records.
- * Used for public/data/stats.json and for the hiker's comparison after submitting.
- *
- * Averages only count records that answered the question, and every
- * categorical breakdown lists each option separately (so e.g. "hybrid" cook
- * systems are no longer counted as cold soaking).
+ * The hiker's comparison with other public survey records, after submitting
+ * and when looking up a hike with the personal code.
  */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -15,76 +11,13 @@
 })(typeof self !== 'undefined' ? self : this, function (Schema) {
   'use strict';
 
-  const BREAKDOWN_FIELDS = [
-    'backpackType', 'cookSystem', 'sleepPadType', 'waterFiltration', 'footwearCategory', 'trekkingPoleUsage'
-  ];
-
   function round1(n) {
     return Math.round(n * 10) / 10;
-  }
-
-  function numbers(docs, key) {
-    return docs.map(d => d[key]).filter(v => typeof v === 'number' && Number.isFinite(v));
-  }
-
-  function mean(values) {
-    return values.length ? round1(values.reduce((a, b) => a + b, 0) / values.length) : null;
-  }
-
-  function median(values) {
-    if (!values.length) return null;
-    const sorted = values.slice().sort((a, b) => a - b);
-    const mid = Math.floor(sorted.length / 2);
-    return round1(sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2);
   }
 
   function percent(part, whole) {
     return whole ? Math.round((part / whole) * 100) : null;
   }
-
-  /** Percentage of answering records per option, e.g. { framed: 70, frameless: 30 }. */
-  function breakdown(docs, key) {
-    const answered = docs.filter(d => d[key] !== null && d[key] !== undefined);
-    const result = {};
-    Schema.FIELDS_BY_NAME[key].values.forEach(value => {
-      result[value] = percent(answered.filter(d => d[key] === value).length, answered.length);
-    });
-    return result;
-  }
-
-  function computeStats(docs) {
-    const list = docs || [];
-    const trails = {};
-    list.forEach(d => {
-      if (d.trail) trails[d.trail] = (trails[d.trail] || 0) + 1;
-    });
-
-    const withStatus = list.filter(d => d.completionStatus);
-    const completed = withStatus.filter(d => Schema.COMPLETED_STATUSES.includes(d.completionStatus));
-    const baseWeights = numbers(list, 'baseWeightLbs');
-
-    const breakdowns = {};
-    BREAKDOWN_FIELDS.forEach(key => {
-      breakdowns[key] = breakdown(list, key);
-    });
-
-    return {
-      totalCount: list.length,
-      trails,
-      avgBaseWeightLbs: mean(baseWeights),
-      medianBaseWeightLbs: median(baseWeights),
-      avgDailyMiles: mean(numbers(list, 'averageDailyMiles')),
-      completionRate: percent(completed.length, withStatus.length),
-      injuryRate: percent(list.filter(d => d.severeInjuryOccurred === true).length, list.length),
-      avgEnjoyment: mean(numbers(list, 'overallEnjoymentRating')),
-      breakdowns,
-      lastUpdated: new Date().toISOString()
-    };
-  }
-
-  /** Fields computeStats reads; used as a MongoDB projection. */
-  const STATS_FIELDS = ['trail', 'baseWeightLbs', 'averageDailyMiles', 'completionStatus', 'severeInjuryOccurred', 'overallEnjoymentRating']
-    .concat(BREAKDOWN_FIELDS);
 
   // --- Personal comparison shown after submitting ---------------------------
 
@@ -371,6 +304,6 @@
     return { trailName: name, trailCount: sameTrail ? sameTrail.length : null, allCount: others.length, rows };
   }
 
-  return { computeStats, compareToPeers, STATS_FIELDS, BREAKDOWN_FIELDS, COMPARISON_FIELDS, HIGHLIGHTS, MIN_TRAIL_PEERS, MIN_PEERS,
+  return { compareToPeers, COMPARISON_FIELDS, HIGHLIGHTS, MIN_TRAIL_PEERS, MIN_PEERS,
     compareAll, TABLE_ROWS, tableValueText, tableCellText };
 });

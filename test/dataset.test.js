@@ -2,7 +2,6 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs');
 const { toCSV } = require('../netlify/functions/utils/dataset');
-const { computeStats } = require('../public/lib/survey-stats');
 const { PUBLIC_COLUMNS, SCHEMA_VERSION } = require('../public/lib/survey-schema');
 const { generateSyntheticHikers } = require('../scripts/lib/synthetic-hikers');
 const dictionary = require('../scripts/generate-data-dictionary');
@@ -18,25 +17,6 @@ test('CSV escapes quotes, commas, newlines and joins arrays', () => {
 
 test('CSV of no records is just the header', () => {
   assert.equal(toCSV([]), PUBLIC_COLUMNS.join(',') + '\r\n');
-});
-
-test('stats average only answered values and list every category', () => {
-  const s = computeStats([
-    { trail: 'PCT', baseWeightLbs: 10, averageDailyMiles: 20, cookSystem: 'hybrid', completionStatus: 'quit_early' },
-    { trail: 'PCT', baseWeightLbs: 20, averageDailyMiles: null, cookSystem: 'stove_cooked', completionStatus: 'continuous_purist' }
-  ]);
-  assert.equal(s.avgDailyMiles, 20, 'null pace is not counted as 0');
-  assert.equal(s.medianBaseWeightLbs, 15);
-  assert.equal(s.completionRate, 50);
-  assert.equal(s.breakdowns.cookSystem.hybrid, 50);
-  assert.equal(s.breakdowns.cookSystem.cold_soaking, 0, 'hybrid is not counted as cold soaking');
-});
-
-test('stats of an empty dataset are empty, not invented', () => {
-  const s = computeStats([]);
-  assert.equal(s.totalCount, 0);
-  assert.equal(s.avgDailyMiles, null);
-  assert.equal(s.completionRate, null);
 });
 
 test('synthetic hikers are valid, flagged and reproducible', () => {
