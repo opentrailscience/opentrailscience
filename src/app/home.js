@@ -1,12 +1,12 @@
 /**
- * Home page: the counters, the first-50 cairns and the trail stones.
+ * Home page: the first-50 cairns and the trail stones.
  * Part of the browser app (src/app/, bundled by scripts/build-js.js into public/js/app.bundle.js).
  */
 import { $, FIRST_HIKERS_GOAL, STATIC_STATS_URL, STONES_PER_CAIRN, Schema, showToast, state } from './core.js';
 import { renderDatasetMeta } from './dataset.js';
 
-// --- MY SUBMISSIONS (so the counters include them right away) ---------------
-// The counters come from a snapshot rebuilt every few hours. Until a snapshot
+// --- MY SUBMISSIONS (so the first-50 count includes them right away) --------
+// The count comes from a snapshot rebuilt every few hours. Until a snapshot
 // newer than a hiker's submission arrives, it is added on this page. Kept in
 // memory only: nothing is stored in the browser, a reload shows the snapshot.
 const mySubmissions = [];
@@ -30,7 +30,7 @@ export function mySubmissionsAfter(snapshotTime) {
   return mySubmissions.filter(s => s.at > builtAt);
 }
 
-// --- STATS (prebuilt stats.json) & ANIMATED COUNTER ---
+// --- STATS (prebuilt stats.json) ---
 export async function fetchStats() {
   try {
     const res = await fetch(STATIC_STATS_URL);
@@ -49,18 +49,11 @@ export function renderStats(data) {
   state.publicCount = total;
   renderDatasetMeta();
 
-  // Until there are enough hikes, invite people instead of showing thin numbers.
+  // Until there are enough hikes, one stone per hike; from 50 on, nothing here.
   $('stats-first50').classList.toggle('hidden', !early);
-  $('stats-tiles').classList.toggle('hidden', early);
-  $('stats-bias-note').classList.toggle('hidden', early);
   if (early) {
     renderFirstHikersProgress($('first50-bar'), $('first50-count'), total, mine.length > 0);
     $('first50-progress').setAttribute('aria-valuenow', String(total));
-  } else {
-    animateNumber($('stat-total-count'), total, 0, '');
-    animateNumber($('stat-completion-rate'), data.completionRate, 0, '%');
-    animateNumber($('stat-median-baseweight'), data.medianBaseWeightLbs, 1, ' lbs');
-    animateNumber($('stat-avg-miles'), data.avgDailyMiles, 1, ' mi');
   }
 }
 
@@ -83,24 +76,6 @@ export function renderFirstHikersProgress(stones, label, total, includesYou) {
     stones.querySelectorAll('span').forEach((stone, i) => stone.classList.toggle('filled', i < total));
   }
   if (label) label.textContent = `${Math.min(total, FIRST_HIKERS_GOAL)} of ${FIRST_HIKERS_GOAL} hikers so far${includesYou ? ', including you' : ''}`;
-}
-
-/** Counts up from 0 to `end`; shows a dash when there is no value yet. */
-function animateNumber(element, end, decimals, suffix) {
-  if (!element) return;
-  if (end === null || end === undefined) {
-    element.textContent = '—';
-    return;
-  }
-  const duration = 1000;
-  const startTime = performance.now();
-  function update(time) {
-    const progress = Math.min((time - startTime) / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 3);
-    element.textContent = (end * ease).toFixed(progress < 1 ? 0 : decimals) + suffix;
-    if (progress < 1) requestAnimationFrame(update);
-  }
-  requestAnimationFrame(update);
 }
 
 // --- TRAIL QUICK SELECT FROM HOME ---

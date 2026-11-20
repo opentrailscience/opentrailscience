@@ -166,7 +166,7 @@
           </div>
         </section>
 
-        <!-- Shown until 50 hikers have taken part (FIRST_HIKERS_GOAL in src/app/core.js): one stone per hike -->
+        <!-- Shown until 50 hikers have taken part (FIRST_HIKERS_GOAL in src/app/core.js), then gone: one stone per hike -->
         <section id="stats-first50" class="hidden home-card first50" aria-labelledby="first50-title">
           <div>
             <h2 id="first50-title">Be part of the first 50</h2>
@@ -177,15 +177,6 @@
             <p id="first50-count" class="first50-count">0 of 50 hikers so far</p>
           </div>
         </section>
-
-        <!-- From 50 hikers on: the headline numbers -->
-        <section id="stats-tiles" class="hidden home-card home-stats" aria-label="The dataset in numbers">
-          <div><div class="stat-label">Hikes shared</div><div id="stat-total-count" class="stat-counter">--</div><div class="stat-note">Updated after new answers</div></div>
-          <div><div class="stat-label">Completion rate</div><div id="stat-completion-rate" class="stat-counter">--%</div><div class="stat-note">Continuous and flip-flop finishes</div></div>
-          <div><div class="stat-label">Median base weight</div><div id="stat-median-baseweight" class="stat-counter">-- lbs</div><div class="stat-note">Dry pack loadout</div></div>
-          <div><div class="stat-label">Average daily miles</div><div id="stat-avg-miles" class="stat-counter">-- mi</div><div class="stat-note">Sustained trail pace</div></div>
-        </section>
-        <p id="stats-bias-note" class="hidden home-stats-note">Hikers choose for themselves whether to take part, so this isn't a random sample: finishers are probably over-represented. <a href="#download">More about the data</a></p>
 
         <!-- People who did not finish -->
         <section class="home-dnf">
