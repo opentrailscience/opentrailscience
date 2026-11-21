@@ -50,7 +50,8 @@ const MIME_TYPES = {
   '.jpg': 'image/jpeg',
   '.ico': 'image/x-icon',
   '.woff2': 'font/woff2',
-  '.txt': 'text/plain; charset=utf-8'
+  '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8'
 };
 
 // Path -> function, from the functions' own config.path (as on Netlify).
@@ -91,11 +92,11 @@ async function serveBundle(res) {
   }
 }
 
-// Same as the /download/* redirects in netlify.toml.
-const DOWNLOAD_ALIASES = {
-  '/download/csv': '/data/thru_hiker_survey_dataset.csv',
-  '/download/json': '/data/thru_hiker_survey_dataset.json'
-};
+// The rewrites (status 200) in netlify.toml: the pages of the site and the /download/* files.
+const ALIASES = Object.fromEntries(
+  [...fs.readFileSync(path.join(__dirname, '..', 'netlify.toml'), 'utf8').matchAll(/from = "([^"]+)"\s+to = "([^"]+)"\s+status = 200/g)]
+    .map(m => [m[1], m[2]])
+);
 
 function readBody(req) {
   return new Promise((resolve, reject) => {
@@ -172,7 +173,7 @@ const server = http.createServer((req, res) => {
 
   if (pathname === `/${BUNDLE}`) return serveBundle(res);
 
-  const target = DOWNLOAD_ALIASES[pathname] || pathname;
+  const target = ALIASES[pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname] || pathname;
   if (OFFLINE && target.startsWith('/data/')) return serveOfflineSnapshot(target, res);
   serveStatic(target, res);
 });

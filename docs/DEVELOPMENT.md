@@ -9,7 +9,8 @@ A single-page site without a framework, a few Netlify Functions and a MongoDB da
 
 ```
 public/                     The website (Netlify's publish directory)
-  index.html                All views: home, survey, thank-you, insights, dataset, privacy, about
+  index.html                All views: home, survey, thank-you, insights, dataset, privacy, about,
+                            each at its own address (/survey, /thanks, /insights, /dataset, /privacy, /about)
   insights.js               Charts on the Insights page
   share-card.js             The personal share card, drawn in the browser (img/example-card.webp on the
                             home page is drawn by it too; make it again when the card changes)

@@ -124,3 +124,28 @@ test('feedback with accents and emoji arrives unchanged through the entry point'
   assert.equal(res.status, 201);
   assert.equal(db.collection('feedback').docs[0].message, message);
 });
+
+test('every view has its own address, served by Netlify, and no catch-all', () => {
+  const core = fs.readFileSync(path.join(__dirname, '../src/app/core.js'), 'utf8');
+  const block = core.match(/export const VIEW_PATHS = \{([^}]*)\}/)[1];
+  const paths = [...block.matchAll(/'(\/[^']*)'/g)].map(m => m[1]);
+  assert.ok(paths.includes('/') && paths.length >= 7);
+  const toml = fs.readFileSync(path.join(__dirname, '../netlify.toml'), 'utf8');
+  const pages = [...toml.matchAll(/from = "([^"]+)"\s+to = "\/index\.html"\s+status = 200/g)].map(m => m[1]);
+  assert.deepEqual(pages.sort(), paths.filter(p => p !== '/').sort(), 'netlify.toml serves exactly the view addresses');
+  assert.ok(!/from = "\/\*"/.test(toml), 'an unknown address stays a 404');
+  // Links use the addresses, not the old #hash views (a #section after an address is fine).
+  const html = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf8');
+  assert.doesNotMatch(html, /href="#(home|survey|success|insights|download|privacy|about)[^"]*"/);
+  // Files are linked from the root, so the page also works at /privacy/ with a trailing slash.
+  assert.doesNotMatch(html, /\b(src|href)="(img|fonts|css|js)\//);
+});
+
+test('the sitemap lists every view except the thank-you page, and robots.txt points to it', () => {
+  const core = fs.readFileSync(path.join(__dirname, '../src/app/core.js'), 'utf8');
+  const paths = [...core.match(/export const VIEW_PATHS = \{([^}]*)\}/)[1].matchAll(/'(\/[^']*)'/g)].map(m => m[1]);
+  const sitemap = fs.readFileSync(path.join(__dirname, '../public/sitemap.xml'), 'utf8');
+  const listed = [...sitemap.matchAll(/<loc>https:\/\/opentrailscience\.org(\/[^<]*)<\/loc>/g)].map(m => m[1]);
+  assert.deepEqual(listed.sort(), paths.filter(p => p !== '/thanks').sort());
+  assert.match(fs.readFileSync(path.join(__dirname, '../public/robots.txt'), 'utf8'), /^Sitemap: https:\/\/opentrailscience\.org\/sitemap\.xml$/m);
+});

@@ -24,7 +24,7 @@
   <meta name="twitter:title" content="Open Trail Science: a survey for any long-distance hike, any year">
   <meta name="twitter:description" content="Gear, pace, costs and how the hike went, in about 10 minutes. The answers are published as an open dataset.">
   <meta name="twitter:image" content="https://opentrailscience.org/og-image.png">
-  <link rel="icon" type="image/svg+xml" href="img/cairn-icon.svg">
+  <link rel="icon" type="image/svg+xml" href="/img/cairn-icon.svg">
   <!-- Describes the dataset for Google Dataset Search and similar tools. A data block, not a
        script: browsers never run it, so the Content-Security-Policy is unaffected. -->
   <script type="application/ld+json">
@@ -33,7 +33,7 @@
     "@type": "Dataset",
     "name": "Open Thru-Hiker Survey Dataset",
     "description": "Survey answers from long-distance hikers on any trail and in any year, finished or not: gear, pace, rest days, sleep, costs, injuries, illness and how the hike ended. One row per hike, with dates, ages and home countries blurred before storage. Updated as new answers come in.",
-    "url": "https://opentrailscience.org/#download",
+    "url": "https://opentrailscience.org/dataset",
     "license": "https://creativecommons.org/publicdomain/zero/1.0/",
     "isAccessibleForFree": true,
     "creator": {
@@ -70,21 +70,21 @@
   <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="dark light">
   <!-- Sets data-theme before anything is drawn (light/dark switch, see theme.js). -->
-  <script src="theme.js"></script>
-  <link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/ibm-plex-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css">
+  <script src="/theme.js"></script>
+  <link rel="preload" href="/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/ibm-plex-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css">
   <!-- Built from src/tailwind.css by `npm run build:css`. Loaded after styles.css,
        as the old Tailwind CDN script injected its styles last. -->
-  <link rel="stylesheet" href="css/tailwind.css">
+  <link rel="stylesheet" href="/css/tailwind.css">
 </head>
 <body class="min-h-full flex flex-col">
 
   <!-- Navigation: the logo links home; Insights, Dataset, About and the theme switch -->
   <header class="site-header">
     <div class="frame">
-      <a href="#home" class="brand-link" aria-label="Open Trail Science, home">
-        <img src="img/cairn-logo.svg" alt="" class="light-only" width="46" height="46"><img src="img/cairn-logo-dark.svg" alt="" class="dark-only" width="46" height="46">
+      <a href="/" class="brand-link" aria-label="Open Trail Science, home">
+        <img src="/img/cairn-logo.svg" alt="" class="light-only" width="46" height="46"><img src="/img/cairn-logo-dark.svg" alt="" class="dark-only" width="46" height="46">
         <span class="brand-name">
           <strong>OPEN TRAIL <span>SCIENCE</span></strong>
           <small>Thru-Hiker Survey</small>
@@ -92,9 +92,9 @@
       </a>
       <nav class="site-nav" aria-label="Main">
         <ul>
-          <li><a href="#insights" id="nav-link-insights">Insights</a></li>
-          <li><a href="#download" id="nav-link-download">Dataset</a></li>
-          <li><a href="#about" id="nav-link-about">About</a></li>
+          <li><a href="/insights" id="nav-link-insights">Insights</a></li>
+          <li><a href="/dataset" id="nav-link-download">Dataset</a></li>
+          <li><a href="/about" id="nav-link-about">About</a></li>
           <li>
             <button type="button" id="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
               <!-- Shows the theme you switch to: a sun in dark mode, a moon in light mode. -->
@@ -122,7 +122,7 @@
           <div class="hero-text">
             <h1>One survey for every long trail, open all year.</h1>
             <p class="lead">Pick your trail from the pile to start. Complete the survey and see how you compare to others. Every answer goes into a free, public dataset.</p>
-            <p class="fine">About 10 minutes. No names, emails or accounts, and your answers save on your device as you go. <a href="#privacy">Privacy</a> · <a href="#about">Who's behind this?</a></p>
+            <p class="fine">About 10 minutes. No names, emails or accounts, and your answers save on your device as you go. <a href="/privacy">Privacy</a> · <a href="/about">Who's behind this?</a></p>
           </div>
           <div class="hero-more">
             <!-- "Suggest a trail", no survey needed: sent on its own (src/app/suggestions.js, /api/trail-suggestion) -->
@@ -153,14 +153,14 @@
           <div class="pile">
             <p class="pile-label" id="pile-label">Start here: pick your trail</p>
           <ol class="cairn" aria-labelledby="pile-label">
-            <li class="stone s1"><a href="#survey" class="trail-quick-card"><span class="name">More trails (25+)</span><span class="meta">OR ANY 70 MI +</span></a></li>
-            <li class="stone s2"><a href="#survey" class="trail-quick-card" data-trail="TMB"><span class="name">Tour du Mont Blanc</span><span class="meta">TMB · 106 MI</span></a></li>
-            <li class="stone s3"><a href="#survey" class="trail-quick-card" data-trail="Annapurna"><span class="name">Annapurna Circuit</span><span class="meta">NEPAL · ~130 MI</span></a></li>
-            <li class="stone s4"><a href="#survey" class="trail-quick-card" data-trail="CDS"><span class="name">Camino de Santiago</span><span class="meta">ANY ROUTE</span></a></li>
-            <li class="stone s5"><a href="#survey" class="trail-quick-card" data-trail="TA"><span class="name">Te Araroa</span><span class="meta">TA · 1,864 MI</span></a></li>
-            <li class="stone s6"><a href="#survey" class="trail-quick-card" data-trail="AT"><span class="name">Appalachian Trail</span><span class="meta">AT · 2,198 MI</span></a></li>
-            <li class="stone s7"><a href="#survey" class="trail-quick-card" data-trail="PCT"><span class="name">Pacific Crest Trail</span><span class="meta">PCT · 2,650 MI</span></a></li>
-            <li class="stone s8"><a href="#survey" class="trail-quick-card" data-trail="CDT"><span class="name">Continental Divide Trail</span><span class="meta">CDT · ~3,000 MI</span></a></li>
+            <li class="stone s1"><a href="/survey" class="trail-quick-card"><span class="name">More trails (25+)</span><span class="meta">OR ANY 70 MI +</span></a></li>
+            <li class="stone s2"><a href="/survey" class="trail-quick-card" data-trail="TMB"><span class="name">Tour du Mont Blanc</span><span class="meta">TMB · 106 MI</span></a></li>
+            <li class="stone s3"><a href="/survey" class="trail-quick-card" data-trail="Annapurna"><span class="name">Annapurna Circuit</span><span class="meta">NEPAL · ~130 MI</span></a></li>
+            <li class="stone s4"><a href="/survey" class="trail-quick-card" data-trail="CDS"><span class="name">Camino de Santiago</span><span class="meta">ANY ROUTE</span></a></li>
+            <li class="stone s5"><a href="/survey" class="trail-quick-card" data-trail="TA"><span class="name">Te Araroa</span><span class="meta">TA · 1,864 MI</span></a></li>
+            <li class="stone s6"><a href="/survey" class="trail-quick-card" data-trail="AT"><span class="name">Appalachian Trail</span><span class="meta">AT · 2,198 MI</span></a></li>
+            <li class="stone s7"><a href="/survey" class="trail-quick-card" data-trail="PCT"><span class="name">Pacific Crest Trail</span><span class="meta">PCT · 2,650 MI</span></a></li>
+            <li class="stone s8"><a href="/survey" class="trail-quick-card" data-trail="CDT"><span class="name">Continental Divide Trail</span><span class="meta">CDT · ~3,000 MI</span></a></li>
             <li class="ground" aria-hidden="true"></li>
           </ol>
           </div>
@@ -185,19 +185,19 @@
             <h2>Your hike matters just as much. Arguably more!</h2>
             <p>The hikes that stopped early are the ones that explain why hikes end. Section hikers and people who skipped large sections are welcome too.</p>
           </div>
-          <a href="#survey" class="btn btn-callout">Share your hike</a>
+          <a href="/survey" class="btn btn-callout">Share your hike</a>
         </section>
 
         <!-- How it works: a few sentences in the first person, with an example share card -->
         <section class="home-how">
           <div>
             <h2>Takes about ten minutes, yields valuable insights forever</h2>
-            <p>Tell me about your hike. Don't remember something? Pick "Don't know" and continue, the rest you do know is still really valuable. You'll get a fun card showing how you compare on your trail, to share with others. All survey entries are completely open, with identifying details blurred before anything is saved. <a href="#privacy">How I handle your data</a></p>
+            <p>Tell me about your hike. Don't remember something? Pick "Don't know" and continue, the rest you do know is still really valuable. You'll get a fun card showing how you compare on your trail, to share with others. All survey entries are completely open, with identifying details blurred before anything is saved. <a href="/privacy">How I handle your data</a></p>
           </div>
           <figure class="example-card">
             <!-- Drawn by the real card code (ShareCard.render in share-card.js) with these example numbers,
                  saved at 720x900 as WebP; make it again whenever the card's design changes. -->
-            <img class="card-image" src="img/example-card.webp" width="720" height="900" alt="Example share card: My 2025 PCT thru-hike, out of 112 other PCT hikers. A cairn of three stones: 86% carried a heavier pack, 74% hiked a slower pace, 68% slept less. opentrailscience.org">
+            <img class="card-image" src="/img/example-card.webp" width="720" height="900" alt="Example share card: My 2025 PCT thru-hike, out of 112 other PCT hikers. A cairn of three stones: 86% carried a heavier pack, 74% hiked a slower pace, 68% slept less. opentrailscience.org">
             <figcaption>Example card. Yours shows your own results.</figcaption>
           </figure>
         </section>
@@ -221,7 +221,7 @@
           </div>
 
           <figure class="sm:w-72 shrink-0">
-            <img src="img/about-photo-1100.webp" srcset="img/about-photo-640.webp 640w, img/about-photo-1100.webp 1100w" sizes="(min-width: 640px) 288px, calc(100vw - 32px)" width="1100" height="1100" loading="lazy" decoding="async"
+            <img src="/img/about-photo-1100.webp" srcset="/img/about-photo-640.webp 640w, /img/about-photo-1100.webp 1100w" sizes="(min-width: 640px) 288px, calc(100vw - 32px)" width="1100" height="1100" loading="lazy" decoding="async"
               alt="Me sitting on the rocks beside a mountain trail, smiling, with my backpack, trekking poles and sun hat"
               class="w-full h-auto rounded-2xl border border-subtle sm:rotate-2">
           </figure>
@@ -395,7 +395,7 @@
         <!-- Contact -->
         <div>
           <h2 class="text-xl font-bold text-ink">Who is responsible</h2>
-          <p class="mt-2">Open Trail Science is a one-person, non-commercial project (that's me, see <a href="#about" class="underline underline-offset-2">About the creator</a>). For any privacy question or request, write to:</p>
+          <p class="mt-2">Open Trail Science is a one-person, non-commercial project (that's me, see <a href="/about" class="underline underline-offset-2">About the creator</a>). For any privacy question or request, write to:</p>
           <p class="mt-2"><a href="mailto:privacy@opentrailscience.org">privacy@opentrailscience.org</a></p>
           <p class="mt-4">The whole site is open source: the code that checks, blurs, stores and publishes your answers is on <a href="https://github.com/opentrailscience/opentrailscience" class="underline underline-offset-2" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
           <p class="mt-4 text-xs text-muted">If this page ever changes in a way that affects how answers are stored, the consent version above changes too, and every record keeps the version its author agreed to.</p>
@@ -421,7 +421,7 @@
             <div id="insights-locked-bar" class="stones" aria-hidden="true"></div>
             <div id="insights-locked-count" class="text-sm font-mono keep-mono text-muted mt-2"></div>
           </div>
-          <a href="#survey" class="btn btn-primary mt-6">Add your hike</a>
+          <a href="/survey" class="btn btn-primary mt-6">Add your hike</a>
         </div>
 
         <div id="insights-charts" class="hidden mt-10 space-y-14"></div>
@@ -495,7 +495,7 @@
             <li class="flex gap-3"><span class="text-blue font-bold">4</span><span>Some answers are <strong class="text-ink">health information</strong> (injuries, illness, painkiller use, body weight). Please only take part if you're comfortable with them being published this way.</span></li>
             <li class="flex gap-3"><span class="text-blue font-bold">5</span><span>After submitting you get a <strong class="text-ink">personal code</strong>: come back with it to see how your hike compares as more hikers join, or to remove your answers from the dataset in case you change your mind later. Copies that others already downloaded can't be recalled, though.</span></li>
           </ul>
-          <p class="mt-4 text-xs text-muted">The full details: <a href="#privacy" class="underline underline-offset-2">How I handle your data</a>.</p>
+          <p class="mt-4 text-xs text-muted">The full details: <a href="/privacy" class="underline underline-offset-2">How I handle your data</a>.</p>
 
           <label class="mt-6 flex items-start gap-3 p-4 rounded-xl bg-surface/70 border border-line cursor-pointer">
             <input type="checkbox" id="consent-checkbox" class="mt-0.5 w-4 h-4 shrink-0">
@@ -1642,7 +1642,7 @@
           <!-- Cloudflare Turnstile, only on the last step (src/app/botcheck.js). The site key is public. -->
           <div id="turnstile-box" class="hidden mt-6" data-sitekey="0x4AAAAAAFlz-4qpgfPjSnU2">
             <div id="turnstile-widget"></div>
-            <p class="text-xs text-muted mt-2">When you submit, Cloudflare quickly checks that you're a person and not a bot. <a href="#privacy-bot-check" class="underline underline-offset-2 hover:text-ink-soft">What that means for your data</a></p>
+            <p class="text-xs text-muted mt-2">When you submit, Cloudflare quickly checks that you're a person and not a bot. <a href="/privacy#privacy-bot-check" class="underline underline-offset-2 hover:text-ink-soft">What that means for your data</a></p>
           </div>
 
           <!-- Back and Next -->
@@ -1749,8 +1749,8 @@
             <code id="deletion-code-value" class="text-lg sm:text-xl font-mono font-bold select-all"></code>
             <button type="button" id="btn-copy-deletion-code" class="text-xs px-3 py-1.5 rounded-lg bg-subtle hover:bg-line text-ink-soft transition">Copy</button>
           </div>
-          <p class="text-sm text-secondary mt-2">Every new hike makes the comparison more accurate. Enter this code on the <a href="#insights" class="underline underline-offset-2">Insights page</a> anytime to see how your hike stacks up today, with a fresh share card.</p>
-          <p class="text-xs text-muted mt-2">It's also the only way to delete your answer in case you change your mind later (on the <a href="#privacy-delete" class="underline underline-offset-2">privacy page</a>). I don't know who you are, so I can't look it up for you: please save it somewhere safe.</p>
+          <p class="text-sm text-secondary mt-2">Every new hike makes the comparison more accurate. Enter this code on the <a href="/insights" class="underline underline-offset-2">Insights page</a> anytime to see how your hike stacks up today, with a fresh share card.</p>
+          <p class="text-xs text-muted mt-2">It's also the only way to delete your answer in case you change your mind later (on the <a href="/privacy#privacy-delete" class="underline underline-offset-2">privacy page</a>). I don't know who you are, so I can't look it up for you: please save it somewhere safe.</p>
         </div>
 
         <!-- Every answer compared with the same trail and with everyone (Stats.compareAll, renderCompareTable in src/app/results.js) -->
@@ -1788,7 +1788,7 @@
         <!-- Less important ways on, as plain links -->
         <div class="mt-8 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm">
           <button type="button" id="btn-add-another-hike" class="font-semibold text-blue hover:text-blue-strong underline underline-offset-2">Add another hike</button>
-          <a href="#download" class="inline-flex items-center min-h-11 font-semibold text-blue hover:text-blue-strong underline underline-offset-2">Download the full dataset</a>
+          <a href="/dataset" class="inline-flex items-center min-h-11 font-semibold text-blue hover:text-blue-strong underline underline-offset-2">Download the full dataset</a>
         </div>
 
       </div>
@@ -1965,13 +1965,13 @@
   <!-- Footer -->
   <footer class="site-footer">
     <div class="frame">
-      <span class="footer-brand"><img src="img/cairn-logo.svg" alt="" class="light-only" width="26" height="26"><img src="img/cairn-logo-dark.svg" alt="" class="dark-only" width="26" height="26"><strong>Open Trail Science</strong><span>Public domain (CC0) dataset</span></span>
+      <span class="footer-brand"><img src="/img/cairn-logo.svg" alt="" class="light-only" width="26" height="26"><img src="/img/cairn-logo-dark.svg" alt="" class="dark-only" width="26" height="26"><strong>Open Trail Science</strong><span>Public domain (CC0) dataset</span></span>
       <ul>
-        <li><a href="#privacy">Privacy</a></li>
-        <li><a href="#survey">Contribute hike</a></li>
-        <li><a href="#insights">Insights</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#download">Download data</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/survey">Contribute hike</a></li>
+        <li><a href="/insights">Insights</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/dataset">Download data</a></li>
       </ul>
     </div>
   </footer>
@@ -1979,6 +1979,6 @@
   <!-- Application Logic -->
   <!-- lib/survey-schema.js, lib/survey-stats.js, lib/human-check.js, share-card.js and insights.js,
        then the app modules in src/app/, bundled and minified by scripts/build-js.js -->
-  <script src="js/app.bundle.js" defer></script>
+  <script src="/js/app.bundle.js" defer></script>
 </body>
 </html>

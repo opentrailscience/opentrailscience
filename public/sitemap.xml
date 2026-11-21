@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The pages of the site for search engines (VIEW_PATHS in src/app/core.js, without /thanks,
+     which only exists right after submitting). test/entrypoints.test.js checks the list. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://opentrailscience.org/</loc></url>
+  <url><loc>https://opentrailscience.org/survey</loc></url>
+  <url><loc>https://opentrailscience.org/insights</loc></url>
+  <url><loc>https://opentrailscience.org/dataset</loc></url>
+  <url><loc>https://opentrailscience.org/privacy</loc></url>
+  <url><loc>https://opentrailscience.org/about</loc></url>
+</urlset>

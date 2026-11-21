@@ -32,7 +32,7 @@ npm test
 
 ## The data
 
-The dataset is free for everyone, as CSV and JSON on [opentrailscience.org/#download](https://opentrailscience.org/#download). How the answers are blurred and what is stored is explained on the [privacy page](https://opentrailscience.org/#privacy).
+The dataset is free for everyone, as CSV and JSON on [opentrailscience.org/dataset](https://opentrailscience.org/dataset). How the answers are blurred and what is stored is explained on the [privacy page](https://opentrailscience.org/#privacy).
 
 ## License
 

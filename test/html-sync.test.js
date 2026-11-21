@@ -193,7 +193,7 @@ test('Open Graph tags use absolute URLs and the image is the 512x512 icon, shown
 });
 
 test('the home page example card is an image drawn by the real card code', () => {
-  const tag = (html.match(/<img class="card-image" src="img\/example-card\.webp"[^>]*>/) || [])[0];
+  const tag = (html.match(/<img class="card-image" src="\/img\/example-card\.webp"[^>]*>/) || [])[0];
   assert.ok(tag, 'example card image');
   assert.ok(fs.existsSync(path.join(__dirname, '../public/img/example-card.webp')));
   assert.match(tag, /width="720" height="900"/);

@@ -2,7 +2,7 @@
  * Thank-you page: the summary, every answer, the comparisons, the share card, the personal code and feedback.
  * Part of the browser app (src/app/, bundled by scripts/build-js.js into public/js/app.bundle.js).
  */
-import { $, Schema, Stats, attrValue, copyText, errorText, escapeHtml, humanize, orDash, showToast, state } from './core.js';
+import { $, Schema, Stats, VIEW_PATHS, attrValue, copyText, errorText, escapeHtml, go, humanize, orDash, showToast, state } from './core.js';
 import { STEP_GROUPS } from './dataset.js';
 import { populateDeletionCode } from './privacy.js';
 
@@ -230,7 +230,7 @@ export async function prepareShare(record, comparison) {
  * so hikers say it in their own words instead of sending something that reads like a bot.
  */
 export async function shareSurvey() {
-  const url = window.location.origin + window.location.pathname + '#survey';
+  const url = window.location.origin + VIEW_PATHS.survey;
 
   // Phones: share the card image with the link (apps often drop `url` when
   // files are attached, so it goes into `text`).
@@ -310,7 +310,7 @@ export function initMyHike() {
       setSuccessMode('revisit');
       state.hasSubmitted = true;
       result.textContent = '';
-      window.location.hash = '#success';
+      go(VIEW_PATHS.success);
     } catch (err) {
       result.className = 'mt-3 text-sm text-red-strong';
       result.textContent = err.message === 'Failed to fetch' ? 'Network error. Please try again.' : err.message;

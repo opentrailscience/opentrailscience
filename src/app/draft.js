@@ -4,7 +4,7 @@
  */
 import { giveConsent, newTrailCheck, resetConsent, updateStartButton } from './consent.js';
 import { clearPills, resetSlider, setCardSelected, syncNoTraining, updateOptionHint } from './controls.js';
-import { $, HumanCheck, Schema, attrValue, scrollMode, showToast, state } from './core.js';
+import { $, HumanCheck, Schema, VIEW_PATHS, attrValue, go, scrollMode, showToast, state } from './core.js';
 import { resetTrailSuggestion } from './suggestions.js';
 import { TOGGLE_OFF, YES_NO_TOGGLES, setRampWeeks, setUnitSystem, syncHeightParts, updateDirectionCards } from './units.js';
 import { renderWizardStep } from './wizard.js';
@@ -173,6 +173,6 @@ export function initSurveyReset() {
   $('btn-add-another-hike').addEventListener('click', () => {
     clearDraft();
     resetSurveyForm();
-    window.location.hash = '#survey';
+    go(VIEW_PATHS.survey);
   });
 }

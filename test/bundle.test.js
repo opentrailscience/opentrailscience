@@ -29,7 +29,7 @@ test('the app is ES modules in src/app, reached from main.js, with nothing left 
 test('the page loads the theme script in <head>, then only the deferred bundle', () => {
   const html = fs.readFileSync(path.join(PUBLIC_DIR, 'index.html'), 'utf-8');
   const scripts = [...html.matchAll(/<script\b[^>]*>/g)].map(m => m[0]).filter(tag => !tag.includes('application/ld+json'));
-  assert.deepEqual(scripts, [`<script src="${EARLY_SCRIPT}">`, `<script src="${BUNDLE}" defer>`]);
+  assert.deepEqual(scripts, [`<script src="/${EARLY_SCRIPT}">`, `<script src="/${BUNDLE}" defer>`]);
   assert.ok(html.indexOf(EARLY_SCRIPT) < html.indexOf('</head>'));
   assert.ok(fs.statSync(path.join(PUBLIC_DIR, EARLY_SCRIPT)).size < 1500, 'keep the blocking script tiny');
 });

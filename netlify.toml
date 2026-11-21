@@ -38,5 +38,35 @@
   to = "/data/thru_hiker_survey_dataset.json"
   status = 200
 
-# No catch-all to index.html: the site's views are #hash links, which never reach the
-# server, so an unknown address gets public/404.html with a real 404 status.
+# The pages of the site: one page (index.html) that shows the view for its address
+# (VIEW_PATHS in src/app/core.js; test/entrypoints.test.js checks that both lists match).
+# No catch-all: any other address gets public/404.html with a real 404 status.
+[[redirects]]
+  from = "/survey"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/thanks"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/insights"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/dataset"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/index.html"
+  status = 200

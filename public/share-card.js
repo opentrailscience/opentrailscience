@@ -411,7 +411,7 @@
         document.fonts.load(`500 36px ${MONO}`)
       ]).catch(() => {});
     }
-    const topo = await loadImage('img/hero-topo.svg');
+    const topo = await loadImage('/img/hero-topo.svg');
 
     const canvas = document.createElement('canvas');
     canvas.width = W;

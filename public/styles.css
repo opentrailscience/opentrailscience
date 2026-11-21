@@ -663,6 +663,8 @@
   /* Anything the survey scrolls to (the Cloudflare banner, the first missing answer) or that
      the browser scrolls to for a tap stays clear of the sticky progress bar. */
   #view-survey * { scroll-margin-top: 140px; }
+  /* The headline a page change moves focus to (router.js), for screen readers: no ring. */
+  .app-view h1[tabindex="-1"]:focus { outline: none; }
 
   /* Tables (.data-table): on the light page the quiet row lines and the white header almost
      disappear, so the light theme uses the stronger border grey and a grey header. */

@@ -39,6 +39,35 @@ export const state = {
 };
 
 export const $ = id => document.getElementById(id);
+
+// --- ADDRESSES -----------------------------------------------------------------
+// Each view has its own address. netlify.toml serves index.html for exactly these
+// paths (test/entrypoints.test.js checks that both lists match); anything else is a 404.
+export const VIEW_PATHS = {
+  home: '/',
+  survey: '/survey',
+  success: '/thanks',
+  insights: '/insights',
+  download: '/dataset',
+  privacy: '/privacy',
+  about: '/about'
+};
+
+// The browser tab title of each view; the home page keeps the title in index.html.
+export const VIEW_TITLES = {
+  survey: 'Survey',
+  success: 'Thank you',
+  insights: 'Insights',
+  download: 'Dataset',
+  privacy: 'Privacy',
+  about: 'About'
+};
+
+/** Opens an address of the site without reloading the page (the router draws the view). */
+export function go(address, replace) {
+  history[replace ? 'replaceState' : 'pushState'](null, '', address);
+  window.dispatchEvent(new Event('routechange'));
+}
 // Smooth scrolling, unless the device asks for less motion.
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 export const scrollMode = () => (reducedMotion.matches ? 'auto' : 'smooth');

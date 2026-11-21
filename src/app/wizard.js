@@ -5,7 +5,7 @@
 import { getBotCheckToken, loadTurnstileIfStarted } from './botcheck.js';
 import { showGateAgain } from './consent.js';
 import { pillSet } from './controls.js';
-import { $, HumanCheck, Schema, attrValue, errorText, scrollMode, state } from './core.js';
+import { $, HumanCheck, Schema, VIEW_PATHS, attrValue, errorText, go, scrollMode, state } from './core.js';
 import { clearDraft, resetSurveyForm } from './draft.js';
 import { fetchStats, rememberMySubmission } from './home.js';
 import { markInsightsStale } from './insights-page.js';
@@ -126,7 +126,7 @@ async function handleNextStep() {
 
   if (state.currentStep < state.totalSteps) {
     renderWizardStep(state.currentStep + 1);
-    history.pushState({ step: state.currentStep }, '', '#survey');
+    history.pushState({ step: state.currentStep }, '', VIEW_PATHS.survey);
   } else {
     await submitSurveyForm();
   }
@@ -322,7 +322,7 @@ async function submitSurveyForm() {
     resetFeedback();
     rememberMySubmission(answers.trail, result.deletionCode, res.headers.get('Date'));
     markInsightsStale(); // show the new count next time
-    window.location.hash = '#success';
+    go(VIEW_PATHS.success);
     fetchStats();
 
     // The answers are stored; start fresh for a possible next hike.

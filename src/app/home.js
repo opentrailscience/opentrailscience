@@ -2,7 +2,7 @@
  * Home page: the first-50 cairns and the trail stones.
  * Part of the browser app (src/app/, bundled by scripts/build-js.js into public/js/app.bundle.js).
  */
-import { $, FIRST_HIKERS_GOAL, STATIC_STATS_URL, STONES_PER_CAIRN, Schema, showToast, state } from './core.js';
+import { $, FIRST_HIKERS_GOAL, STATIC_STATS_URL, STONES_PER_CAIRN, Schema, VIEW_PATHS, go, showToast, state } from './core.js';
 import { renderDatasetMeta } from './dataset.js';
 
 // --- MY SUBMISSIONS (so the first-50 count includes them right away) --------
@@ -90,7 +90,7 @@ export function initTrailQuickCards() {
         trailSelect.value = trail;
         trailSelect.dispatchEvent(new Event('change'));
       }
-      window.location.hash = '#survey';
+      go(VIEW_PATHS.survey);
       showToast(trail ? `Selected: ${Schema.trailName(trail)}` : 'Pick your trail from the list in the survey');
     });
   });
