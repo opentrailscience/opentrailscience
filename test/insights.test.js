@@ -123,3 +123,11 @@ test('hikers who mostly ate at huts or restaurants stay out of the stove compari
   assert.equal(stove.n, 40, 'hut and restaurant meals are neither "no stove" nor "stove"');
   assert.deepEqual(stove.groups.map(g => [g.label, g.n]).sort(), [['No stove', 20], ['Stove', 20]]);
 });
+
+test('"didn\'t hike every mile" counts early ends and skipped parts, not flip-flops or section hikes', () => {
+  const records = ['quit_early', 'skipped_sections', 'flip_flop', 'section_hike', 'continuous_purist']
+    .map(completionStatus => hiker({ completionStatus, consideredQuitting: 'several_times' }));
+  const { endings } = computeInsights(records).describe;
+  assert.equal(endings.consideredQuittingNotEveryMile.answered, 2);
+  assert.equal(endings.consideredQuittingFinished.answered, 2, 'continuous and flip-flop');
+});

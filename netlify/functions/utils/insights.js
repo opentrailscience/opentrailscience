@@ -237,7 +237,8 @@ function rampUp(records) {
     .sort((a, b) => (a.miles[0] ?? 0) - (b.miles[0] ?? 0) || (a.miles[3] ?? 0) - (b.miles[3] ?? 0));
 }
 
-const endedBeforeTheEnd = r => r.completionStatus && !Schema.COMPLETED_STATUSES.includes(r.completionStatus) && r.completionStatus !== 'section_hike';
+// Thru-hikes that didn't cover every mile: ended early, or reached the end but skipped parts.
+const notEveryMile = r => r.completionStatus === 'quit_early' || r.completionStatus === 'skipped_sections';
 
 function describe(records) {
   const injured = records.filter(r => r.severeInjuryOccurred === true);
@@ -270,7 +271,7 @@ function describe(records) {
       outcome: counts(records, 'completionStatus', Object.keys(Schema.COMPLETION_LABELS)),
       quitReason: counts(records.filter(r => r.quitReason && r.quitReason !== 'not_applicable_completed'), 'quitReason'),
       consideredQuittingFinished: counts(finishers, 'consideredQuitting', Schema.FIELDS_BY_NAME.consideredQuitting.values),
-      consideredQuittingEndedEarly: counts(records.filter(endedBeforeTheEnd), 'consideredQuitting', Schema.FIELDS_BY_NAME.consideredQuitting.values)
+      consideredQuittingNotEveryMile: counts(records.filter(notEveryMile), 'consideredQuitting', Schema.FIELDS_BY_NAME.consideredQuitting.values)
     }
   };
 }

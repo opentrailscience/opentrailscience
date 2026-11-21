@@ -426,7 +426,7 @@
       countCard(grid, 'Outcome', null, d.endings.outcome, { label: v => label('completionStatus', v), color: row => `var(--chart-outcome-${row.key})` });
       countCard(grid, 'Why hikers left the trail, skipped parts or flip-flopped', 'The main reason, as each hiker chose it.', d.endings.quitReason, { label: v => label('quitReason', v), color: row => accent(row.index) });
       countCard(grid, 'Seriously thought about quitting: hikers who finished', null, d.endings.consideredQuittingFinished, { label: v => label('consideredQuitting', v), color: () => 'var(--sage)' });
-      countCard(grid, 'Seriously thought about quitting: hikers who went home early', null, d.endings.consideredQuittingEndedEarly, { label: v => label('consideredQuitting', v), color: () => 'var(--terracotta)' });
+      countCard(grid, 'Seriously thought about quitting: hikers who didn’t hike every mile', null, d.endings.consideredQuittingNotEveryMile, { label: v => label('consideredQuitting', v), color: () => 'var(--terracotta)' });
     }
 
     // Comparisons between groups: only once insights.json has them (30 hikes per group).
