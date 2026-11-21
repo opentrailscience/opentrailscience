@@ -542,7 +542,7 @@
     .stones { grid-template-columns: repeat(5, minmax(0, 40px)); justify-content: space-between; max-width: 300px; }
   }
 
-  .home-how { padding: 80px 0 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px; }
+  .home-how { padding: 48px 0 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 32px 48px; }
   .home-how > div { flex: 1 1 520px; min-width: 0; }
   .home-how h2 { margin: 0; font-size: 32px; font-weight: var(--heading-weight); line-height: 1.15; letter-spacing: -0.01em; }
   .home-how > div > p { margin: 16px 0 0; max-width: 620px; font-size: 17px; line-height: 1.6; color: var(--text-secondary); }
@@ -550,7 +550,7 @@
   .example-card { flex: 0 1 300px; min-width: 260px; margin: 0; }
   /* The share card image (home page example and thank-you page): the design's ink outline and offset shadow. */
   .card-image { display: block; width: 100%; height: auto; border: var(--card-line) solid var(--face-border); border-radius: var(--face-radius); box-shadow: var(--face-shadow); transform: rotate(var(--face-tilt)); }
-  .example-card figcaption { margin-top: 16px; text-align: center; font-size: 14px; color: var(--text-muted); }
+  .example-card figcaption { margin-top: 12px; text-align: center; font-size: 14px; color: var(--text-muted); }
 
   .home-dnf { background: var(--callout-bg); border: var(--card-line) solid var(--card-border); border-radius: var(--card-radius); padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; }
   .home-dnf > div { flex: 1 1 520px; min-width: 0; }
@@ -589,10 +589,10 @@
   .trail-chip[data-trail="TA"] { --c: var(--chart-trail-ta); }
   .cairn .ground { width: 100%; border-top: 2px solid var(--text-muted); margin-top: 8px; }
 
-  .home-why { padding: 24px 0 80px; max-width: 720px; }
+  .home-why { padding: 24px 0 56px; max-width: 720px; }
   .home-why h2 { font-size: 30px; line-height: 1.15; }
   .home-why p { margin: 10px 0 0; color: var(--text-secondary); }
-  .home-why .why-answer { margin-top: 28px; }
+  .home-why .why-answer { margin-top: 16px; }
   .home-why .why-answer strong { color: var(--page-text); }
 
   /* Phones: everything you tap is at least 44px tall. */
