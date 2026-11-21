@@ -487,8 +487,8 @@
   .btn-callout:hover { border-color: var(--on-accent); }
 
   /* Form fields: surface color, soft border that turns ink on focus, a visible ring. */
-  :is(input[type="text"], input[type="number"], input[type="date"], input[type="email"], select, textarea) { background-color: var(--surface); border: 1.5px solid var(--soft-border); border-radius: var(--control-radius); color: var(--page-text); }
-  :is(input[type="text"], input[type="number"], input[type="date"], select, textarea):focus { border-color: var(--strong-border); outline: 2px solid var(--accent); outline-offset: 1px; }
+  :is(input[type="text"], input[type="date"], input[type="email"], select, textarea) { background-color: var(--surface); border: 1.5px solid var(--soft-border); border-radius: var(--control-radius); color: var(--page-text); }
+  :is(input[type="text"], input[type="date"], select, textarea):focus { border-color: var(--strong-border); outline: 2px solid var(--accent); outline-offset: 1px; }
 
   /* Choice cards and pills */
   .choice-card { border: 1.5px solid var(--choice-border); background: var(--choice-bg); border-radius: var(--control-radius); transition: border-color .12s ease, background-color .12s ease; }
@@ -600,7 +600,7 @@
     .cairn .stone a { min-height: 44px; align-items: center; padding: 6px 12px; gap: 0 12px; }
     .cairn .stone .meta { font-size: 12px; }
     .site-footer ul a { padding: 11px 0; }
-    main :is(button, .select-pill, select, input[type="text"], input[type="number"], input[type="date"], .btn, a.inline-flex) { min-height: 44px; }
+    main :is(button, .select-pill, select, input[type="text"], input[type="date"], .btn, a.inline-flex) { min-height: 44px; }
     main :is(button, .select-pill):not(.choice-card) { display: inline-flex; align-items: center; justify-content: center; }
     main :is(button, .choice-card, .select-pill, .btn) { min-width: 44px; }
     main .choice-card { min-height: 44px; }

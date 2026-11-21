@@ -371,3 +371,26 @@ test('the home page\'s "More trails (25+)" stone stays true', () => {
   const named = Schema.TRAILS.filter(t => !t.startsWith('Other'));
   assert.ok(named.length >= 25, `${named.length} named trails`);
 });
+
+test('typed numbers: decimal comma and point, thousands separators, nothing invented', () => {
+  const { parseNumberInput: read } = require('../public/lib/survey-schema');
+  const cases = {
+    '6.5': 6.5, '6,5': 6.5, ' 14,0 ': 14, '0,500': 0.5, '.5': 0.5,
+    '2,650': 2650, '2.650': 2650, '2 650': 2650, '1.000.000': 1000000, '1.234,5': 1234.5, '1,234.5': 1234.5,
+    '12,3456': 12.3456, '-3,2': -3.2, '3500': 3500
+  };
+  for (const [typed, expected] of Object.entries(cases)) assert.equal(read(typed), expected, typed);
+  assert.equal(read(''), null);
+  assert.equal(read('   '), null);
+  for (const typed of ['abc', '6,5,5', '1,00,000', '12kg', '1.2.3,4.5']) assert.ok(Number.isNaN(read(typed)), typed);
+});
+
+test('the form has no type="number" fields (they refuse a decimal comma), but the number pad on phones', () => {
+  const html = require('fs').readFileSync(require('path').join(__dirname, '../public/index.html'), 'utf8');
+  assert.doesNotMatch(html, /type="number"/);
+  for (const field of require('../public/lib/survey-schema').FIELDS.filter(f => (f.type === 'number' || f.type === 'integer') && f.input && !f.notAsked)) {
+    const tag = (html.match(new RegExp(`<input[^>]*id="${field.input}"[^>]*>`)) || [''])[0];
+    if (!tag || /type="(hidden|range)"/.test(tag)) continue;
+    assert.match(tag, /inputmode="(decimal|numeric)"/, field.input);
+  }
+});

@@ -171,7 +171,8 @@ export function setUnitSystem(system) {
         input.value = input.dataset.unitTyped;
       } else {
         const factor = unitFactorFor(cfg.input);
-        const value = parseFloat(input.value);
+        const value = Schema.parseNumberInput(input.value);
+        if (!Number.isFinite(value)) return; // not a number yet: leave it for the hiker to fix
         const converted = system === 'metric' ? value * factor : value / factor;
         input.dataset.unitTyped = input.value;
         input.dataset.unitTypedIn = state.unitSystem;
@@ -191,7 +192,7 @@ export function setUnitSystem(system) {
 // The stored answer stays field-height (inches, or cm in metric mode); in
 // imperial mode the hiker types feet and inches, which are kept in sync.
 export function syncHeightParts() {
-  const inches = parseFloat($('field-height').value);
+  const inches = Schema.parseNumberInput($('field-height').value);
   const known = state.unitSystem === 'imperial' && Number.isFinite(inches);
   $('height-feet').value = known ? Math.floor(inches / 12) : '';
   $('height-inches').value = known ? Math.round((inches % 12) * 2) / 2 : '';
@@ -208,7 +209,7 @@ export function initHeightFeetInches() {
   const update = () => {
     const feet = $('height-feet').value, inches = $('height-inches').value;
     const height = $('field-height');
-    height.value = feet === '' && inches === '' ? '' : (parseFloat(feet) || 0) * 12 + (parseFloat(inches) || 0);
+    height.value = feet === '' && inches === '' ? '' : (Schema.parseNumberInput(feet) || 0) * 12 + (Schema.parseNumberInput(inches) || 0);
     height.dispatchEvent(new Event('input', { bubbles: true }));
     height.dispatchEvent(new Event('change', { bubbles: true }));
   };
@@ -258,8 +259,8 @@ export function initRampCalculator() {
 
   function updateRamp() {
     const lastWeek = rampWeeks();
-    const w1 = parseFloat($('field-week1DailyMiles').value) || 0;
-    const wLast = parseFloat($(`field-week${lastWeek}DailyMiles`).value) || 0;
+    const w1 = Schema.parseNumberInput($('field-week1DailyMiles').value) || 0;
+    const wLast = Schema.parseNumberInput($(`field-week${lastWeek}DailyMiles`).value) || 0;
 
     if (lastWeek < 2 || !w1 || !wLast) {
       if (badge) badge.textContent = 'Your ramp-up';

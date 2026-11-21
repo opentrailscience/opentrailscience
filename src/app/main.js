@@ -17,11 +17,6 @@ import { initConditionals, initDefaultUnits, initDirectionCards, initDontKnowTog
 import { initInvalidMarks, initStepHistory, initWizardControls, markRequiredInputs } from './wizard.js';
 
 // --- INITIALIZATION ---
-// Scrolling the page with the pointer over a focused number field would change its value.
-document.addEventListener('wheel', e => {
-  if (e.target === document.activeElement && e.target.type === 'number') e.target.blur();
-}, { passive: true });
-
 document.addEventListener('DOMContentLoaded', () => {
   // Both forms are handled in JS; pressing Enter must never submit them.
   document.querySelectorAll('form').forEach(form => form.addEventListener('submit', e => e.preventDefault()));

@@ -538,6 +538,34 @@
     return `${weekYear}-W${String(week).padStart(2, '0')}`;
   }
 
+  /**
+   * A number as a hiker types it into the form: "6.5" and "6,5" (decimal comma) are both 6.5;
+   * "2,650", "2.650" and "2 650" are 2650 (a single separator followed by exactly three digits
+   * is a thousands separator, unless the part before it is 0); "1.234,5" and "1,234.5" are 1234.5.
+   * Empty is null, anything else that isn't a number is NaN.
+   */
+  function parseNumberInput(text) {
+    let s = String(text === null || text === undefined ? '' : text).trim().replace(/[\s'\u2019]/g, '');
+    if (s === '') return null;
+    const seps = s.match(/[.,]/g) || [];
+    if (seps.length) {
+      const last = Math.max(s.lastIndexOf('.'), s.lastIndexOf(','));
+      let decimalAt = -1; // several of the same separator: all thousands separators
+      if (new Set(seps).size === 2) decimalAt = last;
+      else if (seps.length === 1) {
+        const whole = s.slice(0, last).replace(/^[-+]/, '');
+        const fraction = s.slice(last + 1);
+        decimalAt = fraction.length === 3 && whole !== '' && !/^0+$/.test(whole) ? -1 : last;
+      }
+      // Thousands separators need exactly three digits after them ("6,5,5" is no number).
+      const marks = s.split('').map((c, i) => ((c === '.' || c === ',') && i !== decimalAt ? i : -1)).filter(i => i >= 0);
+      const stop = decimalAt === -1 ? s.length : decimalAt;
+      if (marks.some((at, k) => (marks[k + 1] !== undefined ? marks[k + 1] : stop) - at - 1 !== 3)) return NaN;
+      s = s.split('').map((c, i) => (c === '.' || c === ',' ? (i === decimalAt ? '.' : '') : c)).join('');
+    }
+    return /^[-+]?(\d+\.?\d*|\.\d+)$/.test(s) ? Number(s) : NaN;
+  }
+
   function surveyMinutesBand(seconds) {
     if (typeof seconds !== 'number' || !Number.isFinite(seconds) || seconds < 0) return null;
     const minutes = seconds / 60;
@@ -857,6 +885,7 @@
     monthsBetween,
     toStoredUnit,
     formatQuantity,
-    isIsoDate
+    isIsoDate,
+    parseNumberInput
   };
 });

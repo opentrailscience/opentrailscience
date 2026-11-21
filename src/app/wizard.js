@@ -160,7 +160,7 @@ function collectAnswers() {
     if (field.type === 'boolean') {
       answers[field.name] = raw === '' ? null : raw === 'true';
     } else if (field.type === 'number' || field.type === 'integer') {
-      const num = raw === '' ? null : Number(raw);
+      const num = Schema.parseNumberInput(raw); // also "6,5" (decimal comma)
       answers[field.name] = num === null || isNaN(num) ? num : Schema.toStoredUnit(num, field.unit, state.unitSystem);
     } else {
       answers[field.name] = raw === '' ? null : raw;

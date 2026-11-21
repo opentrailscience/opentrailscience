@@ -690,7 +690,7 @@
                   <label for="field-totalDistance" class="block text-sm font-semibold text-ink-soft mb-1.5">
                     <span id="label-totalDistance">Total distance hiked (miles)</span>&nbsp;<span class="text-red">*</span>
                   </label>
-                  <input type="number" inputmode="decimal" step="0.1" id="field-totalDistance" name="totalDistance" min="0" placeholder="e.g. 2650" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="decimal" id="field-totalDistance" name="totalDistance" min="0" placeholder="e.g. 2650" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span id="totalDistance-helper" class="text-xs text-muted mt-1 block">Total miles actually hiked on trail</span>
                 </div>
 
@@ -698,7 +698,7 @@
                   <label for="field-totalElevationGain" class="block text-sm font-semibold text-ink-soft mb-1.5">
                     <span id="label-totalElevationGain">Total elevation gain (feet)</span>&nbsp;<span class="text-red">*</span>
                   </label>
-                  <input type="number" inputmode="numeric" step="100" id="field-totalElevationGain" name="totalElevationGain" min="0" placeholder="e.g. 420880" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="numeric" id="field-totalElevationGain" name="totalElevationGain" min="0" placeholder="e.g. 420880" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span id="totalElevationGain-helper" class="text-xs text-muted mt-1 block">Total climbing over the whole hike (your watch or app may show it)</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink-soft cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle" data-fields="totalElevationGainFt"> Don't know</label>
                 </div>
@@ -721,7 +721,7 @@
                   <label for="field-age" class="block text-sm font-semibold text-ink-soft mb-1.5">
                     How old were you when you started this hike?&nbsp;<span class="text-red">*</span>
                   </label>
-                  <input type="number" inputmode="numeric" id="field-age" name="age" min="5" max="99" placeholder="e.g. 28" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="numeric" id="field-age" name="age" min="5" max="99" placeholder="e.g. 28" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-muted mt-1 block">Your age on day one of this hike, not today. Only an age range is stored (everyone 20 or younger shares one).</span>
                 </div>
 
@@ -749,16 +749,16 @@
                   <div id="height-feet-inches" class="grid grid-cols-2 gap-2">
                     <div class="relative">
                       <label for="height-feet" class="sr-only">Height, feet</label>
-                      <input type="number" inputmode="numeric" id="height-feet" min="3" max="7" step="1" placeholder="" class="field w-full pr-10" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                      <input type="text" inputmode="numeric" id="height-feet" min="3" max="7" placeholder="" class="field w-full pr-10" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                       <span class="absolute right-4 top-3 text-muted text-sm" aria-hidden="true">ft</span>
                     </div>
                     <div class="relative">
                       <label for="height-inches" class="sr-only">Height, inches</label>
-                      <input type="number" inputmode="decimal" id="height-inches" min="0" max="11.5" step="0.5" placeholder="" class="field w-full pr-10" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                      <input type="text" inputmode="decimal" id="height-inches" min="0" max="11.5" placeholder="" class="field w-full pr-10" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                       <span class="absolute right-4 top-3 text-muted text-sm" aria-hidden="true">in</span>
                     </div>
                   </div>
-                  <input type="number" inputmode="decimal" step="0.5" id="field-height" name="height" placeholder="e.g. 178" class="field hidden w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="decimal" id="field-height" name="height" placeholder="e.g. 178" class="field hidden w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span id="height-helper" class="text-xs text-muted mt-1 block">e.g. 5 ft 10 in (~178 cm)</span>
                 </div>
 
@@ -766,7 +766,7 @@
                   <label for="field-weight" class="block text-sm font-semibold text-ink-soft mb-1.5">
                     <span id="label-weight">Body weight before the hike (lbs)</span>&nbsp;<span class="text-red">*</span>
                   </label>
-                  <input type="number" inputmode="decimal" step="0.5" id="field-weight" name="weight" placeholder="e.g. 165 lbs" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="decimal" id="field-weight" name="weight" placeholder="e.g. 165 lbs" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span id="weight-helper" class="text-xs text-muted mt-1 block">e.g. 165 lbs (~75 kg)</span>
                 </div>
               </div>
@@ -898,13 +898,13 @@
                   </div>
                   <div>
                     <label for="field-trailSpending" class="block text-xs font-semibold text-secondary mb-1.5">How much did you spend on and during the trail?&nbsp;<span class="text-red">*</span></label>
-                    <input type="number" inputmode="numeric" id="field-trailSpending" name="trailSpending" min="0" max="100000" step="10" placeholder="e.g. 5000" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="text" inputmode="numeric" id="field-trailSpending" name="trailSpending" min="0" max="100000" placeholder="e.g. 5000" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                     <span class="text-xs text-muted mt-1 block"><strong class="font-semibold text-ink-soft">Travel to the trail and back home is not included.</strong> Count permits, food and resupply, town stays, restaurants, shuttles and other costs along the way. Your gear is the next question.</span>
                     <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink-soft cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle" data-fields="trailSpending"> Don't know</label>
                   </div>
                   <div>
                     <label for="field-gearCost" class="block text-xs font-semibold text-secondary mb-1.5">How much did your gear cost?&nbsp;<span class="text-red">*</span></label>
-                    <input type="number" inputmode="numeric" id="field-gearCost" name="gearCost" min="0" max="100000" step="10" placeholder="e.g. 2500" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="text" inputmode="numeric" id="field-gearCost" name="gearCost" min="0" max="100000" placeholder="e.g. 2500" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                     <span class="text-xs text-muted mt-1 block">Roughly what all the gear you hiked with cost, including things you already owned.</span>
                     <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink-soft cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle" data-fields="gearCost"> Don't know</label>
                   </div>
@@ -975,7 +975,7 @@
                   <label for="field-baseWeight" class="block text-sm font-semibold text-ink-soft mb-1.5">
                     <span id="label-baseweight">Base weight (lbs)</span>&nbsp;<span class="text-red">*</span>
                   </label>
-                  <input type="number" inputmode="decimal" step="0.1" id="field-baseWeight" name="baseWeight" placeholder="e.g. 13.5 lbs" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="decimal" id="field-baseWeight" name="baseWeight" placeholder="e.g. 13.5 lbs" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-muted mt-1 block">Dry weight: pack + gear, excluding consumables (food, water, fuel).</span>
                 </div>
 
@@ -983,7 +983,7 @@
                   <label for="field-maxHeavyLoad" class="block text-sm font-semibold text-ink-soft mb-1.5">
                     <span id="label-heavyweight">Heaviest pack weight (lbs)</span>&nbsp;<span class="text-red">*</span>
                   </label>
-                  <input type="number" inputmode="decimal" step="0.5" id="field-maxHeavyLoad" name="maxHeavyLoad" placeholder="e.g. 32.0 lbs" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="decimal" id="field-maxHeavyLoad" name="maxHeavyLoad" placeholder="e.g. 32.0 lbs" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-muted mt-1 block">Your heaviest full pack, e.g. on a long food carry or a dry desert stretch.</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink-soft cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle" data-fields="maxHeavyLoadLbs"> Don't know</label>
                 </div>
@@ -1145,7 +1145,7 @@
                 <label for="field-shoePairsUsed" class="block text-sm font-semibold text-ink-soft mb-1.5">
                   How many pairs of shoes did you go through?&nbsp;<span class="text-red">*</span>
                 </label>
-                <input type="number" inputmode="numeric" id="field-shoePairsUsed" name="shoePairsUsed" min="1" max="20" step="1" placeholder="e.g. 4" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <input type="text" inputmode="numeric" id="field-shoePairsUsed" name="shoePairsUsed" min="1" max="20" placeholder="e.g. 4" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <span class="text-xs text-muted mt-1 block">Including the pair you started in.</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink-soft cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle" data-fields="shoePairsUsed"> Don't know</label>
               </div>
@@ -1155,7 +1155,7 @@
                 <label for="field-averageCalories" class="block text-sm font-semibold text-ink-soft mb-1.5">
                   Calories eaten per day (average)&nbsp;<span class="text-red">*</span>
                 </label>
-                <input type="number" inputmode="numeric" id="field-averageCalories" name="averageCalories" min="0" max="10000" step="100" placeholder="e.g. 3500" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <input type="text" inputmode="numeric" id="field-averageCalories" name="averageCalories" min="0" max="10000" placeholder="e.g. 3500" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <span class="text-xs text-muted mt-1 block">Food and snacks together. A rough estimate is fine.</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink-soft cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle" data-fields="averageCalories"> Don't know</label>
               </div>
@@ -1284,19 +1284,19 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div>
                     <label for="field-week1DailyMiles" class="block text-xs font-semibold text-secondary mb-1" id="label-week1">Week 1 (mi/day)</label>
-                    <input type="number" inputmode="decimal" step="0.5" id="field-week1DailyMiles" name="week1DailyMiles" min="0" max="60" placeholder="" class="field field-compact w-full ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="text" inputmode="decimal" id="field-week1DailyMiles" name="week1DailyMiles" min="0" max="60" placeholder="" class="field field-compact w-full ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   </div>
                   <div>
                     <label for="field-week2DailyMiles" class="block text-xs font-semibold text-secondary mb-1" id="label-week2">Week 2 (mi/day)</label>
-                    <input type="number" inputmode="decimal" step="0.5" id="field-week2DailyMiles" name="week2DailyMiles" min="0" max="60" placeholder="" class="field field-compact w-full ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="text" inputmode="decimal" id="field-week2DailyMiles" name="week2DailyMiles" min="0" max="60" placeholder="" class="field field-compact w-full ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   </div>
                   <div>
                     <label for="field-week3DailyMiles" class="block text-xs font-semibold text-secondary mb-1" id="label-week3">Week 3 (mi/day)</label>
-                    <input type="number" inputmode="decimal" step="0.5" id="field-week3DailyMiles" name="week3DailyMiles" min="0" max="60" placeholder="" class="field field-compact w-full ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="text" inputmode="decimal" id="field-week3DailyMiles" name="week3DailyMiles" min="0" max="60" placeholder="" class="field field-compact w-full ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   </div>
                   <div>
                     <label for="field-week4DailyMiles" class="block text-xs font-semibold text-secondary mb-1" id="label-week4">Week 4 (mi/day)</label>
-                    <input type="number" inputmode="decimal" step="0.5" id="field-week4DailyMiles" name="week4DailyMiles" min="0" max="60" placeholder="" class="field field-compact w-full ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="text" inputmode="decimal" id="field-week4DailyMiles" name="week4DailyMiles" min="0" max="60" placeholder="" class="field field-compact w-full ramp-calc" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   </div>
                 </div>
                 <span class="text-xs text-muted block">Your average distance per day in each of the first weeks.</span>
@@ -1309,7 +1309,7 @@
                   <label for="field-totalZeroDays" class="block text-sm font-semibold text-ink-soft mb-1.5">
                     Zero days (full rest days)&nbsp;<span class="text-red">*</span>
                   </label>
-                  <input type="number" inputmode="numeric" id="field-totalZeroDays" name="totalZeroDays" min="0" max="150" placeholder="e.g. 18" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="numeric" id="field-totalZeroDays" name="totalZeroDays" min="0" max="150" placeholder="e.g. 18" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-muted mt-1 block">Days you didn't hike any trail miles at all.</span>
                 </div>
 
@@ -1317,7 +1317,7 @@
                   <label for="field-totalNeroDays" class="block text-sm font-semibold text-ink-soft mb-1.5">
                     Nero days (short hiking days)&nbsp;<span class="text-red">*</span>
                   </label>
-                  <input type="number" inputmode="numeric" id="field-totalNeroDays" name="totalNeroDays" min="0" max="150" placeholder="e.g. 14" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="numeric" id="field-totalNeroDays" name="totalNeroDays" min="0" max="150" placeholder="e.g. 14" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <span class="text-xs text-muted mt-1 block">Days you hiked only a little, roughly under 10 mi (16 km), e.g. into or out of town. Don't count your zero days here too.</span>
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink-soft cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle" data-fields="totalNeroDays"> Don't know</label>
                 </div>
@@ -1330,7 +1330,7 @@
                   <label for="field-hoursSleepPerNight" class="block text-sm font-semibold text-ink-soft mb-1.5">
                     Hours of sleep per night (average)&nbsp;<span class="text-red">*</span>
                   </label>
-                  <input type="number" inputmode="decimal" step="0.5" id="field-hoursSleepPerNight" name="hoursSleepPerNight" min="3" max="16" placeholder="e.g. 8.0" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <input type="text" inputmode="decimal" id="field-hoursSleepPerNight" name="hoursSleepPerNight" min="3" max="16" placeholder="e.g. 8.0" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink-soft cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle" data-fields="hoursSleepPerNight"> Don't know</label>
                 </div>
 
@@ -1549,7 +1549,7 @@
                     <label for="field-injuryMilestoneMiles" class="block text-xs font-semibold text-secondary mb-1">
                       After how many <span id="label-injuryMilestoneUnit">miles</span> into the hike did the injury happen?&nbsp;<span class="text-red">*</span>
                     </label>
-                    <input type="number" inputmode="decimal" step="0.1" id="field-injuryMilestoneMiles" name="injuryMilestoneMiles" min="0" placeholder="e.g. 450" class="field field-compact w-full sm:text-xs" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                    <input type="text" inputmode="decimal" id="field-injuryMilestoneMiles" name="injuryMilestoneMiles" min="0" placeholder="e.g. 450" class="field field-compact w-full sm:text-xs" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <label class="dont-know mt-1.5 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink-soft cursor-pointer select-none"><input type="checkbox" class="dont-know-toggle" data-fields="injuryMilestoneMiles"> Don't know</label>
                   </div>
 
@@ -1605,7 +1605,7 @@
                 <label for="field-postTrailWeight" class="block text-sm font-semibold text-ink-soft mb-1.5">
                   <span id="label-postTrailWeight">Body weight after the hike (lbs)</span>&nbsp;<span class="text-red">*</span>
                 </label>
-                <input type="number" inputmode="decimal" step="0.5" id="field-postTrailWeight" name="postTrailWeight" min="0" placeholder="e.g. 155" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                <input type="text" inputmode="decimal" id="field-postTrailWeight" name="postTrailWeight" min="0" placeholder="e.g. 155" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                 <span class="text-xs text-muted mt-1 block">Right after the hike, to see how much weight hikers lose or gain.</span>
               </div>
 
