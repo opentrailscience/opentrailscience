@@ -155,7 +155,14 @@ function serveStatic(pathname, res) {
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-  const pathname = decodeURIComponent(url.pathname);
+  let pathname;
+  try {
+    pathname = decodeURIComponent(url.pathname);
+  } catch (err) {
+    // A broken %-escape (e.g. /%E0%A4%A) would otherwise crash the server.
+    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+    return res.end('Bad request');
+  }
 
   for (const [name, value] of Object.entries(headersFor(pathname, HEADER_RULES))) {
     if (name !== 'Strict-Transport-Security') res.setHeader(name, value); // plain http locally

@@ -1,6 +1,7 @@
 /**
  * Prints the survey entries that are in the database but not yet on the live site
- * (`npm run new-entries`): trail, home region and how long the survey took. Read-only.
+ * (`npm run new-entries`): trail, home region, how long the survey took, and anything worth a
+ * second look before it is published (scripts/lib/plausibility.js). Read-only.
  *
  * Records have no timestamps on purpose, so "new" means "not in the published
  * dataset": each database record is matched against a record of
@@ -13,6 +14,7 @@ const { isDeepStrictEqual } = require('util');
 const { closeDatabase } = require('../netlify/functions/utils/db');
 const { fetchPublicRecords } = require('../netlify/functions/utils/dataset');
 const Schema = require('../public/lib/survey-schema');
+const { plausibilityNotes } = require('./lib/plausibility');
 
 const LIVE_DATASET = 'https://opentrailscience.org/data/thru_hiker_survey_dataset.json';
 
@@ -35,13 +37,16 @@ async function main() {
   if (!fresh.length) console.log('No new entries: the live site is up to date.');
   else {
     const show = v => (v == null ? '-' : String(v).replace(/_/g, ' '));
-    const rows = fresh.map(r => [Schema.trailName(r.trail) || show(r.trail), show(r.homeRegion), show(r.surveyMinutesBand && `${r.surveyMinutesBand} min`)]);
-    const head = ['Trail', 'Home region', 'Survey time'];
+    const rows = fresh.map(r => [Schema.trailName(r.trail) || show(r.trail), show(r.homeRegion), show(r.surveyMinutesBand && `${r.surveyMinutesBand} min`),
+      plausibilityNotes(r, fresh).join(', ') || '-']);
+    const head = ['Trail', 'Home region', 'Survey time', 'Worth a second look'];
     const width = head.map((h, i) => Math.max(h.length, ...rows.map(r => r[i].length)));
     const line = cells => cells.map((c, i) => c.padEnd(width[i])).join('   ');
     console.log(`\n${fresh.length} new ${fresh.length === 1 ? 'entry' : 'entries'}, not yet on the live site:\n`);
     console.log(line(head));
     rows.forEach(r => console.log(line(r)));
+    const flagged = rows.filter(r => r[3] !== '-').length;
+    if (flagged) console.log(`\n${flagged} of ${fresh.length} worth a second look; real hikes can be unusual too.`);
   }
   // Published records with no match left were deleted (with a personal code) since the last rebuild.
   if (unmatched.length) console.log(`\n${unmatched.length} on the live site ${unmatched.length === 1 ? 'was' : 'were'} deleted since the last rebuild.`);
