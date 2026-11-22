@@ -3,7 +3,7 @@
  * Part of the browser app (src/app/, bundled by scripts/build-js.js into public/js/app.bundle.js).
  */
 import { $, STATIC_PREVIEW_URL, Schema, escapeHtml, humanize, orDash, state } from './core.js';
-import { shareSurvey, statusBadge } from './results.js';
+import { shareSurvey } from './results.js';
 
 // --- PUBLIC DOWNLOAD VIEW / DATA PREVIEW TABLE ---
 export function initPreviewTable() {
@@ -118,9 +118,9 @@ function renderPreviewRows(rows) {
         <td class="py-3 px-4 capitalize">${escapeHtml(r.backpackType)}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(r.cookSystem === 'huts_restaurants' ? 'huts / restaurants' : humanize(r.cookSystem))}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(humanize(r.sleepPadType))}</td>
-        <td class="py-3 px-4">${statusBadge(r.completionStatus)}</td>
+        <td class="py-3 px-4">${escapeHtml(Schema.COMPLETION_LABELS[r.completionStatus] || r.completionStatus || '')}</td>
         <td class="py-3 px-4">${injuryBadge}</td>
-        <td class="py-3 px-4 text-center text-yellow font-bold">${escapeHtml(orDash(r.overallEnjoymentRating, '/10'))}</td>
+        <td class="py-3 px-4 text-center">${escapeHtml(orDash(r.overallEnjoymentRating, '/10'))}</td>
       `;
     tbody.appendChild(tr);
   });
