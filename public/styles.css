@@ -542,12 +542,20 @@
     .stones { grid-template-columns: repeat(5, minmax(0, 40px)); justify-content: space-between; max-width: 300px; }
   }
 
-  .home-how { padding: 48px 0 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 32px 48px; }
-  .home-how > div { flex: 1 1 520px; min-width: 0; }
+  /* The two closing texts on the left, the example card beside both on the right; on phones the
+     card comes between them. */
+  .home-lower { padding: 48px 0 56px; display: grid; grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "how card" "why card"; gap: 0 56px; align-items: start; }
+  .home-how { grid-area: how; }
+  .home-lower .example-card { grid-area: card; }
+  .home-lower .home-why { grid-area: why; padding: 64px 0 0; }
+  @media (max-width: 860px) {
+    .home-lower { grid-template-columns: minmax(0, 1fr); grid-template-areas: "how" "card" "why"; }
+    .home-lower .example-card { margin-top: 32px; max-width: 300px; }
+  }
   .home-how h2 { margin: 0; font-size: 32px; font-weight: var(--heading-weight); line-height: 1.15; letter-spacing: -0.01em; }
-  .home-how > div > p { margin: 16px 0 0; max-width: 620px; font-size: 17px; line-height: 1.6; color: var(--text-secondary); }
-  .home-how > div > h2 + p { margin-top: 24px; }
-  .example-card { flex: 0 1 300px; min-width: 260px; margin: 0; }
+  .home-how > div > p { margin: 16px 0 0; max-width: 720px; font-size: 17px; line-height: 1.6; color: var(--text-secondary); }
+  .home-how > div > h2 + p { margin-top: 14px; }
+  .example-card { margin: 0; }
   /* The share card image (home page example and thank-you page): the design's ink outline and offset shadow. */
   .card-image { display: block; width: 100%; height: auto; border: var(--card-line) solid var(--face-border); border-radius: var(--face-radius); box-shadow: var(--face-shadow); transform: rotate(var(--face-tilt)); }
   .example-card figcaption { margin-top: 12px; text-align: center; font-size: 14px; color: var(--text-muted); }
@@ -589,11 +597,9 @@
   .trail-chip[data-trail="TA"] { --c: var(--chart-trail-ta); }
   .cairn .ground { width: 100%; border-top: 2px solid var(--text-muted); margin-top: 8px; }
 
-  .home-why { padding: 24px 0 56px; max-width: 720px; }
-  .home-why h2 { font-size: 30px; line-height: 1.15; }
-  .home-why p { margin: 10px 0 0; color: var(--text-secondary); }
-  .home-why .why-answer { margin-top: 16px; }
-  .home-why .why-answer strong { color: var(--page-text); }
+  .home-why { max-width: 720px; }
+  .home-why h2 { font-size: 32px; line-height: 1.15; } /* as large as the headline above it (.home-how h2) */
+  .home-why p { margin: 14px 0 0; font-size: 17px; line-height: 1.6; color: var(--text-secondary); }
 
   /* Phones: everything you tap is at least 44px tall. */
   @media (max-width: 760px) {

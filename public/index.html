@@ -188,26 +188,29 @@
           <a href="/survey" class="btn btn-callout">Share your hike</a>
         </section>
 
-        <!-- How it works: a few sentences in the first person, with an example share card -->
-        <section class="home-how">
-          <div>
-            <h2>Takes about ten minutes, yields valuable insights forever</h2>
-            <p>Tell me about your hike. Don't remember something? Pick "Don't know" and continue, the rest you do know is still really valuable. You'll get a fun card showing how you compare on your trail, to share with others. All survey entries are completely open, with identifying details blurred before anything is saved. <a href="/privacy">How I handle your data</a></p>
-          </div>
+        <!-- What I'll ask and what I'm going for, with the example card beside both on wide screens
+             (on phones: the first text, the card, then the second text) -->
+        <div class="home-lower">
+          <!-- How it works: a few sentences in the first person -->
+          <section class="home-how">
+            <div>
+              <h2>What I'll ask, and what you get</h2>
+              <p>Tell me about your hike. Don't remember something? Pick "Don't know" and continue, the rest you do know is still really valuable. You'll get a fun card showing how you compare on your trail, to share with others. All survey entries are completely open, with identifying details blurred before anything is saved. <a href="/privacy">How I handle your data</a></p>
+            </div>
+          </section>
           <figure class="example-card">
             <!-- Drawn by the real card code (ShareCard.render in share-card.js) with these example numbers,
                  saved at 720x900 as WebP; make it again whenever the card's design changes. -->
             <img class="card-image" src="/img/example-card.webp" width="720" height="900" alt="Example share card: My 2025 PCT thru-hike, out of 112 other PCT hikers. A cairn of three stones: 86% carried a heavier pack, 74% hiked a slower pace, 68% slept less. opentrailscience.org">
             <figcaption>Example card. Yours shows your own results.</figcaption>
           </figure>
-        </section>
 
-        <!-- Why the survey exists: a closing paragraph, no card -->
-        <section class="home-why">
-          <h2>Lots of opinions, not much data</h2>
-          <p>Which trail sends the most hikers home early, and why? What pack weight makes for the happiest hike? Everyone on trail has an answer, but hardly anyone has the data to check.</p>
-          <p class="why-answer"><strong>That's what this survey is for.</strong> Every hike is published as a complete row, meaning all of one hiker's answers are together, so anyone can look for their own connections or even train models, like one that flags a high injury risk or optimizes pack weight for a specific happiness. That takes a lot of hikes tho!</p>
-        </section>
+          <!-- What the open data is for: a closing paragraph, no card -->
+          <section class="home-why">
+            <h2>What I'm going for</h2>
+            <p>Every hike is published as a complete row, meaning all of one hiker's answers are together, so anyone can look for their own connections or even train models. People could make hiking cost or injury forecasts, try to model a weight loss curve for each trail, or make a boots vs trail runners comparison based on body weight and age. That takes a lot of hikes tho!</p>
+          </section>
+        </div>
 
       </div>
     </section>
