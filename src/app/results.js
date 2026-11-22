@@ -259,7 +259,7 @@ const SUCCESS_TEXT = {
   submitted: {
     badge: 'Hike saved',
     title: 'Thanks for sharing your hike',
-    intro: 'Your hike is now part of the open dataset. Every answer makes the picture of long-distance hiking a little clearer, for future hikers and for anyone researching it.'
+    intro: 'Your hike is now part of the open dataset. Thank you very much for participating!!'
   },
   revisit: {
     badge: 'Your hike',
