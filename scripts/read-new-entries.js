@@ -1,7 +1,8 @@
 /**
  * Prints the survey entries that are in the database but not yet on the live site
- * (`npm run new-entries`): trail, home region, how long the survey took, and anything worth a
- * second look before it is published (scripts/lib/plausibility.js). Read-only.
+ * (`npm run new-entries`): trail, distance hiked (and planned, if it differs), home region, how long
+ * the survey took, and anything worth a second look before it is published
+ * (scripts/lib/plausibility.js). Read-only.
  *
  * Records have no timestamps on purpose, so "new" means "not in the published
  * dataset": each database record is matched against a record of
@@ -26,26 +27,34 @@ async function main() {
 
   // Each published record can match one stored record only (two hikers can give identical answers).
   const unmatched = [...published];
-  const fresh = stored.filter(record => {
+  const isNew = stored.filter(record => {
     const i = unmatched.findIndex(p => Object.keys(record).every(k => isDeepStrictEqual(record[k], p[k])));
     if (i === -1) return true;
     unmatched.splice(i, 1);
     return false;
   });
+  // `-- --all`: every entry in the database, not only the new ones.
+  const all = process.argv.includes('--all');
+  const fresh = all ? stored : isNew;
 
-  console.log(`Database: ${stored.length}. Live site: ${published.length}.`);
-  if (!fresh.length) console.log('No new entries: the live site is up to date.');
+  console.log(`Database: ${stored.length}. Live site: ${published.length}.${all ? ` Showing all ${stored.length} (${isNew.length} not yet on the live site).` : ''}`);
+  if (!fresh.length) console.log('No new entries: the live site is up to date. (npm run new-entries -- --all lists every entry.)');
   else {
     const show = v => (v == null ? '-' : String(v).replace(/_/g, ' '));
-    const rows = fresh.map(r => [Schema.trailName(r.trail) || show(r.trail), show(r.homeRegion), show(r.surveyMinutesBand && `${r.surveyMinutesBand} min`),
+    // "490 mi / 789 km", plus the planned distance when it differs ("of 600 mi planned").
+    const miles = v => `${Math.round(v).toLocaleString('en-US')} mi`;
+    const hiked = r => (typeof r.totalDistanceMiles !== 'number' ? '-'
+      : `${miles(r.totalDistanceMiles)} / ${Math.round(r.totalDistanceKm ?? r.totalDistanceMiles * 1.609344).toLocaleString('en-US')} km` +
+        (typeof r.plannedDistanceMiles === 'number' && Math.round(r.plannedDistanceMiles) !== Math.round(r.totalDistanceMiles) ? ` (of ${miles(r.plannedDistanceMiles)} planned)` : ''));
+    const rows = fresh.map(r => [Schema.trailName(r.trail) || show(r.trail), hiked(r), show(r.homeRegion), show(r.surveyMinutesBand && `${r.surveyMinutesBand} min`),
       plausibilityNotes(r, fresh).join(', ') || '-']);
-    const head = ['Trail', 'Home region', 'Survey time', 'Worth a second look'];
+    const head = ['Trail', 'Hiked', 'Home region', 'Survey time', 'Worth a second look'];
     const width = head.map((h, i) => Math.max(h.length, ...rows.map(r => r[i].length)));
     const line = cells => cells.map((c, i) => c.padEnd(width[i])).join('   ');
-    console.log(`\n${fresh.length} new ${fresh.length === 1 ? 'entry' : 'entries'}, not yet on the live site:\n`);
+    console.log(all ? '' : `\n${fresh.length} new ${fresh.length === 1 ? 'entry' : 'entries'}, not yet on the live site:\n`);
     console.log(line(head));
     rows.forEach(r => console.log(line(r)));
-    const flagged = rows.filter(r => r[3] !== '-').length;
+    const flagged = rows.filter(r => r[4] !== '-').length;
     if (flagged) console.log(`\n${flagged} of ${fresh.length} worth a second look; real hikes can be unusual too.`);
   }
   // Published records with no match left were deleted (with a personal code) since the last rebuild.

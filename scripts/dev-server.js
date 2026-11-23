@@ -6,7 +6,13 @@
  *
  *   npm run dev              # uses MONGODB_URI from .env, or offline mode without it
  *   npm run dev -- --offline # in-memory database with synthetic hikers
+ *   npm run dev -- --real    # in-memory database with the real hikes of the live site (npm run dev:real)
  *   npm run dev -- --host    # also reachable from other devices on your network
+ *
+ * --real never connects to the database: it loads the public dataset file of
+ * opentrailscience.org (a static file, which equals the stored survey data) once
+ * at startup and keeps a copy in .cache/, used when the site can't be reached.
+ * Personal codes don't work there (their hashes are not public).
  *
  * Without --host it only listens on 127.0.0.1. Only use --host on a network
  * you trust: this server is for development, not hardened like production.
@@ -23,18 +29,21 @@ const PUBLIC_DIR = path.join(__dirname, '../public');
 const { readHeaderRules, headersFor } = require('./lib/headers-file');
 const { buildBrowserBundle, BUNDLE } = require('./build-js');
 const HEADER_RULES = readHeaderRules();
-const OFFLINE = process.argv.includes('--offline') || !process.env.MONGODB_URI;
+const REAL = process.argv.includes('--real');
+const OFFLINE = REAL || process.argv.includes('--offline') || !process.env.MONGODB_URI;
 // Offline: how many synthetic hikers to start with, e.g. `npm run dev:offline -- --hikers=60`.
 const HIKERS_ARG = process.argv.find(arg => arg.startsWith('--hikers='));
 const SYNTHETIC_HIKERS = HIKERS_ARG ? parseInt(HIKERS_ARG.split('=')[1], 10) : 65;
 
+let memoryDb = null;
 if (OFFLINE) {
   const { useDatabase } = require('../netlify/functions/utils/db');
   const { createMemoryDb } = require('./lib/memory-db');
   const { generateSyntheticHikers } = require('./lib/synthetic-hikers');
   const db = createMemoryDb();
-  db.collection('surveys').insertMany(generateSyntheticHikers(SYNTHETIC_HIKERS));
+  if (!REAL) db.collection('surveys').insertMany(generateSyntheticHikers(SYNTHETIC_HIKERS));
   useDatabase(db);
+  memoryDb = db;
   // Synthetic records are hidden from public endpoints unless this is set.
   process.env.INCLUDE_SYNTHETIC = 'true';
 }
@@ -185,6 +194,35 @@ const server = http.createServer((req, res) => {
   serveStatic(target, res);
 });
 
+// --real: the hikes of the live site, from its public dataset file (no database).
+const LIVE_DATASET = 'https://opentrailscience.org/data/thru_hiker_survey_dataset.json';
+const REAL_CACHE = path.join(__dirname, '../.cache/live-dataset.json');
+
+/** The published records with the extra metric columns removed, which is what is stored. */
+function storedRecords(published) {
+  const Schema = require('../public/lib/survey-schema');
+  const metricColumns = new Set(Schema.FIELDS.map(f => f.metricName).filter(Boolean));
+  return published.map(record => Object.fromEntries(Object.entries(record).filter(([key]) => !metricColumns.has(key))));
+}
+
+async function loadRealHikes() {
+  let published, source;
+  try {
+    const res = await fetch(LIVE_DATASET);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    published = await res.json();
+    fs.mkdirSync(path.dirname(REAL_CACHE), { recursive: true });
+    fs.writeFileSync(REAL_CACHE, JSON.stringify(published));
+    source = 'opentrailscience.org';
+  } catch (err) {
+    if (!fs.existsSync(REAL_CACHE)) throw new Error(`could not load ${LIVE_DATASET} (${err.message}) and there is no copy in .cache/ yet`);
+    published = JSON.parse(fs.readFileSync(REAL_CACHE, 'utf8'));
+    source = `the copy in .cache/ (the live site could not be reached: ${err.message})`;
+  }
+  memoryDb.collection('surveys').insertMany(storedRecords(published));
+  return { count: published.length, source };
+}
+
 /** IPv4 addresses of this computer on the local network, for --host. */
 function lanAddresses() {
   return Object.values(os.networkInterfaces()).flat()
@@ -192,13 +230,19 @@ function lanAddresses() {
     .map(a => a.address);
 }
 
-server.listen(PORT, HOST, () => {
+const ready = REAL ? loadRealHikes() : Promise.resolve(null);
+ready.then(real => server.listen(PORT, HOST, () => {
   console.log(`\nOpen Trail Science dev server: http://127.0.0.1:${PORT}`);
   if (HOST === '0.0.0.0') {
     lanAddresses().forEach(ip => console.log(`On your network:               http://${ip}:${PORT}`));
   }
-  console.log(OFFLINE
-    ? `Database: in-memory with ${SYNTHETIC_HIKERS} synthetic hikers (offline mode; submissions are lost on restart)`
-    : `Database: MongoDB (${process.env.MONGODB_DB || 'hikersurvey'})`);
+  console.log(real
+    ? `Database: in-memory with the ${real.count} real hikes of the live site, from ${real.source}. No connection to MongoDB; submissions are lost on restart.`
+    : OFFLINE
+      ? `Database: in-memory with ${SYNTHETIC_HIKERS} synthetic hikers (offline mode; submissions are lost on restart)`
+      : `Database: MongoDB (${process.env.MONGODB_DB || 'hikersurvey'})`);
   console.log('API: POST /api/submit, POST /api/delete, POST /api/feedback, POST /api/trail-suggestion, POST /api/my-hike. Page data: /data/*.json\n');
+})).catch(err => {
+  console.error(`Could not start: ${err.message}`);
+  process.exitCode = 1;
 });

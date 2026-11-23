@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "npm run build:css && (npm run export-data || echo 'Could not refresh public/data from the database; showing the last export.') && node scripts/dev-server.js",
     "dev:offline": "npm run build:css && node scripts/dev-server.js --offline",
+    "dev:real": "npm run build:css && node scripts/dev-server.js --real",
     "start": "netlify dev",
     "build": "npm run build:css && npm run build:js && npm run export-data",
     "build:css": "tailwindcss -i src/tailwind.css -o public/css/tailwind.css --minify",

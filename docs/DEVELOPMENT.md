@@ -91,7 +91,7 @@ the derived values and then saves only the blurred version:
 
 After submitting, a hiker gets a personal code. Only its SHA-256 hash is stored, in a separate
 collection, so the code can show the hiker's own comparison later or delete the hike. The
-optional feedback box on the thank-you page is stored apart from the answers, without a
+optional feedback boxes on the thank-you page and the Insights page are stored apart from the answers, without a
 timestamp, and never published. Trail suggestions ("Don't see your trail?" on the home page and
 in step 1 for the "Other" trails) are stored the same way, and anyone can send one.
 
@@ -131,6 +131,7 @@ Needs Node.js 20.19 or newer (Netlify builds with Node 22, see `.nvmrc`).
 ```bash
 npm install
 npm run dev:offline   # http://127.0.0.1:3000 with 65 synthetic hikers, no database needed
+npm run dev:real      # the same with the real hikes of the live site, no database needed
 npm test              # never touches a real database
 ```
 
@@ -141,17 +142,21 @@ MONGODB_URI="mongodb+srv://<user>:<password>@<cluster>/?appName=<name>"
 MONGODB_DB="hikersurvey"   # optional, this is the default
 ```
 
+Add `-- --host` to any of the dev commands to open the site on your phone in the same Wi-Fi
+(the server prints the address); only on a network you trust.
+
 | Command | What it does |
 |---|---|
 | `npm run dev` | Dev server with the database from `.env` (offline without one) |
 | `npm run dev:offline` | Dev server with an in-memory database; `-- --hikers=60` for another number |
+| `npm run dev:real` | Dev server with an in-memory database holding the live site's public dataset (fetched once at startup, a copy kept in `.cache/`); never connects to MongoDB. Personal codes don't work there |
 | `npm test` | All tests |
 | `npm run build` | Tailwind CSS, the JS bundle and the dataset files |
 | `npm run docs` | Rewrites `docs/DATA_DICTIONARY.md` after schema changes |
 | `npm run db:setup` | Creates the database indexes; safe to run again |
 | `npm run db:check` | Connection check and record counts |
 | `npm run feedback` | Prints the feedback messages |
-| `npm run new-entries` | Entries in the database not yet on the live site: trail, home region, survey time |
+| `npm run new-entries` | Entries in the database not yet on the live site: trail, distance hiked, home region, survey time, anything worth a second look; `-- --all` lists every entry |
 | `npm run trail-suggestions` | Prints the trail suggestions grouped by trail; `-- --clear` deletes them after review |
 | `npm run seed` / `npm run db:remove-synthetic` | Adds or removes synthetic hikers in the real database |
 

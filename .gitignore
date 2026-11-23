@@ -9,6 +9,9 @@ public/css/tailwind.css
 public/js/
 public/data/
 
+# Local copy of the live site's public dataset (npm run dev:real)
+.cache/
+
 # Original photos (camera metadata incl. GPS); only stripped, cropped copies go in public/img
 src/photos/
 
