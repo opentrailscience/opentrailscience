@@ -113,7 +113,7 @@ test('sharing sends only the link (and card), never a ready-made text', () => {
 
 test('comparison groups use readable trail names', () => {
   const camino = peers(12, () => ({ trail: 'CDS' }));
-  assert.equal(compareToPeers({ trail: 'CDS', baseWeightLbs: 9 }, camino).group, 'Camino hikers');
+  assert.equal(compareToPeers({ trail: 'CDS', baseWeightLbs: 9 }, camino).group, 'Camino pilgrims', 'readable name, and pilgrims on the Camino');
 });
 
 test('describeSchema lists every public column in file order', () => {
@@ -183,4 +183,11 @@ test('a weight gain is not worded as a weight loss', () => {
   assert.equal(tableValueText(def, gained, 'imperial'), '+2 lb');
   assert.equal(tableCellText(def, cell(gained), gained), 'Gained more than 100%');
   assert.equal(tableCellText(def, cell(lost), lost), 'Lost more than 100%');
+});
+
+test('Camino hikers are compared with "Camino pilgrims", everyone else with "<trail> hikers"', () => {
+  const { compareToPeers } = require('../public/lib/survey-stats');
+  const others = trail => Array.from({ length: 5 }, (_, i) => ({ trail, baseWeightLbs: 10 + i }));
+  assert.equal(compareToPeers({ trail: 'CDS', baseWeightLbs: 9 }, others('CDS')).group, 'Camino pilgrims');
+  assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, others('PCT')).group, 'PCT hikers');
 });

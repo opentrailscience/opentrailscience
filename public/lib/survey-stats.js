@@ -147,7 +147,8 @@
     const sameTrailGroup = sameTrail.length >= MIN_TRAIL_PEERS;
     if (sameTrailGroup) {
       peers = sameTrail;
-      group = peerNoun = `${name} hikers`;
+      // Camino de Santiago walkers call themselves pilgrims: "70% of Camino pilgrims".
+      group = peerNoun = `${name} ${record.trail === 'CDS' ? 'pilgrims' : 'hikers'}`;
     } else if (others.length >= MIN_PEERS) {
       peers = others;
       group = 'all hikers';
