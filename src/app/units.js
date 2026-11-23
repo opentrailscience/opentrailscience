@@ -33,6 +33,11 @@ const UNIT_INPUTS = [
     metric: { label: 'Heaviest pack weight (kg)', placeholder: 'e.g. 14.5 kg', decimals: 1 }
   },
   {
+    input: 'field-plannedDistance', label: 'label-plannedDistance', helper: 'plannedDistance-helper',
+    imperial: { label: 'How far did you plan to hike? (miles)', placeholder: 'e.g. 2650', helper: 'The whole trail, or the section you set out to hike', decimals: 1 },
+    metric: { label: 'How far did you plan to hike? (km)', placeholder: 'e.g. 4265', helper: 'The whole trail, or the section you set out to hike', decimals: 1 }
+  },
+  {
     input: 'field-totalDistance', label: 'label-totalDistance', helper: 'totalDistance-helper',
     imperial: { label: 'Total distance hiked (miles)', placeholder: 'e.g. 2650', helper: 'Miles you actually hiked on the trail', decimals: 1 },
     metric: { label: 'Total distance hiked (km)', placeholder: 'e.g. 4265', helper: 'Kilometres you actually hiked on the trail', decimals: 1 }

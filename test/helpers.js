@@ -12,6 +12,7 @@ function validAnswers(overrides) {
     direction: 'NOBO',
     startDate: '2024-04-18',
     endDate: '2024-09-22',
+    plannedDistanceMiles: 2650,
     totalDistanceMiles: 2650,
     totalElevationGainFt: 420880,
     age: 29,

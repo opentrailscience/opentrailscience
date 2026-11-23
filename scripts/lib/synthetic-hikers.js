@@ -113,6 +113,8 @@ function generateAnswers(h, now) {
     direction: h.pick([...Array(3).fill(directionsFor(trail.name)[0]), directionsFor(trail.name)[1]]),
     startDate,
     endDate,
+    // Section hikers planned their section; everyone else the whole trail.
+    plannedDistanceMiles: completionStatus === 'section_hike' ? distance : trail.miles,
     totalDistanceMiles: distance,
     totalElevationGainFt: Math.round(distance * h.range(120, 190)),
     age: h.range(20, 58),

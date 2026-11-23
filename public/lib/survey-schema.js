@@ -31,6 +31,11 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    { version: '1.9.0', date: '2026-11-23', changes: [
+      'New question plannedDistanceMiles (with plannedDistanceKm): how far the hiker planned to hike, rounded like totalDistanceMiles. New column plannedDistanceDerived: false when the hiker answered the question.',
+      'Hikes collected before 1.9.0 were never asked. For the finished ones (continuous or flip-flop) the planned distance was set to the distance hiked, with plannedDistanceDerived true; for the others both are null.',
+      'Consent version 5: the privacy page covers the planned distance.'
+    ] },
     { version: '1.8.0', date: '2026-11-23', changes: [
       'Torres del Paine also offers CW (the park only allows CCW today), and the Everest Base Camp trek also CW and CCW (its loop variants).',
       'direction is only the way the hike went (for a flip-flop: the direction it started in). Flip-flop and Section are no longer directions; they were asked twice, here and in completionStatus (flip_flop, section_hike), which now holds them alone. No hike in the dataset used them as a direction.'
@@ -188,7 +193,7 @@
   const POPULAR_TRAILS = ['PCT', 'AT', 'CDT', 'CT', 'AZT', 'JMT', 'Long Trail', 'CDS', 'TMB', 'WHW', 'GR20', 'TA'];
 
   // Version of the consent text shown before the survey; stored with each record.
-  const CONSENT_VERSION = '4';
+  const CONSENT_VERSION = '5';
 
   /**
    * Field definitions, in storage / CSV column order.
@@ -302,6 +307,17 @@
       name: 'monthsSinceTrail', label: 'Months since leaving the trail', type: 'integer', role: 'Recency-bias control',
       derived: (d, ctx) => monthsBetween(d.endDate, ctx.now.toISOString().slice(0, 10)),
       description: 'Whole months from the end date to the submission date.'
+    },
+    {
+      name: 'plannedDistanceMiles', question: 'How far did you plan to hike? (miles or km)', label: 'Planned distance', type: 'number', step: 1, input: 'field-plannedDistance',
+      min: 0, max: 10000, unit: 'mi', metricName: 'plannedDistanceKm', role: 'Continuous feature',
+      publish: (value, d) => publishedMiles(value, d),
+      description: 'What the hiker set out to hike (for a section hike, the section). Rounded to the nearest 10 mi when datePrecision is "month". See plannedDistanceDerived for hikes collected before 1.9.0.'
+    },
+    {
+      name: 'plannedDistanceDerived', label: 'Planned distance derived, not asked', type: 'boolean', role: 'Metadata',
+      derived: () => false,
+      description: 'false: the hiker answered plannedDistanceMiles. true: a hike collected before 1.9.0 that was finished (continuous or flip-flop), whose plannedDistanceMiles was set to totalDistanceMiles. null: an older hike that was not finished, so the planned distance is unknown (plannedDistanceMiles is null too).'
     },
     {
       name: 'totalDistanceMiles', question: 'Total distance hiked (miles or km)', label: 'Total distance hiked', type: 'number', step: 1, input: 'field-totalDistance',
@@ -622,12 +638,13 @@
     return Math.max(7, Math.round(days / 7) * 7);
   }
 
-  /** Distance as published: nearest 10 mi on small trails. */
-  function publishedDistance(d) {
-    if (typeof d.totalDistanceMiles !== 'number') return d.totalDistanceMiles;
-    if (datePrecision(d.trail) === 'week') return d.totalDistanceMiles;
-    return Math.max(10, Math.round(d.totalDistanceMiles / 10) * 10);
+  /** A distance as published: nearest 10 mi on small trails. */
+  function publishedMiles(miles, d) {
+    if (typeof miles !== 'number') return miles;
+    if (datePrecision(d.trail) === 'week') return miles;
+    return Math.max(10, Math.round(miles / 10) * 10);
   }
+  const publishedDistance = d => publishedMiles(d.totalDistanceMiles, d);
 
   /** Pace from the published distance and days, so it can't reveal the exact duration. */
   function publishedPace(d) {
