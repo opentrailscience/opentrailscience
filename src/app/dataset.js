@@ -2,7 +2,7 @@
  * Dataset page: the preview table, data dictionary and changelog.
  * Part of the browser app (src/app/, bundled by scripts/build-js.js into public/js/app.bundle.js).
  */
-import { $, STATIC_PREVIEW_URL, Schema, escapeHtml, humanize, orDash, state } from './core.js';
+import { $, STATIC_PREVIEW_URL, Schema, attrValue, escapeHtml, humanize, orDash, state } from './core.js';
 import { shareSurvey } from './results.js';
 
 // --- PUBLIC DOWNLOAD VIEW / DATA PREVIEW TABLE ---
@@ -36,7 +36,7 @@ export function initPreviewTable() {
   if (btnShare) btnShare.addEventListener('click', shareSurvey);
 }
 
-/** The trail filter starts with the big five; every other trail in the data is added after them. */
+/** The trail filter starts with the big five and the Camino; every other trail in the data is added after them. */
 function addTrailFilterOptions(rows) {
   const select = $('preview-filter-trail');
   if (!select) return;
@@ -85,6 +85,20 @@ export async function fetchPreviewData() {
 }
 
 
+// Codes hikers wouldn't recognize get the word they use instead (the files keep the code).
+const CHIP_LABELS = { CDS: 'CAMINO' };
+
+/**
+ * The trail's full name for the tooltip on its code ("CDS" -> "Camino de Santiago"), from the
+ * survey's trail list, without the code it already shows in brackets.
+ */
+function fullTrailName(code) {
+  const option = document.querySelector(`#field-trail option[value="${attrValue(code)}"]`);
+  if (!option) return code;
+  const label = (option.getAttribute('data-label') || option.textContent).trim(); // data-label: before the length hint was added
+  return label.endsWith(`(${code})`) ? label.slice(0, -code.length - 2).trim() : label;
+}
+
 /** A stored (imperial) number in the preview table, in the unit system the hiker picked. */
 function previewUnit(value, unit, imperialSuffix, metricSuffix) {
   if (typeof value !== 'number' || state.unitSystem !== 'metric') return orDash(value, imperialSuffix);
@@ -110,9 +124,9 @@ function renderPreviewRows(rows) {
       : '<span class="text-muted">None</span>';
 
     tr.innerHTML = `
-        <td class="py-3 px-4"><span class="trail-chip" data-trail="${escapeHtml(r.trail)}">${escapeHtml(r.trail)}</span></td>
+        <td class="py-3 px-4"><span class="trail-chip" data-trail="${escapeHtml(r.trail)}" title="${escapeHtml(fullTrailName(r.trail))}">${escapeHtml(CHIP_LABELS[r.trail] || r.trail)}</span></td>
         <td class="py-3 px-4">${escapeHtml(r.hikeYear)}</td>
-        <td class="py-3 px-4">${escapeHtml(r.direction)}</td>
+        <td class="py-3 px-4">${escapeHtml((Schema.DIRECTION_LABELS[r.direction] || [r.direction])[0])}</td>
         <td class="py-3 px-4 font-semibold text-ink">${escapeHtml(previewUnit(r.baseWeightLbs, 'lb', ' lbs', ' kg'))}</td>
         <td class="py-3 px-4">${escapeHtml(previewUnit(r.averageDailyMiles, 'mi/day', ' mi/d', ' km/d'))}</td>
         <td class="py-3 px-4 capitalize">${escapeHtml(r.backpackType)}</td>

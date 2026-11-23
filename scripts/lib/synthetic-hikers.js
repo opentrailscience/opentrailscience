@@ -8,8 +8,10 @@
 const { validateSurvey, daysOnTrail, directionsFor } = require('../../public/lib/survey-schema');
 
 const TRAILS = [
-  { name: 'PCT', share: 0.38, miles: 2650, dailyMiles: [16, 22], start: [3, 5] },
-  { name: 'AT', share: 0.33, miles: 2198, dailyMiles: [14, 19], start: [3, 5] },
+  { name: 'PCT', share: 0.33, miles: 2650, dailyMiles: [16, 22], start: [3, 5] },
+  { name: 'AT', share: 0.28, miles: 2198, dailyMiles: [14, 19], start: [3, 5] },
+  // The Camino Francés (Saint-Jean-Pied-de-Port to Santiago); pilgrims are adjusted in generateAnswers.
+  { name: 'CDS', share: 0.10, miles: 490, dailyMiles: [12, 17], start: [4, 9] },
   { name: 'CDT', share: 0.11, miles: 3100, dailyMiles: [19, 25], start: [4, 5] },
   { name: 'CT', share: 0.07, miles: 486, dailyMiles: [15, 20], start: [7, 7] },
   { name: 'AZT', share: 0.05, miles: 800, dailyMiles: [16, 21], start: [3, 3] },
@@ -173,6 +175,21 @@ function generateAnswers(h, now) {
     // Some hikers do not remember the harder numbers.
     unknownAnswers: ['totalElevationGainFt', 'averageCalories', 'week2DailyMiles', 'week3DailyMiles', 'shoePairsUsed'].filter(() => h.chance(0.12))
   };
+  // Camino pilgrims: albergues and restaurants, no sleeping pad or water filter, mostly from Europe,
+  // paying in euros. Derived from the draws above (no extra random draw).
+  if (answers.trail === 'CDS') {
+    Object.assign(answers, {
+      sleepLocation: 'huts_refuges',
+      sleepPadType: 'none',
+      waterFiltration: answers.waterFiltration === 'water_filter' ? 'none' : answers.waterFiltration,
+      resupplyStrategy: 'bought_along_the_way',
+      homeRegion: answers.homeRegion === 'north_america' && answers.age % 3 !== 0 ? 'western_europe' : answers.homeRegion,
+      budgetCurrency: 'EUR',
+      baseWeightLbs: Math.round(answers.baseWeightLbs * 0.75 * 10) / 10
+    });
+    answers.maxHeavyLoadLbs = Math.round((answers.baseWeightLbs + 4) * 10) / 10;
+    answers.neededVisa = ['western_europe', 'eastern_europe'].includes(answers.homeRegion) ? false : answers.neededVisa;
+  }
   // Hikers who slept in huts mostly ate there too (no extra random draw, so the other answers stay the same).
   if (answers.sleepLocation === 'huts_refuges' && answers.cookSystem !== 'hybrid') answers.cookSystem = 'huts_restaurants';
   // Asked only when sex is female or "prefer not to say"; picked from the shelter and calorie draws so the other answers stay the same.

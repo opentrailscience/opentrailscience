@@ -21,7 +21,7 @@
 
   // Colors are CSS variables (public/styles.css, one set per theme), so switching
   // light/dark recolors the charts. Every bar, dot and swatch has an ink outline.
-  const TRAILS_WITH_COLOR = ['PCT', 'AT', 'CDT', 'CT', 'AZT', 'TMB', 'TA']; // as on the home page
+  const TRAILS_WITH_COLOR = ['PCT', 'AT', 'CDT', 'CT', 'TMB', 'TA', 'CDS']; // as on the home page; the rest grey
   const ACCENTS = ['var(--sage)', 'var(--terracotta)', 'var(--blue)', 'var(--yellow)', 'var(--teal)', 'var(--lavender)', 'var(--pink)'];
   const accent = i => ACCENTS[i % ACCENTS.length];
   const trailColor = key => `var(--chart-trail-${TRAILS_WITH_COLOR.includes(key) ? key.toLowerCase() : 'other'})`;

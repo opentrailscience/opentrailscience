@@ -137,9 +137,9 @@
     --chart-trail-at: var(--yellow);
     --chart-trail-cdt: var(--blue);
     --chart-trail-ct: var(--sage);
-    --chart-trail-azt: var(--pink);
     --chart-trail-tmb: var(--lavender);
     --chart-trail-ta: var(--teal);
+    --chart-trail-cds: var(--pink); /* the Camino's stone on the home page */
     --chart-trail-other: #8b938c;
     --chart-injury-feet: var(--sage);
     --chart-injury-legs: var(--terracotta);
@@ -584,7 +584,7 @@
   .cairn .s1 { --n: 7; border-style: dashed; border-color: var(--text-muted); }
   .cairn .s2 { --n: 6; --c: var(--chart-trail-tmb); }
   .cairn .s3 { --n: 5; --c: var(--sage); }
-  .cairn .s4 { --n: 4; --c: var(--pink); }
+  .cairn .s4 { --n: 4; --c: var(--chart-trail-cds); }
   .cairn .s5 { --n: 3; --c: var(--chart-trail-ta); }
   .cairn .s6 { --n: 2; --c: var(--chart-trail-at); }
   .cairn .s7 { --n: 1; --c: var(--chart-trail-pct); }
@@ -593,8 +593,8 @@
   .trail-chip { --c: var(--chart-trail-other); display: inline-block; padding: 1px 8px; border-radius: 4px; font-weight: 600; color: var(--page-text); background: color-mix(in srgb, var(--c) var(--stone-tint), var(--surface)); border: 1px solid color-mix(in srgb, var(--c) 60%, var(--page-text)); white-space: nowrap; }
   .trail-chip[data-trail="PCT"] { --c: var(--chart-trail-pct); } .trail-chip[data-trail="AT"] { --c: var(--chart-trail-at); }
   .trail-chip[data-trail="CDT"] { --c: var(--chart-trail-cdt); } .trail-chip[data-trail="CT"] { --c: var(--chart-trail-ct); }
-  .trail-chip[data-trail="AZT"] { --c: var(--chart-trail-azt); } .trail-chip[data-trail="TMB"] { --c: var(--chart-trail-tmb); }
-  .trail-chip[data-trail="TA"] { --c: var(--chart-trail-ta); }
+  .trail-chip[data-trail="TMB"] { --c: var(--chart-trail-tmb); }
+  .trail-chip[data-trail="TA"] { --c: var(--chart-trail-ta); } .trail-chip[data-trail="CDS"] { --c: var(--chart-trail-cds); }
   .cairn .ground { width: 100%; border-top: 2px solid var(--text-muted); margin-top: 8px; }
 
   .home-why { max-width: 720px; }
