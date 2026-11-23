@@ -1724,7 +1724,14 @@
         <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:items-start lg:mt-10">
           <!-- Personal share card, drawn in the browser by share-card.js; the share button right under it -->
           <div id="share-card-container" class="hidden mt-8 lg:mt-0 lg:col-start-2 lg:row-start-1 lg:row-span-2">
-            <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="card-image w-full max-w-[320px] h-auto mx-auto">
+            <!-- Compared with the same trail or with everyone: shown when both are possible (showComparison in src/app/results.js) -->
+          <div id="share-compare" class="hidden mb-4 flex justify-center">
+            <div class="unit-switch inline-flex rounded-lg p-1 bg-surface border border-line" role="group" aria-label="Compare with">
+              <button type="button" data-compare="trail" aria-pressed="true" class="px-3 py-1 rounded-md text-xs font-bold bg-brand text-on-color transition"></button>
+              <button type="button" data-compare="all" aria-pressed="false" class="px-3 py-1 rounded-md text-xs font-bold text-muted hover:text-ink transition"></button>
+            </div>
+          </div>
+          <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="card-image w-full max-w-[320px] h-auto mx-auto">
             <div class="mt-5 flex flex-col items-center gap-2">
               <button type="button" id="btn-share-survey" class="btn btn-primary w-full max-w-[320px]">Share Survey with Tramily</button>
               <a id="btn-download-card" href="#" download="open-trail-science.png" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue hover:text-blue-strong transition">Download card</a>

@@ -10,7 +10,7 @@ import { clearDraft, resetSurveyForm } from './draft.js';
 import { fetchStats, rememberMySubmission } from './home.js';
 import { markInsightsStale } from './insights-page.js';
 import { populateDeletionCode } from './privacy.js';
-import { populateComparison, populateSuccessCard, prepareShare, renderCompareTable, resetFeedback, setSuccessMode } from './results.js';
+import { populateSuccessCard, renderCompareTable, resetFeedback, setSuccessMode, showComparison } from './results.js';
 import { YES_NO_TOGGLES, syncRampWeeksWithDates } from './units.js';
 
 // Milestone banner per wizard step: the hiker's likely mood by now.
@@ -312,10 +312,9 @@ async function submitSurveyForm() {
     populateSuccessCard(result.data || Object.assign({}, answers, {
       averageDailyMiles: Schema.computeAverageDailyMiles(answers)
     }));
-    populateComparison(result.comparison);
     renderCompareTable(result.data || answers, result.table);
     populateDeletionCode(result.deletionCode);
-    prepareShare(result.data || answers, result.comparison);
+    showComparison(result.data || answers, result.comparison, result.comparisonAll);
     setSuccessMode('submitted');
 
     state.hasSubmitted = true;

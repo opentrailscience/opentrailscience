@@ -209,6 +209,38 @@ export function renderCompareTable(record, table) {
 }
 
 /** Builds the share card image for this submission. */
+// --- TRAIL OR EVERYONE ---------------------------------------------------------
+// When the trail has its own group, the hiker picks what the card and "How You Compare" use.
+const CHOICE_ON = 'px-3 py-1 rounded-md text-xs font-bold bg-brand text-on-color transition';
+const CHOICE_OFF = 'px-3 py-1 rounded-md text-xs font-bold text-muted hover:text-ink transition';
+
+/** The comparison sentences and the share card, compared with the trail (default) or with everyone. */
+export function showComparison(record, comparison, comparisonAll) {
+  const choices = { trail: comparison, all: comparisonAll || null };
+  const both = Boolean(comparison && comparisonAll);
+  const box = $('share-compare');
+  const buttons = box ? box.querySelectorAll('[data-compare]') : [];
+  if (box) box.classList.toggle('hidden', !both);
+  const pick = choice => {
+    const chosen = choices[choice] || comparison;
+    buttons.forEach(btn => {
+      const on = btn.dataset.compare === choice;
+      btn.className = on ? CHOICE_ON : CHOICE_OFF;
+      btn.setAttribute('aria-pressed', String(on));
+    });
+    populateComparison(chosen);
+    prepareShare(record, chosen);
+  };
+  if (both) {
+    const label = c => `${c.group.charAt(0).toUpperCase()}${c.group.slice(1)} (${c.peerCount})`;
+    buttons.forEach(btn => {
+      btn.textContent = label(choices[btn.dataset.compare]);
+      btn.onclick = () => pick(btn.dataset.compare);
+    });
+  }
+  pick('trail');
+}
+
 export async function prepareShare(record, comparison) {
   const container = $('share-card-container');
   if (state.shareCard) URL.revokeObjectURL(state.shareCard.url);
@@ -308,9 +340,8 @@ export function initMyHike() {
       const body = await res.json().catch(() => ({}));
       if (!res.ok || !body.success) throw new Error(errorText(res, body.error, `Lookup failed (HTTP ${res.status}).`));
       populateSuccessCard(body.data);
-      populateComparison(body.comparison);
       renderCompareTable(body.data, body.table);
-      prepareShare(body.data, body.comparison);
+      showComparison(body.data, body.comparison, body.comparisonAll);
       setSuccessMode('revisit');
       state.hasSubmitted = true;
       result.textContent = '';

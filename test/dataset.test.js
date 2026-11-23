@@ -191,3 +191,19 @@ test('Camino hikers are compared with "Camino pilgrims", everyone else with "<tr
   assert.equal(compareToPeers({ trail: 'CDS', baseWeightLbs: 9 }, others('CDS')).group, 'Camino pilgrims');
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, others('PCT')).group, 'PCT hikers');
 });
+
+test('the hiker can compare with everyone even when the trail has its own group', async () => {
+  const { comparisonFor } = require('../netlify/functions/utils/peers');
+  const { freshDb } = require('./helpers');
+  const pilgrims = Array.from({ length: 4 }, (_, i) => ({ trail: 'CDS', baseWeightLbs: 12 + i }));
+  const others = Array.from({ length: 10 }, (_, i) => ({ trail: 'PCT', baseWeightLbs: 15 + i }));
+  assert.equal(compareToPeers({ trail: 'CDS', baseWeightLbs: 9 }, pilgrims.concat(others)).group, 'Camino pilgrims');
+  assert.equal(compareToPeers({ trail: 'CDS', baseWeightLbs: 9 }, pilgrims.concat(others), { group: 'all' }).group, 'all hikers');
+  // The server sends both when there is a choice, and only one when there isn't.
+  const db = freshDb();
+  await db.collection('surveys').insertMany(pilgrims.concat(others).map(r => Object.assign({ schemaVersion: '1.9.0' }, r)));
+  const both = await comparisonFor(db, { trail: 'CDS', baseWeightLbs: 9 });
+  assert.deepEqual([both.comparison.group, both.comparisonAll.group, both.comparisonAll.peerCount], ['Camino pilgrims', 'all hikers', 14]);
+  const onlyAll = await comparisonFor(freshDb(), { trail: 'TMB', baseWeightLbs: 9 });
+  assert.equal(onlyAll.comparisonAll, null);
+});

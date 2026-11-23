@@ -137,10 +137,11 @@
    *
    * @returns {{ group, peerNoun, peerCount, items: object[], highlights: object[] } | null}
    */
-  function compareToPeers(record, others) {
+  function compareToPeers(record, others, options) {
     // The "Other" choices (any region) are many different trails: compared with everyone.
+    // options.group 'all': compared with everyone even when the trail has enough hikers (the hiker's choice).
     const name = Schema.trailName(record.trail);
-    const sameTrail = name ? others.filter(d => d.trail === record.trail) : [];
+    const sameTrail = name && !(options && options.group === 'all') ? others.filter(d => d.trail === record.trail) : [];
     // group: "70% of PCT hikers" / "70% of all hikers"; peerNoun: "compared with 112 other PCT hikers" / "300 other hikers".
     let peers;
     let group;

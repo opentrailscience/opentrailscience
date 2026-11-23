@@ -23,7 +23,8 @@ async function peers(db) {
 
 /**
  * `comparison`: "Your base weight was lighter than 70% of PCT hikers" and the
- * share card's highlights, or null. `table`: every answer compared with the
+ * share card's highlights, or null. `comparisonAll`: the same compared with everyone, when
+ * `comparison` is the trail's group (the hiker can switch between the two), else null. `table`: every answer compared with the
  * same trail and with everyone. Leaves out the record `ownId` (the hiker's own
  * hike, when looking it up later). Never throws: a comparison is a bonus, not
  * a requirement.
@@ -32,10 +33,13 @@ async function comparisonFor(db, record, ownId) {
   try {
     const { records } = await peers(db);
     const others = ownId ? records.filter(r => String(r._id) !== String(ownId)) : records;
-    return { comparison: compareToPeers(record, others), table: compareAll(record, others) };
+    const comparison = compareToPeers(record, others);
+    // When the trail has its own group, the comparison with everyone too, so the hiker can choose.
+    const all = comparison && comparison.group !== 'all hikers' ? compareToPeers(record, others, { group: 'all' }) : null;
+    return { comparison, comparisonAll: all, table: compareAll(record, others) };
   } catch (err) {
     console.warn('Peer comparison unavailable:', err.message);
-    return { comparison: null, table: null };
+    return { comparison: null, comparisonAll: null, table: null };
   }
 }
 
