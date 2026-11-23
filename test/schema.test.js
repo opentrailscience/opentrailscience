@@ -279,7 +279,7 @@ test('directions depend on the trail', () => {
   assert.equal(validate({ trail: 'TMB', direction: 'CCW' }).isValid, true);
   assert.match(validate({ trail: 'TMB', direction: 'NOBO' }).errors[0], /direction for this trail/);
   assert.equal(validate({ trail: 'CDS', direction: 'TO_SANTIAGO' }).isValid, true);
-  assert.equal(validate({ trail: 'PCT', direction: 'Flip-flop' }).isValid, true);
+  for (const gone of ['Flip-flop', 'Section']) assert.match(validate({ trail: 'PCT', direction: gone }).errors[0], /Direction must be one of/, `${gone} is an outcome, not a direction (1.8.0)`);
   assert.match(validate({ trail: 'PCT', direction: 'EABO' }).errors[0], /direction for this trail/);
   assert.equal(validate({ trail: 'Hayduke', direction: 'WEBO' }).isValid, true, 'Arches to Zion runs west');
   assert.equal(validate({ trail: 'Annapurna', direction: 'CCW' }).isValid, true);
@@ -378,9 +378,9 @@ test('1.7.0: more trails, an "Other" for every home region, out and back for Eve
     assert.equal(Schema.datePrecision(trail), 'month', `${trail}: dates by month`);
     assert.equal(validate({ trail, direction: Schema.directionsFor(trail)[0] }).isValid, true, `${trail} in its usual direction`);
   }
-  assert.deepEqual(Schema.directionsFor('EBC'), ['OUT_AND_BACK']);
+  assert.deepEqual(Schema.directionsFor('EBC'), ['OUT_AND_BACK', 'CW', 'CCW'], 'out and back, or one of the loop variants');
   assert.match(validate({ trail: 'EBC', direction: 'NOBO' }).errors[0], /direction for this trail/);
-  assert.match(validate({ trail: 'Torres del Paine', direction: 'CW' }).errors[0], /direction for this trail/, 'counter-clockwise only');
+  assert.deepEqual(Schema.directionsFor('Torres del Paine'), ['CCW', 'CW'], 'counter-clockwise first, as the park requires')
   assert.equal(validate({ trail: 'HRP', direction: 'EABO' }).isValid, true);
   assert.equal(validate({ trail: 'Other Africa', direction: 'SOBO' }).isValid, true);
 });

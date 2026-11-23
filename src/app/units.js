@@ -234,7 +234,7 @@ export function updateDirectionCards() {
   });
   // An answer that this trail doesn't offer is cleared.
   const field = $('field-direction');
-  if (field.value && !['Flip-flop', 'Section'].includes(field.value) && !options.includes(field.value)) field.value = '';
+  if (field.value && !options.includes(field.value)) field.value = '';
 }
 
 export function initDirectionCards() {

@@ -108,7 +108,7 @@ function generateAnswers(h, now) {
     consent: true,
     trail: trail.name,
     hikeYear: year,
-    direction: h.pick([...Array(3).fill(directionsFor(trail.name)[0]), directionsFor(trail.name)[1], 'Flip-flop']),
+    direction: h.pick([...Array(3).fill(directionsFor(trail.name)[0]), directionsFor(trail.name)[1]]),
     startDate,
     endDate,
     totalDistanceMiles: distance,

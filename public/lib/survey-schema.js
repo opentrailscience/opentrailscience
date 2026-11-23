@@ -31,6 +31,10 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    { version: '1.8.0', date: '2026-11-23', changes: [
+      'Torres del Paine also offers CW (the park only allows CCW today), and the Everest Base Camp trek also CW and CCW (its loop variants).',
+      'direction is only the way the hike went (for a flip-flop: the direction it started in). Flip-flop and Section are no longer directions; they were asked twice, here and in completionStatus (flip_flop, section_hike), which now holds them alone. No hike in the dataset used them as a direction.'
+    ] },
     { version: '1.7.0', date: '2026-11-23', changes: [
       'trail can be one of 18 more trails, all with dates by month like other small trails. North America: NCT (North Country Trail), GDT (Great Divide Trail, Canada), Bruce Trail (Canada), MST (Mountains-to-Sea Trail). Europe: HRP (Haute Route Pyrénées), GR5 (Lake Geneva to Nice), E5 (the Alpine crossing, Oberstdorf to Meran), Pennine Way, SWCP (South West Coast Path), Cape Wrath (Cape Wrath Trail), Via Dinarica. Middle East: INT (Israel National Trail), Lycian Way. Asia: EBC (Everest Base Camp trek), Shikoku (the 88-temple pilgrimage). Oceania: Bibbulmun (Bibbulmun Track), Larapinta (Larapinta Trail). Central and South America: Torres del Paine (the O Circuit).',
       'Every home region has its own "Other": trail can be Other Latin America, Other Africa, Other Middle East, Other Asia or Other Oceania, next to Other North America and Other Europe. "Other" (an unlisted trail anywhere else) is no longer offered; no hike in the dataset used it.',
@@ -94,7 +98,7 @@
    * Which ways a trail can be hiked: the main directions offered in the form.
    * East-west trails, loops and the Camino have their own, the "Other" choices
    * offer both NOBO/SOBO and EABO/WEBO, and everything else is NOBO/SOBO.
-   * Flip-flop and Section are always offered too.
+   * Flip-flops and section hikes are outcomes (completionStatus), not directions.
    */
   const ANY_COMPASS_DIRECTION = ['NOBO', 'SOBO', 'EABO', 'WEBO'];
   const TRAIL_DIRECTIONS = {
@@ -111,9 +115,9 @@
     'Lycian Way': ['EABO', 'WEBO'], // Fethiye towards Antalya
     INT: ['SOBO', 'NOBO'], Bibbulmun: ['SOBO', 'NOBO'], // Dan to Eilat; Kalamunda to Albany
     Larapinta: ['WEBO', 'EABO'], // Alice Springs to Mount Sonder
-    EBC: ['OUT_AND_BACK'], // there and back the same way (the loop variants count as this too)
+    EBC: ['OUT_AND_BACK', 'CW', 'CCW'], // usually there and back the same way; the Gokyo and Three Passes variants are loops
     Shikoku: ['CW', 'CCW'], // clockwise is the traditional way
-    'Torres del Paine': ['CCW'], // the park only allows counter-clockwise
+    'Torres del Paine': ['CCW', 'CW'], // the park only allows counter-clockwise today; clockwise in case that changes
     'Other North America': ANY_COMPASS_DIRECTION, 'Other Latin America': ANY_COMPASS_DIRECTION, 'Other Europe': ANY_COMPASS_DIRECTION,
     'Other Africa': ANY_COMPASS_DIRECTION, 'Other Middle East': ANY_COMPASS_DIRECTION, 'Other Asia': ANY_COMPASS_DIRECTION, 'Other Oceania': ANY_COMPASS_DIRECTION
   };
@@ -238,10 +242,10 @@
     },
     {
       name: 'direction', question: 'Direction', label: 'Direction', type: 'enum', step: 1, input: 'field-direction',
-      values: [...Object.keys(DIRECTION_LABELS), 'Flip-flop', 'Section'], role: 'Categorical feature',
-      check: (value, d) => (['Flip-flop', 'Section'].includes(value) || directionsFor(d.trail).includes(value)
+      values: Object.keys(DIRECTION_LABELS), role: 'Categorical feature',
+      check: (value, d) => (directionsFor(d.trail).includes(value)
         ? null : 'Please pick a direction for this trail'),
-      description: 'NOBO/SOBO on most trails; EABO/WEBO on east-west trails; CW/CCW on loops, the Annapurna Circuit and the South West Coast Path (Torres del Paine: CCW only); TO_SANTIAGO/FROM_SANTIAGO on the Camino; OUT_AND_BACK on the Everest Base Camp trek; the "Other" trail choices offer NOBO/SOBO and EABO/WEBO.'
+      description: 'NOBO/SOBO on most trails; EABO/WEBO on east-west trails; CW/CCW on loops, the Annapurna Circuit, the South West Coast Path and Torres del Paine; TO_SANTIAGO/FROM_SANTIAGO on the Camino; OUT_AND_BACK (or CW/CCW for its loop variants) on the Everest Base Camp trek; the "Other" trail choices offer NOBO/SOBO and EABO/WEBO. For a flip-flop, the direction it started in. Before 1.8.0 it could also be Flip-flop or Section (no hike used them).'
     },
     {
       name: 'startDate', question: 'Start date', label: 'Start date', type: 'date', step: 1, input: 'field-startDate', store: false,

@@ -669,8 +669,9 @@
                     <span class="text-sm font-semibold text-ink-soft">Direction&nbsp;<span class="text-red">*</span></span>
                   </div>
                   <div class="grid grid-cols-2 gap-2" id="direction-radios">
-                    <!-- These follow the trail (Schema.directionsFor): NOBO/SOBO, EABO/WEBO, loops, Camino; the
-                         last two are only shown for the "Other" trails, which offer NOBO/SOBO and EABO/WEBO. -->
+                    <!-- These follow the trail (Schema.directionsFor): NOBO/SOBO, EABO/WEBO, loops, Camino, out and back;
+                         the last two are only shown for the "Other" trails, which offer NOBO/SOBO and EABO/WEBO.
+                         Flip-flops and section hikes are outcomes (step 5), not directions. -->
                     <div id="direction-card-0" class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="NOBO">
                       <div class="text-xs font-bold">NOBO</div>
                       <div class="text-[11px] text-muted">Northbound</div>
@@ -687,16 +688,9 @@
                       <div class="text-xs font-bold">WEBO</div>
                       <div class="text-[11px] text-muted">Westbound</div>
                     </div>
-                    <div class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="Flip-flop">
-                      <div class="text-xs font-bold">Flip-flop</div>
-                      <div class="text-[11px] text-muted">Hiked it out of order</div>
-                    </div>
-                    <div class="choice-card rounded-xl p-2.5 text-center" data-name="direction" data-value="Section">
-                      <div class="text-xs font-bold">Section</div>
-                      <div class="text-[11px] text-muted">Part of the trail</div>
-                    </div>
                   </div>
                   <input type="hidden" id="field-direction" name="direction" value="">
+                  <span class="text-xs text-muted mt-1 block">Flip-flopped? Pick the direction you started in.</span>
                 </div>
               </div>
 
