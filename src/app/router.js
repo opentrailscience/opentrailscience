@@ -6,7 +6,7 @@
  */
 import { loadTurnstileIfStarted } from './botcheck.js';
 import { $, VIEW_PATHS, VIEW_TITLES, go, scrollMode, state } from './core.js';
-import { fetchPreviewData, renderDatasetMeta } from './dataset.js';
+import { fetchPreviewData, renderDatasetMeta, resetPreviewOrder } from './dataset.js';
 import { loadInsights } from './insights-page.js';
 
 // --- DOM REFERENCES ---
@@ -132,6 +132,7 @@ function handleRoute() {
   }
 
   if (key === 'download' && changed) {
+    resetPreviewOrder(); // a new random order on every visit
     fetchPreviewData();
     renderDatasetMeta();
   }

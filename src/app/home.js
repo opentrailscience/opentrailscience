@@ -5,16 +5,20 @@
 import { $, FIRST_HIKERS_GOAL, STATIC_STATS_URL, STONES_PER_CAIRN, Schema, VIEW_PATHS, go, showToast, state } from './core.js';
 import { renderDatasetMeta } from './dataset.js';
 
-// --- MY SUBMISSIONS (so the first-50 count includes them right away) --------
-// The count comes from a snapshot rebuilt every few hours. Until a snapshot
-// newer than a hiker's submission arrives, it is added on this page. Kept in
+// --- MY SUBMISSIONS (so the first-50 count and the data preview include them right away) --------
+// The count and the preview come from a snapshot rebuilt every few hours. Until a
+// snapshot newer than a hiker's submission arrives, it is added on this page (the
+// preview shuffles the stored record in with the others, like any other row). Kept in
 // memory only: nothing is stored in the browser, a reload shows the snapshot.
 const mySubmissions = [];
 const normalizeCode = code => String(code || '').toUpperCase().replace(/[\s-]/g, '').replace(/O/g, '0').replace(/[IL]/g, '1');
 
-/** `serverDate` is the submit response's Date header, so a wrong device clock doesn't matter. */
-export function rememberMySubmission(trail, deletionCode, serverDate) {
-  mySubmissions.push({ at: Date.parse(serverDate) || Date.now(), trail, code: normalizeCode(deletionCode) });
+/**
+ * `record` is the stored record the server returned (the same as in the public dataset);
+ * `serverDate` is the submit response's Date header, so a wrong device clock doesn't matter.
+ */
+export function rememberMySubmission(record, deletionCode, serverDate) {
+  mySubmissions.push({ at: Date.parse(serverDate) || Date.now(), trail: record.trail, record, code: normalizeCode(deletionCode) });
 }
 
 export function forgetMySubmission(deletionCode) {

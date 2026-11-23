@@ -3,6 +3,7 @@
  * Part of the browser app (src/app/, bundled by scripts/build-js.js into public/js/app.bundle.js).
  */
 import { $, STATIC_PREVIEW_URL, Schema, attrValue, escapeHtml, humanize, orDash, state } from './core.js';
+import { mySubmissionsAfter } from './home.js';
 import { shareSurvey } from './results.js';
 
 // --- PUBLIC DOWNLOAD VIEW / DATA PREVIEW TABLE ---
@@ -46,15 +47,42 @@ function addTrailFilterOptions(rows) {
   });
 }
 
+/**
+ * The rows in a new random order each time the Dataset page is opened (resetPreviewOrder), kept
+ * while paging, filtering or switching units. Includes the hikes sent from this page that the
+ * snapshot doesn't have yet (memory only, see home.js), shuffled in like any other row.
+ */
+function shuffledRows() {
+  if (!state.previewOrder) {
+    const mine = mySubmissionsAfter(state.previewGeneratedAt).map(s => s.record);
+    if (mine.length) addTrailFilterOptions(mine);
+    const list = [...state.previewRows, ...mine];
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    state.previewOrder = list;
+  }
+  return state.previewOrder;
+}
+
+/** A new random order the next time the preview is shown (opening the Dataset page). */
+export function resetPreviewOrder() {
+  state.previewOrder = null;
+  state.previewPage = 1;
+}
+
 /** Filters and pages the prebuilt preview.json in the browser (fetched once per visit). */
 async function loadPreviewPage(trail) {
   if (!state.previewRows) {
     const res = await fetch(STATIC_PREVIEW_URL);
     if (!res.ok) throw new Error('preview.json returned ' + res.status);
-    state.previewRows = (await res.json()).data || [];
+    const preview = await res.json();
+    state.previewRows = preview.data || [];
+    state.previewGeneratedAt = preview.generatedAt;
     addTrailFilterOptions(state.previewRows);
   }
-  const list = state.previewRows.filter(d => trail === 'ALL' || d.trail === trail);
+  const list = shuffledRows().filter(d => trail === 'ALL' || d.trail === trail);
   const offset = (state.previewPage - 1) * state.previewLimit;
   return { rows: list.slice(offset, offset + state.previewLimit), total: list.length, note: '' };
 }

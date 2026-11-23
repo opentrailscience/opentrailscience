@@ -25,6 +25,8 @@ export const state = {
   stats: null,
   previewPage: 1,
   previewRows: null, // preview.json, loaded once
+  previewGeneratedAt: null, // its generatedAt: my submissions after it are added (dataset.js)
+  previewOrder: null, // the rows in this visit's random order (dataset.js)
   previewLimit: 8,
   pillSelections: {}, // multi-select questions: field name -> Set of values
   consentGiven: false,

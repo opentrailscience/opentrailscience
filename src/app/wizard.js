@@ -319,7 +319,7 @@ async function submitSurveyForm() {
 
     state.hasSubmitted = true;
     resetFeedback();
-    rememberMySubmission(answers.trail, result.deletionCode, res.headers.get('Date'));
+    rememberMySubmission(result.data || answers, result.deletionCode, res.headers.get('Date'));
     markInsightsStale(); // show the new count next time
     go(VIEW_PATHS.success);
     fetchStats();
