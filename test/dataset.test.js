@@ -89,7 +89,7 @@ test('the card shows the three best of all categories, including sleep, money, q
 test('comparison falls back to all hikers, and needs enough peers', () => {
   // 3 others on the same trail are enough; fewer fall back to everyone, which needs 10.
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, peers(MIN_TRAIL_PEERS)).group, 'PCT hikers');
-  const mixed = peers(MIN_TRAIL_PEERS - 1).concat(peers(8, () => ({ trail: 'AT' })));
+  const mixed = peers(MIN_TRAIL_PEERS - 1).concat(peers(MIN_PEERS - MIN_TRAIL_PEERS + 1, () => ({ trail: 'AT' })));
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, mixed).group, 'all hikers');
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, peers(MIN_TRAIL_PEERS - 1)), null);
   assert.equal(compareToPeers({ trail: 'Other Asia', baseWeightLbs: 9 }, peers(MIN_PEERS - 1)), null);
@@ -164,7 +164,7 @@ test('the "every answer" table compares with the same trail and with everyone', 
   assert.equal(tableCellText(calDef, cal.trail), '–');
   const [, zeros] = row('zeroDaysPer100');
   assert.deepEqual(zeros.trail, { percent: 100, lower: false }, '30 per 100 days is more than everyone');
-  const few = compareAll(record, peers(2));
+  const few = compareAll(record, peers(MIN_TRAIL_PEERS - 1));
   assert.deepEqual(few.rows.find(r => r.key === 'baseWeightLbs').trail, { status: 'few' });
   assert.equal(tableCellText(baseDef, { status: 'few' }), 'Not enough hikers yet');
   const same = compareAll({ trail: 'PCT', overallEnjoymentRating: 8 }, peers(6));

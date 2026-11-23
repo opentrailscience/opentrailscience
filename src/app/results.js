@@ -183,8 +183,8 @@ export function renderCompareTable(record, table) {
   $('compare-all-trail-head').textContent = table.trailName ? `${table.trailName} hikers (${table.trailCount})` : 'Same trail';
   $('compare-all-all-head').textContent = `All hikers (${table.allCount})`;
   $('compare-all-note').textContent = table.trailName
-    ? 'Same trail needs at least 3 other hikers, all hikers at least 10. Money is compared in dollars, with euros converted at a fixed rate.'
-    : 'Hikes on the "Other" trails are compared with all hikers only, which needs at least 10. Money is compared in dollars, with euros converted at a fixed rate.';
+    ? `Same trail needs at least ${Stats.MIN_TRAIL_PEERS} other hikers, all hikers at least ${Stats.MIN_PEERS}. Money is compared in dollars, with euros converted at a fixed rate.`
+    : `Hikes on the "Other" trails are compared with all hikers only, which needs at least ${Stats.MIN_PEERS}. Money is compared in dollars, with euros converted at a fixed rate.`;
   const unknown = record.unknownAnswers || [];
   table.rows.forEach(r => {
     const def = Stats.TABLE_ROWS.find(row => row.key === r.key);
