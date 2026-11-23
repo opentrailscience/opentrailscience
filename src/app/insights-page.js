@@ -40,7 +40,7 @@ export async function loadInsights() {
   $('insights-meta').textContent = `${total} ${total === 1 ? 'hike' : 'hikes'} in the dataset`;
   $('insights-locked').classList.toggle('hidden', !early);
   $('insights-charts').classList.toggle('hidden', early);
-  $('insights-units').classList.toggle('hidden', early);
+  $('insights-units').hidden = early; // the attribute: its inline-flex class would win over .hidden
   if (early) {
     renderFirstHikersProgress($('insights-locked-bar'), $('insights-locked-count'), total, mine.length > 0);
   } else {
