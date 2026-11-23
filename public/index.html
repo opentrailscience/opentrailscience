@@ -1699,7 +1699,7 @@
 
     <!-- Thank-you page -->
     <section id="view-success" class="app-view">
-      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
+      <div class="max-w-3xl lg:max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
         
         <div class="success-check w-20 h-20 rounded-full bg-brand flex items-center justify-center mx-auto mb-6">
           <svg class="w-10 h-10 text-on-color" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1719,77 +1719,81 @@
           Your hike is now part of the open dataset. Thank you very much for participating!!
         </p>
 
-        <!-- Hike Summary Card -->
-        <div id="success-summary-card" class="card p-6 mt-8 max-w-xl mx-auto text-left space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-subtle pb-3">
-            <div class="whitespace-nowrap">
-              <span id="summary-trail-badge" class="px-2.5 py-1 rounded-sm text-xs font-bold bg-blue-tint-strong text-blue-strong border border-transparent">PCT</span>
-              <span id="summary-hike-year" class="ml-2 font-bold text-base">2024 Hike</span>
-            </div>
-            <span id="summary-status" class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-green-tint text-green-strong">Continuous hike</span>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-            <div class="bg-surface/60 p-2.5 rounded-xl border border-transparent">
-              <div class="text-[11px] text-muted">Base Weight</div>
-              <div id="summary-base-weight" class="text-sm font-bold mt-0.5">14.0 lbs</div>
-            </div>
-            <div class="bg-surface/60 p-2.5 rounded-xl border border-transparent">
-              <div class="text-[11px] text-muted">Daily Pace</div>
-              <div id="summary-daily-miles" class="text-sm font-bold mt-0.5">19.5 mi/day</div>
-            </div>
-            <div class="bg-surface/60 p-2.5 rounded-xl border border-transparent">
-              <div class="text-[11px] text-muted">Zero Days</div>
-              <div id="summary-zero-days" class="text-sm font-bold mt-0.5">16 days</div>
-            </div>
-            <div class="bg-surface/60 p-2.5 rounded-xl border border-transparent">
-              <div class="text-[11px] text-muted">Enjoyment</div>
-              <div id="summary-enjoyment" class="text-sm font-bold text-yellow mt-0.5">9 / 10</div>
+        <!-- Wide screens: the personal code (right after submitting) and the summary with the comparison on
+             the left, the share card beside both on the right. Phones: card, code, summary. -->
+        <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:items-start lg:mt-10">
+          <!-- Personal share card, drawn in the browser by share-card.js; the share button right under it -->
+          <div id="share-card-container" class="hidden mt-8 lg:mt-0 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+            <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="card-image w-full max-w-[320px] h-auto mx-auto">
+            <div class="mt-5 flex flex-col items-center gap-2">
+              <button type="button" id="btn-share-survey" class="btn btn-primary w-full max-w-[320px]">Share Survey with Tramily</button>
+              <a id="btn-download-card" href="#" download="open-trail-science.png" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue hover:text-blue-strong transition">Download card</a>
             </div>
           </div>
 
-          <!-- Personal comparison, filled from the submit response -->
-          <div id="summary-comparison" class="hidden border-t border-subtle pt-4">
-            <div class="text-[11px] text-muted mb-2">How You Compare</div>
-            <ul id="summary-comparison-list" class="space-y-1.5 text-sm text-ink-soft"></ul>
-            <p id="summary-comparison-note" class="text-xs text-muted mt-2"></p>
-          </div>
-
-          <!-- Every stored answer of this hike, filled by src/app/results.js -->
-          <details id="all-answers" class="border-t border-subtle pt-4">
-            <summary class="cursor-pointer text-sm font-semibold text-blue hover:text-blue-strong">Show all my answers</summary>
-            <p class="text-xs text-muted mt-2">Exactly what is stored and published for this hike, after blurring.</p>
-            <div class="mt-3 overflow-x-auto">
-              <table class="data-table w-full text-left text-xs">
-                <tbody id="all-answers-body"></tbody>
-              </table>
+          <!-- Deletion code (shown once; only a hash is stored) -->
+          <div id="deletion-code-panel" class="hidden mt-8 lg:mt-0 max-w-xl lg:max-w-none mx-auto lg:mx-0 text-left lg:col-start-1 lg:row-start-1 p-5 rounded-2xl bg-surface/70 border border-blue-mid/40">
+            <div class="text-[11px] text-blue-strong">Your personal code</div>
+            <h2 class="mt-1 font-bold">Come back later and see how you compare</h2>
+            <div class="mt-2 flex flex-wrap items-center gap-3">
+              <code id="deletion-code-value" class="text-lg sm:text-xl font-mono font-bold select-all"></code>
+              <button type="button" id="btn-copy-deletion-code" class="text-xs px-3 py-1.5 rounded-lg bg-subtle hover:bg-line text-ink-soft transition">Copy</button>
             </div>
-          </details>
-        </div>
-
-        <!-- Personal share card, drawn in the browser by share-card.js; the share button right under it -->
-        <div id="share-card-container" class="hidden mt-8">
-          <img id="share-card-preview" alt="Your Open Trail Science share card" width="1080" height="1350" class="card-image w-full max-w-[320px] h-auto mx-auto">
-          <div class="mt-5 flex flex-col items-center gap-2">
-            <button type="button" id="btn-share-survey" class="btn btn-primary w-full max-w-[320px]">Share Survey with Tramily</button>
-            <a id="btn-download-card" href="#" download="open-trail-science.png" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue hover:text-blue-strong transition">Download card</a>
+            <p class="text-sm text-secondary mt-2">Every new hike makes the comparison more accurate. Enter this code on the <a href="/insights" class="underline underline-offset-2">Insights page</a> anytime to see how your hike stacks up today, with a fresh share card.</p>
+            <p class="text-xs text-muted mt-2">It's also the only way to delete your answer in case you change your mind later (on the <a href="/privacy#privacy-delete" class="underline underline-offset-2">privacy page</a>). I don't know who you are, so I can't look it up for you: please save it somewhere safe.</p>
           </div>
-        </div>
 
-        <!-- Deletion code (shown once; only a hash is stored) -->
-        <div id="deletion-code-panel" class="hidden mt-8 max-w-xl mx-auto text-left p-5 rounded-2xl bg-surface/70 border border-blue-mid/40">
-          <div class="text-[11px] text-blue-strong">Your personal code</div>
-          <h2 class="mt-1 font-bold">Come back later and see how you compare</h2>
-          <div class="mt-2 flex flex-wrap items-center gap-3">
-            <code id="deletion-code-value" class="text-lg sm:text-xl font-mono font-bold select-all"></code>
-            <button type="button" id="btn-copy-deletion-code" class="text-xs px-3 py-1.5 rounded-lg bg-subtle hover:bg-line text-ink-soft transition">Copy</button>
+          <!-- Hike Summary Card -->
+          <div id="success-summary-card" class="card p-6 mt-8 lg:mt-0 max-w-xl lg:max-w-none mx-auto lg:mx-0 text-left space-y-4 lg:col-start-1 lg:row-start-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-subtle pb-3">
+              <div class="whitespace-nowrap">
+                <span id="summary-trail-badge" class="trail-chip text-xs" data-trail="PCT">PCT</span>
+                <span id="summary-hike-year" class="ml-2 font-bold text-base">2024 Hike</span>
+              </div>
+              <span id="summary-status" class="inline-block px-2 py-0.5 rounded-sm font-sans text-xs font-semibold whitespace-nowrap bg-green-tint text-green-strong">Continuous hike</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+              <div class="bg-surface/60 p-2.5 rounded-xl border border-transparent">
+                <div class="text-[11px] text-muted">Base Weight</div>
+                <div id="summary-base-weight" class="text-sm font-bold mt-0.5">14.0 lbs</div>
+              </div>
+              <div class="bg-surface/60 p-2.5 rounded-xl border border-transparent">
+                <div class="text-[11px] text-muted">Daily Pace</div>
+                <div id="summary-daily-miles" class="text-sm font-bold mt-0.5">19.5 mi/day</div>
+              </div>
+              <div class="bg-surface/60 p-2.5 rounded-xl border border-transparent">
+                <div class="text-[11px] text-muted">Zero Days</div>
+                <div id="summary-zero-days" class="text-sm font-bold mt-0.5">16 days</div>
+              </div>
+              <div class="bg-surface/60 p-2.5 rounded-xl border border-transparent">
+                <div class="text-[11px] text-muted">Enjoyment</div>
+                <div id="summary-enjoyment" class="text-sm font-bold text-yellow mt-0.5">9 / 10</div>
+              </div>
+            </div>
+
+            <!-- Personal comparison, filled from the submit response -->
+            <div id="summary-comparison" class="hidden border-t border-subtle pt-4">
+              <div class="text-[11px] text-muted mb-2">How You Compare</div>
+              <ul id="summary-comparison-list" class="space-y-1.5 text-sm text-ink-soft"></ul>
+              <p id="summary-comparison-note" class="text-xs text-muted mt-2"></p>
+            </div>
+
+            <!-- Every stored answer of this hike, filled by src/app/results.js -->
+            <details id="all-answers" class="border-t border-subtle pt-4">
+              <summary class="cursor-pointer text-sm font-semibold text-blue hover:text-blue-strong">Show all my answers</summary>
+              <p class="text-xs text-muted mt-2">Exactly what is stored and published for this hike, after blurring.</p>
+              <div class="mt-3 overflow-x-auto">
+                <table class="data-table w-full text-left text-xs">
+                  <tbody id="all-answers-body"></tbody>
+                </table>
+              </div>
+            </details>
           </div>
-          <p class="text-sm text-secondary mt-2">Every new hike makes the comparison more accurate. Enter this code on the <a href="/insights" class="underline underline-offset-2">Insights page</a> anytime to see how your hike stacks up today, with a fresh share card.</p>
-          <p class="text-xs text-muted mt-2">It's also the only way to delete your answer in case you change your mind later (on the <a href="/privacy#privacy-delete" class="underline underline-offset-2">privacy page</a>). I don't know who you are, so I can't look it up for you: please save it somewhere safe.</p>
         </div>
 
         <!-- Every answer compared with the same trail and with everyone (Stats.compareAll, renderCompareTable in src/app/results.js) -->
-        <details id="compare-all" class="hidden mt-8 max-w-xl mx-auto text-left card p-5">
+        <details id="compare-all" class="hidden mt-8 lg:mt-10 max-w-xl lg:max-w-none mx-auto text-left card p-5">
           <summary class="cursor-pointer text-sm font-semibold text-blue hover:text-blue-strong">How you compare on every answer</summary>
           <p class="text-xs text-muted mt-2">Each number is the share of hikers you're above or below. Hikers with the same answer count for neither side, so the two don't always add up to 100%.</p>
           <div class="mt-3 overflow-x-auto">
@@ -1809,7 +1813,7 @@
         </details>
 
         <!-- Feedback about the survey: sent separately (/api/feedback), never linked to the answers -->
-        <div id="feedback-card" class="mt-8 max-w-xl mx-auto text-left p-5 rounded-2xl bg-surface/70 border border-subtle">
+        <div id="feedback-card" class="mt-8 max-w-xl lg:max-w-none mx-auto text-left p-5 rounded-2xl bg-surface/70 border border-subtle">
           <label for="feedback-message" class="block font-bold">How can I improve this survey?</label>
           <p class="text-xs text-muted mt-1">Was a question confusing, missing or just annoying? Tell me! This box is optional. It isn't connected to your survey entry and isn't part of the released dataset.</p>
           <p class="text-xs text-yellow-strong mt-1">Please don't include your name or personal or health details.</p>

@@ -86,13 +86,13 @@ export async function fetchPreviewData() {
 
 
 // Codes hikers wouldn't recognize get the word they use instead (the files keep the code).
-const CHIP_LABELS = { CDS: 'CAMINO' };
+export const CHIP_LABELS = { CDS: 'CAMINO' };
 
 /**
  * The trail's full name for the tooltip on its code ("CDS" -> "Camino de Santiago"), from the
  * survey's trail list, without the code it already shows in brackets.
  */
-function fullTrailName(code) {
+export function fullTrailName(code) {
   const option = document.querySelector(`#field-trail option[value="${attrValue(code)}"]`);
   if (!option) return code;
   const label = (option.getAttribute('data-label') || option.textContent).trim(); // data-label: before the length hint was added

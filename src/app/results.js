@@ -3,7 +3,7 @@
  * Part of the browser app (src/app/, bundled by scripts/build-js.js into public/js/app.bundle.js).
  */
 import { $, Schema, Stats, VIEW_PATHS, attrValue, copyText, errorText, escapeHtml, go, humanize, orDash, showToast, state } from './core.js';
-import { STEP_GROUPS } from './dataset.js';
+import { CHIP_LABELS, STEP_GROUPS, fullTrailName } from './dataset.js';
 import { populateDeletionCode } from './privacy.js';
 
 // How a hike ended looks the same everywhere: thank-you page, data preview and the
@@ -31,7 +31,11 @@ export function populateSuccessCard(data) {
     const el = $(id);
     if (el) el.textContent = text;
   };
-  set('summary-trail-badge', data.trail);
+  // The trail as in the dataset preview: its own color, CAMINO for the Camino, the full name on hover.
+  const badge = $('summary-trail-badge');
+  badge.textContent = CHIP_LABELS[data.trail] || data.trail || '';
+  badge.dataset.trail = data.trail || '';
+  badge.title = fullTrailName(data.trail);
   set('summary-hike-year', `${data.hikeYear} hike`);
   set('summary-status', STATUS_LABELS[data.completionStatus] || data.completionStatus);
   $('summary-status').className = statusBadgeClass(data.completionStatus);
@@ -273,8 +277,8 @@ export function setSuccessMode(mode) {
   $('success-badge').textContent = text.badge;
   $('success-title').textContent = text.title;
   $('success-intro').textContent = text.intro;
-  // Right after submitting the share card says it all; a looked-up hike shows the full summary.
-  $('success-summary-card').classList.toggle('hidden', mode === 'submitted');
+  // Both show the summary with the comparison: right after submitting under the personal code.
+  $('success-summary-card').classList.remove('hidden');
   if (mode === 'revisit') {
     populateDeletionCode(null); // they have the code already
     resetFeedback();
