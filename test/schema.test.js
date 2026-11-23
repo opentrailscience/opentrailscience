@@ -132,8 +132,8 @@ test('conditional answers are cleared when their question does not apply', () =>
 });
 
 test('"Other" trails need no name and are published with month precision', () => {
-  const d = validate({ trail: 'Other', trailOther: 'Wonderland Trail' }).data;
-  assert.equal(d.trail, 'Other');
+  const d = validate({ trail: 'Other Asia', trailOther: 'Annapurna Base Camp' }).data;
+  assert.equal(d.trail, 'Other Asia');
   assert.equal('trailOther' in d, false, 'custom trail names are not collected');
   assert.equal(d.datePrecision, 'month');
 });
@@ -241,7 +241,7 @@ test('small trails get months, rounded distance and whole-week durations', () =>
 test('every trail is either popular (weeks) or small (months)', () => {
   assert.deepEqual(Schema.POPULAR_TRAILS.filter(t => !Schema.TRAILS.includes(t)), []);
   ['PCT', 'AT', 'TMB', 'CDS', 'TA'].forEach(t => assert.equal(Schema.datePrecision(t), 'week', t));
-  ['Hayduke', 'KUN', 'PNT', 'Other'].forEach(t => assert.equal(Schema.datePrecision(t), 'month', t));
+  ['Hayduke', 'KUN', 'PNT', 'Other Oceania', 'NCT', 'EBC'].forEach(t => assert.equal(Schema.datePrecision(t), 'month', t));
 });
 
 test('ISO weeks are correct around New Year', () => {
@@ -292,7 +292,7 @@ test('directions depend on the trail', () => {
   assert.equal(validate({ trail: 'GSB', direction: 'EABO' }).isValid, true, 'Ustroń to Wołosate runs east');
   assert.equal(Schema.trailName('GSB'), 'Main Beskid Trail');
   for (const trail of ['GR11', 'Cumbria Way', 'GSB']) assert.equal(Schema.datePrecision(trail), 'month', `${trail}: dates by month`);
-  for (const trail of ['Other North America', 'Other Europe', 'Other']) {
+  for (const trail of Schema.TRAILS.filter(t => t.startsWith('Other'))) {
     for (const direction of ['NOBO', 'SOBO', 'EABO', 'WEBO']) assert.equal(validate({ trail, direction }).isValid, true, `${trail} ${direction}`);
   }
   for (const trail of Schema.TRAILS) {
@@ -367,9 +367,30 @@ test('urination aids are asked of female and "prefer not to say" hikers only', (
   assert.ok(Schema.ILLNESS_TYPES.includes('urinary_tract_infection'), 'UTI is an illness for everyone');
 });
 
-test('the home page\'s "More trails (25+)" stone stays true', () => {
+test('1.7.0: more trails, an "Other" for every home region, out and back for Everest Base Camp', () => {
+  const others = Schema.TRAILS.filter(t => t.startsWith('Other'));
+  assert.deepEqual(others, ['Other North America', 'Other Latin America', 'Other Europe', 'Other Africa', 'Other Middle East', 'Other Asia', 'Other Oceania']);
+  assert.ok(!Schema.TRAILS.includes('Other'), '"Other" anywhere else is no longer offered');
+  for (const trail of ['NCT', 'GDT', 'Bruce Trail', 'MST', 'HRP', 'GR5', 'E5', 'Pennine Way', 'SWCP', 'Cape Wrath', 'Via Dinarica',
+    'INT', 'Lycian Way', 'EBC', 'Shikoku', 'Bibbulmun', 'Larapinta', 'Torres del Paine']) {
+    assert.ok(Schema.TRAILS.includes(trail), trail);
+    assert.ok(Schema.trailName(trail), `${trail} has a name`);
+    assert.equal(Schema.datePrecision(trail), 'month', `${trail}: dates by month`);
+    assert.equal(validate({ trail, direction: Schema.directionsFor(trail)[0] }).isValid, true, `${trail} in its usual direction`);
+  }
+  assert.deepEqual(Schema.directionsFor('EBC'), ['OUT_AND_BACK']);
+  assert.match(validate({ trail: 'EBC', direction: 'NOBO' }).errors[0], /direction for this trail/);
+  assert.match(validate({ trail: 'Torres del Paine', direction: 'CW' }).errors[0], /direction for this trail/, 'counter-clockwise only');
+  assert.equal(validate({ trail: 'HRP', direction: 'EABO' }).isValid, true);
+  assert.equal(validate({ trail: 'Other Africa', direction: 'SOBO' }).isValid, true);
+});
+
+test('the home page\'s "More trails (N+)" stone stays true', () => {
+  const html = require('fs').readFileSync(require('path').join(__dirname, '../public/index.html'), 'utf8');
+  const claimed = Number((html.match(/More trails \((\d+)\+\)/) || [])[1]);
   const named = Schema.TRAILS.filter(t => !t.startsWith('Other'));
-  assert.ok(named.length >= 25, `${named.length} named trails`);
+  assert.ok(claimed >= 25, 'the stone names a number');
+  assert.ok(named.length >= claimed, `${named.length} named trails, the stone says ${claimed}+`);
 });
 
 test('typed numbers: decimal comma and point, thousands separators, nothing invented', () => {

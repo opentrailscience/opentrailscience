@@ -81,7 +81,7 @@ test('the card shows the three best of all categories, including sleep, money, q
   const texts = result.items.map(i => i.text);
   assert.ok(texts.includes('You thought about quitting less often than 70% of PCT hikers.'), texts.join(' | '));
   assert.ok(texts.includes('You hiked further than 50% of PCT hikers.'));
-  const everyone = compareToPeers(Object.assign({}, record, { trail: 'Other' }), peers(12, peer));
+  const everyone = compareToPeers(Object.assign({}, record, { trail: 'Other Asia' }), peers(12, peer));
   assert.ok(!everyone.items.concat(everyone.highlights).some(i => ['averageDailyMiles', 'totalDistanceMiles'].includes(i.field)),
     'no pace or distance when compared with everyone');
 });
@@ -92,8 +92,8 @@ test('comparison falls back to all hikers, and needs enough peers', () => {
   const mixed = peers(MIN_TRAIL_PEERS - 1).concat(peers(8, () => ({ trail: 'AT' })));
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, mixed).group, 'all hikers');
   assert.equal(compareToPeers({ trail: 'PCT', baseWeightLbs: 9 }, peers(MIN_TRAIL_PEERS - 1)), null);
-  assert.equal(compareToPeers({ trail: 'Other', baseWeightLbs: 9 }, peers(MIN_PEERS - 1)), null);
-  assert.equal(compareToPeers({ trail: 'Other', baseWeightLbs: 9 }, peers(12)).group, 'all hikers');
+  assert.equal(compareToPeers({ trail: 'Other Asia', baseWeightLbs: 9 }, peers(MIN_PEERS - 1)), null);
+  assert.equal(compareToPeers({ trail: 'Other Asia', baseWeightLbs: 9 }, peers(12)).group, 'all hikers');
   for (const trail of ['Other Europe', 'Other North America']) {
     const result = compareToPeers({ trail, baseWeightLbs: 9 }, peers(12, () => ({ trail })));
     assert.equal(result.group, 'all hikers', trail);

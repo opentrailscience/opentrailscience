@@ -17,7 +17,7 @@ export function populateDeletionCode(code) {
 export function initPrivacyPage() {
   const popular = Schema.TRAILS.filter(t => Schema.datePrecision(t) === 'week');
   const small = Schema.TRAILS.filter(t => Schema.datePrecision(t) === 'month');
-  // The three "Other" choices have no name of their own: list them once, at the end.
+  // The "Other" choices (one per region) have no name of their own: list them once, at the end.
   const names = list => [...new Set(list.map(t => Schema.trailName(t) || 'any other trail'))].join(' · ');
   $('privacy-popular-trails').textContent = names(popular);
   $('privacy-small-trails').textContent = names(small);

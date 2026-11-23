@@ -31,6 +31,11 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    { version: '1.7.0', date: '2026-11-23', changes: [
+      'trail can be one of 18 more trails, all with dates by month like other small trails. North America: NCT (North Country Trail), GDT (Great Divide Trail, Canada), Bruce Trail (Canada), MST (Mountains-to-Sea Trail). Europe: HRP (Haute Route Pyrénées), GR5 (Lake Geneva to Nice), E5 (the Alpine crossing, Oberstdorf to Meran), Pennine Way, SWCP (South West Coast Path), Cape Wrath (Cape Wrath Trail), Via Dinarica. Middle East: INT (Israel National Trail), Lycian Way. Asia: EBC (Everest Base Camp trek), Shikoku (the 88-temple pilgrimage). Oceania: Bibbulmun (Bibbulmun Track), Larapinta (Larapinta Trail). Central and South America: Torres del Paine (the O Circuit).',
+      'Every home region has its own "Other": trail can be Other Latin America, Other Africa, Other Middle East, Other Asia or Other Oceania, next to Other North America and Other Europe. "Other" (an unlisted trail anywhere else) is no longer offered; no hike in the dataset used it.',
+      'direction can be OUT_AND_BACK (the Everest Base Camp trek). Torres del Paine is CCW only (the park allows only that direction).'
+    ] },
     { version: '1.6.0', date: '2026-11-07', changes: [
       'New question urinationAids (urination device, reusable urine cloth, neither, prefer not to say), asked when biologicalSex is female or prefer_not_to_say; [] otherwise and for hikes before 1.6.0.',
       'illnessTypes can be urinary_tract_infection.'
@@ -64,8 +69,12 @@
 
   const TRAILS = [
     'PCT', 'AT', 'CDT', 'CT', 'AZT', 'JMT', 'TRT', 'PNT', 'Long Trail', 'Hayduke', 'FT', 'IAT', 'BMT', 'SHT',
-    'CDS', 'TMB', 'WHW', 'GR20', 'GR10', 'GR11', 'HEX', 'VIA', 'AV1', 'KUN', 'GSB', 'C2C', 'Cumbria Way', 'TA', 'Annapurna',
-    'Other North America', 'Other Europe', 'Other'
+    'NCT', 'GDT', 'Bruce Trail', 'MST',
+    'CDS', 'TMB', 'WHW', 'GR20', 'GR10', 'GR11', 'HEX', 'VIA', 'AV1', 'KUN', 'GSB', 'C2C', 'Cumbria Way',
+    'HRP', 'GR5', 'E5', 'Pennine Way', 'SWCP', 'Cape Wrath', 'Via Dinarica',
+    'INT', 'Lycian Way', 'Annapurna', 'EBC', 'Shikoku', 'TA', 'Bibbulmun', 'Larapinta', 'Torres del Paine',
+    // An unlisted trail, by region (the regions of the home region question; Europe is one, as before 1.7.0).
+    'Other North America', 'Other Latin America', 'Other Europe', 'Other Africa', 'Other Middle East', 'Other Asia', 'Other Oceania'
   ];
 
   // Short names for prose ("Camino hikers", "my 2025 Te Araroa thru-hike").
@@ -74,7 +83,11 @@
     PNT: 'PNT', 'Long Trail': 'Long Trail', Hayduke: 'Hayduke', CDS: 'Camino', TMB: 'Tour du Mont Blanc',
     WHW: 'West Highland Way', GR20: 'GR20', TA: 'Te Araroa', KUN: 'Kungsleden', C2C: 'Coast to Coast', SHT: 'Superior Hiking Trail',
     GR10: 'GR10', HEX: 'Hexatrek', VIA: 'Via Alpina', AV1: 'Alta Via 1', FT: 'Florida Trail', IAT: 'Ice Age Trail', BMT: 'Benton MacKaye Trail',
-    Annapurna: 'Annapurna Circuit', GR11: 'GR11', 'Cumbria Way': 'Cumbria Way', GSB: 'Main Beskid Trail'
+    Annapurna: 'Annapurna Circuit', GR11: 'GR11', 'Cumbria Way': 'Cumbria Way', GSB: 'Main Beskid Trail',
+    NCT: 'North Country Trail', GDT: 'Great Divide Trail', 'Bruce Trail': 'Bruce Trail', MST: 'Mountains-to-Sea Trail',
+    HRP: 'HRP', GR5: 'GR5', E5: 'E5', 'Pennine Way': 'Pennine Way', SWCP: 'South West Coast Path', 'Cape Wrath': 'Cape Wrath Trail',
+    'Via Dinarica': 'Via Dinarica', INT: 'Israel National Trail', 'Lycian Way': 'Lycian Way', EBC: 'Everest Base Camp trek',
+    Shikoku: 'Shikoku pilgrimage', Bibbulmun: 'Bibbulmun Track', Larapinta: 'Larapinta Trail', 'Torres del Paine': 'Torres del Paine O Circuit'
   };
 
   /**
@@ -88,15 +101,28 @@
     PNT: ['WEBO', 'EABO'], C2C: ['EABO', 'WEBO'], GR10: ['EABO', 'WEBO'], GR11: ['EABO', 'WEBO'], GSB: ['EABO', 'WEBO'], VIA: ['WEBO', 'EABO'], IAT: ['WEBO', 'EABO'],
     Hayduke: ['WEBO', 'EABO'], // Arches to Zion
     Annapurna: ['CCW', 'CW'], // usually counter-clockwise, Besisahar over the Thorong La to Jomsom
-    'Other North America': ANY_COMPASS_DIRECTION, 'Other Europe': ANY_COMPASS_DIRECTION, Other: ANY_COMPASS_DIRECTION,
     TMB: ['CCW', 'CW'], TRT: ['CW', 'CCW'],
-    CDS: ['TO_SANTIAGO', 'FROM_SANTIAGO']
+    CDS: ['TO_SANTIAGO', 'FROM_SANTIAGO'],
+    // Added in 1.7.0, the usual direction first.
+    NCT: ['WEBO', 'EABO'], MST: ['EABO', 'WEBO'], // Clingmans Dome to the Outer Banks
+    HRP: ['EABO', 'WEBO'], // Hendaye to Banyuls
+    GR5: ['SOBO', 'NOBO'], E5: ['SOBO', 'NOBO'], // Lake Geneva to Nice; Oberstdorf to Meran
+    SWCP: ['CW', 'CCW'], // round the south-west peninsula, Minehead to Poole is clockwise
+    'Lycian Way': ['EABO', 'WEBO'], // Fethiye towards Antalya
+    INT: ['SOBO', 'NOBO'], Bibbulmun: ['SOBO', 'NOBO'], // Dan to Eilat; Kalamunda to Albany
+    Larapinta: ['WEBO', 'EABO'], // Alice Springs to Mount Sonder
+    EBC: ['OUT_AND_BACK'], // there and back the same way (the loop variants count as this too)
+    Shikoku: ['CW', 'CCW'], // clockwise is the traditional way
+    'Torres del Paine': ['CCW'], // the park only allows counter-clockwise
+    'Other North America': ANY_COMPASS_DIRECTION, 'Other Latin America': ANY_COMPASS_DIRECTION, 'Other Europe': ANY_COMPASS_DIRECTION,
+    'Other Africa': ANY_COMPASS_DIRECTION, 'Other Middle East': ANY_COMPASS_DIRECTION, 'Other Asia': ANY_COMPASS_DIRECTION, 'Other Oceania': ANY_COMPASS_DIRECTION
   };
   const DIRECTION_LABELS = {
     NOBO: ['NOBO', 'Northbound'], SOBO: ['SOBO', 'Southbound'],
     EABO: ['EABO', 'Eastbound'], WEBO: ['WEBO', 'Westbound'],
     CW: ['Clockwise', 'Loop'], CCW: ['Counter-clockwise', 'Loop'],
-    TO_SANTIAGO: ['To Santiago', 'Towards the cathedral'], FROM_SANTIAGO: ['From Santiago', 'Away from it']
+    TO_SANTIAGO: ['To Santiago', 'Towards the cathedral'], FROM_SANTIAGO: ['From Santiago', 'Away from it'],
+    OUT_AND_BACK: ['Out and back', 'The same way back']
   };
   function directionsFor(trail) {
     return TRAIL_DIRECTIONS[trail] || ['NOBO', 'SOBO'];
@@ -151,7 +177,7 @@
    * The busiest trails in the survey, with starts bunched into a main season
    * (some see a few hundred thru-hikers a year, most far more). On these, a start week
    * plus age band, sex and region still matches many hikers, so dates are
-   * published as ISO weeks. Every other trail (and "Other") is published with
+   * published as ISO weeks. Every other trail (and the "Other" choices) is published with
    * month precision, distance rounded to 10 mi and days on trail rounded to
    * whole weeks, so a hike can't be singled out among a few dozen hikers.
    */
@@ -204,7 +230,7 @@
     // --- Pillar 1: Trail & journey metadata ---
     {
       name: 'trail', question: 'Which long-distance trail did you hike?', label: 'Trail', type: 'enum', step: 1, input: 'field-trail', values: TRAILS, role: 'Categorical feature',
-      description: '"Other North America" and "Other Europe" are unlisted trails in those regions; "Other" is an unlisted trail anywhere else. Regions get their own "Other" once the survey lists trails there.'
+      description: 'The "Other …" values are unlisted trails in that region (the regions of homeRegion, with Europe as one). "Other" (an unlisted trail anywhere else) was offered before 1.7.0.'
     },
     {
       name: 'hikeYear', question: 'Year of the hike', label: 'Year of the hike', type: 'integer', step: 1, input: 'field-hikeYear',
@@ -215,7 +241,7 @@
       values: [...Object.keys(DIRECTION_LABELS), 'Flip-flop', 'Section'], role: 'Categorical feature',
       check: (value, d) => (['Flip-flop', 'Section'].includes(value) || directionsFor(d.trail).includes(value)
         ? null : 'Please pick a direction for this trail'),
-      description: 'NOBO/SOBO on most trails; EABO/WEBO on east-west trails, CW/CCW on loops and the Annapurna Circuit, TO_SANTIAGO/FROM_SANTIAGO on the Camino; the "Other" trail choices offer NOBO/SOBO and EABO/WEBO.'
+      description: 'NOBO/SOBO on most trails; EABO/WEBO on east-west trails; CW/CCW on loops, the Annapurna Circuit and the South West Coast Path (Torres del Paine: CCW only); TO_SANTIAGO/FROM_SANTIAGO on the Camino; OUT_AND_BACK on the Everest Base Camp trek; the "Other" trail choices offer NOBO/SOBO and EABO/WEBO.'
     },
     {
       name: 'startDate', question: 'Start date', label: 'Start date', type: 'date', step: 1, input: 'field-startDate', store: false,
@@ -241,7 +267,7 @@
     {
       name: 'datePrecision', label: 'Date precision', type: 'enum', values: ['week', 'month'], role: 'Metadata',
       derived: d => datePrecision(d.trail),
-      description: '"week" on popular trails, "month" on small trails and "Other" (see the privacy page).'
+      description: '"week" on popular trails, "month" on small trails and the "Other" choices (see the privacy page).'
     },
     {
       name: 'startWeek', questionFrom: 'startDate', label: 'Start week', type: 'string', role: 'Temporal feature',
