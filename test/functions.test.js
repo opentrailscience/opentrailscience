@@ -124,7 +124,7 @@ test('the snapshot has compact JSON and precomputed Insights charts', async () =
   assert.equal(insights.total, 12);
   assert.equal(insights.generatedAt, '2026-10-15T03:00:00.000Z');
   assert.deepEqual(Object.keys(insights.charts), ['baseWeightByOutcome', 'finishRateByTrail', 'injuryRateByFirstWeek']);
-  assert.deepEqual(Object.keys(insights.describe), ['longTrailMiles', 'sample', 'gear', 'spread', 'rampUp', 'health', 'endings']);
+  assert.deepEqual(Object.keys(insights.describe), ['longTrailMiles', 'sample', 'gear', 'spread', 'points', 'rampUp', 'health', 'endings']);
   assert.equal(insights.describe.sample.trail.answered, 12, 'only public records');
   for (const rows of Object.values(insights.charts)) {
     for (const row of rows) {

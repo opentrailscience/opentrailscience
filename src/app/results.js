@@ -366,10 +366,15 @@ export function resetFeedback() {
   $('feedback-result').textContent = '';
 }
 
+/** Every feedback box: the one on the thank-you page and the one at the end of Insights (prefix 'insights-'). */
 export function initFeedback() {
-  const box = $('feedback-message');
-  const button = $('btn-send-feedback');
-  const result = $('feedback-result');
+  ['', 'insights-'].forEach(initFeedbackBox);
+}
+
+function initFeedbackBox(prefix) {
+  const box = $(`${prefix}feedback-message`);
+  const button = $(`btn-send-${prefix}feedback`);
+  const result = $(`${prefix}feedback-result`);
   button.addEventListener('click', async () => {
     const message = box.value.trim();
     if (!message) {

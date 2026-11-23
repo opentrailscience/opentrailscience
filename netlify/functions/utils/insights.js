@@ -209,11 +209,12 @@ function computeCorrelations(records) {
 
 // --- Descriptions: what works with few hikes -----------------------------------
 
-/** How many hikes gave each answer, most common first ({ key, n }), and how many answered. */
+/** How many hikes gave each answer, most common first ({ key, n }), and how many answered. `field` is a column or a function of the record. */
 function counts(records, field, order) {
-  const answered = records.filter(r => r[field] !== null && r[field] !== undefined && r[field] !== '');
+  const read = typeof field === 'function' ? field : r => r[field];
+  const answered = records.filter(r => read(r) !== null && read(r) !== undefined && read(r) !== '');
   const byKey = {};
-  answered.forEach(r => [].concat(r[field]).forEach(v => { byKey[v] = (byKey[v] || 0) + 1; }));
+  answered.forEach(r => [].concat(read(r)).forEach(v => { byKey[v] = (byKey[v] || 0) + 1; }));
   const rows = Object.entries(byKey).map(([key, n]) => ({ key, n }));
   if (order) rows.sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key) || String(a.key).localeCompare(String(b.key)));
   else rows.sort((a, b) => b.n - a.n || String(a.key).localeCompare(String(b.key)));
@@ -237,6 +238,32 @@ function rampUp(records) {
     .sort((a, b) => (a.miles[0] ?? 0) - (b.miles[0] ?? 0) || (a.miles[3] ?? 0) - (b.miles[3] ?? 0));
 }
 
+// The numbers hikers can plot against each other on the Insights page ("Make your own chart").
+// Money is left out: it is entered in each hiker's own currency. Answers with an order (ORDERED_POINT_FIELDS)
+// are stored as their position in the schema's list of values (0 = first), so they can go on an axis too.
+const ORDERED_POINT_FIELDS = ['ageBand', 'priorExperience', 'consideredQuitting', 'painkillerUse'];
+const POINT_FIELDS = ['baseWeightLbs', 'maxHeavyLoadLbs', 'preTrailWeightLbs', 'postTrailWeightLbs', 'weightChangeLbs', 'heightInches',
+  'plannedDistanceMiles', 'totalDistanceMiles', 'averageDailyMiles',
+  'daysOnTrail', 'totalZeroDays', 'totalNeroDays', 'totalElevationGainFt', 'hikeYear', 'preTrailFitnessRating', 'trainingFocus',
+  'overallEnjoymentRating', 'sleepQualityRating', 'hoursSleepPerNight', 'averageCalories', 'percentHikingAlone', 'shoePairsUsed',
+  ...ORDERED_POINT_FIELDS];
+
+/** Each hike's answers to POINT_FIELDS (null if unknown), with 1 first for a long trail; sorted, so the order says nothing about who. */
+function points(records) {
+  const read = { weightChangeLbs: weightChange };
+  ORDERED_POINT_FIELDS.forEach(f => {
+    const values = Schema.FIELDS_BY_NAME[f].values;
+    read[f] = r => (values.includes(r[f]) ? values.indexOf(r[f]) : null);
+  });
+  const rows = records.map(r => [isLong(r) ? 1 : 0, ...POINT_FIELDS.map(f => {
+    const v = read[f] ? read[f](r) : r[f];
+    return isNum(v) ? Math.round(v * 10) / 10 : null;
+  })]);
+  const key = v => (v === null ? -Infinity : v);
+  rows.sort((a, b) => { for (let i = 0; i < a.length; i++) if (key(a[i]) !== key(b[i])) return key(a[i]) - key(b[i]); return 0; });
+  return { fields: POINT_FIELDS, rows };
+}
+
 // Thru-hikes that didn't cover every mile: ended early, or reached the end but skipped parts.
 const notEveryMile = r => r.completionStatus === 'quit_early' || r.completionStatus === 'skipped_sections';
 
@@ -252,8 +279,13 @@ function describe(records) {
       homeRegion: counts(records, 'homeRegion'),
       ageBand: counts(records, 'ageBand', Schema.FIELDS_BY_NAME.ageBand.values)
     },
-    gear: Object.fromEntries(['shelterType', 'backpackType', 'footwearCategory', 'trekkingPoleUsage', 'waterFiltration', 'cookSystem', 'sleepPadType']
-      .map(field => [field, counts(records, field)])),
+    gear: Object.assign(Object.fromEntries(['backpackType', 'footwearCategory', 'trekkingPoleUsage', 'waterFiltration', 'cookSystem']
+      .map(field => [field, counts(records, field)])), {
+      // Where hikers slept: their own tent, tarp or hammock, or huts and hotels ("indoors": sleepLocation huts_refuges).
+      shelterType: counts(records, r => (r.sleepLocation === 'huts_refuges' ? 'indoors' : r.shelterType)),
+      // No pad apart for those who slept in huts and hotels ("none_indoors") and those who slept outside without one.
+      sleepPadType: counts(records, r => (r.sleepPadType === 'none' && r.sleepLocation === 'huts_refuges' ? 'none_indoors' : r.sleepPadType))
+    }),
     spread: {
       baseWeightLbs: spread(records, r => r.baseWeightLbs),
       averageDailyMiles: spread(records, r => r.averageDailyMiles),
@@ -261,6 +293,7 @@ function describe(records) {
       weightChangeLbs: spread(records, weightChange),
       overallEnjoymentRating: spread(records, r => r.overallEnjoymentRating)
     },
+    points: points(records),
     rampUp: rampUp(records),
     health: {
       injury: { answered: records.filter(r => typeof r.severeInjuryOccurred === 'boolean').length, yes: injured.length,

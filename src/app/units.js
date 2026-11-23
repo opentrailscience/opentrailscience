@@ -189,6 +189,7 @@ export function setUnitSystem(system) {
 
   state.unitSystem = system;
   renderUnitButtons();
+  document.dispatchEvent(new CustomEvent('ots:unit-system')); // the Insights charts redraw (insights-page.js)
   applyHeightMode();
   if (state.previewRows) fetchPreviewData();
 }

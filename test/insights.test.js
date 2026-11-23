@@ -131,3 +131,14 @@ test('"didn\'t hike every mile" counts early ends and skipped parts, not flip-fl
   assert.equal(endings.consideredQuittingNotEveryMile.answered, 2);
   assert.equal(endings.consideredQuittingFinished.answered, 2, 'continuous and flip-flop');
 });
+
+test('"Make your own chart": one row per hike, numbers only, never in submission order', () => {
+  const records = Array.from({ length: 12 }, (_, i) => ({ trail: 'PCT', totalDistanceMiles: i < 6 ? 2650 : 100, baseWeightLbs: 20 - i, overallEnjoymentRating: (i % 10) + 1, preTrailWeightLbs: 170, postTrailWeightLbs: 160 }));
+  const { fields, rows } = computeInsights(records).describe.points;
+  assert.equal(rows.length, records.length);
+  assert.ok(rows.every(r => r.length === fields.length + 1 && r.every(v => v === null || typeof v === 'number')));
+  assert.ok(!fields.includes('trailSpending') && !fields.includes('gearCost'), 'money is in each hiker\'s own currency');
+  const sorted = [...rows].sort((a, b) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return (a[i] ?? -Infinity) - (b[i] ?? -Infinity); return 0; });
+  assert.deepEqual(rows, sorted);
+  assert.equal(rows[0][fields.indexOf('weightChangeLbs') + 1], -10);
+});
