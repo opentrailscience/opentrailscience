@@ -38,12 +38,14 @@
   to = "/data/thru_hiker_survey_dataset.json"
   status = 200
 
-# The pages of the site: one page (index.html) that shows the view for its address
-# (VIEW_PATHS in src/app/core.js; test/entrypoints.test.js checks that both lists match).
+# The pages of the site: one page that shows the view for its address (VIEW_PATHS in
+# src/app/core.js; test/entrypoints.test.js checks that both lists match). Each page is served from
+# its own copy of index.html with its own title and description (scripts/build-pages.js, made at
+# build time); /thanks, which only exists right after submitting, from index.html itself.
 # No catch-all: any other address gets public/404.html with a real 404 status.
 [[redirects]]
   from = "/survey"
-  to = "/index.html"
+  to = "/survey.html"
   status = 200
 
 [[redirects]]
@@ -53,20 +55,20 @@
 
 [[redirects]]
   from = "/insights"
-  to = "/index.html"
+  to = "/insights.html"
   status = 200
 
 [[redirects]]
   from = "/dataset"
-  to = "/index.html"
+  to = "/dataset.html"
   status = 200
 
 [[redirects]]
   from = "/privacy"
-  to = "/index.html"
+  to = "/privacy.html"
   status = 200
 
 [[redirects]]
   from = "/about"
-  to = "/index.html"
+  to = "/about.html"
   status = 200

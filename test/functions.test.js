@@ -245,3 +245,24 @@ test('a stored survey and its deletion code carry no time: random ids, no date f
   assert.deepEqual(Object.keys(code).sort(), ['_id', 'codeHash', 'surveyId']);
   assert.equal(code.surveyId, survey._id);
 });
+
+test('Netlify builds write the real counts into the page for readers without JavaScript', () => {
+  const fs = require('fs');
+  const { stampHtml } = require('../scripts/lib/stamp-html');
+  const html = fs.readFileSync(require('path').join(__dirname, '../public/index.html'), 'utf8');
+  const out = stampHtml(html, 30, new Date('2026-11-24T12:00:00Z'));
+  assert.match(out, /id="first50-count"[^>]*>30 of 50 hikers so far</);
+  assert.match(out, /id="insights-meta"[^>]*>30 hikes in the dataset</);
+  assert.match(out, /id="dataset-meta"[^>]*>30 public records • schema v[\d.]+ • CC0 1.0 public domain • updated 2026-11-24</);
+  assert.match(out, /id="preview-pagination-info"[^>]*>Showing rows 1 - 8 of 30</);
+  const ld = JSON.parse(out.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+  assert.equal(ld.dateModified, '2026-11-24');
+  assert.match(ld.description, /As of 2026-11-24: 30 hikes\.$/);
+  // Stamping twice keeps one count sentence; nothing else on the page changes.
+  const twice = stampHtml(out, 31, new Date('2026-11-25T12:00:00Z'));
+  assert.equal((twice.match(/As of \d{4}-\d{2}-\d{2}/g) || []).length, 1);
+  // (Works on the source page and on one a build has stamped already.)
+  const rest = page => page.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, '')
+    .replace(/(id="(?:first50-count|insights-meta|dataset-meta|preview-pagination-info)"[^>]*>)[^<]*</g, '$1<');
+  assert.equal(rest(out), rest(html));
+});

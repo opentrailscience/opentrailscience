@@ -151,7 +151,7 @@ Add `-- --host` to any of the dev commands to open the site on your phone in the
 | `npm run dev:offline` | Dev server with an in-memory database; `-- --hikers=60` for another number |
 | `npm run dev:real` | Dev server with an in-memory database holding the live site's public dataset (fetched once at startup, a copy kept in `.cache/`); never connects to MongoDB. Personal codes don't work there |
 | `npm test` | All tests |
-| `npm run build` | Tailwind CSS, the JS bundle and the dataset files |
+| `npm run build` | Tailwind CSS, the JS bundle, the dataset files, and one copy of `index.html` per page with its own title and description (`scripts/build-pages.js`; on Netlify also the current counts in the page and dates in the sitemap) |
 | `npm run docs` | Rewrites `docs/DATA_DICTIONARY.md` after schema changes |
 | `npm run db:setup` | Creates the database indexes; safe to run again |
 | `npm run db:check` | Connection check and record counts |

@@ -131,8 +131,15 @@ test('every view has its own address, served by Netlify, and no catch-all', () =
   const paths = [...block.matchAll(/'(\/[^']*)'/g)].map(m => m[1]);
   assert.ok(paths.includes('/') && paths.length >= 7);
   const toml = fs.readFileSync(path.join(__dirname, '../netlify.toml'), 'utf8');
-  const pages = [...toml.matchAll(/from = "([^"]+)"\s+to = "\/index\.html"\s+status = 200/g)].map(m => m[1]);
-  assert.deepEqual(pages.sort(), paths.filter(p => p !== '/').sort(), 'netlify.toml serves exactly the view addresses');
+  const served = Object.fromEntries([...toml.matchAll(/from = "([^"]+)"\s+to = "(\/[a-z]+\.html)"\s+status = 200/g)].map(m => [m[1], m[2]]));
+  assert.deepEqual(Object.keys(served).sort(), paths.filter(p => p !== '/').sort(), 'netlify.toml serves exactly the view addresses');
+  // Each page from its own copy (scripts/build-pages.js), /thanks from index.html.
+  const { PAGES } = require('../scripts/lib/pages');
+  for (const [from, to] of Object.entries(served)) {
+    const page = PAGES.find(p => p.path === from);
+    assert.equal(to, page ? `/${page.file}` : '/index.html', from);
+  }
+  assert.equal(served['/thanks'], '/index.html');
   assert.ok(!/from = "\/\*"/.test(toml), 'an unknown address stays a 404');
   // Links use the addresses, not the old #hash views (a #section after an address is fine).
   const html = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf8');
@@ -148,4 +155,40 @@ test('the sitemap lists every view except the thank-you page, and robots.txt poi
   const listed = [...sitemap.matchAll(/<loc>https:\/\/opentrailscience\.org(\/[^<]*)<\/loc>/g)].map(m => m[1]);
   assert.deepEqual(listed.sort(), paths.filter(p => p !== '/thanks').sort());
   assert.match(fs.readFileSync(path.join(__dirname, '../public/robots.txt'), 'utf8'), /^Sitemap: https:\/\/opentrailscience\.org\/sitemap\.xml$/m);
+});
+
+test('each page copy gets its own head, with the titles the browser shows', () => {
+  const { PAGES } = require('../scripts/lib/pages');
+  const { pageHtml } = require('../scripts/build-pages');
+  const core = fs.readFileSync(path.join(__dirname, '../src/app/core.js'), 'utf8');
+  const titles = Object.fromEntries([...core.match(/export const VIEW_TITLES = \{([^}]*)\}/)[1].matchAll(/(\w+): '([^']+)'/g)].map(m => [m[1], m[2]]));
+  const paths = Object.fromEntries([...core.match(/export const VIEW_PATHS = \{([^}]*)\}/)[1].matchAll(/(\w+): '([^']+)'/g)].map(m => [m[2], m[1]]));
+  const html = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf8');
+  for (const page of PAGES) {
+    assert.equal(page.title, titles[paths[page.path]], `${page.path}: the same title as in the browser`);
+    const out = pageHtml(html, page);
+    assert.match(out, new RegExp(`<title>${page.title} \\| Open Trail Science</title>`));
+    assert.match(out, new RegExp(`<link rel="canonical" href="https://opentrailscience.org${page.path}">`));
+    assert.match(out, new RegExp(`<meta property="og:url" content="https://opentrailscience.org${page.path}">`));
+    assert.ok(out.includes(`<meta name="description" content="${page.description}">`), `${page.path}: description`);
+    assert.ok(page.description.length <= 160, `${page.path}: the description fits a search result`);
+    // Only the head changes: the body is the same page.
+    assert.equal(out.slice(out.indexOf('<body')), html.slice(html.indexOf('<body')), `${page.path}: same body`);
+  }
+  // The dataset page lists every column for Google Dataset Search; the others don't carry it.
+  const ld = page => JSON.parse(pageHtml(html, page).match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+  const Schema = require('../public/lib/survey-schema');
+  const dataset = ld(PAGES.find(p => p.dataset));
+  assert.equal(dataset.variableMeasured.length, Schema.describeSchema().columns.length);
+  assert.equal(dataset.version, Schema.SCHEMA_VERSION);
+  assert.equal(ld(PAGES.find(p => p.path === '/about')).variableMeasured, undefined);
+});
+
+test('on Netlify the sitemap gets the build date for the pages that change with the data', () => {
+  const { stampSitemap } = require('../scripts/lib/stamp-html');
+  const xml = fs.readFileSync(path.join(__dirname, '../public/sitemap.xml'), 'utf8');
+  const out = stampSitemap(xml, new Date('2026-11-24T12:00:00Z'));
+  const dated = [...out.matchAll(/<loc>https:\/\/opentrailscience\.org(\/[^<]*)<\/loc><lastmod>2026-11-24<\/lastmod>/g)].map(m => m[1]);
+  assert.deepEqual(dated.sort(), ['/', '/dataset', '/insights']);
+  assert.equal(stampSitemap(out, new Date('2026-11-25T12:00:00Z')).match(/<lastmod>/g).length, 3);
 });

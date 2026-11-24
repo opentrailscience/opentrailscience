@@ -102,6 +102,7 @@ async function serveBundle(res) {
 }
 
 // The rewrites (status 200) in netlify.toml: the pages of the site and the /download/* files.
+const PAGE_COPIES = new Set(require('./lib/pages').PAGES.map(p => `/${p.file}`));
 const ALIASES = Object.fromEntries(
   [...fs.readFileSync(path.join(__dirname, '..', 'netlify.toml'), 'utf8').matchAll(/from = "([^"]+)"\s+to = "([^"]+)"\s+status = 200/g)]
     .map(m => [m[1], m[2]])
@@ -189,7 +190,10 @@ const server = http.createServer((req, res) => {
 
   if (pathname === `/${BUNDLE}`) return serveBundle(res);
 
-  const target = ALIASES[pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname] || pathname;
+  let target = ALIASES[pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname] || pathname;
+  // The per-page copies (survey.html, …) are made by the build and may be out of date here: locally
+  // every page is the source index.html, as it always shows the latest edit.
+  if (PAGE_COPIES.has(target)) target = '/index.html';
   if (OFFLINE && target.startsWith('/data/')) return serveOfflineSnapshot(target, res);
   serveStatic(target, res);
 });

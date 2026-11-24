@@ -10,6 +10,8 @@
  * before this point is retried later. Local builds and deploy previews
  * don't update the live site, so they only read.
  *
+ * On Netlify it also writes the current counts into public/index.html (scripts/lib/stamp-html.js).
+ *
  * If MONGODB_URI is set and the database cannot be read, the script fails so
  * the build fails and the previous deploy (with its dataset) stays live.
  * Without MONGODB_URI (local builds) it writes an empty dataset.
@@ -20,6 +22,7 @@ const path = require('path');
 const { fetchPublicRecords, buildSnapshot } = require('../netlify/functions/utils/dataset');
 const { getDb, closeDatabase } = require('../netlify/functions/utils/db');
 const { pendingChanges, noteSnapshotBuilt } = require('../netlify/functions/utils/rebuild');
+const { stampIndexHtml } = require('./lib/stamp-html');
 
 const OUT_DIR = path.join(__dirname, '../public/data');
 
@@ -46,6 +49,9 @@ async function exportStaticData(outDir) {
     const records = await fetchPublicRecords();
     console.log(`Fetched ${records.length} public records from MongoDB.`);
     writeDataset(records, outDir);
+    // On Netlify the deployed page carries the real numbers for readers without JavaScript;
+    // locally the checked-in index.html stays as it is.
+    if (process.env.NETLIFY === 'true' && !outDir) stampIndexHtml(records.length);
     if (isLiveBuild) {
       try {
         await noteSnapshotBuilt(db, pending, new Date());

@@ -13,7 +13,7 @@
     "dev:offline": "npm run build:css && node scripts/dev-server.js --offline",
     "dev:real": "npm run build:css && node scripts/dev-server.js --real",
     "start": "netlify dev",
-    "build": "npm run build:css && npm run build:js && npm run export-data",
+    "build": "npm run build:css && npm run build:js && npm run export-data && node scripts/build-pages.js",
     "build:css": "tailwindcss -i src/tailwind.css -o public/css/tailwind.css --minify",
     "build:js": "node scripts/build-js.js",
     "export-data": "node scripts/export-static-dataset.js",
