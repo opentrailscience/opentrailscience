@@ -4,6 +4,7 @@
  */
 import { $, FIRST_HIKERS_GOAL, STATIC_STATS_URL, STONES_PER_CAIRN, Schema, VIEW_PATHS, go, showToast, state } from './core.js';
 import { renderDatasetMeta } from './dataset.js';
+import { selectTrail } from './trail-region.js';
 
 // --- MY SUBMISSIONS (so the first-50 count and the data preview include them right away) --------
 // The count and the preview come from a snapshot rebuilt every few hours. Until a
@@ -89,11 +90,7 @@ export function initTrailQuickCards() {
       // "Any other long trail" has no data-trail: the "Other" choice depends on the region,
       // so the hiker picks it in the list.
       const trail = card.getAttribute('data-trail');
-      const trailSelect = $('field-trail');
-      if (trail && trailSelect) {
-        trailSelect.value = trail;
-        trailSelect.dispatchEvent(new Event('change'));
-      }
+      if (trail) selectTrail(trail); // its region too
       go(VIEW_PATHS.survey);
       showToast(trail ? `Selected: ${Schema.trailName(trail)}` : 'Pick your trail from the list in the survey');
     });

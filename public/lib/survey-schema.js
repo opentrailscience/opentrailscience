@@ -31,6 +31,9 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    { version: '1.10.0', date: '2026-11-24', changes: [
+      'trail can be one of 7 more trails, with dates by month like other small trails. In Oregon: OCT (Oregon Coast Trail, SOBO or NOBO), ODT (Oregon Desert Trail, EABO or WEBO) and Blue Mountains Trail (Joseph to John Day, WEBO, or EABO the other way). In the Middle East: Jordan Trail (Umm Qais to Aqaba, SOBO or NOBO). In Africa, which had only Other Africa before: Drakensberg (the Drakensberg Grand Traverse, Sentinel to Bushman\'s Nek, SOBO or NOBO), Wild Coast (Port Edward to the Kei River, SOBO or NOBO) and GTAM (the Grand Atlas Traverse in Morocco, M\'Goun to Toubkal, WEBO or EABO).'
+    ] },
     { version: '1.9.0', date: '2026-11-23', changes: [
       'New question plannedDistanceMiles (with plannedDistanceKm): how far the hiker planned to hike, rounded like totalDistanceMiles. New column plannedDistanceDerived: false when the hiker answered the question.',
       'Hikes collected before 1.9.0 were never asked. For the finished ones (continuous or flip-flop) the planned distance was set to the distance hiked, with plannedDistanceDerived true; for the others both are null.',
@@ -78,10 +81,10 @@
 
   const TRAILS = [
     'PCT', 'AT', 'CDT', 'CT', 'AZT', 'JMT', 'TRT', 'PNT', 'Long Trail', 'Hayduke', 'FT', 'IAT', 'BMT', 'SHT',
-    'NCT', 'GDT', 'Bruce Trail', 'MST',
+    'NCT', 'GDT', 'Bruce Trail', 'MST', 'OCT', 'ODT', 'Blue Mountains Trail',
     'CDS', 'TMB', 'WHW', 'GR20', 'GR10', 'GR11', 'HEX', 'VIA', 'AV1', 'KUN', 'GSB', 'C2C', 'Cumbria Way',
     'HRP', 'GR5', 'E5', 'Pennine Way', 'SWCP', 'Cape Wrath', 'Via Dinarica',
-    'INT', 'Lycian Way', 'Annapurna', 'EBC', 'Shikoku', 'TA', 'Bibbulmun', 'Larapinta', 'Torres del Paine',
+    'INT', 'Lycian Way', 'Jordan Trail', 'Drakensberg', 'Wild Coast', 'GTAM', 'Annapurna', 'EBC', 'Shikoku', 'TA', 'Bibbulmun', 'Larapinta', 'Torres del Paine',
     // An unlisted trail, by region (the regions of the home region question; Europe is one, as before 1.7.0).
     'Other North America', 'Other Latin America', 'Other Europe', 'Other Africa', 'Other Middle East', 'Other Asia', 'Other Oceania'
   ];
@@ -94,6 +97,8 @@
     GR10: 'GR10', HEX: 'Hexatrek', VIA: 'Via Alpina', AV1: 'Alta Via 1', FT: 'Florida Trail', IAT: 'Ice Age Trail', BMT: 'Benton MacKaye Trail',
     Annapurna: 'Annapurna Circuit', GR11: 'GR11', 'Cumbria Way': 'Cumbria Way', GSB: 'Main Beskid Trail',
     NCT: 'North Country Trail', GDT: 'Great Divide Trail', 'Bruce Trail': 'Bruce Trail', MST: 'Mountains-to-Sea Trail',
+    OCT: 'Oregon Coast Trail', ODT: 'Oregon Desert Trail', 'Blue Mountains Trail': 'Blue Mountains Trail',
+    'Jordan Trail': 'Jordan Trail', Drakensberg: 'Drakensberg Grand Traverse', 'Wild Coast': 'Wild Coast', GTAM: 'Grand Atlas Traverse',
     HRP: 'HRP', GR5: 'GR5', E5: 'E5', 'Pennine Way': 'Pennine Way', SWCP: 'South West Coast Path', 'Cape Wrath': 'Cape Wrath Trail',
     'Via Dinarica': 'Via Dinarica', INT: 'Israel National Trail', 'Lycian Way': 'Lycian Way', EBC: 'Everest Base Camp trek',
     Shikoku: 'Shikoku pilgrimage', Bibbulmun: 'Bibbulmun Track', Larapinta: 'Larapinta Trail', 'Torres del Paine': 'Torres del Paine O Circuit'
@@ -118,6 +123,14 @@
     GR5: ['SOBO', 'NOBO'], E5: ['SOBO', 'NOBO'], // Lake Geneva to Nice; Oberstdorf to Meran
     SWCP: ['CW', 'CCW'], // round the south-west peninsula, Minehead to Poole is clockwise
     'Lycian Way': ['EABO', 'WEBO'], // Fethiye towards Antalya
+    // Added in 1.10.0.
+    OCT: ['SOBO', 'NOBO'], // most go south, with the summer wind behind them
+    ODT: ['EABO', 'WEBO'], // the Oregon Badlands near Bend to Lake Owyhee
+    'Blue Mountains Trail': ['WEBO', 'EABO'], // a one-way spiral from Joseph to John Day, which lies west of it
+    'Jordan Trail': ['SOBO', 'NOBO'], // Umm Qais to Aqaba
+    Drakensberg: ['SOBO', 'NOBO'], // Sentinel to Bushman's Nek
+    'Wild Coast': ['SOBO', 'NOBO'], // Port Edward to the Kei River
+    GTAM: ['WEBO', 'EABO'], // the M'Goun to Toubkal
     INT: ['SOBO', 'NOBO'], Bibbulmun: ['SOBO', 'NOBO'], // Dan to Eilat; Kalamunda to Albany
     Larapinta: ['WEBO', 'EABO'], // Alice Springs to Mount Sonder
     EBC: ['OUT_AND_BACK', 'CW', 'CCW'], // usually there and back the same way; the Gokyo and Three Passes variants are loops

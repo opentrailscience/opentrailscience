@@ -12,6 +12,7 @@ import { initPrivacyPage } from './privacy.js';
 import { initFeedback, initMyHike } from './results.js';
 import { initRouter } from './router.js';
 import { initTrailSuggestions } from './suggestions.js';
+import { initTrailRegions } from './trail-region.js';
 import { initTheme } from './theme-switch.js';
 import { initConditionals, initDefaultUnits, initDirectionCards, initDontKnowToggles, initHeightFeetInches, initRampCalculator, initUnitSwitcher } from './units.js';
 import { initInvalidMarks, initStepHistory, initWizardControls, markRequiredInputs } from './wizard.js';
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDefaultUnits();
   initChoiceCards();
   initOptionHints();
+  initTrailRegions();
   initSliders();
   initUnitSwitcher();
   initPillGroups();

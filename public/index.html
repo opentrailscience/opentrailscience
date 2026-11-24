@@ -153,7 +153,7 @@
           <div class="pile">
             <p class="pile-label" id="pile-label">Start here: pick your trail</p>
           <ol class="cairn" aria-labelledby="pile-label">
-            <li class="stone s1"><a href="/survey" class="trail-quick-card"><span class="name">More trails (45+)</span><span class="meta">OR ANY 70 MI +</span></a></li>
+            <li class="stone s1"><a href="/survey" class="trail-quick-card"><span class="name">More trails (50+)</span><span class="meta">OR ANY 70 MI +</span></a></li>
             <li class="stone s2"><a href="/survey" class="trail-quick-card" data-trail="TMB"><span class="name">Tour du Mont Blanc</span><span class="meta">TMB · 106 MI</span></a></li>
             <li class="stone s3"><a href="/survey" class="trail-quick-card" data-trail="Annapurna"><span class="name">Annapurna Circuit</span><span class="meta">NEPAL · ~130 MI</span></a></li>
             <li class="stone s4"><a href="/survey" class="trail-quick-card" data-trail="CDS"><span class="name">Camino de Santiago</span><span class="meta">ANY ROUTE</span></a></li>
@@ -591,27 +591,36 @@
                 <label for="field-trail" class="block text-sm font-semibold text-ink-soft mb-1.5">
                   Which long-distance trail did you hike?&nbsp;<span class="text-red">*</span>
                 </label>
+                <!-- Region first, then the trail (src/app/trail-region.js fills the trail list with that region's trails) -->
+                <div class="grid grid-cols-1 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] gap-3">
+                <select id="field-trail-region" aria-label="Region of the trail" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
+                  <option value="" disabled selected>Select a region…</option>
+                </select>
+                <div>
                 <select id="field-trail" name="trail" class="field w-full" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other">
                   <option value="" disabled selected>Select your trail…</option>
                   <optgroup label="North America">
-                    <option value="PCT" data-hint="2,650 mi / 4,265 km">Pacific Crest Trail (PCT)</option>
-                    <option value="AT" data-hint="2,198 mi / 3,537 km">Appalachian Trail (AT)</option>
+                    <option value="PCT" data-hint="2,650 mi / 4,265 km">Pacific Crest Trail</option>
+                    <option value="AT" data-hint="2,198 mi / 3,537 km">Appalachian Trail</option>
                     <option value="CDT" data-hint="about 3,000 mi / 4,900 km">Continental Divide Trail</option>
-                    <option value="CT" data-hint="486 mi / 782 km">Colorado Trail (CT)</option>
-                    <option value="AZT" data-hint="about 800 mi / 1,300 km">Arizona Trail (AZT)</option>
-                    <option value="JMT" data-hint="211 mi / 340 km">John Muir Trail (JMT)</option>
-                    <option value="TRT" data-hint="165 mi / 265 km">Tahoe Rim Trail (TRT)</option>
+                    <option value="CT" data-hint="486 mi / 782 km">Colorado Trail</option>
+                    <option value="AZT" data-hint="about 800 mi / 1,300 km">Arizona Trail</option>
+                    <option value="JMT" data-hint="211 mi / 340 km">John Muir Trail</option>
+                    <option value="TRT" data-hint="165 mi / 265 km">Tahoe Rim Trail</option>
                     <option value="PNT" data-hint="about 1,200 mi / 1,930 km">Pacific Northwest Trail</option>
-                    <option value="Long Trail" data-hint="272 mi / 438 km">Vermont Long Trail (LT)</option>
+                    <option value="Long Trail" data-hint="272 mi / 438 km">Vermont Long Trail</option>
                     <option value="Hayduke" data-hint="about 800 mi / 1,300 km">Hayduke Trail</option>
-                    <option value="FT" data-hint="about 1,300 mi / 2,100 km">Florida Trail (FT)</option>
-                    <option value="IAT" data-hint="about 1,200 mi / 1,930 km">Ice Age Trail (IAT)</option>
+                    <option value="FT" data-hint="about 1,300 mi / 2,100 km">Florida Trail</option>
+                    <option value="IAT" data-hint="about 1,200 mi / 1,930 km">Ice Age Trail</option>
                     <option value="BMT" data-hint="288 mi / 463 km">Benton MacKaye Trail</option>
-                    <option value="SHT" data-hint="310 mi / 500 km">Superior Hiking Trail (SHT)</option>
-                    <option value="NCT" data-hint="about 4,800 mi / 7,700 km">North Country Trail (NCT)</option>
-                    <option value="GDT" data-hint="Canada, about 700 mi / 1,130 km">Great Divide Trail (GDT)</option>
+                    <option value="SHT" data-hint="310 mi / 500 km">Superior Hiking Trail</option>
+                    <option value="NCT" data-hint="about 4,800 mi / 7,700 km">North Country Trail</option>
+                    <option value="GDT" data-hint="Canada, about 700 mi / 1,130 km">Great Divide Trail</option>
                     <option value="Bruce Trail" data-hint="Canada, about 560 mi / 900 km">Bruce Trail</option>
-                    <option value="MST" data-hint="North Carolina, about 1,175 mi / 1,890 km">Mountains-to-Sea Trail (MST)</option>
+                    <option value="MST" data-hint="North Carolina, about 1,175 mi / 1,890 km">Mountains-to-Sea Trail</option>
+                    <option value="OCT" data-hint="Oregon, about 425 mi / 685 km">Oregon Coast Trail</option>
+                    <option value="ODT" data-hint="Oregon, about 750 mi / 1,200 km">Oregon Desert Trail</option>
+                    <option value="Blue Mountains Trail" data-hint="Oregon, about 530 mi / 850 km">Blue Mountains Trail</option>
                     <option value="Other North America">Other, North America</option>
                   </optgroup>
                   <optgroup label="Central &amp; South America">
@@ -619,20 +628,20 @@
                     <option value="Other Latin America">Other, Central &amp; South America</option>
                   </optgroup>
                   <optgroup label="Europe">
-                    <option value="CDS" data-hint="Any route to Santiago de Compostela">Camino de Santiago (CDS)</option>
-                    <option value="TMB" data-hint="106 mi / 170 km">Tour du Mont Blanc (TMB)</option>
-                    <option value="WHW" data-hint="96 mi / 154 km">West Highland Way (WHW)</option>
+                    <option value="CDS" data-hint="Any route to Santiago de Compostela">Camino de Santiago</option>
+                    <option value="TMB" data-hint="106 mi / 170 km">Tour du Mont Blanc</option>
+                    <option value="WHW" data-hint="96 mi / 154 km">West Highland Way</option>
                     <option value="GR20" data-hint="112 mi / 180 km">GR20 (Corsica)</option>
                     <option value="GR10" data-hint="about 540 mi / 870 km">GR10 (Pyrenees)</option>
                     <option value="GR11" data-hint="about 520 mi / 840 km">GR11 (Spanish Pyrenees)</option>
                     <option value="HEX" data-hint="1,885 mi / 3,034 km">Hexatrek (France)</option>
                     <option value="VIA" data-hint="about 1,500 mi / 2,400 km">Via Alpina (Red Trail)</option>
                     <option value="AV1" data-hint="about 75 mi / 120 km">Alta Via 1 (Dolomites)</option>
-                    <option value="KUN" data-hint="about 285 mi / 460 km">Kungsleden (KUN)</option>
+                    <option value="KUN" data-hint="about 285 mi / 460 km">Kungsleden</option>
                     <option value="GSB" data-hint="about 310 mi / 500 km">Main Beskid Trail (Poland)</option>
-                    <option value="C2C" data-hint="190 mi / 306 km">Coast to Coast Walk (C2C)</option>
+                    <option value="C2C" data-hint="190 mi / 306 km">Coast to Coast Walk</option>
                     <option value="Cumbria Way" data-hint="about 70 mi / 112 km">Cumbria Way (England)</option>
-                    <option value="HRP" data-hint="about 500 mi / 800 km">Haute Route Pyrénées (HRP)</option>
+                    <option value="HRP" data-hint="about 500 mi / 800 km">Haute Route Pyrénées</option>
                     <option value="GR5" data-hint="Lake Geneva to Nice, about 400 mi / 650 km">GR5 (French Alps)</option>
                     <option value="E5" data-hint="Oberstdorf to Meran, about 90 mi / 150 km">E5 Alpine crossing</option>
                     <option value="Pennine Way" data-hint="268 mi / 431 km">Pennine Way (England)</option>
@@ -642,11 +651,15 @@
                     <option value="Other Europe">Other, Europe</option>
                   </optgroup>
                   <optgroup label="Africa">
+                    <option value="Drakensberg" data-hint="South Africa and Lesotho, about 135 mi / 220 km">Drakensberg Grand Traverse</option>
+                    <option value="Wild Coast" data-hint="South Africa, about 175 mi / 280 km">Wild Coast</option>
+                    <option value="GTAM" data-hint="Morocco, the High Atlas route about 180 mi / 290 km">Grand Atlas Traverse</option>
                     <option value="Other Africa">Other, Africa</option>
                   </optgroup>
                   <optgroup label="Middle East">
-                    <option value="INT" data-hint="about 680 mi / 1,100 km">Israel National Trail (INT)</option>
+                    <option value="INT" data-hint="about 680 mi / 1,100 km">Israel National Trail</option>
                     <option value="Lycian Way" data-hint="Turkey, about 470 mi / 760 km">Lycian Way</option>
+                    <option value="Jordan Trail" data-hint="about 410 mi / 660 km">Jordan Trail</option>
                     <option value="Other Middle East">Other, Middle East</option>
                   </optgroup>
                   <optgroup label="Asia">
@@ -656,12 +669,14 @@
                     <option value="Other Asia">Other, Asia</option>
                   </optgroup>
                   <optgroup label="Oceania">
-                    <option value="TA" data-hint="about 1,860 mi / 3,000 km">Te Araroa Trail (TA)</option>
+                    <option value="TA" data-hint="about 1,860 mi / 3,000 km">Te Araroa Trail</option>
                     <option value="Bibbulmun" data-hint="Australia, about 620 mi / 1,000 km">Bibbulmun Track</option>
                     <option value="Larapinta" data-hint="Australia, about 140 mi / 230 km">Larapinta Trail</option>
                     <option value="Other Oceania">Other, Oceania</option>
                   </optgroup>
                 </select>
+                </div>
+                </div>
               </div>
 
               <!-- "Other" trails: suggest the missing one, sent on its own and never part of the answers -->

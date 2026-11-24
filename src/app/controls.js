@@ -81,7 +81,7 @@ export function updateOptionHint(select) {
   hint.classList.toggle('hidden', !text);
 }
 
-function applyOptionLabels(select) {
+export function applyOptionLabels(select) {
   select.querySelectorAll('option[data-hint]').forEach(option => {
     if (!option.hasAttribute('data-label')) option.setAttribute('data-label', option.textContent);
     const label = option.getAttribute('data-label');

@@ -8,6 +8,7 @@ import { $, HumanCheck, Schema, VIEW_PATHS, attrValue, go, scrollMode, showToast
 import { resetTrailSuggestion } from './suggestions.js';
 import { TOGGLE_OFF, YES_NO_TOGGLES, setRampWeeks, setUnitSystem, syncHeightParts, updateDirectionCards } from './units.js';
 import { renderWizardStep } from './wizard.js';
+import { resetTrailRegion, selectTrail } from './trail-region.js';
 
 // --- DRAFT: answers survive a reload, saved only in this browser ---------------
 // Add a version (-v2, -v3, …) when a form change would make restored drafts wrong.
@@ -84,7 +85,9 @@ export function restoreDraft() {
     if (!el) return;
     const card = document.querySelector(`.choice-card[data-name="${id.replace('field-', '')}"][data-value="${attrValue(value)}"]`);
     const toggle = YES_NO_TOGGLES.find(t => t.field === id);
-    if (card) {
+    if (id === 'field-trail') {
+      selectTrail(value); // the region first, then the trail
+    } else if (card) {
       card.click();
     } else if (toggle) {
       $(`btn-${toggle.name}-${value === 'true' ? 'yes' : 'no'}`).click();
@@ -99,12 +102,15 @@ export function restoreDraft() {
       if (pill) pill.click();
     });
   });
-  // Skip the start page only if both the consent and the trail check were done.
-  if (draft.trailCheck && HumanCheck.isCorrectTrailCheck(draft.trailCheck)) newTrailCheck(draft.trailCheck.id, true);
   // A consent given to an older consent text is asked again.
   const consented = draft.consent && draft.consentVersion === Schema.CONSENT_VERSION;
   if (consented) $('consent-checkbox').checked = true;
-  if (consented && state.trailCheck.passed) giveConsent();
+  // Skip the start page only if both the consent and the trail check were done. Whenever the start
+  // page shows, its trail check is a fresh one: an answered one would look like a preselected answer.
+  if (consented && draft.trailCheck && HumanCheck.isCorrectTrailCheck(draft.trailCheck)) {
+    newTrailCheck(draft.trailCheck.id, true);
+    giveConsent();
+  }
   updateStartButton();
   (draft.unknownFields || []).forEach(name => {
     const box = Array.from(document.querySelectorAll('.dont-know-toggle'))
@@ -149,6 +155,7 @@ export function resetSurveyForm() {
   });
   ['quit-reason-container', 'own-shelter-container', 'trail-suggest-survey-box', 'urination-aids-container'].forEach(id => $(id).classList.add('hidden'));
   resetTrailSuggestion($('trail-suggest-survey-box'));
+  resetTrailRegion();
   clearPills();
   document.querySelectorAll('.dont-know-toggle').forEach(box => { box.checked = false; });
   state.unknownFields.clear();

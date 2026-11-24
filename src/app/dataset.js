@@ -2,8 +2,9 @@
  * Dataset page: the preview table, data dictionary and changelog.
  * Part of the browser app (src/app/, bundled by scripts/build-js.js into public/js/app.bundle.js).
  */
-import { $, STATIC_PREVIEW_URL, Schema, attrValue, escapeHtml, humanize, orDash, state } from './core.js';
+import { $, STATIC_PREVIEW_URL, Schema, escapeHtml, humanize, orDash, state } from './core.js';
 import { mySubmissionsAfter } from './home.js';
+import { trailOptionLabel } from './trail-region.js';
 import { shareSurvey } from './results.js';
 
 // --- PUBLIC DOWNLOAD VIEW / DATA PREVIEW TABLE ---
@@ -113,17 +114,21 @@ export async function fetchPreviewData() {
 }
 
 
-// Codes hikers wouldn't recognize get the word they use instead (the files keep the code).
-export const CHIP_LABELS = { CDS: 'CAMINO' };
+// Codes hikers wouldn't recognize get the word they use instead, and long names a short form so the
+// trail column stays narrow (the files keep the code; the full name is in the chip's tooltip).
+export const CHIP_LABELS = {
+  CDS: 'CAMINO',
+  'Blue Mountains Trail': 'Blue Mtns', 'Torres del Paine': 'Torres', 'Bruce Trail': 'Bruce',
+  'Other North America': 'Other N. America', 'Other Latin America': 'Other L. America', 'Other Middle East': 'Other Mid. East'
+};
 
 /**
  * The trail's full name for the tooltip on its code ("CDS" -> "Camino de Santiago"), from the
  * survey's trail list, without the code it already shows in brackets.
  */
 export function fullTrailName(code) {
-  const option = document.querySelector(`#field-trail option[value="${attrValue(code)}"]`);
-  if (!option) return code;
-  const label = (option.getAttribute('data-label') || option.textContent).trim(); // data-label: before the length hint was added
+  const label = trailOptionLabel(code); // from the survey's trail list, whichever region it shows
+  if (!label) return code;
   return label.endsWith(`(${code})`) ? label.slice(0, -code.length - 2).trim() : label;
 }
 
