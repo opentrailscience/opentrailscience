@@ -41,6 +41,13 @@ export async function loadInsights() {
   $('insights-locked').classList.toggle('hidden', !early);
   $('insights-charts').classList.toggle('hidden', early);
   $('insights-units').hidden = early; // the attribute: its inline-flex class would win over .hidden
+  // While locked: no thank-you line and no feedback box; the code lookup alone, centred under the locked card.
+  $('insights-thanks').hidden = early;
+  $('insights-feedback').hidden = early;
+  const bottom = $('insights-bottom');
+  bottom.classList.toggle('lg:grid-cols-2', !early);
+  bottom.classList.toggle('mt-12', !early);
+  ['mt-10', 'max-w-2xl', 'mx-auto'].forEach(c => bottom.classList.toggle(c, early));
   if (early) {
     renderFirstHikersProgress($('insights-locked-bar'), $('insights-locked-count'), total, mine.length > 0);
   } else {

@@ -413,7 +413,7 @@
         <div id="insights-intro" class="max-w-3xl">
           <h1 class="text-3xl sm:text-4xl font-extrabold mt-3">What the data says so far</h1>
           <p class="text-sm sm:text-base text-secondary mt-2">A first look at the open dataset. These are self-reported answers, not a controlled study.</p>
-          <p class="text-sm sm:text-base font-semibold text-ink mt-2">Huge thank you to everybody who took the survey!!</p>
+          <p id="insights-thanks" hidden class="text-sm sm:text-base font-semibold text-ink mt-2">Huge thank you to everybody who took the survey!!</p>
           <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3">
             <p id="insights-meta" class="text-xs text-muted"></p>
             <div id="insights-units" hidden class="unit-switch inline-flex rounded-lg p-1 bg-surface border border-line" role="group" aria-label="Units">
@@ -445,8 +445,9 @@
           <div id="insights-together-cards" class="flex flex-wrap justify-center gap-6 mt-8"></div>
         </div>
 
-        <!-- Under the charts, side by side on wide screens: your own hike, and feedback on the page -->
-        <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Under the charts, side by side on wide screens: your own hike, and feedback on the page.
+             While the charts are locked only the lookup, centred under the locked card (insights-page.js). -->
+        <div id="insights-bottom" class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Look up your own hike with the deletion code (/api/my-hike) -->
           <div id="insights-lookup" class="card p-6 max-[399px]:p-4">
             <h2 class="font-bold">Shared your hike already?</h2>
@@ -460,7 +461,7 @@
           </div>
 
           <!-- Feedback about the page: sent separately (/api/feedback, as on the thank-you page), never linked to any answers -->
-          <div class="card p-6 max-[399px]:p-4 text-left">
+          <div id="insights-feedback" hidden class="card p-6 max-[399px]:p-4 text-left">
             <label for="insights-feedback-message" class="block font-bold">How can I improve this page?</label>
             <p class="text-xs text-muted mt-1">Missing a chart, or is something unclear? Tell me! This isn't connected to any survey entry and isn't part of the released dataset.</p>
             <p class="text-xs text-yellow-strong mt-1">Please don't include your name or personal or health details.</p>
