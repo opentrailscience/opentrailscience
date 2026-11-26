@@ -31,6 +31,9 @@
 
   // Published in the data dictionary and on the dataset page. Newest first.
   const CHANGELOG = [
+    { version: '1.11.0', date: '2026-11-26', changes: [
+      'trail can be ECT (the Eastern Continental Trail, Key West to eastern Canada, NOBO or SOBO), with dates by month like other small trails. Hikes collected before stay as they were answered.'
+    ] },
     { version: '1.10.0', date: '2026-11-24', changes: [
       'trail can be one of 7 more trails, with dates by month like other small trails. In Oregon: OCT (Oregon Coast Trail, SOBO or NOBO), ODT (Oregon Desert Trail, EABO or WEBO) and Blue Mountains Trail (Joseph to John Day, WEBO, or EABO the other way). In the Middle East: Jordan Trail (Umm Qais to Aqaba, SOBO or NOBO). In Africa, which had only Other Africa before: Drakensberg (the Drakensberg Grand Traverse, Sentinel to Bushman\'s Nek, SOBO or NOBO), Wild Coast (Port Edward to the Kei River, SOBO or NOBO) and GTAM (the Grand Atlas Traverse in Morocco, M\'Goun to Toubkal, WEBO or EABO).'
     ] },
@@ -81,7 +84,7 @@
 
   const TRAILS = [
     'PCT', 'AT', 'CDT', 'CT', 'AZT', 'JMT', 'TRT', 'PNT', 'Long Trail', 'Hayduke', 'FT', 'IAT', 'BMT', 'SHT',
-    'NCT', 'GDT', 'Bruce Trail', 'MST', 'OCT', 'ODT', 'Blue Mountains Trail',
+    'NCT', 'GDT', 'Bruce Trail', 'MST', 'OCT', 'ODT', 'Blue Mountains Trail', 'ECT',
     'CDS', 'TMB', 'WHW', 'GR20', 'GR10', 'GR11', 'HEX', 'VIA', 'AV1', 'KUN', 'GSB', 'C2C', 'Cumbria Way',
     'HRP', 'GR5', 'E5', 'Pennine Way', 'SWCP', 'Cape Wrath', 'Via Dinarica',
     'INT', 'Lycian Way', 'Jordan Trail', 'Drakensberg', 'Wild Coast', 'GTAM', 'Annapurna', 'EBC', 'Shikoku', 'TA', 'Bibbulmun', 'Larapinta', 'Torres del Paine',
@@ -97,7 +100,7 @@
     GR10: 'GR10', HEX: 'Hexatrek', VIA: 'Via Alpina', AV1: 'Alta Via 1', FT: 'Florida Trail', IAT: 'Ice Age Trail', BMT: 'Benton MacKaye Trail',
     Annapurna: 'Annapurna Circuit', GR11: 'GR11', 'Cumbria Way': 'Cumbria Way', GSB: 'Main Beskid Trail',
     NCT: 'North Country Trail', GDT: 'Great Divide Trail', 'Bruce Trail': 'Bruce Trail', MST: 'Mountains-to-Sea Trail',
-    OCT: 'Oregon Coast Trail', ODT: 'Oregon Desert Trail', 'Blue Mountains Trail': 'Blue Mountains Trail',
+    OCT: 'Oregon Coast Trail', ODT: 'Oregon Desert Trail', 'Blue Mountains Trail': 'Blue Mountains Trail', ECT: 'Eastern Continental Trail',
     'Jordan Trail': 'Jordan Trail', Drakensberg: 'Drakensberg Grand Traverse', 'Wild Coast': 'Wild Coast', GTAM: 'Grand Atlas Traverse',
     HRP: 'HRP', GR5: 'GR5', E5: 'E5', 'Pennine Way': 'Pennine Way', SWCP: 'South West Coast Path', 'Cape Wrath': 'Cape Wrath Trail',
     'Via Dinarica': 'Via Dinarica', INT: 'Israel National Trail', 'Lycian Way': 'Lycian Way', EBC: 'Everest Base Camp trek',
@@ -131,6 +134,8 @@
     Drakensberg: ['SOBO', 'NOBO'], // Sentinel to Bushman's Nek
     'Wild Coast': ['SOBO', 'NOBO'], // Port Edward to the Kei River
     GTAM: ['WEBO', 'EABO'], // the M'Goun to Toubkal
+    // Added in 1.11.0.
+    ECT: ['NOBO', 'SOBO'], // Key West to Cap Gaspé or Newfoundland
     INT: ['SOBO', 'NOBO'], Bibbulmun: ['SOBO', 'NOBO'], // Dan to Eilat; Kalamunda to Albany
     Larapinta: ['WEBO', 'EABO'], // Alice Springs to Mount Sonder
     EBC: ['OUT_AND_BACK', 'CW', 'CCW'], // usually there and back the same way; the Gokyo and Three Passes variants are loops
